@@ -1,0 +1,154 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFrameworks>netcoreapp2.0</TargetFrameworks>
+
+    <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
+
+    <EnableDefaultItems>false</EnableDefaultItems>
+
+    <RootNamespace>AvaloniaILSpy</RootNamespace>
+
+    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+
+    <ApplicationIcon>Images\ILSpy-Large.ico</ApplicationIcon>
+    <StartupObject>AvaloniaILSpy.Program</StartupObject>
+
+    <SignAssembly>false</SignAssembly>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
+    <DebugType>full</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+    <CheckForOverflowUnderflow>True</CheckForOverflowUnderflow>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)' == 'Release'">
+    <DebugType>pdbonly</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <CodeAnalysisRuleSet>..\ICSharpCode.Decompiler\ICSharpCode.Decompiler.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="ICSharpCode.Decompiler" Version="3.2.0.3859" />
+    <PackageReference Include="Microsoft.VisualStudio.Composition" Version="15.8.98" />
+    <PackageReference Include="System.IO.Compression" Version="4.3.0" />
+    <PackageReference Include="Avalonia.Desktop" Version="0.6.2-build5873-beta" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="**\*.cs" Exclude="obj\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="Fusion.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Update="**\*.xaml.cs">
+      <DependentUpon>%(Filename)</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <EmbeddedResource Include="**\*.xaml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\doc\copyright.txt">
+      <Link>copyright.txt</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\doc\ILAst.txt">
+      <Link>ILAst.txt</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\doc\IntPtr.txt">
+      <Link>IntPtr.txt</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\doc\LGPL.txt">
+      <Link>LGPL.txt</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\doc\license.txt">
+      <Link>license.txt</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\doc\MS-PL.txt">
+      <Link>MS-PL.txt</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\doc\Resources.txt">
+      <Link>Resources.txt</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="README.txt" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <EmbeddedResource Include="**\*.xshd;**\*.resx;Assets\*;**\*.paml" Exclude="bin\**;obj\**;**\*.xproj;packages\**;@(EmbeddedResource)" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Images\Class.png" />
+    <Resource Include="Images\StaticClass.png" />
+    <Resource Include="Images\Delegate.png" />
+    <Resource Include="Images\Enum.png" />
+    <Resource Include="Images\Field.png" />
+    <Resource Include="Images\Interface.png" />
+    <Resource Include="Images\Literal.png" />
+    <Resource Include="Images\Method.png" />
+    <Resource Include="Images\NameSpace.png" />
+    <Resource Include="Images\Open.png" />
+    <Resource Include="Images\Assembly.png" />
+    <Resource Include="Images\Struct.png" />
+    <Resource Include="Images\ReferenceFolder.Closed.png" />
+    <Resource Include="Images\ReferenceFolder.Open.png" />
+    <Resource Include="Images\Event.png" />
+    <Resource Include="Images\ExtensionMethod.png" />
+    <Resource Include="Images\Indexer.png" />
+    <Resource Include="Images\Operator.png" />
+    <Resource Include="Images\Property.png" />
+    <Resource Include="Images\Find.png" />
+    <Resource Include="Images\Library.png" />
+    <Resource Include="Images\SubTypes.png" />
+    <Resource Include="Images\SuperTypes.png" />
+    <Resource Include="Images\Resource.png" />
+    <Resource Include="Images\Folder.Closed.png" />
+    <Resource Include="Images\Folder.Open.png" />
+    <Resource Include="Images\ResourceImage.png" />
+    <Resource Include="Images\ResourceResourcesFile.png" />
+    <Resource Include="Images\Back.png" />
+    <Resource Include="Images\Forward.png" />
+    <Resource Include="Images\PrivateInternal.png" />
+    <Resource Include="Images\Refresh.png" />
+    <Resource Include="Images\Constructor.png" />
+    <Resource Include="Images\CollapseAll.png" />
+    <Resource Include="Images\EnumValue.png" />
+    <Resource Include="Images\FieldReadOnly.png" />
+    <Resource Include="Images\OverlayInternal.png" />
+    <Resource Include="Images\OverlayPrivate.png" />
+    <Resource Include="Images\OverlayPrivateProtected.png" />
+    <Resource Include="Images\OverlayProtected.png" />
+    <Resource Include="Images\OverlayProtectedInternal.png" />
+    <Resource Include="Images\OverlayCompilerControlled.png" />
+    <Resource Include="Images\OverlayStatic.png" />
+    <Resource Include="Images\VirtualMethod.png" />
+    <Resource Include="Images\PInvokeMethod.png" />
+	<Resource Include="Images\Warning.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Images\ResourceXml.png" />
+    <Resource Include="Images\ResourceXsd.png" />
+    <Resource Include="Images\ResourceXslt.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Images\Sort.png" />
+    <Resource Include="Images\SearchMsdn.png" />
+    <Resource Include="Images\Copy.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\AvaloniaILSpy.Controls\AvaloniaILSpy.Controls.csproj" />
+    <ProjectReference Include="..\AvaloniaEdit\src\AvaloniaEdit\AvaloniaEdit.csproj" />
+  </ItemGroup>
+
+</Project>

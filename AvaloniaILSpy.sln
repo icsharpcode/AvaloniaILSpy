@@ -1,0 +1,44 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.26730.12
+MinimumVisualStudioVersion = 15.0
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "doc", "doc", "{F45DB999-7E72-4000-B5AD-3A7B485A0896}"
+	ProjectSection(SolutionItems) = preProject
+		doc\Command Line.txt = doc\Command Line.txt
+		doc\ILAst.txt = doc\ILAst.txt
+		doc\IntPtr.txt = doc\IntPtr.txt
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AvaloniaILSpy.Controls", "AvaloniaILSpy.Controls\AvaloniaILSpy.Controls.csproj", "{0A3DA152-0729-4540-973C-11583009520F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AvaloniaILSpy", "AvaloniaILSpy\AvaloniaILSpy.csproj", "{7BB39313-8FC6-40A4-A06F-FD2A10817256}"
+EndProject
+Project("{9344BDBB-3E7F-41FC-A0DD-8665D75EE146}") = "AvaloniaEdit", "AvaloniaEdit\src\AvaloniaEdit\AvaloniaEdit.csproj", "{CC3151F6-C080-4E17-9F50-58C3FED64F28}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0A3DA152-0729-4540-973C-11583009520F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0A3DA152-0729-4540-973C-11583009520F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0A3DA152-0729-4540-973C-11583009520F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0A3DA152-0729-4540-973C-11583009520F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7BB39313-8FC6-40A4-A06F-FD2A10817256}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7BB39313-8FC6-40A4-A06F-FD2A10817256}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7BB39313-8FC6-40A4-A06F-FD2A10817256}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7BB39313-8FC6-40A4-A06F-FD2A10817256}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CC3151F6-C080-4E17-9F50-58C3FED64F28}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CC3151F6-C080-4E17-9F50-58C3FED64F28}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CC3151F6-C080-4E17-9F50-58C3FED64F28}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CC3151F6-C080-4E17-9F50-58C3FED64F28}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {C764218F-7633-4412-923D-558CE7EE0560}
+	EndGlobalSection
+EndGlobal

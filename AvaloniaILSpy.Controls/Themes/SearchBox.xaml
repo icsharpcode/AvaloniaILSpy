@@ -1,0 +1,69 @@
+﻿<Styles xmlns="https://github.com/avaloniaui"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:avalonia="clr-namespace:Avalonia"
+	xmlns:local="clr-namespace:AvaloniaILSpy.Controls"
+	xmlns:sys="clr-namespace:System;assembly=mscorlib">
+
+	<Styles.Resources>
+		<sys:String x:Key="ClearSearchIcon">resm:AvaloniaILSpy.Controls.Themes.ClearSearch.png"</sys:String>
+	</Styles.Resources>
+
+	<Style Selector="local|SearchBox">
+		<Setter Property="Background" Value="White" />
+		<Setter Property="BorderBrush" Value="{x:Static avalonia:SystemColors.ControlDarkBrush}" />
+		<Setter Property="Foreground" Value="{x:Static avalonia:SystemColors.ControlTextBrush}" />
+		<Setter Property="BorderThickness" Value="1" />
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate>
+					<Border x:Name="Border"
+					        Cursor="IBeam"
+					        Background="{TemplateBinding Background}"
+					        BorderBrush="{TemplateBinding BorderBrush}"
+					        BorderThickness="{TemplateBinding BorderThickness}">
+						<Grid x:Name="LayoutGrid">
+							<Grid.ColumnDefinitions>
+								<ColumnDefinition Width="*" />
+								<ColumnDefinition Width="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=ActualHeight}" />
+							</Grid.ColumnDefinitions>
+							<ScrollViewer Margin="2" x:Name="PART_ContentHost" Grid.Column="0" />
+							<TextBlock x:Name="WatermarkLabel"
+							       Margin="2"
+							       Grid.Column="0"
+							       Foreground="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=WatermarkColor}"
+							       Text="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=WatermarkText}"
+							       Padding="2,0,0,0"
+							       FontStyle="Italic" />
+							<Border x:Name="PART_IconBorder"
+							        Grid.Column="1"
+							        BorderThickness="1"
+							        VerticalAlignment="Stretch"
+							        HorizontalAlignment="Stretch"
+							        BorderBrush="Transparent"
+							        Background="Transparent">
+								<Image x:Name="SearchIcon"
+								       Cursor="Arrow"
+								       Stretch="None"
+								       HorizontalAlignment="Center"
+								       VerticalAlignment="Center"
+								       ToolTip="Search"
+								       Source="resm:AvaloniaILSpy.Controls.Themes.Search.png" >
+								</Image>
+							</Border>
+						</Grid>
+					</Border>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
+
+	<Style Selector="local|SearchBox[HasText=true] /template/ TextBlock#WatermarkLabel">
+			<Setter Property="IsVisible" Value="false" />
+	</Style>
+	
+	<Style Selector="local|SearchBox[HasText=true] /template/ Image#SearchIcon">
+			<Setter Property="Source"
+			        Value="{DynamicResource ClearSearchIcon}" />
+			<Setter Property="Tag" Value="Clear"/>
+	</Style>
+</Styles>

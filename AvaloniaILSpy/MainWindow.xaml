@@ -1,0 +1,157 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Window
+	x:Class="AvaloniaILSpy.MainWindow"
+	x:ClassModifier="public"
+	xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:tv="clr-namespace:AvaloniaILSpy.Controls;assembly=AvaloniaILSpy.Controls"
+	xmlns:local="clr-namespace:AvaloniaILSpy" xmlns:textView="clr-namespace:AvaloniaILSpy.TextView"
+	xmlns:controls="clr-namespace:AvaloniaILSpy.Controls"
+	Title="ILSpy"
+	MinWidth="250"
+	MinHeight="200"
+	UseLayoutRounding="True"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008" d:DesignHeight="500" d:DesignWidth="500"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d"
+>
+<!--	<Window.TaskbarItemInfo>
+		<TaskbarItemInfo />
+	</Window.TaskbarItemInfo>-->
+	<DockPanel>
+		<!-- Main menu -->
+		<Menu DockPanel.Dock="Top" Name="mainMenu" Height="23" KeyboardNavigation.TabNavigation="None">
+			<MenuItem Header="_File" /> <!-- contents of file menu are added using MEF -->
+<!--			<MenuItem Header="_View">
+				<MenuItem Header="Show _internal types and members" IsCheckable="True" IsChecked="{Binding FilterSettings.ShowInternalApi}">
+					<MenuItem.Icon>
+						<Image Width="16" Height="16" Source="Images/PrivateInternal.png" />
+					</MenuItem.Icon>
+				</MenuItem>
+			</MenuItem>-->
+		</Menu>
+		<!-- ToolBar -->
+		<ListBox
+			Name="toolBar" BorderThickness="0" Padding="0"
+			DockPanel.Dock="Top" >
+		    <ListBox.ItemsPanel>
+		        <ItemsPanelTemplate>
+		            <StackPanel Orientation="Horizontal" />
+		        </ItemsPanelTemplate>
+		    </ListBox.ItemsPanel>
+			<!--
+			<ListBox.Resources>
+				<Style Selector="#toolBar MenuItem[IsEnabled=false]">
+					<Setter Property="Opacity" Value="0.30" />
+				</Style>
+			</ListBox.Resources>
+			-->
+			<!-- 'Navigation' toolbar category is inserted here -->
+			<Separator />
+			<!-- 'Open' toolbar category is inserted here -->
+			<Separator />
+			<CheckBox IsChecked="{Binding FilterSettings.ShowInternalApi}" Tag="Show internal types and members">
+				<Image Width="16" Height="16" Source="Images/PrivateInternal.png" />
+			</CheckBox>
+			<Separator />
+			<DropDown Name="languageComboBox" Width="100" 
+			          Items="{x:Static local:Languages.AllLanguages}"
+			          SelectedItem="{Binding FilterSettings.Language}"/>
+			<DropDown Name="languageVersionComboBox" Width="100" 
+			          IsVisible="{Binding SelectedItem.HasLanguageVersions, ElementName=languageComboBox}"
+			          Items="{Binding SelectedItem.LanguageVersions, ElementName=languageComboBox}"
+			          SelectedItem="{Binding FilterSettings.LanguageVersion}"/>
+		</ListBox>
+		<!-- Status bar -->
+		<Border x:Name="statusBar" BorderThickness="1" BorderBrush="Gray" DockPanel.Dock="Bottom" Height="26" IsVisible="false">
+			<TextBlock VerticalAlignment="Center"
+					   HorizontalAlignment="Right"
+					   x:Name="StatusLabel"
+					   Tag="Status"
+					   Text="Stand by..."/>
+		</Border>
+		<!-- Main grid separating left pane (treeView) from main pane (textEditor) -->
+		<Grid x:Name="mainGrid">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition
+					MinWidth="100"
+					Width="0.4*" />
+				<ColumnDefinition
+					Width="3" />
+				<ColumnDefinition
+					MinWidth="100"
+					Width="0.6*" />
+			</Grid.ColumnDefinitions>
+			<Grid.RowDefinitions>
+				<RowDefinition
+					Height="*" />
+			</Grid.RowDefinitions>
+			<!-- Left pane: Tree View of assemblies and classes -->
+			<tv:SharpTreeView
+				Name="treeView"
+				SelectionChanged="TreeView_SelectionChanged"
+				ShowRoot="False"
+				AllowDropOrder="True"
+				DragDrop.AllowDrop="True"
+				BorderThickness="0,1,1,1" IsVisible="true" />
+			<GridSplitter
+				Grid.Column="1"
+				Margin="-5,0"
+				BorderThickness="5,0"
+				HorizontalAlignment="Center"
+				VerticalAlignment="Stretch"
+				Focusable="False"
+				BorderBrush="Transparent" />
+			<!-- Right pane: Text Editor -->
+			<Grid x:Name="rightPane" Grid.Column="2">
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition
+						Width="*" />
+				</Grid.ColumnDefinitions>
+				<Grid.RowDefinitions>
+					<RowDefinition Height="Auto" />
+					<RowDefinition Height="0" />
+					<RowDefinition Height="0" />
+					<RowDefinition Height="0.7*" MinHeight="100"/>
+					<RowDefinition Height="0" />
+					<RowDefinition Height="0"  />
+				</Grid.RowDefinitions>
+				<Border BorderBrush="Black" BorderThickness="1" Name="updatePanel" IsVisible="false">
+					<DockPanel KeyboardNavigation.TabNavigation="Contained">
+						<Button DockPanel.Dock="Right" Click="updatePanelCloseButtonClick" MinWidth="0">X</Button>
+						<StackPanel Orientation="Horizontal">
+							<TextBlock Name="updatePanelMessage" Margin="4,0" VerticalAlignment="Center">A new ILSpy version is available.</TextBlock>
+							<Button Name="downloadOrCheckUpdateButton" Click="downloadOrCheckUpdateButtonClick">Download</Button>
+						</StackPanel>
+					</DockPanel>
+				</Border>
+				
+				<tv:DockedPane x:Name="topPane" Grid.Row="1" Title="Top" IsVisible="false"
+					CloseButtonClicked="TopPane_CloseButtonClicked" Margin="0,0,0,3" />
+				
+				<GridSplitter
+					Grid.Row="2"
+					Margin="0,-2,0,-5"
+					BorderThickness="0,2,0,5"
+					BorderBrush="Transparent"
+					HorizontalAlignment="Stretch"
+					VerticalAlignment="Center"
+					Focusable="False"
+					IsVisible="{Binding IsVisible, ElementName=topPane}" />
+				
+				<!-- decompilerTextView is into the mainPane by code -->
+				<ContentPresenter Name="mainPane" Grid.Row="3"/>
+				
+				<GridSplitter
+					Grid.Row="4"
+					Margin="0,-2,0,-5"
+					BorderThickness="0,2,0,5"
+					BorderBrush="Transparent"
+					HorizontalAlignment="Stretch"
+					VerticalAlignment="Center"
+					Focusable="False"
+					IsVisible="{Binding IsVisible, ElementName=bottomPane}" />
+				
+				<tv:DockedPane x:Name="bottomPane" Grid.Row="5" Title="Bottom" IsVisible="false"
+					CloseButtonClicked="BottomPane_CloseButtonClicked" Margin="0,3,0,0" />
+			</Grid>
+		</Grid>
+	</DockPanel>
+</Window>

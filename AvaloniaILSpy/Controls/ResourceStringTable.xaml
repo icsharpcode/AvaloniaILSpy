@@ -1,0 +1,53 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<UserControl x:Class="AvaloniaILSpy.Controls.ResourceStringTable"
+			 xmlns="https://github.com/avaloniaui"
+			 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+>
+<!--	<UserControl.CommandBindings>
+		<CommandBinding Command="ApplicationCommands.Copy"
+						Executed="ExecuteCopy"
+						CanExecute="CanExecuteCopy" />
+	</UserControl.CommandBindings>-->
+	<Grid Margin="5,0,0,0">
+		<Grid.Resources>
+<!--			<AlternationConverter x:Key="BackgroundConverter">
+				<SolidColorBrush Color="White"></SolidColorBrush>
+				<SolidColorBrush Color="Beige"></SolidColorBrush>
+			</AlternationConverter>-->
+			<Style  Selector="ListBoxItem.alternatingWithBinding">
+<!--				<Setter Property="Background"
+						Value="{Binding RelativeSource={RelativeSource Self},
+					 Path=(ItemsControl.AlternationIndex),
+					 Converter={StaticResource BackgroundConverter}}" />
+				<Setter Property="HorizontalContentAlignment" Value="Stretch"></Setter>-->
+			</Style>
+		</Grid.Resources>
+		<Grid.RowDefinitions>
+			<RowDefinition />
+			<RowDefinition />
+		</Grid.RowDefinitions>
+		<TextBlock Padding="5" Text="String Table(Name/Value)"
+			   FontFamily="Segoe UI"
+			   FontWeight="Bold"
+			   FontSize="12pt" />
+		<ListBox Name="resourceListView"
+			  FontFamily="Segoe UI"
+			  FontSize="9pt"
+			  Foreground="Black"
+				  Grid.Row="1"
+				  AlternationCount="2">
+			<ListBox.ItemTemplate>
+				<DataTemplate>
+					<Grid>
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition Width="*" />
+							<ColumnDefinition Width="*" />
+						</Grid.ColumnDefinitions>
+						<TextBlock Text="{Binding Key}" Grid.Column="0"/>
+						<TextBlock Text="{Binding Value}" Grid.Column="1"/>
+					</Grid>
+				</DataTemplate>
+			</ListBox.ItemTemplate>
+		</ListBox>
+	</Grid>
+</UserControl>
