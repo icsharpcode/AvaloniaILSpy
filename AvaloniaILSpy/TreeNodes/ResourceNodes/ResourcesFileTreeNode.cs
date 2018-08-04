@@ -151,7 +151,7 @@ namespace AvaloniaILSpy.TreeNodes
 				if (null != smartOutput) {
 					smartOutput.AddUIElement(
 						delegate {
-							return new ResourceStringTable(stringTableEntries);
+                            return new ResourceStringTable(stringTableEntries, MainWindow.Instance.mainPane);
 						}
 					);
 				}
@@ -163,7 +163,7 @@ namespace AvaloniaILSpy.TreeNodes
 				if (null != smartOutput) {
 					smartOutput.AddUIElement(
 						delegate {
-							return new ResourceObjectTable(otherEntries);
+                            return new ResourceObjectTable(otherEntries, MainWindow.Instance.mainPane);
 						}
 					);
 				}

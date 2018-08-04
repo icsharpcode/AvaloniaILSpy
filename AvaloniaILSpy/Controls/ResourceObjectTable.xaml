@@ -1,6 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<UserControl x:Class="AvaloniaILSpy.Controls.ResourceObjectTable"
-			 xmlns="https://github.com/avaloniaui"
+<UserControl xmlns="https://github.com/avaloniaui"
 			 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 <!--	<UserControl.CommandBindings>
 		<CommandBinding Command="ApplicationCommands.Copy"
@@ -8,32 +7,33 @@
 						CanExecute="CanExecuteCopy" />
 	</UserControl.CommandBindings>-->
 	<Grid Margin="5,0,0,0">
+        <!--
 		<Grid.Resources>
-<!--			<AlternationConverter x:Key="BackgroundConverter">
+			<AlternationConverter x:Key="BackgroundConverter">
 				<SolidColorBrush Color="White"></SolidColorBrush>
 				<SolidColorBrush Color="Beige"></SolidColorBrush>
-			</AlternationConverter>-->
+			</AlternationConverter>
 			<Style Selector="ListBoxItem.alternatingWithBinding">
-<!--				<Setter Property="Background"
+				<Setter Property="Background"
 						Value="{Binding RelativeSource={RelativeSource Self},
 					 Path=(ItemsControl.AlternationIndex),
-					 Converter={StaticResource BackgroundConverter}}" />-->
+					 Converter={StaticResource BackgroundConverter}}" />
 			</Style>
 		</Grid.Resources>
+        -->
 		<Grid.RowDefinitions>
 			<RowDefinition />
 			<RowDefinition />
 		</Grid.RowDefinitions>
-		<TextBlock Padding="5" Text="Other Resources (Name/ Value/ Type)"
+		<TextBlock Margin="5" Text="Other Resources (Name/ Value/ Type)"
 			   FontFamily="Segoe UI"
 			   FontWeight="Bold"
-			   FontSize="12pt" />
+			   FontSize="12" />
 		<ListBox Name="resourceListView"
 				  FontFamily="Segoe UI"
-				  FontSize="9pt"
+				  FontSize="9"
 				  Foreground="Black"
-				  Grid.Row="1"
-				  AlternationCount="2">
+				  Grid.Row="1">
 
 			<ListBox.ItemTemplate>
 				<DataTemplate>

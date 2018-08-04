@@ -24,6 +24,7 @@ using System.Windows.Input;
 using AvaloniaEdit;
 using System;
 using Avalonia.Markup.Xaml;
+using Avalonia.Controls.Presenters;
 
 namespace AvaloniaILSpy.Controls
 {
@@ -34,10 +35,13 @@ namespace AvaloniaILSpy.Controls
 	{
 		internal ListBox resourceListView;
 
-		public ResourceObjectTable(IEnumerable resources)
-		{
-			InitializeComponent();
-			// set size to fit decompiler window
+        public ResourceObjectTable(IEnumerable resources, ContentPresenter contentPresenter)
+        {
+            InitializeComponent();
+            // set size to fit decompiler window
+            contentPresenter.PropertyChanged += ContentPresenter_PropertyChanged;
+            Width = contentPresenter.DesiredSize.Width - 45;
+            MaxHeight = contentPresenter.DesiredSize.Height;
 			resourceListView.Items = resources;
 		}
 
@@ -45,13 +49,18 @@ namespace AvaloniaILSpy.Controls
 		{
 			AvaloniaXamlLoader.Load(this);
 			resourceListView = this.FindControl<ListBox>("resourceListView");
-		}
+        }
 
-		protected override Size MeasureOverride(Size availableSize)
-		{
-			return new Size(availableSize.Width - 45, availableSize.Height);
-		}
-		
+        void ContentPresenter_PropertyChanged(object sender, AvaloniaPropertyChangedEventArgs e)
+        {
+            if (e.Property == ContentPresenter.DesiredSizeProperty)
+            {
+                var desired = (Size)e.NewValue;
+                Width = desired.Width - 45;
+                MaxHeight = desired.Height;
+            }
+        }
+
 		void ExecuteCopy(object sender, ExecutedRoutedEventArgs args)
 		{
 			StringBuilder sb = new StringBuilder();
