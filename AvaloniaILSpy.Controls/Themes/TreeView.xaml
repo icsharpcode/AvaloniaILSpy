@@ -143,19 +143,19 @@
         </Setter>
     </Style>
 
-    <Style Selector="local|SharpTreeViewItem[IsSelected=true] /template/ ContentPresenter local|SharpTreeNodeView#nodeView" > 
+    <Style Selector="local|SharpTreeViewItem[IsSelected=true] /template/ local|SharpTreeNodeView#nodeView" > 
 	    <Setter
 	            Property="TextBackground"
-	            Value="{DynamicResource {x:Static avalonia:SystemColors.HighlightBrush}}" />
+	            Value="{x:Static avalonia:SystemColors.HighlightBrush}" />
 	    <Setter
 	            Property="Foreground"
-	            Value="{DynamicResource {x:Static avalonia:SystemColors.HighlightTextBrush}}" />
+	            Value="{x:Static avalonia:SystemColors.HighlightTextBrush}" />
 	</Style>
 
-    <Style Selector="local|SharpTreeViewItem[IsEnabled=false] /template/ ContentPresenter local|SharpTreeNodeView#nodeView" >
+    <Style Selector="local|SharpTreeViewItem[IsEnabled=false] /template/ local|SharpTreeNodeView#nodeView" >
         <Setter 
                 Property="Foreground"
-                Value="{DynamicResource {x:Static avalonia:SystemColors.GrayTextBrush}}" />
+                Value="{x:Static avalonia:SystemColors.GrayTextBrush}" />
 	</Style>
 
     <Style Selector="local|SharpTreeNodeView">
