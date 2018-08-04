@@ -15,7 +15,8 @@ namespace AvaloniaILSpy
 	{
 		public new bool DialogResult { get; private set; } = false;
 
-		internal Button okButton;
+        internal Button okButton;
+        internal Button cancelButton;
 		internal TextBox ListName;
 
 		public CreateListDialog()
@@ -29,8 +30,15 @@ namespace AvaloniaILSpy
 		private void InitializeComponent()
 		{
 			AvaloniaXamlLoader.Load(this);
-			okButton = this.FindControl<Button>("okButton");
+            okButton = this.FindControl<Button>("okButton");
+            cancelButton = this.FindControl<Button>("cancelButton");
 			ListName = this.FindControl<TextBox>("ListName");
+
+            // Work around for TextChanged event
+            //ListName.TextInput += TextBox_TextChanged;
+            ListName.GetObservable(TextBox.TextProperty).Subscribe(text => TextBox_TextChanged(this, new TextInputEventArgs{Text = text}));
+            okButton.Click += OKButton_Click;
+            cancelButton.Click += CancelButton_Click;
 		}
 
 		private void TextBox_TextChanged(object sender, TextInputEventArgs e)
@@ -45,7 +53,12 @@ namespace AvaloniaILSpy
 				this.DialogResult = true;
 				this.Close(true);
 			}
-		}
+        }
+
+        void CancelButton_Click(object sender, RoutedEventArgs e)
+        {
+            Close(false);
+        }
 
 		protected override void OnPointerPressed(PointerPressedEventArgs e)
 		{

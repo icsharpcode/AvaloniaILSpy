@@ -73,7 +73,9 @@ namespace AvaloniaILSpy
 			okButton = this.FindControl<Button>("okButton");
             cancelButton = this.FindControl<Button>("cancelButton");
 
-            filterTextBox.TextInput += FilterTextBox_TextChanged;
+            // Work around for TextChanged event
+            //filterTextBox.TextInput += FilterTextBox_TextChanged;
+            filterTextBox.GetObservable(TextBox.TextProperty).Subscribe(text => FilterTextBox_TextChanged(this, new TextInputEventArgs { Text = text }));
             listView.SelectionChanged += ListView_SelectionChanged;
             okButton.Click += OKButton_Click;
             cancelButton.Click += CancelButton_Click;

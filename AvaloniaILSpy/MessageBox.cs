@@ -45,7 +45,7 @@ namespace AvaloniaILSpy
 			//win.Topmost = true;
 			//return await win.ShowDialog<MessageBoxResult>();
 			Debug.WriteLine(caption);
-			return Task.FromResult(MessageBoxResult.OK);
+            return Task.FromResult(defaultResult);
 		}
 	}
 
