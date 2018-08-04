@@ -117,8 +117,8 @@ namespace AvaloniaILSpy.TreeNodes
 				dlg.InitialFileName = DecompilerTextView.CleanUpName(er.Name);
 				dlg.Filters = new List<FileDialogFilter>()
 				{
-					new FileDialogFilter(){ Name="Resources file(*.resources)", Extensions = { ".resources" } },
-					new FileDialogFilter(){ Name="Resource XML file(*.resx)", Extensions = { ".resx" } }
+					new FileDialogFilter(){ Name="Resources file(*.resources)", Extensions = { "resources" } },
+					new FileDialogFilter(){ Name="Resource XML file(*.resx)", Extensions = { "resx" } }
 				};
 				var filename = await dlg.ShowAsync(App.Current.MainWindow);
 				if (!string.IsNullOrEmpty(filename)) {

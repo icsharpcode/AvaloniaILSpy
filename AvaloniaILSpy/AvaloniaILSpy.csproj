@@ -39,6 +39,7 @@
     <PackageReference Include="Microsoft.VisualStudio.Composition" Version="15.8.98" />
     <PackageReference Include="System.IO.Compression" Version="4.3.0" />
     <PackageReference Include="Avalonia.Desktop" Version="0.6.2-build5873-beta" />
+    <PackageReference Include="NuGet.Client" Version="4.2.0" />
   </ItemGroup>
 
   <ItemGroup>

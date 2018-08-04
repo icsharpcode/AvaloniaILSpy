@@ -17,17 +17,36 @@
 // DEALINGS IN THE SOFTWARE.
 
 
+using System.Collections.Generic;
+using Avalonia.Controls;
+using NuGet.Common;
+
 namespace AvaloniaILSpy
 {
-	[ExportMainMenuCommand(Menu = "_File", Header = "Open from _GAC...", MenuIcon = "Images/AssemblyListGAC.png", MenuCategory = "Open", MenuOrder = 1)]
-	sealed class OpenFromGacCommand : SimpleCommand
+	[ExportMainMenuCommand(Menu = "_File", Header = "Open from NuGet Packages...", MenuIcon = "Images/AssemblyListGAC.png", MenuCategory = "Open", MenuOrder = 1)]
+	sealed class OpenFromNuGetCommand : SimpleCommand
 	{
 		public override async void Execute(object parameter)
 		{
-			OpenFromGacDialog dlg = new OpenFromGacDialog();
-			dlg.Owner = MainWindow.Instance;
-			if (await dlg.ShowDialog<bool>() == true)
-				MainWindow.Instance.OpenFiles(dlg.SelectedFileNames);
+            OpenFileDialog dlg = new OpenFileDialog();
+            dlg.InitialDirectory = NuGetEnvironment.GetFolderPath(NuGetFolderPath.NuGetHome);
+            dlg.Filters = new List<FileDialogFilter>()
+            {
+                new FileDialogFilter() { Name = "Nuget Packages (*.nupkg)", Extensions = { "nupkg" }},
+                new FileDialogFilter() { Name = ".NET assemblies", Extensions = {"dll","exe", "winmd" }},
+                new FileDialogFilter() { Name = "All files", Extensions = { "*" }},
+            };
+            dlg.AllowMultiple = true;
+            var filenames = await dlg.ShowAsync();
+            if (filenames != null && filenames.Length > 0)
+            {
+                MainWindow.Instance.OpenFiles(filenames);
+            }
+
+   //         var dlg = new OpenFromNuGetDialog();
+			//dlg.Owner = MainWindow.Instance;
+			//if (await dlg.ShowDialog<bool>() == true)
+				//OpenFiles(dlg.SelectedFileNames);
 		}
 
 

@@ -1,15 +1,13 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Window
-	x:Class="AvaloniaILSpy.OpenFromGacDialog" xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:controls="clr-namespace:AvaloniaILSpy.Controls"
-	Title="Open From GAC"
-	Style="{DynamicResource DialogWindow}"
+    xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:controls="clr-namespace:AvaloniaILSpy.Controls"
+	Title="Open From NuGet Packages"
+	Classes="DialogWindow"
 	WindowStartupLocation="CenterOwner"
-	ResizeMode="CanResizeWithGrip"
 	MinWidth="200"
 	MinHeight="150"
 	Height="350"
-	Width="750"
-	FocusManager.FocusedElement="{Binding ElementName=filterTextBox}">
+	Width="750">
 	<Grid
 		Margin="12,8">
 		<Grid.RowDefinitions>
@@ -21,10 +19,10 @@
 				Height="Auto" />
 		</Grid.RowDefinitions>
 		<DockPanel>
-			<TextBlock Padding="5" DockPanel.Dock="Left">_Search:</TextBlock>
-			<TextBox Name="filterTextBox" TextChanged="FilterTextBox_TextChanged" />
+			<TextBlock Margin="5" DockPanel.Dock="Left">Search:</TextBlock>
+			<TextBox Name="filterTextBox" />
 		</DockPanel>
-		<ListBox Name="listView" Grid.Row="1" Margin="0, 8" SelectionChanged="ListView_SelectionChanged">
+		<ListBox Name="listView" Grid.Row="1" Margin="0, 8">
 			<ListBox.ItemTemplate>
 				<DataTemplate>
 					<StackPanel Orientation="Horizontal">
@@ -38,9 +36,9 @@
 			</ListBox.ItemTemplate>
 		</ListBox>
 		<StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right">
-			<Button IsDefault="True" Margin="2,0" IsEnabled="False" Name="okButton" Click="OKButton_Click">_Open</Button>
-			<Button IsCancel="True" Margin="2,0">Cancel</Button>
+			<Button IsDefault="True" Margin="2,0" IsEnabled="False" Name="okButton">Open</Button>
+			<Button Margin="2,0" Name="cancelButton">Cancel</Button>
 		</StackPanel>
-		<ProgressBar Grid.Row="1" Height="10" HorizontalAlignment="Stretch" Name="gacReadingProgressBar" VerticalAlignment="Bottom" Visibility="Hidden" />
+		<ProgressBar Grid.Row="1" Height="10" HorizontalAlignment="Stretch" Name="gacReadingProgressBar" VerticalAlignment="Bottom" IsVisible="false" />
 	</Grid>
 </Window>

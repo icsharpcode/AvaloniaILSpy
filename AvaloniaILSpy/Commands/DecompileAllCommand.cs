@@ -24,6 +24,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using ICSharpCode.Decompiler;
 using AvaloniaILSpy.TextView;
+using System.IO;
 
 namespace AvaloniaILSpy
 {
@@ -32,18 +33,25 @@ namespace AvaloniaILSpy
 	{
 		public override bool CanExecute(object parameter)
 		{
-			return System.IO.Directory.Exists("c:\\temp\\decompiled");
+            //TODO: add conditions
+            return true;
 		}
 
 		public override void Execute(object parameter)
 		{
+            var tempFilesPath = Path.Combine(Path.GetTempPath(), "decompiled");
+            if (!Directory.Exists(tempFilesPath))
+            {
+                Directory.CreateDirectory(tempFilesPath);
+            }
+            Debug.WriteLine($"Decomile files output to {tempFilesPath}");
 			MainWindow.Instance.TextView.RunWithCancellation(ct => Task<AvaloniaEditTextOutput>.Factory.StartNew(() => {
 				AvaloniaEditTextOutput output = new AvaloniaEditTextOutput();
 				Parallel.ForEach(MainWindow.Instance.CurrentAssemblyList.GetAssemblies(), new ParallelOptions { MaxDegreeOfParallelism = Environment.ProcessorCount, CancellationToken = ct }, delegate(LoadedAssembly asm) {
 					if (!asm.HasLoadError) {
 						Stopwatch w = Stopwatch.StartNew();
 						Exception exception = null;
-						using (var writer = new System.IO.StreamWriter("c:\\temp\\decompiled\\" + asm.ShortName + ".cs")) {
+                        using (var writer = new StreamWriter(Path.Combine(tempFilesPath, asm.ShortName + ".cs"))) {
 							try {
 								new CSharpLanguage().DecompileAssembly(asm, new PlainTextOutput(writer), new DecompilationOptions() { FullDecompilation = true, CancellationToken = ct });
 							}

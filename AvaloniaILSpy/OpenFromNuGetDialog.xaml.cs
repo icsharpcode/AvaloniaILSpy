@@ -36,9 +36,9 @@ using Mono.Cecil;
 namespace AvaloniaILSpy
 {
 	/// <summary>
-	/// Interaction logic for OpenFromGacDialog.xaml
+    /// Interaction logic for OpenFromNuGetDialog.xaml
 	/// </summary>
-	public partial class OpenFromGacDialog : DialogWindow
+	public partial class OpenFromNuGetDialog : DialogWindow
 	{
 		ObservableCollection<GacEntry> gacEntries = new ObservableCollection<GacEntry>();
 		ObservableCollection<GacEntry> filteredEntries = new ObservableCollection<GacEntry>();
@@ -48,9 +48,10 @@ namespace AvaloniaILSpy
 		internal ListBox listView;
 		internal ProgressBar gacReadingProgressBar;
 		internal TextBox filterTextBox;
-		internal Button okButton;
+        internal Button okButton;
+        internal Button cancelButton;
 
-		public OpenFromGacDialog()
+        public OpenFromNuGetDialog()
 		{
 			InitializeComponent();
 #if DEBUG
@@ -70,6 +71,12 @@ namespace AvaloniaILSpy
 			gacReadingProgressBar = this.FindControl<ProgressBar>("gacReadingProgressBar");
 			filterTextBox = this.FindControl<TextBox>("filterTextBox");
 			okButton = this.FindControl<Button>("okButton");
+            cancelButton = this.FindControl<Button>("cancelButton");
+
+            filterTextBox.TextInput += FilterTextBox_TextChanged;
+            listView.SelectionChanged += ListView_SelectionChanged;
+            okButton.Click += OKButton_Click;
+            cancelButton.Click += CancelButton_Click;
 		}
 
 		protected override bool HandleClosing()
@@ -189,12 +196,17 @@ namespace AvaloniaILSpy
 		void ListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
 		{
 			okButton.IsEnabled = listView.SelectedItems.Count > 0;
-		}
+        }
 
-		void OKButton_Click(object sender, RoutedEventArgs e)
-		{
-			Close(true);
-		}
+        void OKButton_Click(object sender, RoutedEventArgs e)
+        {
+            Close(true);
+        }
+
+        void CancelButton_Click(object sender, RoutedEventArgs e)
+        {
+            Close(false);
+        }
 
 		public string[] SelectedFileNames {
 			get {

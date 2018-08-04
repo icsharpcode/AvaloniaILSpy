@@ -716,7 +716,7 @@ namespace AvaloniaILSpy
 			dlg.Filters = new List<FileDialogFilter>()
 			{
 				new FileDialogFilter() { Name = ".NET assemblies", Extensions = {"dll","exe", "winmd" }},
-				new FileDialogFilter() { Name = "Nuget Packages (*.nupkg)", Extensions = { ".nupkg" }},
+				new FileDialogFilter() { Name = "Nuget Packages (*.nupkg)", Extensions = { "nupkg" }},
 				new FileDialogFilter() { Name = "All files", Extensions = { "*" }},
 			};
 			dlg.AllowMultiple = true;
