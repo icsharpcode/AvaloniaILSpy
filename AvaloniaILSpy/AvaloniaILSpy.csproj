@@ -3,7 +3,9 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFrameworks>netcoreapp2.0</TargetFrameworks>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+    
+    <!-- <TieredCompilation>true</TieredCompilation> -->
 
     <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
 

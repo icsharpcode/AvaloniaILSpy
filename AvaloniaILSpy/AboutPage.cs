@@ -51,7 +51,7 @@ namespace AvaloniaILSpy
 			Display(decompilerTextView);
 		}
 		
-		static readonly Uri UpdateUrl = new Uri("https://ilspy.net/updates.xml");
+        static readonly Uri UpdateUrl = new Uri("https://github.com/jeffreye/AvaloniaILSpy/raw/master/updates.xml");
 		const string band = "stable";
 		
 		static AvailableVersionInfo latestAvailableVersion;
@@ -182,32 +182,40 @@ namespace AvaloniaILSpy
 		static Task<AvailableVersionInfo> GetLatestVersionAsync()
 		{
 			var tcs = new TaskCompletionSource<AvailableVersionInfo>();
-			new Action(() => {
-				WebClient wc = new WebClient();
-				IWebProxy systemWebProxy = WebRequest.GetSystemWebProxy();
-				systemWebProxy.Credentials = CredentialCache.DefaultCredentials;
-				wc.Proxy = systemWebProxy;
-				wc.DownloadDataCompleted += delegate(object sender, DownloadDataCompletedEventArgs e) {
-					if (e.Error != null) {
-						tcs.SetException(e.Error);
-					} else {
-						try {
-							XDocument doc = XDocument.Load(new MemoryStream(e.Result));
-							var bands = doc.Root.Elements("band");
-							var currentBand = bands.FirstOrDefault(b => (string)b.Attribute("id") == band) ?? bands.First();
-							Version version = new Version((string)currentBand.Element("latestVersion"));
-							string url = (string)currentBand.Element("downloadUrl");
-							if (!(url.StartsWith("http://", StringComparison.Ordinal) || url.StartsWith("https://", StringComparison.Ordinal)))
-								url = null; // don't accept non-urls
-							latestAvailableVersion = new AvailableVersionInfo { Version = version, DownloadUrl = url };
-							tcs.SetResult(latestAvailableVersion);
-						} catch (Exception ex) {
-							tcs.SetException(ex);
-						}
-					}
-				};
-				wc.DownloadDataAsync(UpdateUrl);
-			}).BeginInvoke(null, null);
+            Task.Run(() =>
+            {
+                WebClient wc = new WebClient();
+                IWebProxy systemWebProxy = WebRequest.GetSystemWebProxy();
+                systemWebProxy.Credentials = CredentialCache.DefaultCredentials;
+                wc.Proxy = systemWebProxy;
+                wc.DownloadDataCompleted += delegate (object sender, DownloadDataCompletedEventArgs e)
+                {
+                    if (e.Error != null)
+                    {
+                        tcs.SetException(e.Error);
+                    }
+                    else
+                    {
+                        try
+                        {
+                            XDocument doc = XDocument.Load(new MemoryStream(e.Result));
+                            var bands = doc.Root.Elements("band");
+                            var currentBand = bands.FirstOrDefault(b => (string)b.Attribute("id") == band) ?? bands.First();
+                            Version version = new Version((string)currentBand.Element("latestVersion"));
+                            string url = (string)currentBand.Element("downloadUrl");
+                            if (!(url.StartsWith("http://", StringComparison.Ordinal) || url.StartsWith("https://", StringComparison.Ordinal)))
+                                url = null; // don't accept non-urls
+                            latestAvailableVersion = new AvailableVersionInfo { Version = version, DownloadUrl = url };
+                            tcs.SetResult(latestAvailableVersion);
+                        }
+                        catch (Exception ex)
+                        {
+                            tcs.SetException(ex);
+                        }
+                    }
+                };
+                wc.DownloadDataAsync(UpdateUrl);
+            });
 			return tcs.Task;
 		}
 		

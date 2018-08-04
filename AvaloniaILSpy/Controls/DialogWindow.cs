@@ -6,22 +6,17 @@ using System.Text;
 using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Styling;
 
 namespace Avalonia.Controls
 {
-    public class DialogWindow: Window
+    public class DialogWindow: Window, IStyleable
 	{
-		static System.Reflection.FieldInfo _dialogResultField = typeof(Window).GetField("_dialogResult", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic);
+        static readonly System.Reflection.FieldInfo _dialogResultField = typeof(Window).GetField("_dialogResult", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic);
 
 		public object DialogResult { get { return _dialogResultField.GetValue(this); } }
 
-		public DialogWindow()
-		{
-			Topmost = true;
-			HasSystemDecorations = false; // issue in mac when close
-		}
-
-		public new Task<TResult> ShowDialog<TResult>()
+        public new Task<TResult> ShowDialog<TResult>()
 		{
 			var affectedWindows = Application.Current.Windows.Where(w => w.IsEnabled && w != this).ToList();
 			var activated = affectedWindows.Where(w => w.IsActive).FirstOrDefault();
@@ -47,5 +42,7 @@ namespace Avalonia.Controls
 
 			return result.Task;
 		}
-	}
+
+        Type IStyleable.StyleKey { get; } = typeof(Window);
+    }
 }

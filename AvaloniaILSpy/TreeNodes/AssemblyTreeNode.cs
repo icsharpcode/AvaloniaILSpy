@@ -294,11 +294,11 @@ namespace AvaloniaILSpy.TreeNodes
 			if (string.IsNullOrEmpty(language.ProjectFileExtension))
 				return false;
 			SaveFileDialog dlg = new SaveFileDialog();
-			dlg.InitialFileName = DecompilerTextView.CleanUpName(assembly.ShortName) + language.ProjectFileExtension;
+            dlg.InitialFileName = DecompilerTextView.CleanUpName(assembly.ShortName);
 			dlg.Filters = new List<FileDialogFilter>() 
 			{
-				new FileDialogFilter() { Name = language.Name + " project", Extensions = { language.ProjectFileExtension } },
-				new FileDialogFilter() { Name = language.Name + "  single file", Extensions = { language.FileExtension }},
+                new FileDialogFilter() { Name = language.Name + " project", Extensions = { language.ProjectFileExtension.TrimStart('.') } },
+                new FileDialogFilter() { Name = language.Name + "  single file", Extensions = { language.FileExtension.TrimStart('.') }},
 				new FileDialogFilter() { Name = "All files", Extensions = { "*" }}
 			};
 

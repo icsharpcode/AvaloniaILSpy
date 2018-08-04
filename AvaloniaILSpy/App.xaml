@@ -10,6 +10,9 @@
 		<Style Selector="Window.DialogWindow" >
 			<Setter Property="ShowInTaskbar" Value="False"/>
 			<Setter Property="UseLayoutRounding" Value="True"/>
+            <!-- issue in mac when using system close button-->
+            <Setter Property="HasSystemDecorations" Value="False"/>
+            <Setter Property="Topmost" Value="True"/>
 		</Style>
 		
 		<Style Selector="Button" >

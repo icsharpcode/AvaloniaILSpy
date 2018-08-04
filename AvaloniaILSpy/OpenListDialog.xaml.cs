@@ -68,6 +68,7 @@ namespace AvaloniaILSpy
             listView_Loaded(this, EventArgs.Empty);
             listView.DoubleTapped += listView_MouseDoubleClick;
             okButton.Click += OKButton_Click;
+            cancelButton.Click += CancelButton_Click;
             deleteButton.Click += DeleteButton_Click;
             createButton.Click += CreateButton_Click;
             resetButton.Click += ResetButton_Click;
