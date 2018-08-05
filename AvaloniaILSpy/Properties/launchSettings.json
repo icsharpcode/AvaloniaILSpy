@@ -1,9 +1,7 @@
 {
   "profiles": {
-    "ILSpy": {
-      "commandName": "Executable",
-      "executablePath": ".\\AvaloniaILSpy.dll",
-      "commandLineArgs": "/separate"
+    "AvaloniaILSpy": {
+      "commandName": "Project"
     }
   }
 }

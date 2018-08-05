@@ -3,9 +3,13 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <TargetFrameworks>netcoreapp2.1</TargetFrameworks>
     
-    <!-- <TieredCompilation>true</TieredCompilation> -->
+    <TieredCompilations>true</TieredCompilations>
+    <TargetLatestRuntimePatch>true</TargetLatestRuntimePatch>
+    <PreserveCompilationContext>true</PreserveCompilationContext>
+    <RuntimeIdentifiers>win7-x64;ubuntu.14.04-x64;debian.8-x64;osx.10.12-x64</RuntimeIdentifiers>
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
 
     <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
 
@@ -49,9 +53,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Remove="Fusion.cs" />
-  </ItemGroup>
-  <ItemGroup>
     <Compile Update="**\*.xaml.cs">
       <DependentUpon>%(Filename)</DependentUpon>
       <SubType>Code</SubType>
@@ -59,28 +60,6 @@
     <EmbeddedResource Include="**\*.xaml">
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="..\doc\copyright.txt">
-      <Link>copyright.txt</Link>
-    </EmbeddedResource>
-    <EmbeddedResource Include="..\doc\ILAst.txt">
-      <Link>ILAst.txt</Link>
-    </EmbeddedResource>
-    <EmbeddedResource Include="..\doc\IntPtr.txt">
-      <Link>IntPtr.txt</Link>
-    </EmbeddedResource>
-    <EmbeddedResource Include="..\doc\LGPL.txt">
-      <Link>LGPL.txt</Link>
-    </EmbeddedResource>
-    <EmbeddedResource Include="..\doc\license.txt">
-      <Link>license.txt</Link>
-    </EmbeddedResource>
-    <EmbeddedResource Include="..\doc\MS-PL.txt">
-      <Link>MS-PL.txt</Link>
-    </EmbeddedResource>
-    <EmbeddedResource Include="..\doc\Resources.txt">
-      <Link>Resources.txt</Link>
-    </EmbeddedResource>
-    <EmbeddedResource Include="README.txt" />
   </ItemGroup>
 
 
@@ -89,69 +68,19 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="Images\Class.png" />
-    <Resource Include="Images\StaticClass.png" />
-    <Resource Include="Images\Delegate.png" />
-    <Resource Include="Images\Enum.png" />
-    <Resource Include="Images\Field.png" />
-    <Resource Include="Images\Interface.png" />
-    <Resource Include="Images\Literal.png" />
-    <Resource Include="Images\Method.png" />
-    <Resource Include="Images\NameSpace.png" />
-    <Resource Include="Images\Open.png" />
-    <Resource Include="Images\Assembly.png" />
-    <Resource Include="Images\Struct.png" />
-    <Resource Include="Images\ReferenceFolder.Closed.png" />
-    <Resource Include="Images\ReferenceFolder.Open.png" />
-    <Resource Include="Images\Event.png" />
-    <Resource Include="Images\ExtensionMethod.png" />
-    <Resource Include="Images\Indexer.png" />
-    <Resource Include="Images\Operator.png" />
-    <Resource Include="Images\Property.png" />
-    <Resource Include="Images\Find.png" />
-    <Resource Include="Images\Library.png" />
-    <Resource Include="Images\SubTypes.png" />
-    <Resource Include="Images\SuperTypes.png" />
-    <Resource Include="Images\Resource.png" />
-    <Resource Include="Images\Folder.Closed.png" />
-    <Resource Include="Images\Folder.Open.png" />
-    <Resource Include="Images\ResourceImage.png" />
-    <Resource Include="Images\ResourceResourcesFile.png" />
-    <Resource Include="Images\Back.png" />
-    <Resource Include="Images\Forward.png" />
-    <Resource Include="Images\PrivateInternal.png" />
-    <Resource Include="Images\Refresh.png" />
-    <Resource Include="Images\Constructor.png" />
-    <Resource Include="Images\CollapseAll.png" />
-    <Resource Include="Images\EnumValue.png" />
-    <Resource Include="Images\FieldReadOnly.png" />
-    <Resource Include="Images\OverlayInternal.png" />
-    <Resource Include="Images\OverlayPrivate.png" />
-    <Resource Include="Images\OverlayPrivateProtected.png" />
-    <Resource Include="Images\OverlayProtected.png" />
-    <Resource Include="Images\OverlayProtectedInternal.png" />
-    <Resource Include="Images\OverlayCompilerControlled.png" />
-    <Resource Include="Images\OverlayStatic.png" />
-    <Resource Include="Images\VirtualMethod.png" />
-    <Resource Include="Images\PInvokeMethod.png" />
-	<Resource Include="Images\Warning.png" />
+    <Content Include="Images\*.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="Images\ResourceXml.png" />
-    <Resource Include="Images\ResourceXsd.png" />
-    <Resource Include="Images\ResourceXslt.png" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Resource Include="Images\Sort.png" />
-    <Resource Include="Images\SearchMsdn.png" />
-    <Resource Include="Images\Copy.png" />
+    <EmbeddedResource Include="README.txt" />
+    <EmbeddedResource Include="..\doc\*.txt" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\AvaloniaILSpy.Controls\AvaloniaILSpy.Controls.csproj" />
     <ProjectReference Include="..\AvaloniaEdit\src\AvaloniaEdit\AvaloniaEdit.csproj" />
   </ItemGroup>
-
+  
 </Project>
