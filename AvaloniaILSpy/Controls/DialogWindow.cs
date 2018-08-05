@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Input;
 using Avalonia.Styling;
 
 namespace Avalonia.Controls
@@ -15,6 +16,15 @@ namespace Avalonia.Controls
         static readonly System.Reflection.FieldInfo _dialogResultField = typeof(Window).GetField("_dialogResult", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic);
 
 		public object DialogResult { get { return _dialogResultField.GetValue(this); } }
+
+        protected override void OnKeyDown(KeyEventArgs e)
+        {
+            base.OnKeyDown(e);
+            if (e.Key == Key.Escape && e.Modifiers == InputModifiers.None)
+            {
+                Close();
+            }
+        }
 
         public new Task<TResult> ShowDialog<TResult>()
 		{

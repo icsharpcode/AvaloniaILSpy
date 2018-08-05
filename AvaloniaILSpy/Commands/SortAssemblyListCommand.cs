@@ -45,7 +45,10 @@ namespace AvaloniaILSpy
 		public override void Execute(object parameter)
 		{
 			using (MainWindow.Instance.treeView.LockUpdates())
-				CollapseChildren(MainWindow.Instance.treeView.Root);
+            {
+                MainWindow.Instance.treeView.SelectedItems.Clear();
+                CollapseChildren(MainWindow.Instance.treeView.Root);
+            }
 
 			void CollapseChildren(SharpTreeNode node)
 			{

@@ -9,7 +9,6 @@ using Avalonia.Media.Imaging;
 
 namespace Avalonia
 {
-	//TODO: pull out values
     public static class SystemParameters
 	{
 		public const double MinimumHorizontalDragDistance = 2.0;

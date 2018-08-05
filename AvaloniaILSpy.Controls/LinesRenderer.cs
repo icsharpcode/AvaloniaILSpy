@@ -13,8 +13,6 @@ namespace AvaloniaILSpy.Controls
 		static LinesRenderer()
 		{
 			pen = new Pen(Brushes.LightGray, 1);
-			//TODO:????
-			//pen.Freeze();
 		}
 
 		static Pen pen;

@@ -256,6 +256,10 @@ namespace AvaloniaILSpy.Controls
 		{
 			if (doNotScrollOnExpanding)
 				return;
+
+            // TODO: make sure node is materialized
+            return;
+
 			SharpTreeNode lastVisibleChild = node;
 			while (true) {
 				SharpTreeNode tmp = lastVisibleChild.Children.LastOrDefault(c => c.IsVisible);
@@ -755,7 +759,7 @@ namespace AvaloniaILSpy.Controls
 		{
 			this.SelectedItems.Clear();
 			foreach (var item in nodes) {
-				this.SelectedItems.Add(nodes);
+				this.SelectedItems.Add(item);
 			}
 		}
 

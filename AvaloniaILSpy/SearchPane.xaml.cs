@@ -34,6 +34,7 @@ using Avalonia.Input.Navigation;
 using AvaloniaEdit;
 using Avalonia.Markup.Xaml;
 using AvaloniaILSpy.Controls;
+using System.Threading.Tasks;
 
 namespace AvaloniaILSpy
 {
@@ -153,7 +154,7 @@ namespace AvaloniaILSpy
 				MainWindow mainWindow = MainWindow.Instance;
 				currentSearch = new RunningSearch(mainWindow.CurrentAssemblyList.GetAssemblies(), searchTerm, (SearchMode)searchModeComboBox.SelectedIndex, mainWindow.CurrentLanguage);
 				listBox.Items = currentSearch.Results;
-				new Thread(currentSearch.Run).Start();
+                Task.Run(new Action(currentSearch.Run));
 			}
 		}
 		
