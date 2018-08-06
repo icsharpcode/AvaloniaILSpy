@@ -3,7 +3,7 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFrameworks>netcoreapp2.1</TargetFrameworks>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
     
     <TieredCompilations>true</TieredCompilations>
     <TargetLatestRuntimePatch>true</TargetLatestRuntimePatch>

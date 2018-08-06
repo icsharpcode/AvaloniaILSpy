@@ -836,7 +836,7 @@ namespace AvaloniaILSpy.TextView
                         throw ex;
 #else
 					} catch (Exception ex) {
-						tcs.SetException(ex);
+                        throw ex;
 #endif
                     }
                 });
