@@ -2,7 +2,8 @@ var target = Argument("target", "Default");
 var platform = Argument("platform", "AnyCPU");
 var configuration = Argument("configuration", "Release");
 
-var editbin = @"C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Tools\MSVC\14.10.25017\bin\HostX86\x86\editbin.exe";
+var editbin86 = @"C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Tools\MSVC\14.14.26428\bin\HostX64\x86\editbin.exe";
+var editbin64 = @"C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Tools\MSVC\14.14.26428\bin\HostX64\x64\editbin.exe";
 
 var artifactsDir = (DirectoryPath)Directory("./artifacts");
 var zipRootDir = artifactsDir.Combine("zips");
@@ -66,6 +67,8 @@ var netCoreProject = new {
         if (IsRunningOnWindows() && (runtime == "win7-x86" || runtime == "win7-x64"))
         {
             Information("Patching executable subsystem for: {0}, runtime: {1}", netCoreProject.Name, runtime);
+
+            var editbin = runtime == "win7-x86"? editbin86: editbin64;
             var targetExe = outputDir.CombineWithFilePath(netCoreProject.Name + ".exe");
             var exitCodeWithArgument = StartProcess(editbin, new ProcessSettings { 
                 Arguments = "/subsystem:windows " + targetExe.FullPath

@@ -5,7 +5,6 @@ before_build:
 
 build_script:
 - cmd: dotnet --info
-- cmd: dir "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Tools\MSVC\"
 - ps: .\build.ps1
 
 test: off
