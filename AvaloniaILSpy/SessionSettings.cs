@@ -136,7 +136,14 @@ namespace AvaloniaILSpy
 			} catch (FormatException) {
 				return defaultValue;
 			}
-		}
+        }
+
+        static Rect FromString(string s, Rect defaultValue)
+        {
+            if (s == null)
+                return defaultValue;
+            return Rect.Parse(s);
+        }
 		
 		static string ToString<T>(T obj)
 		{
