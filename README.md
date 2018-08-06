@@ -4,9 +4,14 @@ This is a port of [ILSpy](https://github.com/icsharpcode/ILSpy)
 
 ![](https://github.com/jeffreye/AvaloniaILSpy/raw/master/preview.png)
 
-## Requirements
-You may need to install libgdiplus
+# Bleeding-edge Builds
+| Version | Installers (for x 64) |
+|---------|------------|
+|**Windows**|[Download](https://ci.appveyor.com/api/projects/jeffreye/AvaloniaILSpy/artifacts/artifacts/zips/AvaloniaILSpy-win7-x64-Release.zip)|
+|**macOS**|[Download](https://ci.appveyor.com/api/projects/jeffreye/AvaloniaILSpy/artifacts/artifacts/zips/AvaloniaILSpy-osx.10.12-x64-Release.zip)|
+|**Ubuntu**|[Download](https://ci.appveyor.com/api/projects/jeffreye/AvaloniaILSpy/artifacts/artifacts/zips/AvaloniaILSpy-ubuntu.14.04-x64-Release.zip)|
+|**Debian**|[Download](https://ci.appveyor.com/api/projects/jeffreye/AvaloniaILSpy/artifacts/artifacts/zips/AvaloniaILSpy-debian.8-x64-Release.zip)|
 
-Unix: `sudo apt-get install libgdiplus`
-
-Macos: `brew install mono-libgdiplus`
+How to run on Linux/macOS: 
+- grant it the rights to execute `chmod a+x AvaloniaILSpy`
+- run  `./AvaloniaILSpy`

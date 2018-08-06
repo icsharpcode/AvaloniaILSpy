@@ -61,6 +61,7 @@ var netCoreProject = new {
             Framework = netCoreProject.Framework,
             Configuration = configuration,
             Runtime = runtime,
+            SelfContained = true,
             OutputDirectory = outputDir.FullPath
         });
 
@@ -69,11 +70,18 @@ var netCoreProject = new {
             Information("Patching executable subsystem for: {0}, runtime: {1}", netCoreProject.Name, runtime);
 
             var editbin = runtime == "win7-x86"? editbin86: editbin64;
-            var targetExe = outputDir.CombineWithFilePath(netCoreProject.Name + ".exe");
-            var exitCodeWithArgument = StartProcess(editbin, new ProcessSettings { 
-                Arguments = "/subsystem:windows " + targetExe.FullPath
-            });
-            Information("The editbin command exit code: {0}", exitCodeWithArgument);
+            if (FileExists(editbin))
+            {
+                var targetExe = outputDir.CombineWithFilePath(netCoreProject.Name + ".exe");
+                var exitCodeWithArgument = StartProcess(editbin, new ProcessSettings { 
+                    Arguments = "/subsystem:windows " + targetExe.FullPath
+                });
+                Information("The editbin command exit code: {0}", exitCodeWithArgument);
+            }
+            else
+            {
+                Information("editbin for {0}, runtime: {1} does not exist", netCoreProject.Name, runtime);
+            }
         }
     }
  });
