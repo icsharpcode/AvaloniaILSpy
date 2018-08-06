@@ -16,7 +16,7 @@ var netCoreApp = "AvaloniaILSpy";
 var buildDirs = 
     GetDirectories($"{netCoreAppsRoot}/**/bin/**") + 
     GetDirectories($"{netCoreAppsRoot}/**/obj/**") + 
-    GetDirectories($"{netCoreAppsRoot}/artifacts/**/zip/**");
+    GetDirectories($"{netCoreAppsRoot}/artifacts/**/zips/**");
 
 var netCoreProject = new {
         Path = $"{netCoreAppsRoot}/{netCoreApp}",
@@ -95,8 +95,7 @@ var netCoreProject = new {
     {
         var workingDir = artifactsDir.Combine(runtime);
         Information("Zipping {0} artifacts to {1}", runtime, zipRootDir);
-        Zip(workingDir.FullPath, zipRootDir.CombineWithFilePath(netCoreProject.Name + "-" + runtime + "-" + configuration + fileZipSuffix), 
-            GetFiles(workingDir.FullPath + "/*.*"));
+        Zip(workingDir.FullPath, zipRootDir.CombineWithFilePath(netCoreProject.Name + "-" + runtime + "-" + configuration + fileZipSuffix));
     }
  });
 
