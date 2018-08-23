@@ -19,8 +19,6 @@
     <EmbeddedResource Include="Themes\SearchBox.xaml">
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Themes\ClearSearch.png" />
-    <EmbeddedResource Include="Themes\Search.png" />
     <EmbeddedResource Include="Themes\TreeView.xaml" />
   </ItemGroup>
   <ItemGroup>

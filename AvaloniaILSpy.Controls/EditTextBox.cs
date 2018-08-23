@@ -6,29 +6,25 @@ using Avalonia.Input;
 using Avalonia;
 using Avalonia.Interactivity;
 using System;
+using Avalonia.Controls.Primitives;
 
 namespace AvaloniaILSpy.Controls
 {
 	class EditTextBox : TextBox
 	{
-		static EditTextBox()
-		{
-			//DefaultStyleKeyProperty.OverrideMetadata(typeof(EditTextBox),
-			//	new FrameworkPropertyMetadata(typeof(EditTextBox)));
-		}
-
-		public EditTextBox()
-		{
-			Initialized += delegate { Init(); };
-		}
-
 		public SharpTreeViewItem Item { get; set; }
 
 		public SharpTreeNode Node {
 			get { return Item.Node; }
 		}
 
-		void Init()
+        protected override void OnTemplateApplied(TemplateAppliedEventArgs e)
+        {
+            base.OnTemplateApplied(e);
+            Init();
+        }
+
+        void Init()
 		{
 			Text = Node.LoadEditText();
 			Focus();

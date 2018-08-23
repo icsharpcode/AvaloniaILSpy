@@ -24,32 +24,29 @@ using Avalonia.Threading;
 using Avalonia.Interactivity;
 using Avalonia.Input;
 using Avalonia.Data;
+using Avalonia.Media.Imaging;
+using System.ComponentModel;
+using Avalonia.Markup.Xaml.Converters;
+using Avalonia.Controls.Primitives;
 
 namespace AvaloniaILSpy.Controls
 {
 	public class SearchBox : TextBox
 	{
-		static SearchBox() {
-			//DefaultStyleKeyProperty.OverrideMetadata(
-			//	typeof(SearchBox),
-			//	new FrameworkPropertyMetadata(typeof(SearchBox)));
-		}
-
-		public SearchBox()
-		{
-			TemplateApplied += SearchBox_TemplateApplied;
-		}
-
 		#region Dependency properties
 
-		public static StyledProperty<string> WatermarkTextProperty = AvaloniaProperty.Register<SearchBox, string>("WatermarkText");
+        public static StyledProperty<Bitmap> SearchIconProperty = AvaloniaProperty.Register<SearchBox, Bitmap>(nameof(SearchIcon));
+
+        public static StyledProperty<Bitmap> ClearSearchIconProperty = AvaloniaProperty.Register<SearchBox, Bitmap>(nameof(ClearSearchIcon));
+
+		public static StyledProperty<string> WatermarkTextProperty = AvaloniaProperty.Register<SearchBox, string>(nameof(WatermarkText));
 		
-		public static StyledProperty<IBrush> WatermarkColorProperty = AvaloniaProperty.Register<SearchBox, IBrush>("WatermarkColor");
+		public static StyledProperty<IBrush> WatermarkColorProperty = AvaloniaProperty.Register<SearchBox, IBrush>(nameof(WatermarkColor));
 		
-		public static StyledProperty<bool> HasTextProperty = AvaloniaProperty.Register<SearchBox, bool>("HasText");
+		public static StyledProperty<bool> HasTextProperty = AvaloniaProperty.Register<SearchBox, bool>(nameof(HasText));
 		
 		public static readonly StyledProperty<TimeSpan> UpdateDelayProperty =
-			AvaloniaProperty.Register<SearchBox, TimeSpan>("UpdateDelay", TimeSpan.FromMilliseconds(200));
+			AvaloniaProperty.Register<SearchBox, TimeSpan>(nameof(UpdateDelay), TimeSpan.FromMilliseconds(200));
 		
 		#endregion
 		
@@ -68,12 +65,27 @@ namespace AvaloniaILSpy.Controls
 		public bool HasText {
 			get { return (bool)GetValue(HasTextProperty); }
 			private set { SetValue(HasTextProperty, value); }
-		}
+        }
 
-		public TimeSpan UpdateDelay {
-			get { return (TimeSpan)GetValue(UpdateDelayProperty); }
-			set { SetValue(UpdateDelayProperty, value); }
-		}
+        public TimeSpan UpdateDelay
+        {
+            get { return (TimeSpan)GetValue(UpdateDelayProperty); }
+            set { SetValue(UpdateDelayProperty, value); }
+        }
+        
+        [TypeConverter(typeof(BitmapTypeConverter))]
+        public Bitmap SearchIcon
+        {
+            get { return GetValue(SearchIconProperty); }
+            set { SetValue(SearchIconProperty, value); }
+        }
+
+        [TypeConverter(typeof(BitmapTypeConverter))]
+        public Bitmap ClearSearchIcon
+        {
+            get { return GetValue(ClearSearchIconProperty); }
+            set { SetValue(ClearSearchIconProperty, value); }
+        }
 		
 		#endregion
 		
@@ -137,14 +149,15 @@ namespace AvaloniaILSpy.Controls
 			base.OnGotFocus(e);
 		}
 
-
-		private void SearchBox_TemplateApplied(object sender, Avalonia.Controls.Primitives.TemplateAppliedEventArgs e)
-		{
-			Border iconBorder = this.FindControl<Border>("PART_IconBorder");
-			if (iconBorder != null) {
-				iconBorder.PointerReleased += IconBorder_MouseLeftButtonUp;
-			}
-		}
+        protected override void OnTemplateApplied(TemplateAppliedEventArgs e)
+        {
+            base.OnTemplateApplied(e);
+            Border iconBorder = e.NameScope.Find<Border>("PART_IconBorder");
+            if (iconBorder != null)
+            {
+                iconBorder.PointerReleased += IconBorder_MouseLeftButtonUp;
+            }
+        }
 		
 		protected override void OnKeyDown(KeyEventArgs e)
 		{

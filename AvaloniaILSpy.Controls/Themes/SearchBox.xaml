@@ -4,10 +4,6 @@
 	xmlns:local="clr-namespace:AvaloniaILSpy.Controls"
 	xmlns:sys="clr-namespace:System;assembly=mscorlib">
 
-	<Styles.Resources>
-		<sys:String x:Key="ClearSearchIcon">resm:AvaloniaILSpy.Controls.Themes.ClearSearch.png"</sys:String>
-	</Styles.Resources>
-
 	<Style Selector="local|SearchBox">
 		<Setter Property="Background" Value="White" />
 		<Setter Property="BorderBrush" Value="{x:Static avalonia:SystemColors.ControlDarkBrush}" />
@@ -26,14 +22,28 @@
 								<ColumnDefinition Width="*" />
 								<ColumnDefinition Width="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=ActualHeight}" />
 							</Grid.ColumnDefinitions>
-							<ScrollViewer Margin="2" x:Name="PART_ContentHost" Grid.Column="0" />
-							<TextBlock x:Name="WatermarkLabel"
-							       Margin="2"
-							       Grid.Column="0"
-							       Foreground="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=WatermarkColor}"
-							       Text="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=WatermarkText}"
-							       Padding="2,0,0,0"
-							       FontStyle="Italic" />
+              
+              <ScrollViewer Grid.Column="0" HorizontalScrollBarVisibility="{TemplateBinding (ScrollViewer.HorizontalScrollBarVisibility)}"
+              VerticalScrollBarVisibility="{TemplateBinding (ScrollViewer.VerticalScrollBarVisibility)}">
+
+                <Panel>
+                  <TextBlock Name="WatermarkLabel"
+                             Opacity="0.5"
+							               Foreground="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=WatermarkColor}"
+							               Text="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=WatermarkText}"
+                             IsVisible="{TemplateBinding Text, Converter={x:Static StringConverters.NullOrEmpty}}"
+                             FontStyle="Italic" />
+                  <TextPresenter Name="PART_TextPresenter"
+                                 Text="{TemplateBinding Text, Mode=TwoWay}"
+                                 CaretIndex="{TemplateBinding CaretIndex}"
+                                 SelectionStart="{TemplateBinding SelectionStart}"
+                                 SelectionEnd="{TemplateBinding SelectionEnd}"
+                                 TextAlignment="{TemplateBinding TextAlignment}"
+                                 TextWrapping="{TemplateBinding TextWrapping}"
+                                 PasswordChar="{TemplateBinding PasswordChar}"/>
+                </Panel>
+              </ScrollViewer>
+              
 							<Border x:Name="PART_IconBorder"
 							        Grid.Column="1"
 							        BorderThickness="1"
@@ -46,8 +56,8 @@
 								       Stretch="None"
 								       HorizontalAlignment="Center"
 								       VerticalAlignment="Center"
-								       ToolTip="Search"
-								       Source="resm:AvaloniaILSpy.Controls.Themes.Search.png" >
+								       Tag="Search"
+								       Source="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=SearchIcon}" >
 								</Image>
 							</Border>
 						</Grid>
@@ -63,7 +73,7 @@
 	
 	<Style Selector="local|SearchBox[HasText=true] /template/ Image#SearchIcon">
 			<Setter Property="Source"
-			        Value="{DynamicResource ClearSearchIcon}" />
+			        Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=ClearSearchIcon}" />
 			<Setter Property="Tag" Value="Clear"/>
 	</Style>
 </Styles>

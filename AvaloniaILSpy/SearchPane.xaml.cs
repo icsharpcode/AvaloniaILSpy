@@ -35,6 +35,7 @@ using AvaloniaEdit;
 using Avalonia.Markup.Xaml;
 using AvaloniaILSpy.Controls;
 using System.Threading.Tasks;
+using Avalonia.Interactivity;
 
 namespace AvaloniaILSpy
 {
@@ -87,13 +88,18 @@ namespace AvaloniaILSpy
 			searchBox = this.FindControl<SearchBox>("searchBox");
 			searchModeComboBox = this.FindControl<DropDown>("searchModeComboBox");
 			listBox = this.FindControl<ListBox>("listBox");
-		}
+
+            searchBox.KeyDown += SearchBox_PreviewKeyDown;
+            searchModeComboBox.SelectionChanged += SearchModeComboBox_SelectionChanged;
+            listBox.KeyDown += ListBox_KeyDown;
+            listBox.DoubleTapped += ListBox_MouseDoubleClick;
+        }
 
 		bool runSearchOnNextShow;
 		
 		void MainWindow_Instance_CurrentAssemblyListChanged(object sender, NotifyCollectionChangedEventArgs e)
 		{
-			if (IsVisible) {
+			if (VisualRoot != null) {
 				StartSearch(this.SearchTerm);
 			} else {
 				StartSearch(null);
@@ -103,8 +109,10 @@ namespace AvaloniaILSpy
 		
 		public void Show()
 		{
-			if (!IsVisible) {
+			if (VisualRoot == null) {
 				MainWindow.Instance.ShowInTopPane("Search", this);
+                ApplyTemplate();
+                ((Avalonia.Controls.Presenters.ContentPresenter)Presenter).UpdateChild();
 				if (runSearchOnNextShow) {
 					runSearchOnNextShow = false;
 					StartSearch(this.SearchTerm);
@@ -116,7 +124,7 @@ namespace AvaloniaILSpy
 						searchBox.Focus();
 						//searchBox.SelectAll();
 						searchBox.SelectionStart = 0;
-						searchBox.SelectionEnd = searchBox.Text.Length;
+						searchBox.SelectionEnd = searchBox.Text?.Length ?? 0;
 					}),
 				DispatcherPriority.Background);
 		}
@@ -163,12 +171,8 @@ namespace AvaloniaILSpy
 			this.SearchTerm = string.Empty;
 		}
 		
-		void ListBox_MouseDoubleClick(object sender, PointerPressedEventArgs e)
+		void ListBox_MouseDoubleClick(object sender, RoutedEventArgs e)
 		{
-			if (e.ClickCount != 2) {
-				return;
-			}
-
 			JumpToSelectedItem();
 			e.Handled = true;
 		}
