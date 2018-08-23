@@ -52,7 +52,7 @@ namespace AvaloniaILSpy.Controls
 
 		void DockedPane_TemplateApplied(TemplateAppliedEventArgs args)
 		{
-			Button closeButton = (Button)this.FindControl<Button>("PART_Close");
+			Button closeButton = (Button)args.NameScope.Find<Button>("PART_Close");
 			if (closeButton != null) {
 				closeButton.Click += closeButton_Click;
 			}

@@ -143,7 +143,7 @@
 									</Grid.ColumnDefinitions>
 									<TextBlock Text="{TemplateBinding Title}" Margin="3,0"
 											Foreground="{x:Static avalonia:SystemColors.InactiveCaptionTextBrush}" VerticalAlignment="Center"/>
-									<Button x:Name="PART_Close" Grid.Column="2" VerticalAlignment="Center" Width="16" Height="16" DockPanel.Dock="Right" Classes="CloseButtonStyle" ToolTip="Close" Margin="1">
+									<Button x:Name="PART_Close" Grid.Column="2" VerticalAlignment="Center" Width="16" Height="16" DockPanel.Dock="Right" Classes="CloseButtonStyle" Tag="Close" Margin="1">
 										<Path x:Name="Path" Stretch="Fill" StrokeThickness="0.5" Stroke="#FF333333" Fill="#FF969696" Data="F1 M 0,1.3333L 1.33333,0L 4,2.6666L 6.6666,0 8,1.3333L 5.3333,4L 8,6.6666L 6.6666,8L 4,5.3333L 1.3333,8L 0,6.6666L 2.6666,4L 0,1.3333 Z " HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
 									</Button>
 								</Grid>
