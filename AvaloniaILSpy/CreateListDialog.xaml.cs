@@ -39,6 +39,8 @@ namespace AvaloniaILSpy
             ListName.GetObservable(TextBox.TextProperty).Subscribe(text => TextBox_TextChanged(this, new TextInputEventArgs{Text = text}));
             okButton.Click += OKButton_Click;
             cancelButton.Click += CancelButton_Click;
+
+            TemplateApplied += (sender, e) => Application.Current.FocusManager.Focus(ListName);
 		}
 
 		private void TextBox_TextChanged(object sender, TextInputEventArgs e)

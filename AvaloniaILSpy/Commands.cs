@@ -8,22 +8,9 @@ namespace AvaloniaILSpy
 {
     public static class NavigationCommands
     {
-		public static RoutedCommand BrowseBack { get; }
-		public static RoutedCommand BrowseForward { get; }
-		public static RoutedCommand BrowseHome { get; }
-		public static RoutedCommand BrowseStop { get; }
-		public static RoutedCommand Refresh { get; }
-		public static RoutedCommand Favorites { get; }
-		public static RoutedCommand Search { get; }
-		public static RoutedCommand IncreaseZoom { get; }
-		public static RoutedCommand DecreaseZoom { get; }
-		public static RoutedCommand Zoom { get; }
-		public static RoutedCommand NextPage { get; }
-		public static RoutedCommand PreviousPage { get; }
-		public static RoutedCommand FirstPage { get; }
-		public static RoutedCommand LastPage { get; }
-		public static RoutedCommand GoToPage { get; }
-		public static RoutedCommand NavigateJournal { get; }
+        public static RoutedCommand BrowseBack { get; } = new RoutedCommand(nameof(BrowseBack), new KeyGesture { Modifiers = InputModifiers.Control, Key = Key.BrowserBack });
+        public static RoutedCommand BrowseForward { get; } = new RoutedCommand(nameof(BrowseForward), new KeyGesture { Modifiers = InputModifiers.Control, Key = Key.BrowserForward });
+        public static RoutedCommand Search { get; } = new RoutedCommand(nameof(Search), new KeyGesture { Modifiers = InputModifiers.Control, Key = Key.F });
 	}
 
     public static class ApplicationCommands

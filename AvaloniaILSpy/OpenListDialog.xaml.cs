@@ -65,13 +65,15 @@ namespace AvaloniaILSpy
             resetButton = this.FindControl<Button>("resetButton");
 
             listView.SelectionChanged += ListView_SelectionChanged;
-            listView_Loaded(this, EventArgs.Empty);
             listView.DoubleTapped += listView_MouseDoubleClick;
             okButton.Click += OKButton_Click;
             cancelButton.Click += CancelButton_Click;
             deleteButton.Click += DeleteButton_Click;
             createButton.Click += CreateButton_Click;
             resetButton.Click += ResetButton_Click;
+
+            TemplateApplied += (sender, e) => Application.Current.FocusManager.Focus(listView);
+            listView.TemplateApplied += listView_Loaded;
 		}
 
         private void listView_Loaded(object sender, EventArgs e)

@@ -26,7 +26,7 @@ namespace AvaloniaILSpy
 	sealed class RefreshCommand : CommandWrapper
 	{
 		public RefreshCommand()
-			: base(NavigationCommands.Refresh)
+            : base(ApplicationCommands.Refresh)
 		{
 		}
 	}
