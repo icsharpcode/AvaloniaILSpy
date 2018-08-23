@@ -207,7 +207,7 @@ namespace AvaloniaILSpy.TextView
 
         void TextViewMouseHover(object sender, PointerEventArgs e)
         {
-            TextViewPosition? position = GetPositionFromMousePosition(e.Device);
+            TextViewPosition? position = GetPositionFromMousePosition();
             if (position == null)
                 return;
             int offset = textEditor.Document.GetOffset(position.Value.Location);
@@ -712,7 +712,7 @@ namespace AvaloniaILSpy.TextView
                 && e.MouseButton == MouseButton.Left)
             {
                 // click without moving mouse
-                var referenceSegment = GetReferenceSegmentAtMousePosition(e.Device);
+                var referenceSegment = GetReferenceSegmentAtMousePosition();
                 if (referenceSegment == null)
                 {
                     ClearLocalReferenceMarks();
@@ -851,19 +851,20 @@ namespace AvaloniaILSpy.TextView
         }
         #endregion
 
-        internal ReferenceSegment GetReferenceSegmentAtMousePosition(IPointerDevice mouse)
+        internal ReferenceSegment GetReferenceSegmentAtMousePosition()
         {
             if (referenceElementGenerator.References == null)
                 return null;
-            TextViewPosition? position = GetPositionFromMousePosition(mouse);
+            TextViewPosition? position = GetPositionFromMousePosition();
             if (position == null)
                 return null;
             int offset = textEditor.Document.GetOffset(position.Value.Location);
             return referenceElementGenerator.References.FindSegmentsContaining(offset).FirstOrDefault();
         }
 
-        internal TextViewPosition? GetPositionFromMousePosition(IPointerDevice mouse)
+        internal TextViewPosition? GetPositionFromMousePosition()
         {
+            IPointerDevice mouse = AvaloniaLocator.Current.GetService<IMouseDevice>(); //TODO: support more pointer devices
             var position = textEditor.TextArea.TextView.GetPosition(mouse.GetPosition(textEditor.TextArea.TextView) + textEditor.TextArea.TextView.ScrollOffset);
             if (position == null)
                 return null;
