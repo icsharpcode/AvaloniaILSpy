@@ -13,7 +13,6 @@
 			<Setter.Value>
 				<ControlTemplate>
 					<Border x:Name="Border"
-					        Cursor="IBeam"
 					        Background="{TemplateBinding Background}"
 					        BorderBrush="{TemplateBinding BorderBrush}"
 					        BorderThickness="{TemplateBinding BorderThickness}">
@@ -30,7 +29,7 @@
                   <TextBlock Name="WatermarkLabel"
                              Opacity="0.5"
 							               Foreground="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=WatermarkColor}"
-							               Text="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=WatermarkText}"
+							               Text="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Watermark}"
                              IsVisible="{TemplateBinding Text, Converter={x:Static StringConverters.NullOrEmpty}}"
                              FontStyle="Italic" />
                   <TextPresenter Name="PART_TextPresenter"
@@ -44,21 +43,33 @@
                 </Panel>
               </ScrollViewer>
               
-							<Border x:Name="PART_IconBorder"
+							<Border Name="PART_IconBorder"
 							        Grid.Column="1"
 							        BorderThickness="1"
 							        VerticalAlignment="Stretch"
 							        HorizontalAlignment="Stretch"
 							        BorderBrush="Transparent"
 							        Background="Transparent">
-								<Image x:Name="SearchIcon"
-								       Cursor="Arrow"
-								       Stretch="None"
-								       HorizontalAlignment="Center"
-								       VerticalAlignment="Center"
-								       Tag="Search"
-								       Source="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=SearchIcon}" >
-								</Image>
+                <Grid>
+                  <Image Name="ClearSearchIcon"
+                         IsVisible="{TemplateBinding Text, Converter={x:Static StringConverters.NotNullOrEmpty}}"
+                         Cursor="Arrow"
+                         Stretch="None"
+                         HorizontalAlignment="Center"
+                         VerticalAlignment="Center"
+                         Tag="ClearSearch"
+                         Source="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=ClearSearchIcon}" >
+                  </Image>
+                  <Image Name="SearchIcon"
+                         IsVisible="{TemplateBinding Text, Converter={x:Static StringConverters.NullOrEmpty}}"
+                         Cursor="Arrow"
+                         Stretch="None"
+                         HorizontalAlignment="Center"
+                         VerticalAlignment="Center"
+                         Tag="Search"
+                         Source="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=SearchIcon}" >
+                  </Image>
+                </Grid>
 							</Border>
 						</Grid>
 					</Border>
@@ -66,14 +77,7 @@
 			</Setter.Value>
 		</Setter>
 	</Style>
-
-	<Style Selector="local|SearchBox[HasText=true] /template/ TextBlock#WatermarkLabel">
-			<Setter Property="IsVisible" Value="false" />
-	</Style>
-	
-	<Style Selector="local|SearchBox[HasText=true] /template/ Image#SearchIcon">
-			<Setter Property="Source"
-			        Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=ClearSearchIcon}" />
-			<Setter Property="Tag" Value="Clear"/>
-	</Style>
+  <Style Selector="local|SearchBox:focus /template/ TextBlock#WatermarkLabel">
+    <Setter Property="IsVisible" Value="false" />
+  </Style>
 </Styles>

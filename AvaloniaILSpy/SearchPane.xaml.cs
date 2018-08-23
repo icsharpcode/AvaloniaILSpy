@@ -111,8 +111,6 @@ namespace AvaloniaILSpy
 		{
 			if (VisualRoot == null) {
 				MainWindow.Instance.ShowInTopPane("Search", this);
-                ApplyTemplate();
-                ((Avalonia.Controls.Presenters.ContentPresenter)Presenter).UpdateChild();
 				if (runSearchOnNextShow) {
 					runSearchOnNextShow = false;
 					StartSearch(this.SearchTerm);
