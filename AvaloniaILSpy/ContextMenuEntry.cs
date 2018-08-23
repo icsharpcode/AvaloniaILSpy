@@ -25,6 +25,8 @@ using Avalonia.Input;
 using AvaloniaEdit;
 using AvaloniaILSpy.TextView;
 using AvaloniaILSpy.Controls;
+using System.ComponentModel;
+using Avalonia;
 
 namespace AvaloniaILSpy
 {
@@ -73,16 +75,16 @@ namespace AvaloniaILSpy
 		/// </summary>
 		public TextViewPosition? Position { get; private set; }
 		
-		public static TextViewContext Create(IPointerDevice mouse,SharpTreeView treeView = null, DecompilerTextView textView = null, ListBox listBox = null)
+		public static TextViewContext Create(SharpTreeView treeView = null, DecompilerTextView textView = null, ListBox listBox = null)
 		{
 			ReferenceSegment reference;
 			if (textView != null)
-				reference = textView.GetReferenceSegmentAtMousePosition(mouse);
+				reference = textView.GetReferenceSegmentAtMousePosition();
 			else if (listBox?.SelectedItem is SearchResult result)
 				reference = new ReferenceSegment { Reference = result.Member };
 			else
 				reference = null;
-			var position = textView != null ? textView.GetPositionFromMousePosition(mouse) : null;
+			var position = textView != null ? textView.GetPositionFromMousePosition() : null;
 			var selectedTreeNodes = treeView != null ? treeView.GetTopLevelSelection().ToArray() : null;
 			return new TextViewContext {
 				TreeView = treeView,
@@ -128,23 +130,24 @@ namespace AvaloniaILSpy
 		public static void Add(SharpTreeView treeView, DecompilerTextView textView = null)
 		{
 			var provider = new ContextMenuProvider(treeView, textView);
-			treeView.PointerReleased += provider.treeView_ContextMenuOpening;
-			// Context menu is shown only when the ContextMenu property is not null before the
-			// ContextMenuOpening event handler is called.
-			treeView.ContextMenu = new ContextMenu();
+            // Context menu is shown only when the ContextMenu property is not null before the
+            // ContextMenuOpening event handler is called.
+            treeView.ContextMenu = new ContextMenu();
+            treeView.ContextMenu.ContextMenuOpening += provider.treeView_ContextMenuOpening;
+
 			if (textView != null) {
-				textView.PointerReleased += provider.textView_ContextMenuOpening;
 				// Context menu is shown only when the ContextMenu property is not null before the
 				// ContextMenuOpening event handler is called.
-				textView.ContextMenu = new ContextMenu();
+                textView.ContextMenu = new ContextMenu();
+                textView.ContextMenu.ContextMenuOpening += provider.textView_ContextMenuOpening;
 			}
 		}
 		
 		public static void Add(ListBox listBox)
 		{
 			var provider = new ContextMenuProvider(listBox);
-			listBox.PointerReleased += provider.listBox_ContextMenuOpening;
-			listBox.ContextMenu = new ContextMenu();
+            listBox.ContextMenu = new ContextMenu();
+            listBox.ContextMenu.ContextMenuOpening += provider.listBox_ContextMenuOpening;
 		}
 		
 		readonly SharpTreeView treeView;
@@ -167,68 +170,47 @@ namespace AvaloniaILSpy
 		{
 			this.listBox = listBox;
 		}
-		
-		void treeView_ContextMenuOpening(object sender, PointerReleasedEventArgs e)
+
+        void treeView_ContextMenuOpening(object sender, CancelEventArgs e)
 		{
-			var control = (Control)sender;
-			var contextMenu = control?.ContextMenu;
-
-			if (contextMenu == null || e.MouseButton != MouseButton.Right) {
-				return;
-			}
-
-			TextViewContext context = TextViewContext.Create(e.Device, treeView);
+			TextViewContext context = TextViewContext.Create(treeView);
 			if (context.SelectedTreeNodes.Length == 0) {
-				e.Handled = true; // don't show the menu
+                e.Cancel = true; // don't show the menu
 				return;
 			}
-			ContextMenu menu;
-			if (ShowContextMenu(context, out menu))
-				treeView.ContextMenu = menu;
+            ContextMenu menu = (ContextMenu)sender;
+            if (ShowContextMenu(context, out IEnumerable<IControl> items))
+                menu.Items = items;
 			else
 				// hide the context menu.
-				e.Handled = true;
+                e.Cancel = true;
 		}
 		
-		void textView_ContextMenuOpening(object sender, PointerReleasedEventArgs e)
+        void textView_ContextMenuOpening(object sender, CancelEventArgs e)
 		{
-			var control = (Control)sender;
-			var contextMenu = control?.ContextMenu;
-
-			if (contextMenu == null || e.MouseButton != MouseButton.Right) {
-				return;
-			}
-
-			TextViewContext context = TextViewContext.Create(e.Device, textView: textView);
-			ContextMenu menu;
-			if (ShowContextMenu(context, out menu))
-				textView.ContextMenu = menu;
+			TextViewContext context = TextViewContext.Create(textView: textView);
+            ContextMenu menu = (ContextMenu)sender;
+            if (ShowContextMenu(context, out IEnumerable<IControl> items))
+                menu.Items = items;
 			else
 				// hide the context menu.
-				e.Handled = true;
+                e.Cancel = true;
 		}
 
-		void listBox_ContextMenuOpening(object sender, PointerReleasedEventArgs e)
+        void listBox_ContextMenuOpening(object sender, CancelEventArgs e)
 		{
-			var control = (Control)sender;
-			var contextMenu = control?.ContextMenu;
-
-			if (contextMenu == null || e.MouseButton != MouseButton.Right) {
-				return;
-			}
-
-			TextViewContext context = TextViewContext.Create(e.Device, listBox: listBox);
-			ContextMenu menu;
-			if (ShowContextMenu(context, out menu))
-				listBox.ContextMenu = menu;
+			TextViewContext context = TextViewContext.Create(listBox: listBox);
+            ContextMenu menu = (ContextMenu)sender;
+            if (ShowContextMenu(context, out IEnumerable<IControl> items))
+                menu.Items = items;
 			else
 				// hide the context menu.
-				e.Handled = true;
+                e.Cancel = true;
 		}
 		
-		bool ShowContextMenu(TextViewContext context, out ContextMenu menu)
+        bool ShowContextMenu(TextViewContext context, out IEnumerable<IControl> menuItems)
 		{
-			IList<IControl> items = new List<IControl>();
+			List<IControl> items = new List<IControl>();
 			foreach (var category in entries.OrderBy(c => c.Metadata.Order).GroupBy(c => c.Metadata.Category)) {
 				bool needSeparatorForCategory = items.Count > 0;
 				foreach (var entryPair in category) {
@@ -255,8 +237,7 @@ namespace AvaloniaILSpy
 					}
 				}
 			}
-			menu = new ContextMenu();
-			menu.Items = items;
+            menuItems = items;
 			return items.Count > 0;
 		}
 	}
