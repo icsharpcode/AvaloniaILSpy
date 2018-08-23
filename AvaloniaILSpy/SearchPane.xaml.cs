@@ -392,7 +392,7 @@ namespace AvaloniaILSpy
 	sealed class ShowSearchCommand : CommandWrapper
 	{
 		public ShowSearchCommand()
-			: base(new RoutedCommand("Show Search", new KeyGesture() { Key = Key.F, Modifiers = InputModifiers.Control | InputModifiers.Shift }))
+            : base(NavigationCommands.Search)
 		{
 		}
 	}

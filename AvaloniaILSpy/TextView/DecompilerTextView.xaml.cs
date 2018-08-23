@@ -136,9 +136,9 @@ namespace AvaloniaILSpy.TextView
             textEditor.ShowLineNumbers = true;
             DisplaySettingsPanel.CurrentDisplaySettings.PropertyChanged += CurrentDisplaySettings_PropertyChanged;
 
-            // TODO: SearchPanel
-            SearchPanel.Install(textEditor.TextArea);
-            //.RegisterCommands((Application.Current.MainWindow as MainWindow).CommandBindings);
+            AttachedToLogicalTree += (sender, e) =>
+                SearchPanel.Install(textEditor.TextArea)
+                           .RegisterCommands((e.Root as MainWindow).CommandBindings); 
 
             ShowLineMargin();
 
