@@ -864,7 +864,7 @@ namespace AvaloniaILSpy.TextView
 
         internal TextViewPosition? GetPositionFromMousePosition()
         {
-            IPointerDevice mouse = AvaloniaLocator.Current.GetService<IMouseDevice>(); //TODO: support more pointer devices
+            IPointerDevice mouse = MainWindow.Instance.PlatformImpl.MouseDevice;
             var position = textEditor.TextArea.TextView.GetPosition(mouse.GetPosition(textEditor.TextArea.TextView) + textEditor.TextArea.TextView.ScrollOffset);
             if (position == null)
                 return null;
