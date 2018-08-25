@@ -233,7 +233,7 @@
                             </Border>
                             <StackPanel Orientation="Horizontal"
                                         Background="Transparent"
-                                        ToolTip.Tip="{Binding ToolTip, FallbackValue=null}">
+                                        ToolTip.Tip="{Binding ToolTip}">
                                 <ContentPresenter Name="icon"
                                                   Width="16"
                                                   Height="16"

@@ -103,16 +103,15 @@ namespace AvaloniaILSpy
 
 		public static IBitmap LoadImage(object part, string icon)
 		{
-			String uri;
-			var assembly = part.GetType().Assembly;
+            IBitmap image;
+            var assembly = part.GetType().Assembly;
 			if (assembly == typeof(Images).Assembly) {
-				uri = (icon);
+				image = new Bitmap(icon);
 			} else {
 				var name = assembly.GetName();
-				uri = (name.Name + ";component/" + icon);
-			}
-			IBitmap image = new Bitmap(uri);
-			//image.Freeze();
+                var embededResourceStream = assembly.GetManifestResourceStream(icon);
+                image = new Bitmap(embededResourceStream);
+            }
 			return image;
 		}
 
