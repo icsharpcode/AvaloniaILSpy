@@ -9,7 +9,7 @@ using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Styling;
 
-namespace Avalonia.Controls
+namespace AvaloniaILSpy.Controls
 {
     public class DialogWindow: Window, IStyleable
 	{
