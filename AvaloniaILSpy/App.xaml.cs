@@ -88,7 +88,7 @@ namespace AvaloniaILSpy
 					foreach (var plugin in Directory.GetFiles(pluginDir, "*.Plugin.dll")) {
 						var name = Path.GetFileNameWithoutExtension(plugin);
 						try {
-							var asm = Assembly.Load(name);
+							var asm = Assembly.LoadFile(plugin);
 							var parts = discovery.CreatePartsAsync(asm).Result;
 							catalog = catalog.AddParts(parts);
 						} catch (Exception ex) {
