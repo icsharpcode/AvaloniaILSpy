@@ -1,17 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Avalonia;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Reflection;
-using Avalonia;
 using Avalonia.Logging.Serilog;
 
-namespace AvaloniaILSpy
+namespace AvaloniaILSpy.NetCore
 {
-    class Program
+    static class Program
     {
+        
         static void Main(string[] args)
         {
             Directory.SetCurrentDirectory(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location));
@@ -19,13 +15,14 @@ namespace AvaloniaILSpy
             BuildAvaloniaApp().Start<MainWindow>();
         }
 
+        /// <summary>
+        /// This method is needed for IDE previewer infrastructure
+        /// </summary>
         public static AppBuilder BuildAvaloniaApp()
-                                => AppBuilder.Configure<App>()
+                                          => AppBuilder.Configure<App>()
 #if DEBUG
                                             .LogToDebug()
 #endif
                                             .UsePlatformDetect();
-
-
     }
 }

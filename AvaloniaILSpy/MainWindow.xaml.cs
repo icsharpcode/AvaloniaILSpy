@@ -46,7 +46,7 @@ namespace AvaloniaILSpy
     /// <summary>
     /// The main window of the application.
     /// </summary>
-    partial class MainWindow : Window, IRoutedCommandBindable
+    public partial class MainWindow : Window, IRoutedCommandBindable
     {
         readonly NavigationHistory<NavigationState> history = new NavigationHistory<NavigationState>();
         ILSpySettings spySettings;
