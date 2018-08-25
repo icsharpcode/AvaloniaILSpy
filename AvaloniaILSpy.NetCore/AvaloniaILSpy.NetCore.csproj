@@ -19,6 +19,7 @@
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
 
     <StartupObject>AvaloniaILSpy.NetCore.Program</StartupObject>
+    <ApplicationIcon>..\AvaloniaILSpy\Images\ILSpy-Large.ico</ApplicationIcon>
 
     <SignAssembly>false</SignAssembly>
   </PropertyGroup>
