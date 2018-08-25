@@ -205,7 +205,7 @@ namespace AvaloniaILSpy
         
         Button MakeToolbarItem(Lazy<ICommand, IToolbarCommandMetadata> command)
         {
-            return new Button {
+            var toolbarButton = new Button {
                 Command = CommandWrapper.Unwrap(command.Value),
                 //ToolTip = command.Metadata.ToolTip,
                 Tag = command.Metadata.Tag,
@@ -215,6 +215,8 @@ namespace AvaloniaILSpy
                     Source = Images.LoadImage(command.Value, command.Metadata.ToolbarIcon)
                 }
             };
+            ToolTip.SetTip(toolbarButton, command.Metadata.ToolTip);
+            return toolbarButton;
         }
         #endregion
         
