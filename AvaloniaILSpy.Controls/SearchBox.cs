@@ -43,8 +43,13 @@ namespace AvaloniaILSpy.Controls
 		
 		public static readonly StyledProperty<TimeSpan> UpdateDelayProperty =
 			AvaloniaProperty.Register<SearchBox, TimeSpan>(nameof(UpdateDelay), TimeSpan.FromMilliseconds(200));
-		
-		#endregion
+
+        #endregion
+
+        public SearchBox()
+        {
+            PseudoClass(TextProperty, t=>!string.IsNullOrEmpty(t), ":hastext");
+        }
 		
 		#region Public Properties
 

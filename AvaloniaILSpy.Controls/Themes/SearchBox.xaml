@@ -50,26 +50,12 @@
 							        HorizontalAlignment="Stretch"
 							        BorderBrush="Transparent"
 							        Background="Transparent">
-                <Grid>
-                  <Image Name="ClearSearchIcon"
-                         IsVisible="{TemplateBinding Text, Converter={x:Static StringConverters.NotNullOrEmpty}}"
-                         Cursor="Arrow"
-                         Stretch="None"
-                         HorizontalAlignment="Center"
-                         VerticalAlignment="Center"
-                         ToolTip.Tip="ClearSearch"
-                         Source="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=ClearSearchIcon}" >
-                  </Image>
-                  <Image Name="SearchIcon"
-                         IsVisible="{TemplateBinding Text, Converter={x:Static StringConverters.NullOrEmpty}}"
-                         Cursor="Arrow"
-                         Stretch="None"
-                         HorizontalAlignment="Center"
-                         VerticalAlignment="Center"
-                         ToolTip.Tip="Search"
-                         Source="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=SearchIcon}" >
-                  </Image>
-                </Grid>
+                <Image Name="SearchIcon"
+                       Cursor="Arrow"
+                       Stretch="None"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center" >
+                </Image>
 							</Border>
 						</Grid>
 					</Border>
@@ -77,6 +63,14 @@
 			</Setter.Value>
 		</Setter>
 	</Style>
+  <Style Selector="local|SearchBox /template/ Image#SearchIcon">
+    <Setter Property="ToolTip.Tip" Value="Search" />
+    <Setter Property="Source" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=SearchIcon}" />
+  </Style>
+  <Style Selector="local|SearchBox:hastext /template/ Image#SearchIcon">
+    <Setter Property="ToolTip.Tip" Value="Clear Search" />
+    <Setter Property="Source" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=ClearSearchIcon}" />
+  </Style>
   <Style Selector="local|SearchBox:focus /template/ TextBlock#WatermarkLabel">
     <Setter Property="IsVisible" Value="false" />
   </Style>

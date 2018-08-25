@@ -28,29 +28,22 @@
                                 </LinearGradientBrush.GradientStops>
                             </LinearGradientBrush>
                         </Border.Background>
-						<Panel>
 	                        <Path Name="CollapsePath"
 	                              Margin="1,1,1,1"
-	                              Fill="Black"
-	                              Data="M 0 2 L 0 3 L 5 3 L 5 2 Z" />
-	                        <Path Name="ExpandPath"
-	                              Margin="1,1,1,1"
-	                              Fill="Black"
-	                              Data="M 0 2 L 0 3 L 2 3 L 2 5 L 3 5 L 3 3 L 5 3 L 5 2 L 3 2 L 3 0 L 2 0 L 2 2 Z" />
-						</Panel>
+	                              Fill="Black" />
                     </Border>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
     </Style>
 
-	<Style Selector="ToggleButton.ExpandCollapseToggleStyle /template/ Path#CollapsePath">
-        <Setter Property="IsVisible"
-                Value="false" />
-	</Style>
-	<Style Selector="ToggleButton.ExpandCollapseToggleStyle:checked /template/ Path#ExpandPath">
-        <Setter Property="IsVisible"
-                Value="false" />
+  <Style Selector="ToggleButton.ExpandCollapseToggleStyle /template/ Path#CollapsePath">
+    <Setter Property="Data"
+            Value="M 0 2 L 0 3 L 2 3 L 2 5 L 3 5 L 3 3 L 5 3 L 5 2 L 3 2 L 3 0 L 2 0 L 2 2 Z" />
+  </Style>
+	<Style Selector="ToggleButton.ExpandCollapseToggleStyle:checked /template/ Path#CollapsePath">
+        <Setter Property="Data"
+                Value="M 0 2 L 0 3 L 5 3 L 5 2 Z" />
 	</Style>
 
     <Style Selector="local|InsertMarker">
