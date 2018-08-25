@@ -118,10 +118,8 @@ namespace AvaloniaILSpy.TextView
             textEditor.Options.RequireControlModifierForHyperlinkClick = false;
             textEditor.TextArea.TextView.PointerHover += TextViewMouseHover;
             textEditor.TextArea.TextView.PointerHoverStopped += TextViewMouseHoverStopped;
-            //textEditor.TextArea.PreviewMouseDown += TextAreaMouseDown;
-            //textEditor.TextArea.PreviewMouseUp += TextAreaMouseUp;
-            textEditor.TextArea.PointerPressed += TextAreaMouseDown;
-            textEditor.TextArea.PointerReleased += TextAreaMouseUp;
+            textEditor.TextArea.AddHandler(PointerPressedEvent, TextAreaMouseDown, RoutingStrategies.Tunnel);
+            textEditor.TextArea.AddHandler(PointerReleasedEvent, TextAreaMouseUp, RoutingStrategies.Tunnel);
             textEditor.Bind(TextEditor.FontFamilyProperty, new Binding { Source = DisplaySettingsPanel.CurrentDisplaySettings, Path = "SelectedFont" });
             textEditor.Bind(TextEditor.FontSizeProperty, new Binding { Source = DisplaySettingsPanel.CurrentDisplaySettings, Path = "SelectedFontSize" });
             textEditor.Bind(TextEditor.WordWrapProperty, new Binding { Source = DisplaySettingsPanel.CurrentDisplaySettings, Path = "EnableWordWrap" });
@@ -196,13 +194,10 @@ namespace AvaloniaILSpy.TextView
         #endregion
 
         #region Tooltip support
-        ToolTip tooltip;
 
         void TextViewMouseHoverStopped(object sender, PointerEventArgs e)
         {
-            if (tooltip != null)
-                ToolTip.SetIsOpen(this, false);
-            //tooltip.IsOpen = false;
+            ToolTip.SetIsOpen(this, false);
         }
 
         void TextViewMouseHover(object sender, PointerEventArgs e)
@@ -217,12 +212,10 @@ namespace AvaloniaILSpy.TextView
             if (seg == null)
                 return;
             object content = GenerateTooltip(seg);
-            if (tooltip != null)
-                ToolTip.SetIsOpen(this, false);
-            //tooltip.IsOpen = false;
+            ToolTip.SetIsOpen(this, false);
             if (content != null)
             {
-                tooltip = new ToolTip() { Content = content };
+                ToolTip.SetTip(this, content);
                 ToolTip.SetIsOpen(this, true);
             }
         }
