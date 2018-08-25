@@ -116,9 +116,7 @@ namespace AvaloniaILSpy
                 rightColumn.Width = new GridLength(1 - sessionSettings.SplitterPosition, GridUnitType.Star);
             }
             sessionSettings.FilterSettings.PropertyChanged += filterSettings_PropertyChanged;
-            
-            InitMainMenu();
-            InitToolbar();
+
             ContextMenuProvider.Add(treeView, decompilerTextView);
             
         }
@@ -362,6 +360,9 @@ namespace AvaloniaILSpy
         void MainWindow_Loaded(object sender, EventArgs e)
         {
             Application.Current.FocusManager.Focus(treeView);
+
+            InitMainMenu();
+            InitToolbar();
 
             ILSpySettings spySettings = this.spySettings;
             this.spySettings = null;

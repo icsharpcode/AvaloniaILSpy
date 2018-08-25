@@ -24,127 +24,74 @@ using Avalonia.Threading;
 using Avalonia.Interactivity;
 using Avalonia.Input;
 using Avalonia.Data;
+using Avalonia.Media.Imaging;
+using System.ComponentModel;
+using Avalonia.Markup.Xaml.Converters;
+using Avalonia.Controls.Primitives;
 
 namespace AvaloniaILSpy.Controls
 {
 	public class SearchBox : TextBox
 	{
-		static SearchBox() {
-			//DefaultStyleKeyProperty.OverrideMetadata(
-			//	typeof(SearchBox),
-			//	new FrameworkPropertyMetadata(typeof(SearchBox)));
-		}
-
-		public SearchBox()
-		{
-			TemplateApplied += SearchBox_TemplateApplied;
-		}
-
 		#region Dependency properties
 
-		public static StyledProperty<string> WatermarkTextProperty = AvaloniaProperty.Register<SearchBox, string>("WatermarkText");
-		
-		public static StyledProperty<IBrush> WatermarkColorProperty = AvaloniaProperty.Register<SearchBox, IBrush>("WatermarkColor");
-		
-		public static StyledProperty<bool> HasTextProperty = AvaloniaProperty.Register<SearchBox, bool>("HasText");
+        public static StyledProperty<IBitmap> SearchIconProperty = AvaloniaProperty.Register<SearchBox, IBitmap>(nameof(SearchIcon));
+
+        public static StyledProperty<IBitmap> ClearSearchIconProperty = AvaloniaProperty.Register<SearchBox, IBitmap>(nameof(ClearSearchIcon));
+
+		public static StyledProperty<IBrush> WatermarkColorProperty = AvaloniaProperty.Register<SearchBox, IBrush>(nameof(WatermarkColor));
 		
 		public static readonly StyledProperty<TimeSpan> UpdateDelayProperty =
-			AvaloniaProperty.Register<SearchBox, TimeSpan>("UpdateDelay", TimeSpan.FromMilliseconds(200));
+			AvaloniaProperty.Register<SearchBox, TimeSpan>(nameof(UpdateDelay), TimeSpan.FromMilliseconds(200));
 		
 		#endregion
 		
 		#region Public Properties
-		
-		public string WatermarkText {
-			get { return (string)GetValue(WatermarkTextProperty); }
-			set { SetValue(WatermarkTextProperty, value); }
-		}
 
-		public Brush WatermarkColor {
-			get { return (Brush)GetValue(WatermarkColorProperty); }
+		public IBrush WatermarkColor {
+			get { return (IBrush)GetValue(WatermarkColorProperty); }
 			set { SetValue(WatermarkColorProperty, value); }
 		}
-		
-		public bool HasText {
-			get { return (bool)GetValue(HasTextProperty); }
-			private set { SetValue(HasTextProperty, value); }
-		}
 
-		public TimeSpan UpdateDelay {
-			get { return (TimeSpan)GetValue(UpdateDelayProperty); }
-			set { SetValue(UpdateDelayProperty, value); }
-		}
+        public TimeSpan UpdateDelay
+        {
+            get { return (TimeSpan)GetValue(UpdateDelayProperty); }
+            set { SetValue(UpdateDelayProperty, value); }
+        }
+        
+        public IBitmap SearchIcon
+        {
+            get { return GetValue(SearchIconProperty); }
+            set { SetValue(SearchIconProperty, value); }
+        }
+
+        public IBitmap ClearSearchIcon
+        {
+            get { return GetValue(ClearSearchIconProperty); }
+            set { SetValue(ClearSearchIconProperty, value); }
+        }
 		
 		#endregion
 		
 		#region Handlers
 
 		private void IconBorder_MouseLeftButtonUp(object obj, PointerReleasedEventArgs e) {
-			if (this.HasText)
-				this.Text = string.Empty;
+            this.Text = string.Empty;
 		}
 
 		#endregion
 		
 		#region Overrides
-		
-		DispatcherTimer timer;
-		
-		protected override void OnTextInput(TextInputEventArgs e)
-		{
-			base.OnTextInput(e);
 
-			HasText = this.Text.Length > 0;
-			if (timer == null) {
-				timer = new DispatcherTimer();
-				timer.Tick += timer_Tick;
-			}
-			timer.Stop();
-			timer.Interval = this.UpdateDelay;
-			timer.Start();
-		}
-
-		void timer_Tick(object sender, EventArgs e)
-		{
-			timer.Stop();
-			timer = null;
-			// TODO: update binding
-			//var textBinding = GetBindingExpression(TextProperty);
-			//if (textBinding != null) {
-			//	textBinding.UpdateSource();
-			//}
-		}
-		
-		protected override void OnLostFocus(RoutedEventArgs e)
-		{
-			if (!HasText) {
-				TextBlock wl = (TextBlock)this.FindControl<TextBlock>("WatermarkLabel");
-				if (wl != null)
-					wl.IsVisible = true;
-			}
-			
-			base.OnLostFocus(e);
-		}
-
-		protected override void OnGotFocus(GotFocusEventArgs e)
-		{
-			if (!HasText) {
-				TextBlock wl = (TextBlock)this.FindControl<TextBlock>("WatermarkLabel");
-				if (wl != null)
-					wl.IsVisible = false;
-			}
-			
-			base.OnGotFocus(e);
-		}
-
-
-		private void SearchBox_TemplateApplied(object sender, Avalonia.Controls.Primitives.TemplateAppliedEventArgs e)
-		{
-			Border iconBorder = this.FindControl<Border>("PART_IconBorder");
-			if (iconBorder != null) {
-				iconBorder.PointerReleased += IconBorder_MouseLeftButtonUp;
-			}
-		}
+        protected override void OnTemplateApplied(TemplateAppliedEventArgs e)
+        {
+            base.OnTemplateApplied(e);
+            Border iconBorder = e.NameScope.Find<Border>("PART_IconBorder");
+            if (iconBorder != null)
+            {
+                iconBorder.AddHandler(Border.PointerReleasedEvent, IconBorder_MouseLeftButtonUp, RoutingStrategies.Tunnel);
+            }
+        }
 		
 		protected override void OnKeyDown(KeyEventArgs e)
 		{

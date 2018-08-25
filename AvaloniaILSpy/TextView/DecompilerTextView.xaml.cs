@@ -136,9 +136,9 @@ namespace AvaloniaILSpy.TextView
             textEditor.ShowLineNumbers = true;
             DisplaySettingsPanel.CurrentDisplaySettings.PropertyChanged += CurrentDisplaySettings_PropertyChanged;
 
-            // TODO: SearchPanel
-            SearchPanel.Install(textEditor.TextArea);
-            //.RegisterCommands((Application.Current.MainWindow as MainWindow).CommandBindings);
+            AttachedToLogicalTree += (sender, e) =>
+                SearchPanel.Install(textEditor.TextArea)
+                           .RegisterCommands((e.Root as MainWindow).CommandBindings); 
 
             ShowLineMargin();
 
@@ -864,7 +864,7 @@ namespace AvaloniaILSpy.TextView
 
         internal TextViewPosition? GetPositionFromMousePosition()
         {
-            IPointerDevice mouse = AvaloniaLocator.Current.GetService<IMouseDevice>(); //TODO: support more pointer devices
+            IPointerDevice mouse = MainWindow.Instance.PlatformImpl.MouseDevice;
             var position = textEditor.TextArea.TextView.GetPosition(mouse.GetPosition(textEditor.TextArea.TextView) + textEditor.TextArea.TextView.ScrollOffset);
             if (position == null)
                 return null;

@@ -1,29 +1,28 @@
 ﻿<UserControl x:Class="AvaloniaILSpy.SearchPane" xmlns="https://github.com/avaloniaui"
 		xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-		xmlns:controls="clr-namespace:AvaloniaILSpy.Controls"
+		xmlns:controls="clr-namespace:AvaloniaILSpy.Controls;assembly=AvaloniaILSpy.Controls"
 		xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-		xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" x:Name="self" mc:Ignorable="d"
+        xmlns:avalonia="clr-namespace:Avalonia;assembly=AvaloniaILSpy.Controls"
+		xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" x:Name="searchPane" mc:Ignorable="d"
 		d:DesignHeight="300" d:DesignWidth="300">
 	<Grid>
 		<Grid.RowDefinitions>
 			<RowDefinition Height="Auto"  />
 			<RowDefinition Height="*" />
 		</Grid.RowDefinitions>
-		<Border BorderThickness="0,0,0,1" BorderBrush="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}" Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}">
+		<Border BorderThickness="0,0,0,1" BorderBrush="{x:Static avalonia:SystemColors.ControlLightBrush}" Background="{x:Static avalonia:SystemColors.ControlBrush}">
 			<Grid Height="23">
 				<Grid.ColumnDefinitions>
 					<ColumnDefinition Width="*" />
 					<ColumnDefinition Width="Auto" />
 				</Grid.ColumnDefinitions>
 				<controls:SearchBox x:Name="searchBox" DockPanel.Dock="Top" Grid.Column="0" Grid.Row="0" Margin="1"
-						PreviewKeyDown="SearchBox_PreviewKeyDown"
-						Text="{Binding SearchTerm, ElementName=self}" ToolTip="Search" UpdateDelay="0:0:0.1"
-						WatermarkColor="Gray" WatermarkText="Search for t:TypeName, m:Member or c:Constant; use exact match (=term), 'should not contain' (-term) or 'must contain' (+term); use /reg(ular)?Ex(pressions)?/ or both - t:/Type(Name)?/..." />
+            SearchIcon="Images/Search.png" ClearSearchIcon="Images/ClearSearch.png"
+						Text="{Binding SearchTerm, ElementName=searchPane}" ToolTip.Tip="Search" UpdateDelay="0:0:0.1"
+						WatermarkColor="Gray" Watermark="Search for t:TypeName, m:Member or c:Constant; use exact match (=term), 'should not contain' (-term) or 'must contain' (+term); use /reg(ular)?Ex(pressions)?/ or both - t:/Type(Name)?/..." />
 				<StackPanel Grid.Column="1" Grid.Row="0" Orientation="Horizontal">
-					<TextBlock Padding="5" Margin="0,-1">_Search for:</TextBlock>
-					<DropDown Width="100" Name="searchModeComboBox" Margin="1"
-							TextSearch.TextPath="Name"
-							SelectionChanged="SearchModeComboBox_SelectionChanged">
+					<TextBlock Margin="0,-1">_Search for:</TextBlock>
+					<DropDown Width="100" Name="searchModeComboBox" Margin="1">
 						<DropDown.ItemTemplate>
 							<DataTemplate>
 								<StackPanel Orientation="Horizontal">
@@ -36,8 +35,7 @@
 				</StackPanel>
 			</Grid>
 		</Border>
-		<ListBox Grid.Row="1" BorderThickness="0,0,0,0" HorizontalContentAlignment="Stretch" KeyDown="ListBox_KeyDown"
-				MouseDoubleClick="ListBox_MouseDoubleClick" Name="listBox" SelectionMode="Single">
+		<ListBox Grid.Row="1" BorderThickness="0,0,0,0" Name="listBox" SelectionMode="Single">
 			<ListBox.ItemTemplate>
 				<DataTemplate>
 					<Grid>
@@ -45,14 +43,14 @@
 							<ColumnDefinition Width="*" />
 							<ColumnDefinition Width="*" />
 						</Grid.ColumnDefinitions>
-
+            <!--TODO:TextTrimming-->
 						<StackPanel Orientation="Horizontal" Grid.Column="0">
 							<Image Height="16" Margin="0,0,4,0" Width="16" Source="{Binding Image}" />
-							<TextBlock Text="{Binding Name}" TextTrimming="CharacterEllipsis" />
+							<TextBlock Text="{Binding Name}" />
 						</StackPanel>
 						<StackPanel Orientation="Horizontal"  Grid.Column="1">
 							<Image Height="16" Margin="4,0,4,0" Width="16" Source="{Binding LocationImage}" />
-							<TextBlock Text="{Binding Location}" TextTrimming="CharacterEllipsis" />
+							<TextBlock Text="{Binding Location}"/>
 						</StackPanel>
 					</Grid>
 				</DataTemplate>

@@ -10,7 +10,7 @@ namespace AvaloniaILSpy
     {
         public static RoutedCommand BrowseBack { get; } = new RoutedCommand(nameof(BrowseBack), new KeyGesture { Modifiers = InputModifiers.Control, Key = Key.BrowserBack });
         public static RoutedCommand BrowseForward { get; } = new RoutedCommand(nameof(BrowseForward), new KeyGesture { Modifiers = InputModifiers.Control, Key = Key.BrowserForward });
-        public static RoutedCommand Search { get; } = new RoutedCommand(nameof(Search), new KeyGesture { Modifiers = InputModifiers.Control, Key = Key.F });
+        public static RoutedCommand Search { get; } = new RoutedCommand(nameof(Search), new KeyGesture { Modifiers = InputModifiers.Control | InputModifiers.Shift, Key = Key.F });
 	}
 
     public static class ApplicationCommands

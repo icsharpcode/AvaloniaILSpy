@@ -25,38 +25,26 @@ using Avalonia.Controls.Primitives;
 
 namespace AvaloniaILSpy.Controls
 {
-	public class DockedPane : TemplatedControl
+	public class DockedPane : ContentControl
 	{
-		static DockedPane()
-		{
-			//DefaultStyleKeyProperty.OverrideMetadata(typeof(DockedPane), new FrameworkPropertyMetadata(typeof(DockedPane)));
-
-			TemplateAppliedEvent.AddClassHandler<DockedPane>(x=>x.DockedPane_TemplateApplied);
-		}
-		
 		public static readonly StyledProperty<string> TitleProperty =
-			AvaloniaProperty.Register<DockedPane,string>("Title");
+			AvaloniaProperty.Register<DockedPane,string>(nameof(Title));
 		
 		public string Title {
 			get { return (string)GetValue(TitleProperty); }
 			set { SetValue(TitleProperty, value); }
 		}
-		
-		public static readonly StyledProperty<object> ContentProperty =
-			AvaloniaProperty.Register<DockedPane, object>("Content");
-		
-		public object Content {
-			get { return GetValue(ContentProperty); }
-			set { SetValue(ContentProperty, value); }
-		}
 
-		void DockedPane_TemplateApplied(TemplateAppliedEventArgs args)
-		{
-			Button closeButton = (Button)this.FindControl<Button>("PART_Close");
-			if (closeButton != null) {
-				closeButton.Click += closeButton_Click;
-			}
-		}
+        protected override void OnTemplateApplied(TemplateAppliedEventArgs e)
+        {
+            base.OnTemplateApplied(e);
+            Button closeButton = (Button)e.NameScope.Find<Button>("PART_Close");
+            if (closeButton != null)
+            {
+                closeButton.Click += closeButton_Click;
+            }
+
+        }
 		
 		void closeButton_Click(object sender, RoutedEventArgs e)
 		{

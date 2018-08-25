@@ -15,13 +15,17 @@ namespace AvaloniaILSpy
         static void Main(string[] args)
         {
             Directory.SetCurrentDirectory(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location));
-            
-            AppBuilder.Configure<App>()
-                .UsePlatformDetect()
-#if DEBUG
-                .LogToDebug()
-#endif
-                .Start<MainWindow>();
+
+            BuildAvaloniaApp().Start<MainWindow>();
         }
+
+        public static AppBuilder BuildAvaloniaApp()
+                                => AppBuilder.Configure<App>()
+#if DEBUG
+                                            .LogToDebug()
+#endif
+                                            .UsePlatformDetect();
+
+
     }
 }
