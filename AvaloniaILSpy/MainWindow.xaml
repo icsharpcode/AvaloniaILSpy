@@ -1,20 +1,17 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Window
-	x:Class="AvaloniaILSpy.MainWindow"
-	x:ClassModifier="public"
-	xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:tv="clr-namespace:AvaloniaILSpy.Controls;assembly=AvaloniaILSpy.Controls"
-	xmlns:local="clr-namespace:AvaloniaILSpy" xmlns:textView="clr-namespace:AvaloniaILSpy.TextView"
-	xmlns:controls="clr-namespace:AvaloniaILSpy.Controls"
-	Title="ILSpy"
-	MinWidth="250"
-	MinHeight="200"
-	UseLayoutRounding="True"
-	xmlns:d="http://schemas.microsoft.com/expression/blend/2008" d:DesignHeight="500" d:DesignWidth="500"
-	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d"
+﻿<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:tv="clr-namespace:AvaloniaILSpy.Controls;assembly=AvaloniaILSpy.Controls"
+	      xmlns:local="clr-namespace:AvaloniaILSpy"
+	      Title="ILSpy"
+	      MinWidth="250"
+	      MinHeight="200"
+	      UseLayoutRounding="True"
+	      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" d:DesignHeight="500" d:DesignWidth="500"
+	      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d"
 >
 <!--	<Window.TaskbarItemInfo>
 		<TaskbarItemInfo />
-	</Window.TaskbarItemInfo>-->
+	</Window.TaskbarIteInfo>-->
 	<DockPanel>
 		<!-- Main menu -->
 		<Menu DockPanel.Dock="Top" Name="mainMenu" Height="23" KeyboardNavigation.TabNavigation="None">
@@ -47,7 +44,8 @@
 			<Separator />
 			<!-- 'Open' toolbar category is inserted here -->
 			<Separator />
-			<CheckBox IsChecked="{Binding FilterSettings.ShowInternalApi}" Tag="Show internal types and members">
+			<CheckBox IsChecked="{Binding FilterSettings.ShowInternalApi}"
+                ToolTip.Tip="Show internal types and members">
 				<Image Width="16" Height="16" Source="Images/PrivateInternal.png" />
 			</CheckBox>
 			<Separator />
@@ -64,7 +62,7 @@
 			<TextBlock VerticalAlignment="Center"
 					   HorizontalAlignment="Right"
 					   x:Name="StatusLabel"
-					   Tag="Status"
+             ToolTip.Tip="Status"
 					   Text="Stand by..."/>
 		</Border>
 		<!-- Main grid separating left pane (treeView) from main pane (textEditor) -->
@@ -86,7 +84,6 @@
 			<!-- Left pane: Tree View of assemblies and classes -->
 			<tv:SharpTreeView
 				Name="treeView"
-				SelectionChanged="TreeView_SelectionChanged"
 				ShowRoot="False"
 				AllowDropOrder="True"
 				DragDrop.AllowDrop="True"
@@ -115,16 +112,16 @@
 				</Grid.RowDefinitions>
 				<Border BorderBrush="Black" BorderThickness="1" Name="updatePanel" IsVisible="false">
 					<DockPanel KeyboardNavigation.TabNavigation="Contained">
-						<Button DockPanel.Dock="Right" Click="updatePanelCloseButtonClick" MinWidth="0">X</Button>
+						<Button Name="updatePanelCloseButton" DockPanel.Dock="Right" MinWidth="0">X</Button>
 						<StackPanel Orientation="Horizontal">
 							<TextBlock Name="updatePanelMessage" Margin="4,0" VerticalAlignment="Center">A new ILSpy version is available.</TextBlock>
-							<Button Name="downloadOrCheckUpdateButton" Click="downloadOrCheckUpdateButtonClick">Download</Button>
+							<Button Name="downloadOrCheckUpdateButton">Download</Button>
 						</StackPanel>
 					</DockPanel>
 				</Border>
 				
 				<tv:DockedPane x:Name="topPane" Grid.Row="1" Title="Top" IsVisible="false"
-					CloseButtonClicked="TopPane_CloseButtonClicked" Margin="0,0,0,3" />
+					Margin="0,0,0,3" />
 				
 				<GridSplitter
 					Grid.Row="2"
@@ -150,7 +147,7 @@
 					IsVisible="{Binding IsVisible, ElementName=bottomPane}" />
 				
 				<tv:DockedPane x:Name="bottomPane" Grid.Row="5" Title="Bottom" IsVisible="false"
-					CloseButtonClicked="BottomPane_CloseButtonClicked" Margin="0,3,0,0" />
+					Margin="0,3,0,0" />
 			</Grid>
 		</Grid>
 	</DockPanel>

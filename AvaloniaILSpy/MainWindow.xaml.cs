@@ -135,6 +135,7 @@ namespace AvaloniaILSpy
             rightColumn = mainGrid.ColumnDefinitions[2];
 
             treeView = this.FindControl<SharpTreeView>("treeView");
+            treeView.SelectionChanged += TreeView_SelectionChanged;
 
             rightPane = this.FindControl<Grid>("rightPane");
             topPaneRow = rightPane.RowDefinitions[1];
@@ -142,11 +143,16 @@ namespace AvaloniaILSpy
             bottomPaneRow = rightPane.RowDefinitions[5];
 
             updatePanel = this.FindControl<Border>("updatePanel");
+            var updatePanelCloseButton = this.FindControl<Button>("updatePanelCloseButton");
+            updatePanelCloseButton.Click += updatePanelCloseButtonClick;
             updatePanelMessage = this.FindControl<TextBlock>("updatePanelMessage");
             downloadOrCheckUpdateButton = this.FindControl<Button>("downloadOrCheckUpdateButton");
+            downloadOrCheckUpdateButton.Click += downloadOrCheckUpdateButtonClick;
             topPane = this.FindControl<DockedPane>("topPane");
+            topPane.CloseButtonClicked += TopPane_CloseButtonClicked;
             mainPane = this.FindControl<ContentPresenter>("mainPane");
             bottomPane = this.FindControl<DockedPane>("bottomPane");
+            bottomPane.CloseButtonClicked += BottomPane_CloseButtonClicked;
 
             CommandBindings.Add(new RoutedCommandBinding(ApplicationCommands.Open, OpenCommandExecuted));
             CommandBindings.Add(new RoutedCommandBinding(ApplicationCommands.Refresh, RefreshCommandExecuted));
