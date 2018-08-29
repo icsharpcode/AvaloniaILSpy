@@ -1,6 +1,6 @@
 ﻿<Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:tv="clr-namespace:AvaloniaILSpy.Controls;assembly=AvaloniaILSpy.Controls"
+        xmlns:tv="clr-namespace:AvaloniaILSpy.Controls;assembly=SharpTreeView.Avalonia"
 	      xmlns:local="clr-namespace:AvaloniaILSpy"
 	      Title="ILSpy"
 	      MinWidth="250"
@@ -26,11 +26,11 @@
 		</Menu>
 		<!-- ToolBar -->
 		<ListBox
-			Name="toolBar" BorderThickness="0" Padding="0"
+			Name="toolBar" BorderThickness="0" Padding="2" Classes="ToolBar"
 			DockPanel.Dock="Top" >
 		    <ListBox.ItemsPanel>
 		        <ItemsPanelTemplate>
-		            <StackPanel Orientation="Horizontal" />
+		            <StackPanel Orientation="Horizontal" Spacing="1" />
 		        </ItemsPanelTemplate>
 		    </ListBox.ItemsPanel>
 			<!--
@@ -50,9 +50,11 @@
 			</CheckBox>
 			<Separator />
 			<DropDown Name="languageComboBox" Width="100" 
+					  BorderThickness="1"
 			          Items="{x:Static local:Languages.AllLanguages}"
 			          SelectedItem="{Binding FilterSettings.Language}"/>
 			<DropDown Name="languageVersionComboBox" Width="100" 
+					  BorderThickness="1"
 			          IsVisible="{Binding SelectedItem.HasLanguageVersions, ElementName=languageComboBox}"
 			          Items="{Binding SelectedItem.LanguageVersions, ElementName=languageComboBox}"
 			          SelectedItem="{Binding FilterSettings.LanguageVersion}"/>

@@ -5,8 +5,10 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
     <EnableDefaultItems>false</EnableDefaultItems>
-    <SignAssembly>false</SignAssembly>
-  </PropertyGroup>
+    <SignAssembly>True</SignAssembly>
+    <AssemblyOriginatorKeyFile>..\ICSharpCode.Decompiler\ICSharpCode.Decompiler.snk</AssemblyOriginatorKeyFile>
+    <RootNamespace>AvaloniaILSpy</RootNamespace>
+   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
     <DebugType>full</DebugType>
@@ -51,7 +53,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="Images\*.png">
+    <Content Include="Images\*.png;*.ico">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
@@ -62,16 +64,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="Images\ILSpy-Large.ico">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Images\ILSpy.ico">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\AvaloniaILSpy.Controls\AvaloniaILSpy.Controls.csproj" />
+    <ProjectReference Include="..\SharpTreeView.Avalonia\SharpTreeView.Avalonia.csproj" />
     <ProjectReference Include="..\AvaloniaEdit\src\AvaloniaEdit\AvaloniaEdit.csproj" />
   </ItemGroup>
   

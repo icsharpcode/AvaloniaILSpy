@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26730.12
+VisualStudioVersion = 15.0.27130.2026
 MinimumVisualStudioVersion = 15.0
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "doc", "doc", "{F45DB999-7E72-4000-B5AD-3A7B485A0896}"
 	ProjectSection(SolutionItems) = preProject
@@ -10,15 +10,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "doc", "doc", "{F45DB999-7E7
 		doc\IntPtr.txt = doc\IntPtr.txt
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AvaloniaILSpy.Controls", "AvaloniaILSpy.Controls\AvaloniaILSpy.Controls.csproj", "{0A3DA152-0729-4540-973C-11583009520F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SharpTreeView.Avalonia", "SharpTreeView.Avalonia\SharpTreeView.Avalonia.csproj", "{0A3DA152-0729-4540-973C-11583009520F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AvaloniaILSpy", "AvaloniaILSpy\AvaloniaILSpy.csproj", "{7BB39313-8FC6-40A4-A06F-FD2A10817256}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ILSpy.Avalonia.Core", "ILSpy.Avalonia.Core\ILSpy.Avalonia.Core.csproj", "{7BB39313-8FC6-40A4-A06F-FD2A10817256}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AvaloniaEdit", "AvaloniaEdit\src\AvaloniaEdit\AvaloniaEdit.csproj", "{CC3151F6-C080-4E17-9F50-58C3FED64F28}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestPlugin", "TestPlugin\TestPlugin.csproj", "{5C561A81-4427-418A-B773-3840D2B32C4D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestPlugin.Avalonia", "TestPlugin.Avalonia\TestPlugin.Avalonia.csproj", "{5C561A81-4427-418A-B773-3840D2B32C4D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AvaloniaILSpy.NetCore", "AvaloniaILSpy.NetCore\AvaloniaILSpy.NetCore.csproj", "{3AAA340D-7BED-4B26-BDD3-992D8B6D7779}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ILSpy.Avalonia", "ILSpy.Avalonia\ILSpy.Avalonia.csproj", "{3AAA340D-7BED-4B26-BDD3-992D8B6D7779}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

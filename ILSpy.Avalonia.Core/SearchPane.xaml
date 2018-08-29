@@ -1,8 +1,8 @@
 ﻿<UserControl x:Class="AvaloniaILSpy.SearchPane" xmlns="https://github.com/avaloniaui"
 		xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-		xmlns:controls="clr-namespace:AvaloniaILSpy.Controls;assembly=AvaloniaILSpy.Controls"
+		xmlns:controls="clr-namespace:AvaloniaILSpy.Controls;assembly=SharpTreeView.Avalonia"
 		xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:avalonia="clr-namespace:Avalonia;assembly=AvaloniaILSpy.Controls"
+        xmlns:avalonia="clr-namespace:Avalonia;assembly=SharpTreeView.Avalonia"
 		xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" x:Name="searchPane" mc:Ignorable="d"
 		d:DesignHeight="300" d:DesignWidth="300">
 	<Grid>

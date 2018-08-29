@@ -3,6 +3,9 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
     <EnableDefaultItems>false</EnableDefaultItems>
+    <SignAssembly>True</SignAssembly>
+    <AssemblyOriginatorKeyFile>..\ICSharpCode.Decompiler\ICSharpCode.Decompiler.snk</AssemblyOriginatorKeyFile>
+    <RootNamespace>AvaloniaILSpy.Controls</RootNamespace>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
     <DebugType>full</DebugType>

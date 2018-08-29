@@ -44,7 +44,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\AvaloniaILSpy\AvaloniaILSpy.csproj" />
+    <ProjectReference Include="..\ILSpy.Avalonia.Core\ILSpy.Avalonia.Core.csproj" />
   </ItemGroup>
 
 </Project>

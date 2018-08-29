@@ -1,0 +1,40 @@
+﻿<Application xmlns="https://github.com/avaloniaui">
+	<Application.Styles>
+		<StyleInclude Source="resm:Avalonia.Themes.Default.DefaultTheme.xaml?assembly=Avalonia.Themes.Default"/>
+		<StyleInclude Source="resm:Avalonia.Themes.Default.Accents.BaseLight.xaml?assembly=Avalonia.Themes.Default"/>
+		<StyleInclude Source="resm:AvaloniaEdit.AvaloniaEdit.xaml?assembly=AvaloniaEdit" />
+		<StyleInclude Source="resm:AvaloniaILSpy.Controls.Themes.TreeView.xaml?assembly=SharpTreeView.Avalonia" />
+		<StyleInclude Source="resm:AvaloniaILSpy.Controls.Themes.DockedPane.xaml?assembly=SharpTreeView.Avalonia" />
+		<StyleInclude Source="resm:AvaloniaILSpy.Controls.Themes.SearchBox.xaml?assembly=SharpTreeView.Avalonia" />
+
+		<Style Selector="Window.DialogWindow" >
+			<Setter Property="ShowInTaskbar" Value="False"/>
+			<Setter Property="UseLayoutRounding" Value="True"/>
+            <!-- issue in mac when using system close button-->
+            <Setter Property="HasSystemDecorations" Value="False"/>
+            <Setter Property="Topmost" Value="True"/>
+		</Style>
+		
+		<Style Selector="Button" >
+			<Setter Property="MinWidth" Value="73" />
+			<Setter Property="Padding" Value="9,1,9,1" />
+		</Style>
+		
+		<Style Selector="Button.ToolBarItem" >
+			<Setter Property="Background" Value="Transparent" />
+			<Setter Property="BorderThickness" Value="1" />
+			<Setter Property="BorderBrush" Value="Transparent" />
+			<Setter Property="Width" Value="20" />
+			<Setter Property="Height" Value="20" />
+		</Style>
+		
+		<Style Selector="Button.ToolBarItem:pointover /template/ ContentPresenter" >
+		    <Setter Property="BorderBrush" Value="{DynamicResource ThemeAccentBrush}"/>
+		</Style>
+		
+		<Style Selector="Button.ToolBarItem:pressed /template/ ContentPresenter" >
+		    <Setter Property="Background" Value="{DynamicResource ThemeAccentBrush4}"/>
+		    <Setter Property="BorderBrush" Value="{DynamicResource ThemeAccentBrush}"/>
+		</Style>
+	</Application.Styles>
+</Application>
