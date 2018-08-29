@@ -55,7 +55,7 @@
     <None Include="license.txt" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Avalonia" Version="0.6.2-build6007-beta" />
+    <PackageReference Include="Avalonia" Version="0.6.2-build6032-beta" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\AvaloniaEdit\src\AvaloniaEdit\AvaloniaEdit.csproj" />

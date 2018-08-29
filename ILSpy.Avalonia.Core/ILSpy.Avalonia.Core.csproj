@@ -30,7 +30,7 @@
     <PackageReference Include="Microsoft.VisualStudio.Composition" Version="15.8.98" />
     <PackageReference Include="System.IO.Compression" Version="4.3.0" />
     <PackageReference Include="NuGet.Client" Version="4.2.0" />
-    <PackageReference Include="Avalonia.Desktop" Version="0.6.2-build6007-beta" />
+    <PackageReference Include="Avalonia.Desktop" Version="0.6.2-build6032-beta" />
   </ItemGroup>
 
   <ItemGroup>
