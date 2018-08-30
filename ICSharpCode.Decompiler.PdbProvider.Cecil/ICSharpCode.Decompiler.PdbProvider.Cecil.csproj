@@ -9,6 +9,7 @@
   <ItemGroup>
     <PackageReference Include="Mono.Cecil" Version="0.10.0" />
     <PackageReference Include="ICSharpCode.Decompiler" Version="4.0.0.4322-beta2-debug" />
+    <PackageReference Include="System.IO.FileSystem.Primitives" Version="4.3.0" />
   </ItemGroup>
   
 </Project>
