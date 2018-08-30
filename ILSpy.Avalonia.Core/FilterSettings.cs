@@ -22,7 +22,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Xml.Linq;
 
-namespace AvaloniaILSpy
+namespace ICSharpCode.ILSpy
 {
 	/// <summary>
 	/// Represents the filters applied to the tree view.

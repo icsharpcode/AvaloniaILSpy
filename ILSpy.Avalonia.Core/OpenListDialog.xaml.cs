@@ -19,14 +19,14 @@
 using Avalonia;
 using Avalonia.Controls;
 using Mono.Cecil;
-using System.Windows.Input;
+using Avalonia.Input;
 using System;
 using Avalonia.Interactivity;
 using Avalonia.Input;
-using AvaloniaILSpy.Controls;
+using ICSharpCode.TreeView;
 using Avalonia.Markup.Xaml;
 
-namespace AvaloniaILSpy
+namespace ICSharpCode.ILSpy
 {
 	/// <summary>
 	/// Interaction logic for OpenListDialog.xaml

@@ -8,7 +8,7 @@ using Avalonia.Interactivity;
 using System;
 using Avalonia.Controls.Primitives;
 
-namespace AvaloniaILSpy.Controls
+namespace ICSharpCode.TreeView
 {
 	class EditTextBox : TextBox
 	{

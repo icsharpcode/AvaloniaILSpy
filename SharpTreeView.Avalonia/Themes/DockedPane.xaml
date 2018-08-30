@@ -1,7 +1,7 @@
 ﻿<Styles xmlns="https://github.com/avaloniaui"
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:avalonia="clr-namespace:Avalonia"
-	xmlns:controls="clr-namespace:AvaloniaILSpy.Controls"
+	xmlns:controls="clr-namespace:ICSharpCode.TreeView"
 >
 	<!--
 	<ResourceDictionary.MergedDictionaries>

@@ -19,7 +19,7 @@
 using System;
 using Avalonia;
 using Avalonia.Controls;
-using System.Windows.Input;
+using Avalonia.Input;
 using Avalonia.Media;
 using AvaloniaEdit.Highlighting;
 using ICSharpCode.Decompiler;
@@ -27,7 +27,7 @@ using Avalonia.Media.Imaging;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 
-namespace AvaloniaILSpy
+namespace ICSharpCode.ILSpy
 {
 	/// <summary>
 	/// Adds additional WPF-specific output features to <see cref="ITextOutput"/>.

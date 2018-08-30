@@ -20,7 +20,7 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using Avalonia.Media;
 
-namespace AvaloniaILSpy.Options
+namespace ICSharpCode.ILSpy.Options
 {
 	/// <summary>
 	/// Description of DisplaySettings.

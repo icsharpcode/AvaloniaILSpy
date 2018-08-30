@@ -13,7 +13,7 @@ using Avalonia.Data;
 using Avalonia.Controls.Presenters;
 using System.Collections.Generic;
 
-namespace AvaloniaILSpy.Controls
+namespace ICSharpCode.TreeView
 {
 	public class SharpTreeNodeView : TemplatedControl
 	{

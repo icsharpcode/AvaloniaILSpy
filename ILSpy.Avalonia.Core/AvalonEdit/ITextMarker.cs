@@ -21,7 +21,7 @@ using System.Collections.Generic;
 using Avalonia;
 using Avalonia.Media;
 
-namespace AvaloniaILSpy.AvaloniaEdit
+namespace ICSharpCode.ILSpy.AvaloniaEdit
 {
 	/// <summary>
 	/// Represents a text marker.

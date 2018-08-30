@@ -9,7 +9,7 @@ using Avalonia.Metadata;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("AvaloniaILSpy.Controls")]
+[assembly: AssemblyTitle("ICSharpCode.TreeView")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyTrademark("")]
@@ -37,4 +37,4 @@ using Avalonia.Metadata;
 
 //[assembly: XmlnsPrefix("http://icsharpcode.net/sharpdevelop/treeview", "treeview")]
 
-[assembly: XmlnsDefinition("http://icsharpcode.net/sharpdevelop/treeview", "AvaloniaILSpy.Controls")]
+[assembly: XmlnsDefinition("http://icsharpcode.net/sharpdevelop/treeview", "ICSharpCode.TreeView")]

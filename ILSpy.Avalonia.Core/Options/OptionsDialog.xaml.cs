@@ -23,11 +23,10 @@ using Avalonia;
 using Avalonia.Controls;
 using System.Xml.Linq;
 using Avalonia.Interactivity;
-using AvaloniaILSpy.Controls;
 using Avalonia.Markup.Xaml;
 using System.Collections.Generic;
 
-namespace AvaloniaILSpy.Options
+namespace ICSharpCode.ILSpy.Options
 {
 	/// <summary>
 	/// Interaction logic for OptionsDialog.xaml

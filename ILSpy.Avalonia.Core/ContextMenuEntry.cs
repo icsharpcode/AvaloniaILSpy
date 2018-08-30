@@ -23,12 +23,13 @@ using System.Linq;
 using Avalonia.Controls;
 using Avalonia.Input;
 using AvaloniaEdit;
-using AvaloniaILSpy.TextView;
-using AvaloniaILSpy.Controls;
+using ICSharpCode.ILSpy.TextView;
+using ICSharpCode.TreeView;
 using System.ComponentModel;
 using Avalonia;
+using ICSharpCode.ILSpy.Search;
 
-namespace AvaloniaILSpy
+namespace ICSharpCode.ILSpy
 {
 	public interface IContextMenuEntry
 	{

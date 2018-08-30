@@ -20,7 +20,7 @@ using System;
 using System.Linq;
 using ICSharpCode.Decompiler;
 
-namespace AvaloniaILSpy.TreeNodes
+namespace ICSharpCode.ILSpy.TreeNodes
 {
 	/// <summary>
 	/// Namespace node. The loading of the type nodes is handled by the parent AssemblyTreeNode.
@@ -41,7 +41,7 @@ namespace AvaloniaILSpy.TreeNodes
 		}
 		
 		public override object Text {
-			get { return HighlightSearchMatch(name.Length == 0 ? "-" : name); }
+			get { return name.Length == 0 ? "-" : name; }
 		}
 		
 		public override object Icon {

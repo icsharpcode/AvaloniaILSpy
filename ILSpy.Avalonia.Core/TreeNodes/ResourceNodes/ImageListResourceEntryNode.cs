@@ -21,7 +21,7 @@ using System.Drawing;
 using ICSharpCode.Decompiler;
 
 // TODO: Support image list
-namespace AvaloniaILSpy.TreeNodes
+namespace ICSharpCode.ILSpy.TreeNodes
 {
 	
 	//[Export(typeof(IResourceNodeFactory))]

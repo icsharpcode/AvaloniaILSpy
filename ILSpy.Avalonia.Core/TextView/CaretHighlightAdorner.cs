@@ -25,7 +25,7 @@ using Avalonia.Animation;
 using Avalonia.Threading;
 using AvaloniaEdit.Editing;
 
-namespace AvaloniaILSpy.TextView
+namespace ICSharpCode.ILSpy.TextView
 {
 	/// <summary>
 	/// Animated rectangle around the caret.

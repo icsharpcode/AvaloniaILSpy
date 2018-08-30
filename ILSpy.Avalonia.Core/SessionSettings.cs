@@ -25,8 +25,9 @@ using System.Text.RegularExpressions;
 using Avalonia;
 using System.Xml.Linq;
 using Avalonia.Controls;
+using AvaloniaEdit.Search;
 
-namespace AvaloniaILSpy
+namespace ICSharpCode.ILSpy
 {
 	/// <summary>
 	/// Per-session setting:
@@ -56,7 +57,7 @@ namespace AvaloniaILSpy
 			this.SplitterPosition = FromString((string)doc.Element("SplitterPosition"), 0.4);
 			this.TopPaneSplitterPosition = FromString((string)doc.Element("TopPaneSplitterPosition"), 0.3);
 			this.BottomPaneSplitterPosition = FromString((string)doc.Element("BottomPaneSplitterPosition"), 0.3);
-			this.SelectedSearchMode = FromString((string)doc.Element("SelectedSearchMode"), SearchMode.TypeAndMember);
+			this.SelectedSearchMode = FromString((string)doc.Element("SelectedSearchMode"), Search.SearchMode.TypeAndMember);
 		}
 		
 		public event PropertyChangedEventHandler PropertyChanged;
@@ -68,7 +69,7 @@ namespace AvaloniaILSpy
 		}
 		
 		public FilterSettings FilterSettings { get; private set; }
-		public SearchMode SelectedSearchMode { get; set; }
+		public Search.SearchMode SelectedSearchMode { get; set; }
 		
 		public string[] ActiveTreeViewPath;
 		public string ActiveAutoLoadedAssembly;

@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2011 AlphaSierraPapa for the SharpDevelop Team
+// Copyright (c) 2011 AlphaSierraPapa for the SharpDevelop Team
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this
 // software and associated documentation files (the "Software"), to deal in the Software
@@ -22,7 +22,7 @@ using System.Linq;
 
 using Microsoft.VisualStudio.Composition;
 
-namespace AvaloniaILSpy
+namespace ICSharpCode.ILSpy
 {
 	public static class Languages
 	{

@@ -6,7 +6,7 @@ using Avalonia;
 using Avalonia.Media;
 using Avalonia.Controls;
 
-namespace AvaloniaILSpy.Controls
+namespace ICSharpCode.TreeView
 {
 	public class GeneralAdorner : AdornerDecorator
 	{

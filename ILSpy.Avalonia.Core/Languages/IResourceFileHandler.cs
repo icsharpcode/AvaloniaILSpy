@@ -18,7 +18,7 @@
 
 using System.IO;
 
-namespace AvaloniaILSpy
+namespace ICSharpCode.ILSpy
 {
 	public interface IResourceFileHandler
 	{

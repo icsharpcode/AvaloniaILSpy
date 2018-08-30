@@ -20,13 +20,13 @@ using System.Collections;
 using System.Text;
 using Avalonia;
 using Avalonia.Controls;
-using System.Windows.Input;
+using Avalonia.Input;
 using AvaloniaEdit;
 using System;
 using Avalonia.Markup.Xaml;
 using Avalonia.Controls.Presenters;
 
-namespace AvaloniaILSpy.Controls
+namespace ICSharpCode.ILSpy
 {
 	/// <summary>
 	/// Interaction logic for ResourceStringTable.xaml

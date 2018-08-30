@@ -21,10 +21,10 @@ using System.IO;
 using System.Threading.Tasks;
 using Avalonia.Controls;
 using ICSharpCode.Decompiler;
-using AvaloniaILSpy.TextView;
+using ICSharpCode.ILSpy.TextView;
 using Microsoft.Win32;
 
-namespace AvaloniaILSpy.TreeNodes
+namespace ICSharpCode.ILSpy.TreeNodes
 {
 	/// <summary>
 	/// Entry in a .resources file

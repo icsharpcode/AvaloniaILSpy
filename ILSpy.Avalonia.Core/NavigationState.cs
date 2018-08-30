@@ -18,10 +18,10 @@
 
 using System;
 using System.Collections.Generic;
-using AvaloniaILSpy.TextView;
-using AvaloniaILSpy.Controls;
+using ICSharpCode.ILSpy.TextView;
+using ICSharpCode.TreeView;
 
-namespace AvaloniaILSpy
+namespace ICSharpCode.ILSpy
 {
 	public class NavigationState : IEquatable<NavigationState>
 	{

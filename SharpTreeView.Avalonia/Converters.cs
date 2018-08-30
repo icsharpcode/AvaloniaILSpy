@@ -11,7 +11,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using Avalonia.Data;
 
-namespace AvaloniaILSpy.Controls
+namespace ICSharpCode.TreeView
 {
 	public class BoolConverters 
 	{

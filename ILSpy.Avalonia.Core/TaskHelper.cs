@@ -21,9 +21,9 @@ using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 using Avalonia.Threading;
-using AvaloniaILSpy.TextView;
+using ICSharpCode.ILSpy.TextView;
 
-namespace AvaloniaILSpy
+namespace ICSharpCode.ILSpy
 {
 	public static class TaskHelper
 	{

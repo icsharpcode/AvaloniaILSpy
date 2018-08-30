@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2011 AlphaSierraPapa for the SharpDevelop Team
+// Copyright (c) 2011 AlphaSierraPapa for the SharpDevelop Team
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this
 // software and associated documentation files (the "Software"), to deal in the Software
@@ -17,70 +17,76 @@
 // DEALINGS IN THE SOFTWARE.
 
 using System;
+using System.Diagnostics;
 using System.Linq;
+using System.Reflection.Metadata;
 using Avalonia.Interactivity;
 using ICSharpCode.Decompiler;
-using AvaloniaILSpy.Controls;
-using Mono.Cecil;
+using ICSharpCode.Decompiler.Metadata;
+using ICSharpCode.Decompiler.TypeSystem;
+using ICSharpCode.TreeView;
 
-namespace AvaloniaILSpy.TreeNodes
+namespace ICSharpCode.ILSpy.TreeNodes
 {
 	sealed class BaseTypesEntryNode : ILSpyTreeNode, IMemberTreeNode
 	{
-		private readonly TypeReference tr;
-		private TypeDefinition def;
-		private readonly bool isInterface;
+		readonly PEFile module;
+		readonly EntityHandle handle;
+		readonly IType type;
+		readonly bool isInterface;
+		bool showExpander;
 
-		public BaseTypesEntryNode(TypeReference tr, bool isInterface)
+		public BaseTypesEntryNode(PEFile module, EntityHandle handle, IType type, bool isInterface)
 		{
-			if (tr == null)
-				throw new ArgumentNullException(nameof(tr));
-			this.tr = tr;
-			this.def = tr.Resolve();
+			if (handle.IsNil)
+				throw new ArgumentNullException(nameof(handle));
+			this.module = module ?? throw new ArgumentNullException(nameof(module));
+			this.handle = handle;
+			this.type = type;
 			this.isInterface = isInterface;
 			this.LazyLoading = true;
+			TryResolve(module, handle, type);
 		}
 
-		public override bool ShowExpander
+		ITypeDefinition TryResolve(PEFile module, EntityHandle handle, IType type, bool mayRetry = true)
 		{
-			get { return def != null && (def.BaseType != null || def.HasInterfaces); }
-		}
-
-		public override object Text
-		{
-			get { return this.Language.TypeToString(tr, true) + tr.MetadataToken.ToSuffixString(); }
-		}
-
-		public override object Icon
-		{
-			get
-			{
-				if (def != null)
-					return TypeTreeNode.GetIcon(def);
-				else
-					return isInterface ? Images.Interface : Images.Class;
+			DecompilerTypeSystem typeSystem = new DecompilerTypeSystem(module, module.GetAssemblyResolver(),
+				TypeSystemOptions.Default | TypeSystemOptions.Uncached);
+			var t = typeSystem.MainModule.ResolveEntity(handle) as ITypeDefinition;
+			if (t != null) {
+				showExpander = t.DirectBaseTypes.Any();
+				var other = t.ParentModule.PEFile.GetTypeSystemOrNull();
+				Debug.Assert(other != null);
+				t = other.FindType(t.FullTypeName).GetDefinition();
+			} else {
+				showExpander = mayRetry;
 			}
+			RaisePropertyChanged(nameof(Text));
+			RaisePropertyChanged(nameof(ShowExpander));
+			return t;
 		}
+
+		public override bool ShowExpander => showExpander && base.ShowExpander;
+
+		public override object Text => this.Language.TypeToString(type, includeNamespace: true) + handle.ToSuffixString();
+
+		public override object Icon => isInterface ? Images.Interface : Images.Class;
 
 		protected override void LoadChildren()
 		{
-			if (def != null)
-				BaseTypesTreeNode.AddBaseTypes(this.Children, def);
+			var t = TryResolve(module, handle, type, false);
+			if (t != null) {
+				BaseTypesTreeNode.AddBaseTypes(this.Children, t.ParentModule.PEFile, t);
+			}
 		}
 
 		public override void ActivateItem(RoutedEventArgs e)
 		{
-			// on item activation, try to resolve once again (maybe the user loaded the assembly in the meantime)
-			if (def == null) {
-				def = tr.Resolve();
-				if (def != null)
-					this.LazyLoading = true;
-				// re-load children
-			}
-			e.Handled = ActivateItem(this, def);
+			var t = TryResolve(module, handle, type, false);
+			e.Handled = ActivateItem(this, t);
 		}
 
-		internal static bool ActivateItem(SharpTreeNode node, TypeDefinition def)
+		internal static bool ActivateItem(SharpTreeNode node, ITypeDefinition def)
 		{
 			if (def != null) {
 				var assemblyListNode = node.Ancestors().OfType<AssemblyListTreeNode>().FirstOrDefault();
@@ -94,12 +100,13 @@ namespace AvaloniaILSpy.TreeNodes
 
 		public override void Decompile(Language language, ITextOutput output, DecompilationOptions options)
 		{
-			language.WriteCommentLine(output, language.TypeToString(tr, true));
+			language.WriteCommentLine(output, language.TypeToString(type, includeNamespace: true));
 		}
 
-		MemberReference IMemberTreeNode.Member
-		{
-			get { return tr; }
+		IEntity IMemberTreeNode.Member {
+			get {
+				return TryResolve(module, handle, type, false);
+			}
 		}
 	}
 }

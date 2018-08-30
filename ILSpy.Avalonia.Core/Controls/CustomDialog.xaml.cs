@@ -23,7 +23,7 @@ using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 
-namespace AvaloniaILSpy.Controls
+namespace ICSharpCode.ILSpy
 {
 	public sealed class CustomDialog : DialogWindow
 	{

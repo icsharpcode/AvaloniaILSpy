@@ -21,7 +21,7 @@ using System.Linq;
 using AvaloniaEdit;
 using AvaloniaEdit.Folding;
 
-namespace AvaloniaILSpy.TextView
+namespace ICSharpCode.ILSpy.TextView
 {
 	[ExportContextMenuEntryAttribute(Header = "Toggle All Folding", Category = "Folding")]
 	internal sealed class ToggleAllContextMenuEntry : IContextMenuEntry

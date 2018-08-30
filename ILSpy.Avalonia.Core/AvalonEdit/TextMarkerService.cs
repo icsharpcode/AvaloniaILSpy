@@ -25,7 +25,7 @@ using Avalonia.Threading;
 using AvaloniaEdit.Document;
 using AvaloniaEdit.Rendering;
 
-namespace AvaloniaILSpy.AvaloniaEdit
+namespace ICSharpCode.ILSpy.AvaloniaEdit
 {
 	using TextView = global::AvaloniaEdit.Rendering.TextView;
 	/// <summary>

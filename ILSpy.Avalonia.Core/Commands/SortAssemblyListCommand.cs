@@ -18,9 +18,9 @@
 
 using System;
 using System.Collections.Generic;
-using AvaloniaILSpy.Controls;
+using ICSharpCode.TreeView;
 
-namespace AvaloniaILSpy
+namespace ICSharpCode.ILSpy
 {
 	[ExportMainMenuCommand(Menu = "_View", Header = "Sort assembly _list by name", MenuIcon = "Images/Sort.png", MenuCategory = "View")]
 	[ExportToolbarCommand(ToolTip = "Sort assembly list by name", ToolbarIcon = "Images/Sort.png", ToolbarCategory = "View")]
@@ -45,10 +45,7 @@ namespace AvaloniaILSpy
 		public override void Execute(object parameter)
 		{
 			using (MainWindow.Instance.treeView.LockUpdates())
-            {
-                MainWindow.Instance.treeView.SelectedItems.Clear();
-                CollapseChildren(MainWindow.Instance.treeView.Root);
-            }
+				CollapseChildren(MainWindow.Instance.treeView.Root);
 
 			void CollapseChildren(SharpTreeNode node)
 			{

@@ -6,7 +6,7 @@ using Avalonia.Controls;
 using Avalonia.Media;
 using System.Diagnostics;
 
-namespace AvaloniaILSpy.Controls
+namespace ICSharpCode.TreeView
 {
 	class LinesRenderer : Control
 	{

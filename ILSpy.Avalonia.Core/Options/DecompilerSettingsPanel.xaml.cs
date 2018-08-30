@@ -20,10 +20,9 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using Avalonia.Controls;
 using System.Xml.Linq;
-using System;
 using Avalonia.Markup.Xaml;
 
-namespace AvaloniaILSpy.Options
+namespace ICSharpCode.ILSpy.Options
 {
 	/// <summary>
 	/// Interaction logic for DecompilerSettingsPanel.xaml
@@ -64,7 +63,6 @@ namespace AvaloniaILSpy.Options
 			s.ExpandMemberDefinitions = (bool?)e.Attribute("expandMemberDefinitions") ?? s.ExpandMemberDefinitions;
 			s.RemoveDeadCode = (bool?)e.Attribute("removeDeadCode") ?? s.RemoveDeadCode;
 			s.UsingDeclarations = (bool?)e.Attribute("usingDeclarations") ?? s.UsingDeclarations;
-			s.FullyQualifyAmbiguousTypeNames = (bool?)e.Attribute("fullyQualifyAmbiguousTypeNames") ?? s.FullyQualifyAmbiguousTypeNames;
 			s.AlwaysUseBraces = (bool?)e.Attribute("alwaysUseBraces") ?? s.AlwaysUseBraces;
 			return s;
 		}
@@ -80,7 +78,6 @@ namespace AvaloniaILSpy.Options
 			section.SetAttributeValue("expandMemberDefinitions", s.ExpandMemberDefinitions);
 			section.SetAttributeValue("removeDeadCode", s.RemoveDeadCode);
 			section.SetAttributeValue("usingDeclarations", s.UsingDeclarations);
-			section.SetAttributeValue("fullyQualifyAmbiguousTypeNames", s.FullyQualifyAmbiguousTypeNames);
 			section.SetAttributeValue("alwaysUseBraces", s.AlwaysUseBraces);
 
 			XElement existingElement = root.Element("DecompilerSettings");
@@ -144,18 +141,6 @@ namespace AvaloniaILSpy.Options
 			set {
 				if (decompileMemberBodies != value) {
 					decompileMemberBodies = value;
-					OnPropertyChanged();
-				}
-			}
-		}
-
-		bool fullyQualifyAmbiguousTypeNames = true;
-
-		public bool FullyQualifyAmbiguousTypeNames {
-			get { return fullyQualifyAmbiguousTypeNames; }
-			set {
-				if (fullyQualifyAmbiguousTypeNames != value) {
-					fullyQualifyAmbiguousTypeNames = value;
 					OnPropertyChanged();
 				}
 			}

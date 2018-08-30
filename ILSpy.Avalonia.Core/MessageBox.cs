@@ -5,7 +5,7 @@ using Avalonia.Controls;
 using System.Threading.Tasks;
 using System.Diagnostics;
 
-namespace AvaloniaILSpy
+namespace ICSharpCode.ILSpy
 {
 	public static class MessageBox
 	{

@@ -22,15 +22,16 @@ using System.IO;
 using System.Threading.Tasks;
 
 using AvaloniaEdit.Highlighting;
-using AvaloniaILSpy.TextView;
-using AvaloniaILSpy.TreeNodes;
+using ICSharpCode.Decompiler.Metadata;
+using ICSharpCode.ILSpy.TextView;
+using ICSharpCode.ILSpy.TreeNodes;
 
-namespace AvaloniaILSpy.Xaml
+namespace ICSharpCode.ILSpy.Xaml
 {
 	[Export(typeof(IResourceNodeFactory))]
 	sealed class XamlResourceNodeFactory : IResourceNodeFactory
 	{
-		public ILSpyTreeNode CreateNode(Mono.Cecil.Resource resource)
+		public ILSpyTreeNode CreateNode(Resource resource)
 		{
 			return null;
 		}

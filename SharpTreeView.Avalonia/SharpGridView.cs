@@ -4,7 +4,7 @@
 using Avalonia.Controls;
 using Avalonia;
 
-namespace AvaloniaILSpy.Controls
+namespace ICSharpCode.TreeView
 {
 	public class SharpGridView : ListBox
 	{

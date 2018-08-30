@@ -21,7 +21,7 @@ using System.IO;
 using System.Text;
 using System.Xml;
 
-namespace AvaloniaILSpy
+namespace ICSharpCode.ILSpy
 {
 	/// <summary>
 	/// Static methods for determining the type of a file.

@@ -17,7 +17,7 @@
 // DEALINGS IN THE SOFTWARE.
 
 
-namespace AvaloniaILSpy
+namespace ICSharpCode.ILSpy
 {
 	[ExportMainMenuCommand(Menu = "_File", Header = "E_xit", MenuOrder = 99999, MenuCategory = "Exit")]
 	sealed class ExitCommand : SimpleCommand

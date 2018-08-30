@@ -8,7 +8,7 @@ using Avalonia.Input;
 using Avalonia.Threading;
 using Avalonia.Markup.Xaml;
 
-namespace AvaloniaILSpy
+namespace ICSharpCode.ILSpy
 {
 
 	/// <summary>

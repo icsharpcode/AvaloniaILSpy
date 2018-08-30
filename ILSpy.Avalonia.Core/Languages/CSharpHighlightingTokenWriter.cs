@@ -7,7 +7,7 @@ using ICSharpCode.Decompiler.CSharp.OutputVisitor;
 using ICSharpCode.Decompiler.CSharp.Syntax;
 using ICSharpCode.Decompiler.TypeSystem;
 
-namespace AvaloniaILSpy
+namespace ICSharpCode.ILSpy
 {
 	class CSharpHighlightingTokenWriter : DecoratingTokenWriter
 	{
@@ -207,14 +207,17 @@ namespace AvaloniaILSpy
 				case "by":
 				case "into":
 				case "from":
-				case "ascending":
-				case "descending":
 				case "orderby":
 				case "let":
 				case "join":
 				case "on":
 				case "equals":
 					if (nodeStack.PeekOrDefault() is QueryClause)
+						color = queryKeywordsColor;
+					break;
+				case "ascending":
+				case "descending":
+					if (nodeStack.PeekOrDefault() is QueryOrdering)
 						color = queryKeywordsColor;
 					break;
 				case "explicit":

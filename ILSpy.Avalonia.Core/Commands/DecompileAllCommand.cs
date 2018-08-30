@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2011 AlphaSierraPapa for the SharpDevelop Team
+// Copyright (c) 2011 AlphaSierraPapa for the SharpDevelop Team
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this
 // software and associated documentation files (the "Software"), to deal in the Software
@@ -23,37 +23,29 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using ICSharpCode.Decompiler;
-using AvaloniaILSpy.TextView;
-using System.IO;
+using ICSharpCode.ILSpy.TextView;
 
-namespace AvaloniaILSpy
+namespace ICSharpCode.ILSpy
 {
 	[ExportMainMenuCommand(Menu = "_File", Header = "DEBUG -- Decompile All", MenuCategory = "Open", MenuOrder = 2.5)]
 	sealed class DecompileAllCommand : SimpleCommand
 	{
 		public override bool CanExecute(object parameter)
 		{
-            //TODO: add conditions
-            return true;
+			return System.IO.Directory.Exists("c:\\temp\\decompiled");
 		}
 
 		public override void Execute(object parameter)
 		{
-            var tempFilesPath = Path.Combine(Path.GetTempPath(), "decompiled");
-            if (!Directory.Exists(tempFilesPath))
-            {
-                Directory.CreateDirectory(tempFilesPath);
-            }
-            Debug.WriteLine($"Decomile files output to {tempFilesPath}");
 			MainWindow.Instance.TextView.RunWithCancellation(ct => Task<AvaloniaEditTextOutput>.Factory.StartNew(() => {
 				AvaloniaEditTextOutput output = new AvaloniaEditTextOutput();
 				Parallel.ForEach(MainWindow.Instance.CurrentAssemblyList.GetAssemblies(), new ParallelOptions { MaxDegreeOfParallelism = Environment.ProcessorCount, CancellationToken = ct }, delegate(LoadedAssembly asm) {
 					if (!asm.HasLoadError) {
 						Stopwatch w = Stopwatch.StartNew();
 						Exception exception = null;
-                        using (var writer = new StreamWriter(Path.Combine(tempFilesPath, asm.ShortName + ".cs"))) {
+						using (var writer = new System.IO.StreamWriter("c:\\temp\\decompiled\\" + asm.ShortName + ".cs")) {
 							try {
-								new CSharpLanguage().DecompileAssembly(asm, new PlainTextOutput(writer), new DecompilationOptions() { FullDecompilation = true, CancellationToken = ct });
+								//new CSharpLanguage().DecompileAssembly(asm, new Decompiler.PlainTextOutput(writer), new DecompilationOptions() { FullDecompilation = true, CancellationToken = ct });
 							}
 							catch (Exception ex) {
 								writer.WriteLine(ex.ToString());

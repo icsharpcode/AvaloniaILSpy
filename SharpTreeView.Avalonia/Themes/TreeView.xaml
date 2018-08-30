@@ -1,7 +1,7 @@
 ﻿<Styles xmlns="https://github.com/avaloniaui"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:avalonia="clr-namespace:Avalonia"
-                    xmlns:local="clr-namespace:AvaloniaILSpy.Controls">
+                    xmlns:local="clr-namespace:ICSharpCode.TreeView">
 
 	<Styles.Resources>
 	    <SolidColorBrush x:Key="ListBorder">#FF7F9DB9</SolidColorBrush>

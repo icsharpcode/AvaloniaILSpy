@@ -23,7 +23,7 @@ using Avalonia.Interactivity;
 using Avalonia.Input;
 using Avalonia.Controls.Primitives;
 
-namespace AvaloniaILSpy.Controls
+namespace ICSharpCode.TreeView
 {
 	public class DockedPane : ContentControl
 	{

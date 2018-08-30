@@ -17,12 +17,11 @@
 // DEALINGS IN THE SOFTWARE.
 
 using System;
-using System.Windows.Input;
 using Avalonia.Input;
 using AvaloniaEdit.Document;
 using AvaloniaEdit.Rendering;
 
-namespace AvaloniaILSpy.TextView
+namespace ICSharpCode.ILSpy.TextView
 {
 	/// <summary>
 	/// Creates hyperlinks in the text view.
@@ -51,7 +50,7 @@ namespace AvaloniaILSpy.TextView
 		{
 			if (this.References == null)
 				return -1;
-			// inform AvaloniaEdit about the next position where we want to build a hyperlink
+			// inform AvalonEdit about the next position where we want to build a hyperlink
 			var segment = this.References.FindFirstSegmentWithStartAfter(startOffset);
 			return segment != null ? segment.StartOffset : -1;
 		}
@@ -98,12 +97,12 @@ namespace AvaloniaILSpy.TextView
 			this.parent = parent;
 			this.referenceSegment = referenceSegment;
 		}
-
+		
 		/// <inheritdoc/>
 		protected override void OnQueryCursor(PointerEventArgs e)
 		{
 			e.Handled = true;
-			//TODO: change cursor
+            // TODO: cursor
 			//e.Cursor = referenceSegment.IsLocal ? Cursors.Arrow : Cursors.Hand;
 		}
 		

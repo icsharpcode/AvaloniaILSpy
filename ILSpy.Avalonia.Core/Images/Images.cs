@@ -23,7 +23,7 @@ using Avalonia;
 using System.Collections.Generic;
 using Avalonia.Rendering;
 
-namespace AvaloniaILSpy
+namespace ICSharpCode.ILSpy
 {
 	static class Images
 	{
@@ -168,8 +168,8 @@ namespace AvaloniaILSpy
 						baseImage = Images.StaticClass;
 						break;
 					default:
-						throw new NotSupportedException();
-				}
+                        throw new ArgumentOutOfRangeException(nameof(icon), $"TypeIcon.{icon} is not supported!");
+                }
 
 				return baseImage;
 			}
@@ -238,8 +238,8 @@ namespace AvaloniaILSpy
 						baseImage = Images.Event;
 						break;
 					default:
-						throw new NotSupportedException();
-				}
+                        throw new ArgumentOutOfRangeException(nameof(icon), $"MemberIcon.{icon} is not supported!");
+                }
 
 				return baseImage;
 			}
@@ -303,8 +303,8 @@ namespace AvaloniaILSpy
 						overlayImage = Images.OverlayCompilerControlled;
 						break;
 					default:
-						throw new NotSupportedException();
-				}
+                        throw new ArgumentOutOfRangeException(nameof(overlay), $"AccessOverlayIcon.{overlay} is not supported!");
+                }
 				return overlayImage;
 			}
 

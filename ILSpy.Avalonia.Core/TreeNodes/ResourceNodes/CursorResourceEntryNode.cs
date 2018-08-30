@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2011 AlphaSierraPapa for the SharpDevelop Team
+// Copyright (c) 2011 AlphaSierraPapa for the SharpDevelop Team
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this
 // software and associated documentation files (the "Software"), to deal in the Software
@@ -21,10 +21,10 @@ using System.ComponentModel.Composition;
 using System.IO;
 using Avalonia.Controls;
 using Avalonia.Media.Imaging;
-using AvaloniaILSpy.TextView;
-using Mono.Cecil;
+using ICSharpCode.Decompiler.Metadata;
+using ICSharpCode.ILSpy.TextView;
 
-namespace AvaloniaILSpy.TreeNodes
+namespace ICSharpCode.ILSpy.TreeNodes
 {
 	[Export(typeof(IResourceNodeFactory))]
 	sealed class CursorResourceNodeFactory : IResourceNodeFactory
@@ -33,11 +33,10 @@ namespace AvaloniaILSpy.TreeNodes
 
 		public ILSpyTreeNode CreateNode(Resource resource)
 		{
-			EmbeddedResource er = resource as EmbeddedResource;
-			if (er != null) {
-				return CreateNode(er.Name, er.GetResourceStream());
-			}
-			return null;
+			Stream stream = resource.TryOpenStream();
+			if (stream == null)
+				return null;
+			return CreateNode(resource.Name, stream);
 		}
 
 		public ILSpyTreeNode CreateNode(string key, object data)
@@ -69,11 +68,11 @@ namespace AvaloniaILSpy.TreeNodes
 			try {
 				AvaloniaEditTextOutput output = new AvaloniaEditTextOutput();
 				Data.Position = 0;
-				Bitmap image;
+                Bitmap image;
 
-				//HACK: windows imaging does not understand that .cur files have the same layout as .ico
-				// so load to data, and modify the ResourceType in the header to make look like an icon...
-				MemoryStream s = Data as MemoryStream;
+                //HACK: windows imaging does not understand that .cur files have the same layout as .ico
+                // so load to data, and modify the ResourceType in the header to make look like an icon...
+                MemoryStream s = Data as MemoryStream;
 				if (null == s)
 				{
 					// data was stored in another stream type (e.g. PinnedBufferedMemoryStream)
@@ -83,15 +82,15 @@ namespace AvaloniaILSpy.TreeNodes
 				byte[] curData = s.ToArray();
 				curData[2] = 1;
 				using (Stream stream = new MemoryStream(curData)) {
-					image = new Bitmap(stream);
-				}
+                    image = new Bitmap(stream);
+                }
 
 				output.AddUIElement(() => new Image { Source = image });
 				output.WriteLine();
-				output.AddButton(Images.Save, "Save", async delegate {
-					await Save(null);
-				});
-				textView.ShowNode(output, this);
+                output.AddButton(Images.Save, "Save", async delegate {
+                    await Save(null);
+                });
+                textView.ShowNode(output, this);
 				return true;
 			}
 			catch (Exception) {

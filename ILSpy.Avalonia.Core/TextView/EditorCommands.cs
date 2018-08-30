@@ -16,7 +16,7 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 
-namespace AvaloniaILSpy.TextView
+namespace ICSharpCode.ILSpy.TextView
 {
 	[ExportContextMenuEntry(Header = "Copy", Category = "Editor")]
 	sealed class CopyContextMenuEntry : IContextMenuEntry

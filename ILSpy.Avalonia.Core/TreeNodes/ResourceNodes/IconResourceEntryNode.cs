@@ -21,11 +21,11 @@ using System.ComponentModel.Composition;
 using System.IO;
 using Avalonia.Controls;
 using Avalonia.Media.Imaging;
-using AvaloniaILSpy.TextView;
+using ICSharpCode.ILSpy.TextView;
 using Mono.Cecil;
 
 //TODO: support .ico bitmap frames
-namespace AvaloniaILSpy.TreeNodes
+namespace ICSharpCode.ILSpy.TreeNodes
 {
 	//[Export(typeof(IResourceNodeFactory))]
 	//sealed class IconResourceNodeFactory : IResourceNodeFactory

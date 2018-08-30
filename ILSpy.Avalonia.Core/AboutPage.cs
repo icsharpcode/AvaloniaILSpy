@@ -28,16 +28,16 @@ using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Data;
-using System.Windows.Input;
+using Avalonia.Input;
 using System.Xml.Linq;
 
 using AvaloniaEdit.Rendering;
 using ICSharpCode.Decompiler;
-using AvaloniaILSpy.TextView;
+using ICSharpCode.ILSpy.TextView;
 using Avalonia.Layout;
-using Avalonia.Input;
+using System.Windows.Input;
 
-namespace AvaloniaILSpy
+namespace ICSharpCode.ILSpy
 {
 	[ExportMainMenuCommand(Menu = "_Help", Header = "_About", MenuOrder = 99999)]
 	sealed class AboutPage : SimpleCommand

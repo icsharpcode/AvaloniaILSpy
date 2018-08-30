@@ -19,7 +19,7 @@
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-namespace AvaloniaILSpy.Options
+namespace ICSharpCode.ILSpy.Options
 {
 	public class MiscSettings : INotifyPropertyChanged
 	{

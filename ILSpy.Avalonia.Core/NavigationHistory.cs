@@ -19,7 +19,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace AvaloniaILSpy
+namespace ICSharpCode.ILSpy
 {
 	/// <summary>
 	/// Stores the navigation history.

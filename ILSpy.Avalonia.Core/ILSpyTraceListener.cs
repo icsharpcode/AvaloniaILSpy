@@ -20,10 +20,10 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading;
-using AvaloniaILSpy.Controls;
+using ICSharpCode.TreeView;
 using System.Linq;
 
-namespace AvaloniaILSpy
+namespace ICSharpCode.ILSpy
 {
 	class ILSpyTraceListener : DefaultTraceListener
 	{

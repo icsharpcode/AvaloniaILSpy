@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Window
-    xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:controls="clr-namespace:AvaloniaILSpy.Controls"
+    xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:controls="clr-namespace:ICSharpCode.TreeView"
 	xmlns:treeview="http://icsharpcode.net/sharpdevelop/treeview"
 	Title="Nuget Package Browser"
 	Classes="DialogWindow"

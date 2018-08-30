@@ -1,6 +1,6 @@
 ﻿#if DEBUG
 
-namespace AvaloniaILSpy.Commands
+namespace ICSharpCode.ILSpy.Commands
 {
 	[ExportMainMenuCommand(Menu = "_View", Header = "_Show debug steps", MenuOrder = 5000)]
 	class ShowDebugSteps : SimpleCommand

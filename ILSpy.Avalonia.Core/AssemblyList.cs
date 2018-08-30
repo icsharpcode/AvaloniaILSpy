@@ -27,7 +27,7 @@ using System.Threading.Tasks;
 using Avalonia.Threading;
 using System.Xml.Linq;
 
-namespace AvaloniaILSpy
+namespace ICSharpCode.ILSpy
 {
 	/// <summary>
 	/// A list of assemblies.
@@ -38,9 +38,10 @@ namespace AvaloniaILSpy
 		
 		/// <summary>Dirty flag, used to mark modifications so that the list is saved later</summary>
 		bool dirty;
-		
+
 		internal readonly ConcurrentDictionary<(string assemblyName, bool isWinRT), LoadedAssembly> assemblyLookupCache = new ConcurrentDictionary<(string assemblyName, bool isWinRT), LoadedAssembly>();
-		
+		internal readonly ConcurrentDictionary<string, LoadedAssembly> moduleLookupCache = new ConcurrentDictionary<string, LoadedAssembly>();
+
 		/// <summary>
 		/// The assemblies in this list.
 		/// Needs locking for multi-threaded access!

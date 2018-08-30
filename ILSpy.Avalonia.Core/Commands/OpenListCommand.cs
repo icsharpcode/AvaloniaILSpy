@@ -17,7 +17,7 @@
 // DEALINGS IN THE SOFTWARE.
 
 
-namespace AvaloniaILSpy
+namespace ICSharpCode.ILSpy
 {
 	[ExportMainMenuCommand(Menu = "_File", Header = "Open _List...", MenuIcon = "Images/AssemblyList.png", MenuCategory = "Open", MenuOrder = 1.7)]
 	sealed class OpenListCommand : SimpleCommand

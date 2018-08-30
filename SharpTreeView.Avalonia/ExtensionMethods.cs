@@ -8,7 +8,7 @@ using Avalonia;
 using System.Collections;
 using System;
 
-namespace AvaloniaILSpy.Controls
+namespace ICSharpCode.TreeView
 {
 	static class ExtensionMethods
 	{

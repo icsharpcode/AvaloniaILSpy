@@ -28,7 +28,7 @@ using System.Xml.Linq;
 using Avalonia.Data.Converters;
 using Avalonia.Markup.Xaml;
 
-namespace AvaloniaILSpy.Options
+namespace ICSharpCode.ILSpy.Options
 {
 	/// <summary>
 	/// Interaction logic for DisplaySettingsPanel.xaml

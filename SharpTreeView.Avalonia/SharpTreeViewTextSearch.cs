@@ -8,7 +8,7 @@ using System.Runtime.InteropServices;
 using Avalonia;
 using Avalonia.Threading;
 
-namespace AvaloniaILSpy.Controls
+namespace ICSharpCode.TreeView
 {
 	/// <summary>
 	/// Custom TextSearch-implementation.

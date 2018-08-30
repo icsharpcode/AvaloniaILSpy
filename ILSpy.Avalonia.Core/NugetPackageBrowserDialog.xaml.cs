@@ -30,10 +30,10 @@ using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using Avalonia.Threading;
 
-using AvaloniaILSpy.Controls;
+using ICSharpCode.TreeView;
 using Mono.Cecil;
 
-namespace AvaloniaILSpy
+namespace ICSharpCode.ILSpy
 {
 	/// <summary>
 	/// Interaction logic for NugetPackageBrowserDialog.xaml

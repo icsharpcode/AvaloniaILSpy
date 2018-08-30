@@ -19,7 +19,7 @@
 using System;
 using System.Runtime.Serialization;
 
-namespace AvaloniaILSpy.TextView
+namespace ICSharpCode.ILSpy.TextView
 {
 	/// <summary>
 	/// This exception gets used when the text output is longer than the specified limit.

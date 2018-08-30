@@ -20,6 +20,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestPlugin.Avalonia", "Test
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ILSpy.Avalonia", "ILSpy.Avalonia\ILSpy.Avalonia.csproj", "{3AAA340D-7BED-4B26-BDD3-992D8B6D7779}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ICSharpCode.Decompiler.PdbProvider.Cecil", "ICSharpCode.Decompiler.PdbProvider.Cecil\ICSharpCode.Decompiler.PdbProvider.Cecil.csproj", "{1B68749F-8434-4788-B5E5-781A1AF75595}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -46,6 +48,10 @@ Global
 		{3AAA340D-7BED-4B26-BDD3-992D8B6D7779}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3AAA340D-7BED-4B26-BDD3-992D8B6D7779}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3AAA340D-7BED-4B26-BDD3-992D8B6D7779}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1B68749F-8434-4788-B5E5-781A1AF75595}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1B68749F-8434-4788-B5E5-781A1AF75595}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1B68749F-8434-4788-B5E5-781A1AF75595}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1B68749F-8434-4788-B5E5-781A1AF75595}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

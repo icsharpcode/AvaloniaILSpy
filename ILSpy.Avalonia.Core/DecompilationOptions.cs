@@ -19,9 +19,9 @@
 using System;
 using System.Threading;
 using Decompiler = ICSharpCode.Decompiler;
-using AvaloniaILSpy.Options;
+using ICSharpCode.ILSpy.Options;
 
-namespace AvaloniaILSpy
+namespace ICSharpCode.ILSpy
 {
 	/// <summary>
 	/// Options passed to the decompiler.
@@ -85,7 +85,6 @@ namespace AvaloniaILSpy
 				AlwaysUseBraces = settings.AlwaysUseBraces,
 				ExpandMemberDefinitions = settings.ExpandMemberDefinitions,
 				FoldBraces = settings.FoldBraces,
-				FullyQualifyAmbiguousTypeNames = settings.FullyQualifyAmbiguousTypeNames,
 				RemoveDeadCode = settings.RemoveDeadCode,
 				ShowDebugInfo = settings.ShowDebugInfo,
 				ShowXmlDocumentation = settings.ShowXmlDocumentation,

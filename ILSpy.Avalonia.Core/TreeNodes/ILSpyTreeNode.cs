@@ -20,11 +20,10 @@ using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
-using Avalonia.Media;
 using ICSharpCode.Decompiler;
-using AvaloniaILSpy.Controls;
+using ICSharpCode.TreeView;
 
-namespace AvaloniaILSpy.TreeNodes
+namespace ICSharpCode.ILSpy.TreeNodes
 {
 	/// <summary>
 	/// Base class of all ILSpy tree nodes.
@@ -59,12 +58,6 @@ namespace AvaloniaILSpy.TreeNodes
 				return FilterResult.Hidden;
 		}
 
-		protected static object HighlightSearchMatch(string text, string suffix = null)
-		{
-			// TODO: implement highlighting the search match
-			return text + suffix;
-		}
-
 		public abstract void Decompile(Language language, ITextOutput output, DecompilationOptions options);
 
 		/// <summary>
@@ -84,7 +77,7 @@ namespace AvaloniaILSpy.TreeNodes
 		/// </summary>
 		public virtual Task<bool> Save(TextView.DecompilerTextView textView)
 		{
-			return Task.FromResult(false);
+            return Task.FromResult(false);
 		}
 
 		protected override void OnChildrenChanged(NotifyCollectionChangedEventArgs e)
@@ -177,12 +170,12 @@ namespace AvaloniaILSpy.TreeNodes
 			get { return false; }
 		}
 		
-		public override IBrush Foreground {
+		public override Avalonia.Media.IBrush Foreground {
 			get {
 				if (IsPublicAPI)
 					if (IsAutoLoaded) {
 						// HACK: should not be hard coded?
-						return Brushes.SteelBlue;
+						return Avalonia.Media.Brushes.SteelBlue;
 					}
 					else {
 						return base.Foreground;

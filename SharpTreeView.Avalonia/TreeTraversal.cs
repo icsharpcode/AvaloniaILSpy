@@ -4,7 +4,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace AvaloniaILSpy.Controls
+namespace ICSharpCode.TreeView
 {
 	/// <summary>
 	/// Static helper methods for traversing trees.

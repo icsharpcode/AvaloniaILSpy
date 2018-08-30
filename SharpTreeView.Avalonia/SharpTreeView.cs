@@ -18,7 +18,7 @@ using Avalonia.Styling;
 using Avalonia.Threading;
 using AvaloniaEdit;
 
-namespace AvaloniaILSpy.Controls
+namespace ICSharpCode.TreeView
 {
 	public class SharpTreeView : ListBox, IStyleable
 	{

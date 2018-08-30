@@ -21,7 +21,7 @@ using Avalonia.Markup.Xaml;
 using System;
 using System.Xml.Linq;
 
-namespace AvaloniaILSpy.Options
+namespace ICSharpCode.ILSpy.Options
 {
 	/// <summary>
 	/// Interaction logic for MiscSettingsPanel.xaml

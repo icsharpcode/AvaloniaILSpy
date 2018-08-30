@@ -20,18 +20,18 @@ using System;
 using System.Linq;
 using Avalonia.Threading;
 using ICSharpCode.Decompiler;
-using Mono.Cecil;
+using ICSharpCode.Decompiler.Metadata;
 
-namespace AvaloniaILSpy.TreeNodes
+namespace ICSharpCode.ILSpy.TreeNodes
 {
 	/// <summary>
 	/// Lists the embedded resources in an assembly.
 	/// </summary>
 	sealed class ResourceListTreeNode : ILSpyTreeNode
 	{
-		readonly ModuleDefinition module;
+		readonly PEFile module;
 		
-		public ResourceListTreeNode(ModuleDefinition module)
+		public ResourceListTreeNode(PEFile module)
 		{
 			this.LazyLoading = true;
 			this.module = module;
@@ -63,10 +63,10 @@ namespace AvaloniaILSpy.TreeNodes
 				return FilterResult.Recurse;
 		}
 		
-		public override void Decompile(Language language, ITextOutput output, DecompilationOptions options)
+		public override async void Decompile(Language language, ITextOutput output, DecompilationOptions options)
 		{
-			Dispatcher.UIThread.InvokeAsync(new Action(EnsureLazyChildren), DispatcherPriority.Normal);
-			foreach (ILSpyTreeNode child in this.Children) {
+			await Dispatcher.UIThread.InvokeAsync(new Action(EnsureLazyChildren), DispatcherPriority.Normal);
+            foreach (ILSpyTreeNode child in this.Children) {
 				child.Decompile(language, output, options);
 				output.WriteLine();
 			}

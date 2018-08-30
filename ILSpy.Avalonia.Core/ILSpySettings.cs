@@ -22,7 +22,7 @@ using System.Threading;
 using System.Xml;
 using System.Xml.Linq;
 
-namespace AvaloniaILSpy
+namespace ICSharpCode.ILSpy
 {
 	/// <summary>
 	/// Manages IL Spy settings.

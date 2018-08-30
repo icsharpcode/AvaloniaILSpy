@@ -24,7 +24,7 @@ using System.Text.RegularExpressions;
 using Avalonia.Controls;
 using System.Xml;
 
-namespace AvaloniaILSpy.TextView
+namespace ICSharpCode.ILSpy.TextView
 {
 	/// <summary>
 	/// Renders XML documentation into a WPF <see cref="TextBlock"/>.

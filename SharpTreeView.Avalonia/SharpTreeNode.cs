@@ -12,7 +12,7 @@ using Avalonia.Media;
 using Avalonia.Interactivity;
 using Avalonia.Input;
 
-namespace AvaloniaILSpy.Controls
+namespace ICSharpCode.TreeView
 {
 	public partial class SharpTreeNode : INotifyPropertyChanged
 	{

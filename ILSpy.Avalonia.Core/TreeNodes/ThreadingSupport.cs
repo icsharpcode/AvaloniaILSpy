@@ -19,13 +19,16 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows;
 using Avalonia.Threading;
 using ICSharpCode.Decompiler;
-using AvaloniaILSpy.Controls;
+using ICSharpCode.ILSpy.Analyzers;
+using ICSharpCode.TreeView;
 
-namespace AvaloniaILSpy.TreeNodes
+namespace ICSharpCode.ILSpy.TreeNodes
 {
 	/// <summary>
 	/// Adds threading support to nodes
@@ -80,9 +83,10 @@ namespace AvaloniaILSpy.TreeNodes
 			thisTask.ContinueWith(
 				delegate (Task continuation) {
 					Dispatcher.UIThread.InvokeAsync(new Action(
-						delegate {
+                        delegate {
 							if (loadChildrenTask == thisTask) {
 								node.Children.RemoveAt(node.Children.Count - 1); // remove 'Loading...'
+								node.RaisePropertyChanged(nameof(node.Text));
 							}
 							if (continuation.Exception != null) { // observe exception even when task isn't current
 								if (loadChildrenTask == thisTask) {
@@ -92,7 +96,7 @@ namespace AvaloniaILSpy.TreeNodes
 								}
 							}
 						}), DispatcherPriority.Normal);
-				});
+        });
 			
 			// Give the task a bit time to complete before we return to WPF - this keeps "Loading..."
 			// from showing up for very short waits.
@@ -149,6 +153,33 @@ namespace AvaloniaILSpy.TreeNodes
 			
 			public override void Decompile(Language language, ITextOutput output, DecompilationOptions options)
 			{
+			}
+		}
+
+		[ExportContextMenuEntry(Header = "Copy error message")]
+		sealed class CopyErrorMessageContextMenu : IContextMenuEntry
+		{
+			public bool IsVisible(TextViewContext context)
+			{
+				if (context.SelectedTreeNodes != null && context.SelectedTreeNodes.All(n => n is ErrorTreeNode))
+					return true;
+				return false;
+			}
+
+			public bool IsEnabled(TextViewContext context)
+			{
+				return true;
+			}
+
+			public void Execute(TextViewContext context)
+			{
+				StringBuilder builder = new StringBuilder();
+				if (context.SelectedTreeNodes != null) {
+					foreach (var node in context.SelectedTreeNodes.OfType<ErrorTreeNode>()) {
+						builder.AppendLine(node.Text.ToString());
+					}
+				}
+				App.Current.Clipboard.SetTextAsync(builder.ToString());
 			}
 		}
 	}

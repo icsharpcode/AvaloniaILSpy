@@ -7,7 +7,7 @@ using System.Globalization;
 using System.IO;
 using System.Text;
 
-namespace AvaloniaILSpy
+namespace ICSharpCode.ILSpy
 {
 	public class LATextReader : TextReader
 	{

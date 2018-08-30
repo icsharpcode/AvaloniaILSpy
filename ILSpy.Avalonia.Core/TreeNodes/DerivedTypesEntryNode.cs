@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2011 AlphaSierraPapa for the SharpDevelop Team
+// Copyright (c) 2011 AlphaSierraPapa for the SharpDevelop Team
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this
 // software and associated documentation files (the "Software"), to deal in the Software
@@ -17,48 +17,43 @@
 // DEALINGS IN THE SOFTWARE.
 
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using Avalonia.Interactivity;
 using ICSharpCode.Decompiler;
-using Mono.Cecil;
+using ICSharpCode.Decompiler.TypeSystem;
 
-namespace AvaloniaILSpy.TreeNodes
+namespace ICSharpCode.ILSpy.TreeNodes
 {
 	class DerivedTypesEntryNode : ILSpyTreeNode, IMemberTreeNode
 	{
-		private readonly TypeDefinition type;
-		private readonly ModuleDefinition[] assemblies;
-		private readonly ThreadingSupport threading;
+		readonly AssemblyList list;
+		readonly ITypeDefinition type;
+		readonly ThreadingSupport threading;
 
-		public DerivedTypesEntryNode(TypeDefinition type, ModuleDefinition[] assemblies)
+		public DerivedTypesEntryNode(AssemblyList list, ITypeDefinition type)
 		{
+			this.list = list;
 			this.type = type;
-			this.assemblies = assemblies;
 			this.LazyLoading = true;
 			threading = new ThreadingSupport();
 		}
 
-		public override bool ShowExpander
-		{
-			get { return !type.IsSealed && base.ShowExpander; }
-		}
+		public override bool ShowExpander => !type.IsSealed && base.ShowExpander;
 
 		public override object Text
 		{
-			get { return this.Language.TypeToString(type, true) + type.MetadataToken.ToSuffixString(); }
+			get { return type.FullName + type.MetadataToken.ToSuffixString(); }
 		}
 
-		public override object Icon
-		{
-			get { return TypeTreeNode.GetIcon(type); }
-		}
+		public override object Icon => TypeTreeNode.GetIcon(type);
 
 		public override FilterResult Filter(FilterSettings settings)
 		{
 			if (!settings.ShowInternalApi && !IsPublicAPI)
 				return FilterResult.Hidden;
 			if (settings.SearchTermMatches(type.Name)) {
-				if (type.IsNested && !settings.Language.ShowMember(type))
+				if (type.DeclaringType != null && !settings.Language.ShowMember(type))
 					return FilterResult.Hidden;
 				else
 					return FilterResult.Match;
@@ -68,11 +63,10 @@ namespace AvaloniaILSpy.TreeNodes
 		
 		public override bool IsPublicAPI {
 			get {
-				switch (type.Attributes & TypeAttributes.VisibilityMask) {
-					case TypeAttributes.Public:
-					case TypeAttributes.NestedPublic:
-					case TypeAttributes.NestedFamily:
-					case TypeAttributes.NestedFamORAssem:
+				switch (type.Accessibility) {
+					case Accessibility.Public:
+					case Accessibility.Internal:
+					case Accessibility.ProtectedOrInternal:
 						return true;
 					default:
 						return false;
@@ -88,7 +82,8 @@ namespace AvaloniaILSpy.TreeNodes
 		IEnumerable<ILSpyTreeNode> FetchChildren(CancellationToken ct)
 		{
 			// FetchChildren() runs on the main thread; but the enumerator will be consumed on a background thread
-			return DerivedTypesTreeNode.FindDerivedTypes(type, assemblies, ct);
+			var assemblies = list.GetAssemblies().Select(node => node.GetPEFileOrNull()).Where(asm => asm != null).ToArray();
+			return DerivedTypesTreeNode.FindDerivedTypes(list, type, assemblies, ct);
 		}
 
 		public override void ActivateItem(RoutedEventArgs e)
@@ -98,9 +93,9 @@ namespace AvaloniaILSpy.TreeNodes
 
 		public override void Decompile(Language language, ITextOutput output, DecompilationOptions options)
 		{
-			language.WriteCommentLine(output, language.TypeToString(type, true));
+			language.WriteCommentLine(output, language.TypeToString(type, includeNamespace: true));
 		}
 
-		MemberReference IMemberTreeNode.Member => type;
+		IEntity IMemberTreeNode.Member => type;
 	}
 }

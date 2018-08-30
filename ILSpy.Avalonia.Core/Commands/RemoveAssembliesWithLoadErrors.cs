@@ -20,7 +20,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace AvaloniaILSpy
+namespace ICSharpCode.ILSpy
 {
 	[ExportMainMenuCommand(Menu = "_File", Header = "_Remove Assemblies with load errors", MenuCategory = "Remove", MenuOrder = 2.6)]
 	class RemoveAssembliesWithLoadErrors : SimpleCommand

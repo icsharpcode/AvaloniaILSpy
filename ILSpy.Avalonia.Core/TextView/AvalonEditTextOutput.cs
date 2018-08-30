@@ -20,16 +20,19 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Reflection.Metadata;
 using System.Text;
-using Avalonia;
+using System.Windows;
 using Avalonia.Controls;
 using AvaloniaEdit.Document;
 using AvaloniaEdit.Folding;
 using AvaloniaEdit.Highlighting;
 using AvaloniaEdit.Rendering;
+using ICSharpCode.Decompiler.Metadata;
+using ICSharpCode.Decompiler.TypeSystem;
 using TextLocation = ICSharpCode.Decompiler.CSharp.Syntax.TextLocation;
 
-namespace AvaloniaILSpy.TextView
+namespace ICSharpCode.ILSpy.TextView
 {
 	/// <summary>
 	/// A text segment that references some object. Used for hyperlinks in the editor.
@@ -64,7 +67,7 @@ namespace AvaloniaILSpy.TextView
 	}
 	
 	/// <summary>
-	/// Text output implementation for AvaloniaEdit.
+	/// Text output implementation for AvalonEdit.
 	/// </summary>
 	public sealed class AvaloniaEditTextOutput : ISmartTextOutput
 	{
@@ -92,8 +95,8 @@ namespace AvaloniaILSpy.TextView
 		
 		internal readonly DefinitionLookup DefinitionLookup = new DefinitionLookup();
 		
-		/// <summary>Embedded IControls, see <see cref="IControlGenerator"/>.</summary>
-		internal readonly List<KeyValuePair<int, Lazy<IControl>>> UIElemnts = new List<KeyValuePair<int, Lazy<IControl>>>();
+		/// <summary>Embedded UIElements, see <see cref="UIElementGenerator"/>.</summary>
+		internal readonly List<KeyValuePair<int, Lazy<IControl>>> UIElements = new List<KeyValuePair<int, Lazy<IControl>>>();
 
 		public RichTextModel HighlightingModel { get; } = new RichTextModel();
 		
@@ -206,26 +209,72 @@ namespace AvaloniaILSpy.TextView
 				throw new OutputLengthExceededException();
 			}
 		}
-		
-		public void WriteDefinition(string text, object definition, bool isLocal = true)
+
+		public void WriteReference(Decompiler.Disassembler.OpCodeInfo opCode)
+		{
+			WriteIndent();
+			int start = this.TextLength;
+			b.Append(opCode.Name);
+			int end = this.TextLength;
+			references.Add(new ReferenceSegment { StartOffset = start, EndOffset = end, Reference = opCode });
+		}
+
+		public void WriteReference(PEFile module, EntityHandle handle, string text, bool isDefinition = false)
 		{
 			WriteIndent();
 			int start = this.TextLength;
 			b.Append(text);
 			int end = this.TextLength;
-			this.DefinitionLookup.AddDefinition(definition, this.TextLength);
-			references.Add(new ReferenceSegment { StartOffset = start, EndOffset = end, Reference = definition, IsLocal = isLocal, IsLocalTarget = true });
+			if (isDefinition) {
+				this.DefinitionLookup.AddDefinition((module, handle), this.TextLength);
+				references.Add(new ReferenceSegment { StartOffset = start, EndOffset = end, Reference = (module, handle) });
+			} else {
+				references.Add(new ReferenceSegment { StartOffset = start, EndOffset = end, Reference = (module, handle) });
+			}
 		}
-		
-		public void WriteReference(string text, object reference, bool isLocal = false)
+
+		public void WriteReference(IType type, string text, bool isDefinition = false)
 		{
 			WriteIndent();
 			int start = this.TextLength;
 			b.Append(text);
 			int end = this.TextLength;
-			references.Add(new ReferenceSegment { StartOffset = start, EndOffset = end, Reference = reference, IsLocal = isLocal });
+			if (isDefinition) {
+				this.DefinitionLookup.AddDefinition(type, this.TextLength);
+				references.Add(new ReferenceSegment { StartOffset = start, EndOffset = end, Reference = type });
+			} else {
+				references.Add(new ReferenceSegment { StartOffset = start, EndOffset = end, Reference = type });
+			}
 		}
-		
+
+		public void WriteReference(IMember member, string text, bool isDefinition = false)
+		{
+			WriteIndent();
+			int start = this.TextLength;
+			b.Append(text);
+			int end = this.TextLength;
+			if (isDefinition) {
+				this.DefinitionLookup.AddDefinition(member, this.TextLength);
+				references.Add(new ReferenceSegment { StartOffset = start, EndOffset = end, Reference = member });
+			} else {
+				references.Add(new ReferenceSegment { StartOffset = start, EndOffset = end, Reference = member });
+			}
+		}
+
+		public void WriteLocalReference(string text, object reference, bool isDefinition = false)
+		{
+			WriteIndent();
+			int start = this.TextLength;
+			b.Append(text);
+			int end = this.TextLength;
+			if (isDefinition) {
+				this.DefinitionLookup.AddDefinition(reference, this.TextLength);
+				references.Add(new ReferenceSegment { StartOffset = start, EndOffset = end, Reference = reference, IsLocal = true, IsLocalTarget = true });
+			} else {
+				references.Add(new ReferenceSegment { StartOffset = start, EndOffset = end, Reference = reference, IsLocal = true });
+			}
+		}
+
 		public void MarkFoldStart(string collapsedText = "...", bool defaultCollapsed = false)
 		{
 			WriteIndent();
@@ -247,9 +296,9 @@ namespace AvaloniaILSpy.TextView
 		public void AddUIElement(Func<IControl> element)
 		{
 			if (element != null) {
-				if (this.UIElemnts.Count > 0 && this.UIElemnts.Last().Key == this.TextLength)
-					throw new InvalidOperationException("Only one IControl is allowed for each position in the document");
-				this.UIElemnts.Add(new KeyValuePair<int, Lazy<IControl>>(this.TextLength, new Lazy<IControl>(element)));
+				if (this.UIElements.Count > 0 && this.UIElements.Last().Key == this.TextLength)
+					throw new InvalidOperationException("Only one UIElement is allowed for each position in the document");
+				this.UIElements.Add(new KeyValuePair<int, Lazy<IControl>>(this.TextLength, new Lazy<IControl>(element)));
 			}
 		}
 

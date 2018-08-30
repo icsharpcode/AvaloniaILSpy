@@ -3,14 +3,14 @@
 		<StyleInclude Source="resm:Avalonia.Themes.Default.DefaultTheme.xaml?assembly=Avalonia.Themes.Default"/>
 		<StyleInclude Source="resm:Avalonia.Themes.Default.Accents.BaseLight.xaml?assembly=Avalonia.Themes.Default"/>
 		<StyleInclude Source="resm:AvaloniaEdit.AvaloniaEdit.xaml?assembly=AvaloniaEdit" />
-		<StyleInclude Source="resm:AvaloniaILSpy.Controls.Themes.TreeView.xaml?assembly=SharpTreeView.Avalonia" />
-		<StyleInclude Source="resm:AvaloniaILSpy.Controls.Themes.DockedPane.xaml?assembly=SharpTreeView.Avalonia" />
-		<StyleInclude Source="resm:AvaloniaILSpy.Controls.Themes.SearchBox.xaml?assembly=SharpTreeView.Avalonia" />
+		<StyleInclude Source="resm:ICSharpCode.TreeView.Themes.TreeView.xaml?assembly=SharpTreeView.Avalonia" />
+		<StyleInclude Source="resm:ICSharpCode.TreeView.Themes.DockedPane.xaml?assembly=SharpTreeView.Avalonia" />
+		<StyleInclude Source="resm:ICSharpCode.TreeView.Themes.SearchBox.xaml?assembly=SharpTreeView.Avalonia" />
 
 		<Style Selector="Window.DialogWindow" >
 			<Setter Property="ShowInTaskbar" Value="False"/>
 			<Setter Property="UseLayoutRounding" Value="True"/>
-            <!-- issue in mac when using system close button-->
+            <!-- issue on mac when using system close button-->
             <Setter Property="HasSystemDecorations" Value="False"/>
             <Setter Property="Topmost" Value="True"/>
 		</Style>

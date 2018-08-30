@@ -24,15 +24,15 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 
-using AvaloniaILSpy.TextView;
-using AvaloniaILSpy.Options;
+using ICSharpCode.ILSpy.TextView;
+using ICSharpCode.ILSpy.Options;
 
 using Microsoft.VisualStudio.Composition;
 using Avalonia;
 using Avalonia.Markup.Xaml;
 using Avalonia.Threading;
 
-namespace AvaloniaILSpy
+namespace ICSharpCode.ILSpy
 {
 	/// <summary>
 	/// Interaction logic for App.xaml

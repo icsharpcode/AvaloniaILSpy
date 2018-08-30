@@ -5,7 +5,7 @@ using Avalonia.Controls;
 using Avalonia;
 using Avalonia.Controls.Primitives;
 
-namespace AvaloniaILSpy.Controls
+namespace ICSharpCode.TreeView
 {
 	public class InsertMarker : TemplatedControl
 	{

@@ -7,11 +7,11 @@ using Avalonia.Media;
 using Avalonia.Media.Imaging;
 using ICSharpCode.Decompiler.TypeSystem;
 using ICSharpCode.Decompiler.Util;
-using AvaloniaILSpy.TreeNodes;
+using ICSharpCode.ILSpy.TreeNodes;
 using Mono.Cecil;
 using Code = Mono.Cecil.Cil.Code;
 
-namespace AvaloniaILSpy
+namespace ICSharpCode.ILSpy
 {
 	abstract class AbstractSearchStrategy
 	{

@@ -17,7 +17,7 @@
 // DEALINGS IN THE SOFTWARE.
 
 
-namespace AvaloniaILSpy
+namespace ICSharpCode.ILSpy
 {
 	[ExportMainMenuCommand(Menu = "_Help", Header = "_Check for Updates", MenuOrder = 5000)]
 	sealed class CheckForUpdatesCommand : SimpleCommand

@@ -17,7 +17,7 @@
 // DEALINGS IN THE SOFTWARE.
 
 
-namespace AvaloniaILSpy
+namespace ICSharpCode.ILSpy
 {
 	internal enum TypeIcon
 	{

@@ -26,7 +26,7 @@ using System.IO;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-namespace AvaloniaILSpy
+namespace ICSharpCode.ILSpy
 {
 	public class LoadedNugetPackage : INotifyPropertyChanged
 	{

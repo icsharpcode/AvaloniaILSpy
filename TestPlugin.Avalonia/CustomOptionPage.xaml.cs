@@ -4,8 +4,8 @@
 using System.ComponentModel;
 using Avalonia.Controls;
 using System.Xml.Linq;
-using AvaloniaILSpy;
-using AvaloniaILSpy.Options;
+using ICSharpCode.ILSpy;
+using ICSharpCode.ILSpy.Options;
 using System;
 using Avalonia.Markup.Xaml;
 

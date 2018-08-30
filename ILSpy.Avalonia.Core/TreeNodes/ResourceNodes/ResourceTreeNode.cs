@@ -18,17 +18,18 @@
 
 using System;
 using System.IO;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using Avalonia.Controls;
 using AvaloniaEdit.Highlighting;
 using AvaloniaEdit.Utils;
 using ICSharpCode.Decompiler;
-using AvaloniaILSpy.TextView;
+using ICSharpCode.Decompiler.Metadata;
+using ICSharpCode.ILSpy.TextView;
 using Microsoft.Win32;
-using Mono.Cecil;
 
-namespace AvaloniaILSpy.TreeNodes
+namespace ICSharpCode.ILSpy.TreeNodes
 {
 	/// <summary>
 	/// This is the default resource entry tree node, which is used if no specific
@@ -40,7 +41,7 @@ namespace AvaloniaILSpy.TreeNodes
 		
 		public ResourceTreeNode(Resource r)
 		{
-			if (r == null)
+			if (r.IsNil)
 				throw new ArgumentNullException(nameof(r));
 			this.r = r;
 		}
@@ -72,32 +73,29 @@ namespace AvaloniaILSpy.TreeNodes
 			language.WriteCommentLine(output, string.Format("{0} ({1}, {2})", r.Name, r.ResourceType, r.Attributes));
 			
 			ISmartTextOutput smartOutput = output as ISmartTextOutput;
-			if (smartOutput != null && r is EmbeddedResource) {
-				smartOutput.AddButton(Images.Save, "Save", async delegate { await Save(null); });
+			if (smartOutput != null) {
+				smartOutput.AddButton(Images.Save, "Save", delegate { Save(null); });
 				output.WriteLine();
 			}
 		}
 		
 		public override bool View(DecompilerTextView textView)
 		{
-			EmbeddedResource er = r as EmbeddedResource;
-			if (er != null) {
-				Stream s = er.GetResourceStream();
-				if (s != null && s.Length < DecompilerTextView.DefaultOutputLengthLimit) {
+			Stream s = Resource.TryOpenStream();
+			if (s != null && s.Length < DecompilerTextView.DefaultOutputLengthLimit) {
+				s.Position = 0;
+				FileType type = GuessFileType.DetectFileType(s);
+				if (type != FileType.Binary) {
 					s.Position = 0;
-					FileType type = GuessFileType.DetectFileType(s);
-					if (type != FileType.Binary) {
-						s.Position = 0;
-						AvaloniaEditTextOutput output = new AvaloniaEditTextOutput();
-						output.Write(new StreamReader(s, Encoding.UTF8).ReadToEnd());
-						string ext;
-						if (type == FileType.Xml)
-							ext = ".xml";
-						else
-							ext = Path.GetExtension(DecompilerTextView.CleanUpName(er.Name));
-						textView.ShowNode(output, this, HighlightingManager.Instance.GetDefinitionByExtension(ext));
-						return true;
-					}
+					AvaloniaEditTextOutput output = new AvaloniaEditTextOutput();
+                    output.Write(new StreamReader(s, Encoding.UTF8).ReadToEnd());
+					string ext;
+					if (type == FileType.Xml)
+						ext = ".xml";
+					else
+						ext = Path.GetExtension(DecompilerTextView.CleanUpName(Resource.Name));
+					textView.ShowNode(output, this, HighlightingManager.Instance.GetDefinitionByExtension(ext));
+					return true;
 				}
 			}
 			return false;
@@ -105,21 +103,21 @@ namespace AvaloniaILSpy.TreeNodes
 		
 		public override async Task<bool> Save(DecompilerTextView textView)
 		{
-			EmbeddedResource er = r as EmbeddedResource;
-			if (er != null) {
-				SaveFileDialog dlg = new SaveFileDialog();
-				dlg.InitialFileName = DecompilerTextView.CleanUpName(er.Name);
-				var filename = await dlg.ShowAsync(App.Current.MainWindow);
-				if (!string.IsNullOrEmpty(filename)) {
-					Stream s = er.GetResourceStream();
-					s.Position = 0;
-					using (var fs = File.OpenWrite(filename)) {
-						s.CopyTo(fs);
-					}
-				}
-				return true;
+			Stream s = Resource.TryOpenStream();
+			if (s == null)
+				return false;
+            SaveFileDialog dlg = new SaveFileDialog();
+            dlg.InitialFileName = DecompilerTextView.CleanUpName(Resource.Name);
+            var filename = await dlg.ShowAsync(App.Current.MainWindow);
+            if (!string.IsNullOrEmpty(filename))
+            {
+                s.Position = 0;
+                using (var fs = File.OpenWrite(filename))
+                {
+                    s.CopyTo(fs);
+                }
 			}
-			return false;
+			return true;
 		}
 		
 		public static ILSpyTreeNode Create(Resource resource)

@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2011 AlphaSierraPapa for the SharpDevelop Team
+// Copyright (c) 2011 AlphaSierraPapa for the SharpDevelop Team
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this
 // software and associated documentation files (the "Software"), to deal in the Software
@@ -21,25 +21,24 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel.Composition;
 using System.IO;
-using System.Threading.Tasks;
-using Avalonia.Controls;
 using ICSharpCode.Decompiler;
 using ICSharpCode.Decompiler.Util;
-using AvaloniaILSpy.Controls;
-using AvaloniaILSpy.TextView;
+using ICSharpCode.Decompiler.Metadata;
+using ICSharpCode.TreeView;
+using ICSharpCode.ILSpy.TextView;
 using Microsoft.Win32;
-using Mono.Cecil;
+using System.Threading.Tasks;
+using Avalonia.Controls;
 
-namespace AvaloniaILSpy.TreeNodes
+namespace ICSharpCode.ILSpy.TreeNodes
 {
 	[Export(typeof(IResourceNodeFactory))]
 	sealed class ResourcesFileTreeNodeFactory : IResourceNodeFactory
 	{
 		public ILSpyTreeNode CreateNode(Resource resource)
 		{
-			EmbeddedResource er = resource as EmbeddedResource;
-			if (er != null && er.Name.EndsWith(".resources", StringComparison.OrdinalIgnoreCase)) {
-				return new ResourcesFileTreeNode(er);
+			if (resource.Name.EndsWith(".resources", StringComparison.OrdinalIgnoreCase)) {
+				return new ResourcesFileTreeNode(resource);
 			}
 			return null;
 		}
@@ -55,30 +54,27 @@ namespace AvaloniaILSpy.TreeNodes
 		readonly ICollection<KeyValuePair<string, string>> stringTableEntries = new ObservableCollection<KeyValuePair<string, string>>();
 		readonly ICollection<SerializedObjectRepresentation> otherEntries = new ObservableCollection<SerializedObjectRepresentation>();
 
-		public ResourcesFileTreeNode(EmbeddedResource er)
+		public ResourcesFileTreeNode(Resource er)
 			: base(er)
 		{
 			this.LazyLoading = true;
 		}
 
-		public override object Icon
-		{
+		public override object Icon {
 			get { return Images.ResourceResourcesFile; }
 		}
 
 		protected override void LoadChildren()
 		{
-			EmbeddedResource er = this.Resource as EmbeddedResource;
-			if (er != null) {
-				Stream s = er.GetResourceStream();
-				s.Position = 0;
-				try {
-					foreach (var entry in new ResourcesFile(s)) {
-						ProcessResourceEntry(entry);
-					}
-				} catch (BadImageFormatException) {
-					// ignore errors
+			Stream s = Resource.TryOpenStream();
+			if (s == null) return;
+			s.Position = 0;
+			try {
+				foreach (var entry in new ResourcesFile(s)) {
+					ProcessResourceEntry(entry);
 				}
+			} catch (BadImageFormatException) {
+				// ignore errors
 			}
 		}
 
@@ -108,41 +104,38 @@ namespace AvaloniaILSpy.TreeNodes
 				otherEntries.Add(new SerializedObjectRepresentation(entry.Key, entry.Value.GetType().FullName, entry.Value.ToString()));
 			}
 		}
-		
+
 		public override async Task<bool> Save(DecompilerTextView textView)
 		{
-			EmbeddedResource er = this.Resource as EmbeddedResource;
-			if (er != null) {
-				SaveFileDialog dlg = new SaveFileDialog();
-				dlg.InitialFileName = DecompilerTextView.CleanUpName(er.Name);
-				dlg.Filters = new List<FileDialogFilter>()
-				{
-					new FileDialogFilter(){ Name="Resources file(*.resources)", Extensions = { "resources" } },
-					new FileDialogFilter(){ Name="Resource XML file(*.resx)", Extensions = { "resx" } }
-				};
-				var filename = await dlg.ShowAsync(App.Current.MainWindow);
-				if (!string.IsNullOrEmpty(filename)) {
-					Stream s = er.GetResourceStream();
-					s.Position = 0;
-					if (filename.Contains("resources")) {
-						using (var fs = File.OpenWrite(filename)) {
-							s.CopyTo(fs);
-						}
-					} else { 
-							using (var writer = new ResXResourceWriter(File.OpenWrite(filename))) {
-								foreach (var entry in new ResourcesFile(s)) {
-									writer.AddResource(entry.Key, entry.Value);
-								}
-							}
-					}
-				}
-				
-				return true;
-			}
-			return false;
-		}
+			Stream s = Resource.TryOpenStream();
+			if (s == null) return false;
+            SaveFileDialog dlg = new SaveFileDialog();
+            dlg.InitialFileName = DecompilerTextView.CleanUpName(Resource.Name);
+            dlg.Filters = new List<FileDialogFilter>()
+            {
+                new FileDialogFilter(){ Name="Resources file(*.resources)", Extensions = { "resources" } },
+                new FileDialogFilter(){ Name="Resource XML file(*.resx)", Extensions = { "resx" } }
+            };
+            var filename = await dlg.ShowAsync(App.Current.MainWindow);
+            if (!string.IsNullOrEmpty(filename)) {
+                s.Position = 0;
+                if (filename.Contains("resources")) {
+                    using (var fs = File.OpenWrite(filename)) {
+                        s.CopyTo(fs);
+                    }
+                } else {
+                    using (var writer = new ResXResourceWriter(File.OpenWrite(filename))) {
+                        foreach (var entry in new ResourcesFile(s)) {
+                            writer.AddResource(entry.Key, entry.Value);
+                        }
+                    }
+                }
+            }
+            return true;
+        }
 
-		public override void Decompile(Language language, ITextOutput output, DecompilationOptions options)
+
+        public override void Decompile(Language language, ITextOutput output, DecompilationOptions options)
 		{
 			EnsureLazyChildren();
 			base.Decompile(language, output, options);
@@ -151,7 +144,7 @@ namespace AvaloniaILSpy.TreeNodes
 				if (null != smartOutput) {
 					smartOutput.AddUIElement(
 						delegate {
-                            return new ResourceStringTable(stringTableEntries, MainWindow.Instance.mainPane);
+							return new ResourceStringTable(stringTableEntries, MainWindow.Instance.mainPane);
 						}
 					);
 				}
@@ -163,7 +156,7 @@ namespace AvaloniaILSpy.TreeNodes
 				if (null != smartOutput) {
 					smartOutput.AddUIElement(
 						delegate {
-                            return new ResourceObjectTable(otherEntries, MainWindow.Instance.mainPane);
+							return new ResourceObjectTable(otherEntries, MainWindow.Instance.mainPane);
 						}
 					);
 				}

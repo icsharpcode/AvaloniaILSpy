@@ -17,53 +17,61 @@
 // DEALINGS IN THE SOFTWARE.
 
 using System;
+using System.Linq;
+using System.Reflection.Metadata;
 using Avalonia.Threading;
 using ICSharpCode.Decompiler;
-using AvaloniaILSpy.Controls;
-using Mono.Cecil;
+using ICSharpCode.Decompiler.Metadata;
+using ICSharpCode.Decompiler.TypeSystem;
+using ICSharpCode.TreeView;
 
-namespace AvaloniaILSpy.TreeNodes
+namespace ICSharpCode.ILSpy.TreeNodes
 {
 	/// <summary>
 	/// Lists the base types of a class.
 	/// </summary>
 	sealed class BaseTypesTreeNode : ILSpyTreeNode
 	{
-		readonly TypeDefinition type;
+		readonly PEFile module;
+		readonly ITypeDefinition type;
 
-		public BaseTypesTreeNode(TypeDefinition type)
+		public BaseTypesTreeNode(PEFile module, ITypeDefinition type)
 		{
+			this.module = module;
 			this.type = type;
 			this.LazyLoading = true;
 		}
 
-		public override object Text
-		{
-			get { return "Base Types"; }
-		}
+		public override object Text => "Base Types";
 
-		public override object Icon
-		{
-			get { return Images.SuperTypes; }
-		}
+		public override object Icon => Images.SuperTypes;
 
 		protected override void LoadChildren()
 		{
-			AddBaseTypes(this.Children, type);
+			AddBaseTypes(this.Children, module, type);
 		}
 
-		internal static void AddBaseTypes(SharpTreeNodeCollection children, TypeDefinition type)
+		internal static void AddBaseTypes(SharpTreeNodeCollection children, PEFile module, ITypeDefinition typeDefinition)
 		{
-			if (type.BaseType != null)
-				children.Add(new BaseTypesEntryNode(type.BaseType, false));
-			foreach (var i in type.Interfaces) {
-				children.Add(new BaseTypesEntryNode(i.InterfaceType, true));
+			var typeDef = module.Metadata.GetTypeDefinition((TypeDefinitionHandle)typeDefinition.MetadataToken);
+			var baseTypes = typeDefinition.DirectBaseTypes.ToArray();
+			int i = 0;
+			if (typeDefinition.Kind == TypeKind.Interface) {
+				i++;
+			} else if (!typeDef.BaseType.IsNil) {
+				children.Add(new BaseTypesEntryNode(module, typeDef.BaseType, baseTypes[i], false));
+				i++;
+			}
+			foreach (var h in typeDef.GetInterfaceImplementations()) {
+				var impl = module.Metadata.GetInterfaceImplementation(h);
+				children.Add(new BaseTypesEntryNode(module, impl.Interface, baseTypes[i], true));
+				i++;
 			}
 		}
 
-		public override void Decompile(Language language, ITextOutput output, DecompilationOptions options)
+		public override async void Decompile(Language language, ITextOutput output, DecompilationOptions options)
 		{
-			Dispatcher.UIThread.InvokeAsync(new Action(EnsureLazyChildren), DispatcherPriority.Normal);
+			await Dispatcher.UIThread.InvokeAsync(new Action(EnsureLazyChildren), DispatcherPriority.Normal);
 			foreach (ILSpyTreeNode child in this.Children) {
 				child.Decompile(language, output, options);
 			}

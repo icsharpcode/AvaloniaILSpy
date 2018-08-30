@@ -21,7 +21,7 @@ using System.Collections.Generic;
 using Avalonia.Controls;
 using NuGet.Common;
 
-namespace AvaloniaILSpy
+namespace ICSharpCode.ILSpy
 {
 	[ExportMainMenuCommand(Menu = "_File", Header = "Open from NuGet Packages...", MenuIcon = "Images/AssemblyListGAC.png", MenuCategory = "Open", MenuOrder = 1)]
 	sealed class OpenFromNuGetCommand : SimpleCommand

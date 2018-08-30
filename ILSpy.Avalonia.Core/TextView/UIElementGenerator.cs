@@ -18,11 +18,11 @@
 
 using System;
 using System.Collections.Generic;
-using Avalonia;
+using System.Windows;
 using Avalonia.Controls;
 using AvaloniaEdit.Rendering;
 
-namespace AvaloniaILSpy.TextView
+namespace ICSharpCode.ILSpy.TextView
 {
 	using Pair = KeyValuePair<int, Lazy<IControl>>;
 	
