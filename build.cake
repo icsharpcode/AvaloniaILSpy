@@ -95,7 +95,7 @@ var netCoreProject = new {
     foreach(var runtime in runtimeIdentifiers)
     {
         var workingDir = artifactsDir.Combine(runtime);
-        var tempDir = artifactsDir.Combine($"{netCoreProject.Name}.app");
+        var tempDir = artifactsDir.Combine("app");
 
         Information("Copying Info.plist");
         EnsureDirectoryExists(tempDir.Combine("Contents"));
@@ -103,15 +103,14 @@ var netCoreProject = new {
 
         Information("Copying App Icons");
         EnsureDirectoryExists(tempDir.Combine("Contents/Resources"));
-        MoveFiles(workingDir.Combine("Images/ILSpy.icns").FullPath, tempDir.Combine("Contents/Resources"));
+        MoveFiles(workingDir.Combine("ILSpy.icns").FullPath, tempDir.Combine("Contents/Resources"));
 
         Information("Copying executables");
-        EnsureDirectoryExists(tempDir.Combine("Contents/MacOS"));
-        MoveFiles(workingDir.FullPath + "/*", tempDir.Combine("Contents/MacOS"));
+        MoveDirectory(workingDir, tempDir.Combine("Contents/MacOS"));
 
-        CleanDirectory(workingDir);
-        MoveDirectory(tempDir, workingDir.Combine($"{netCoreProject.Name}.app"));
         Information("Finish packaging");
+        EnsureDirectoryExists(workingDir);
+        MoveDirectory(tempDir, workingDir.Combine($"{netCoreProject.Name}.app"));
     }
  });
 

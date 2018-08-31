@@ -104,7 +104,7 @@ namespace ICSharpCode.ILSpy
 			this.sessionSettings = new SessionSettings(spySettings);
 			this.assemblyListManager = new AssemblyListManager(spySettings);
 
-            //this.Icon = new WindowIcon(new Bitmap("pack://application:,,,/ILSpy;component/images/ILSpy.ico"));
+            this.Icon = new WindowIcon("Images/ILSpy.png");
 
             this.DataContext = sessionSettings;
 

@@ -3,6 +3,7 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp2.1</TargetFramework>
+    <LangVersion>7.2</LangVersion>
 
     <TieredCompilations>true</TieredCompilations>
     <TargetLatestRuntimePatch>true</TargetLatestRuntimePatch>
@@ -19,7 +20,7 @@
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
 
     <StartupObject>ICSharpCode.ILSpy.Program</StartupObject>
-    <ApplicationIcon>..\ILSpy.Avalonia.Core\Images\ILSpy-Large.ico</ApplicationIcon>
+    <ApplicationIcon>ILSpy.ico</ApplicationIcon>
 
     <SignAssembly>True</SignAssembly>
     <AssemblyOriginatorKeyFile>..\ICSharpCode.Decompiler\ICSharpCode.Decompiler.snk</AssemblyOriginatorKeyFile>
@@ -40,16 +41,18 @@
     <CodeAnalysisRuleSet>..\ICSharpCode.Decompiler\ICSharpCode.Decompiler.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <LangVersion>7.2</LangVersion>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <LangVersion>7.2</LangVersion>
-  </PropertyGroup>
-
   <ItemGroup>
     <Compile Include="Program.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Add condition for mas os -->
+    <Content Include="ILSpy.icns">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Info.plist">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>
