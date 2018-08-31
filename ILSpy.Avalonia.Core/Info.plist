@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd"><plist version="1.0"><dict><key>CFBundlePackageType</key><string>APPL</string><key>CFBundleInfoDictionaryVersion</key><string>6.0</string>
+
+    <key>CFBundleIconFile</key>           <string>ILSpy</string>
+
+    <key>CFBundleName</key>               <string>ILSpy</string>
+    <key>CFBundleExecutable</key>         <string>ILSpy.Avalonia</string>
+    <key>CFBundleIdentifier</key>         <string>ilspy</string>
+
+    <key>CFBundleVersion</key>            <string>4.0</string>
+    <key>CFBundleShortVersionString</key> <string>4.0</string>
+
+</dict></plist>
