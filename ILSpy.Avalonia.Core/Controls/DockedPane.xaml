@@ -42,20 +42,20 @@
 							<controls:ControlColor Color="243" />
 						</GradientStop.Color>
 					</GradientStop>
-					<GradientStop Offset="0.5"/>
-					<GradientStop Offset="0">
+                    
+					<GradientStop Offset="0.5">
 						<GradientStop.Color>
 							<controls:ControlColor Color="235" />
 						</GradientStop.Color>
 					</GradientStop>
-					<GradientStop Offset="0.5"/>
-					<GradientStop Offset="0">
+                    
+					<GradientStop Offset="0.5">
 						<GradientStop.Color>
 							<controls:ControlColor Color="221" />
 						</GradientStop.Color>
 					</GradientStop>
-					<GradientStop Offset="1"/>
-					<GradientStop Offset="0">
+                    
+					<GradientStop Offset="1">
 						<GradientStop.Color>
 							<controls:ControlColor Color="205" />
 						</GradientStop.Color>
@@ -143,8 +143,8 @@
 									</Grid.ColumnDefinitions>
 									<TextBlock Text="{TemplateBinding Title}" Margin="3,0"
 											Foreground="{x:Static avalonia:SystemColors.InactiveCaptionTextBrush}" VerticalAlignment="Center"/>
-									<Button x:Name="PART_Close" Grid.Column="2" VerticalAlignment="Center" Width="16" Height="16" DockPanel.Dock="Right" Classes="CloseButtonStyle" ToolTip.Tip="Close" Margin="1">
-										<Path x:Name="Path" Stretch="Fill" StrokeThickness="0.5" Stroke="#FF333333" Fill="#FF969696" Data="F1 M 0,1.3333L 1.33333,0L 4,2.6666L 6.6666,0 8,1.3333L 5.3333,4L 8,6.6666L 6.6666,8L 4,5.3333L 1.3333,8L 0,6.6666L 2.6666,4L 0,1.3333 Z " HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+									<Button x:Name="PART_Close" Grid.Column="2" VerticalAlignment="Center" MinWidth="20" MinHeight="20" Width="20" Height="20" DockPanel.Dock="Right" Classes="CloseButtonStyle" ToolTip.Tip="Close" Margin="1">
+										<Path x:Name="Path" Width="16" Height="16" Stretch="Fill" StrokeThickness="0.5" Stroke="#FF333333" Fill="#FF969696" Data="F1 M 0,1.3333L 1.33333,0L 4,2.6666L 6.6666,0 8,1.3333L 5.3333,4L 8,6.6666L 6.6666,8L 4,5.3333L 1.3333,8L 0,6.6666L 2.6666,4L 0,1.3333 Z " HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
 									</Button>
 								</Grid>
 							</Border>

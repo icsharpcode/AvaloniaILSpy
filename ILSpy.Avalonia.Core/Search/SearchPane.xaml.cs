@@ -60,7 +60,7 @@ namespace ICSharpCode.ILSpy.Search
         private SearchPane()
 		{
 			InitializeComponent();
-            var items = new[] {
+            searchModeComboBox.Items = new[] {
                 new { Image = Images.Library, Name = "Types and Members" },
 			    new { Image = Images.Class, Name = "Type" },
 			    new { Image = Images.Property, Name = "Member" },

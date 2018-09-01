@@ -27,11 +27,11 @@
 		</Menu>
 		<!-- ToolBar -->
 		<ListBox
-			Name="toolBar" BorderThickness="0" Padding="2" Classes="ToolBar"
+			Name="toolBar" BorderThickness="0" Padding="2"
 			DockPanel.Dock="Top" >
 		    <ListBox.ItemsPanel>
 		        <ItemsPanelTemplate>
-		            <StackPanel Orientation="Horizontal" Spacing="1" />
+		            <StackPanel Orientation="Horizontal" Spacing="4" />
 		        </ItemsPanelTemplate>
 		    </ListBox.ItemsPanel>
 			<!--
@@ -54,7 +54,7 @@
 					  BorderThickness="1"
 			          Items="{x:Static local:Languages.AllLanguages}"
 			          SelectedItem="{Binding FilterSettings.Language}"/>
-			<DropDown Name="languageVersionComboBox" Width="100" 
+			<DropDown Name="languageVersionComboBox" Width="160" 
 					  BorderThickness="1"
 			          IsVisible="{Binding SelectedItem.HasLanguageVersions, ElementName=languageComboBox}"
 			          Items="{Binding SelectedItem.LanguageVersions, ElementName=languageComboBox}"
