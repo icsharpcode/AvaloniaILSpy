@@ -97,7 +97,7 @@ namespace ICSharpCode.ILSpy.Search
 		
 		void MainWindow_Instance_CurrentAssemblyListChanged(object sender, NotifyCollectionChangedEventArgs e)
 		{
-			if (IsVisible) {
+			if (VisualRoot != null) {
 				StartSearch(this.SearchTerm);
 			} else {
 				StartSearch(null);
@@ -107,7 +107,7 @@ namespace ICSharpCode.ILSpy.Search
 		
 		public void Show()
 		{
-			if (!IsVisible) {
+			if (VisualRoot == null) {
 				MainWindow.Instance.ShowInTopPane("Search", this);
 				if (runSearchOnNextShow) {
 					runSearchOnNextShow = false;
