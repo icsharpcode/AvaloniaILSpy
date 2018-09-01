@@ -4,8 +4,8 @@
 		<StyleInclude Source="resm:Avalonia.Themes.Default.Accents.BaseLight.xaml?assembly=Avalonia.Themes.Default"/>
 		<StyleInclude Source="resm:AvaloniaEdit.AvaloniaEdit.xaml?assembly=AvaloniaEdit" />
 		<StyleInclude Source="resm:ICSharpCode.TreeView.Themes.TreeView.xaml?assembly=SharpTreeView.Avalonia" />
-		<StyleInclude Source="resm:ICSharpCode.TreeView.Themes.DockedPane.xaml?assembly=SharpTreeView.Avalonia" />
-		<StyleInclude Source="resm:ICSharpCode.TreeView.Themes.SearchBox.xaml?assembly=SharpTreeView.Avalonia" />
+		<StyleInclude Source="resm:ICSharpCode.ILSpy.Controls.DockedPane.xaml" />
+		<StyleInclude Source="resm:ICSharpCode.ILSpy.Controls.SearchBox.xaml" />
 
 		<Style Selector="Window.DialogWindow" >
 			<Setter Property="ShowInTaskbar" Value="False"/>

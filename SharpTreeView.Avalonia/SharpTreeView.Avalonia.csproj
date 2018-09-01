@@ -17,16 +17,9 @@
     <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Themes\DockedPane.xaml">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Themes\SearchBox.xaml">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
     <EmbeddedResource Include="Themes\TreeView.xaml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Converters.cs" />
     <Compile Include="Consts.cs" />
     <Compile Include="EditTextBox.cs" />
     <Compile Include="ExtensionMethods.cs" />
@@ -47,9 +40,7 @@
     <Compile Include="SharpTreeViewTextSearch.cs" />
     <Compile Include="TreeFlattener.cs" />
     <Compile Include="TreeTraversal.cs" />
-    <Compile Include="DockedPane.cs" />
-    <Compile Include="ControlColor.cs" />
-    <Compile Include="SearchBox.cs" />
+    <Compile Include="Converters.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="copyright.txt" />

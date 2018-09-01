@@ -1,7 +1,8 @@
 ﻿<Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:tv="clr-namespace:ICSharpCode.TreeView;assembly=SharpTreeView.Avalonia"
-	      xmlns:local="clr-namespace:ICSharpCode.ILSpy"
+          xmlns:local="clr-namespace:ICSharpCode.ILSpy"
+	      xmlns:controls="clr-namespace:ICSharpCode.ILSpy.Controls"
 	      Title="ILSpy"
 	      MinWidth="250"
 	      MinHeight="200"
@@ -122,7 +123,7 @@
 					</DockPanel>
 				</Border>
 				
-				<tv:DockedPane x:Name="topPane" Grid.Row="1" Title="Top" IsVisible="false"
+				<controls:DockedPane x:Name="topPane" Grid.Row="1" Title="Top" IsVisible="false"
 					Margin="0,0,0,3" />
 				
 				<GridSplitter
@@ -148,7 +149,7 @@
 					Focusable="False"
 					IsVisible="{Binding IsVisible, ElementName=bottomPane}" />
 				
-				<tv:DockedPane x:Name="bottomPane" Grid.Row="5" Title="Bottom" IsVisible="false"
+				<controls:DockedPane x:Name="bottomPane" Grid.Row="5" Title="Bottom" IsVisible="false"
 					Margin="0,3,0,0" />
 			</Grid>
 		</Grid>

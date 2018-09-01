@@ -29,7 +29,7 @@ using System.ComponentModel;
 using Avalonia.Markup.Xaml.Converters;
 using Avalonia.Controls.Primitives;
 
-namespace ICSharpCode.TreeView
+namespace ICSharpCode.ILSpy.Controls
 {
 	public class SearchBox : TextBox
 	{

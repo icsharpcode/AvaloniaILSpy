@@ -21,7 +21,7 @@ using Avalonia;
 using Avalonia.Markup;
 using Portable.Xaml.Markup;
 
-namespace ICSharpCode.TreeView
+namespace ICSharpCode.ILSpy.Controls
 {
 	/// <summary>
 	/// ExtensionMethods used in ILSpy.

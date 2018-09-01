@@ -22,7 +22,7 @@ using Avalonia.Markup;
 using Avalonia.Media;
 using Portable.Xaml.Markup;
 
-namespace ICSharpCode.TreeView
+namespace ICSharpCode.ILSpy.Controls
 {
 	[MarkupExtensionReturnType(typeof(Color))]
 	public class ControlColor : MarkupExtension

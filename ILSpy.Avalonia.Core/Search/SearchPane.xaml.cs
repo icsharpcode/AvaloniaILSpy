@@ -28,6 +28,7 @@ using Avalonia.Markup.Xaml;
 using Avalonia.Media.Imaging;
 using Avalonia.Threading;
 using ICSharpCode.Decompiler.TypeSystem;
+using ICSharpCode.ILSpy.Controls;
 using ICSharpCode.ILSpy.Search;
 using ICSharpCode.ILSpy.TreeNodes;
 using ICSharpCode.TreeView;
