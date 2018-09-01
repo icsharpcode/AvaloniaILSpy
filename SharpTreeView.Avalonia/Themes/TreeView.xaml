@@ -18,8 +18,8 @@
                             BorderBrush="#FF7898B5"
                             CornerRadius="1">
                         <Border.Background>
-                            <LinearGradientBrush StartPoint="0,0"
-                                                 EndPoint="1,1">
+                            <LinearGradientBrush StartPoint="0%,0%"
+                                                 EndPoint="100%,100%">
                                 <LinearGradientBrush.GradientStops>
                                     <GradientStop Color="White"
                                                   Offset=".2" />

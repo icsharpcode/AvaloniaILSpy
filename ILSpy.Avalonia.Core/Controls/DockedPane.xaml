@@ -36,7 +36,7 @@
 	<Style Selector="Button.CloseButtonStyle">
 		<Setter Property="Background">
 			<Setter.Value>
-				<LinearGradientBrush EndPoint="0,1" StartPoint="0,0">
+				<LinearGradientBrush EndPoint="0%,100%" StartPoint="0%,0%">
 					<GradientStop Offset="0">
 						<GradientStop.Color>
 							<controls:ControlColor Color="243" />
@@ -92,7 +92,7 @@
 	<Style Selector="Button.CloseButtonStyle:pointerover /template/ Grid.Border#buttonBorder">
 		<Setter Property="Background">
 			<Setter.Value>
-				<LinearGradientBrush EndPoint="0,1" StartPoint="0,0">
+				<LinearGradientBrush EndPoint="0%,100%" StartPoint="0%,0%">
 					<GradientStop Offset="0">
 						<GradientStop.Color>
 							<controls:ControlColor Color="250" Highlight="0.3"/>
@@ -111,7 +111,7 @@
 	<Style Selector="Button.CloseButtonStyle:pressed /template/ Grid.Border#buttonBorder">
 		<Setter Property="Background">
 			<Setter.Value>
-				<LinearGradientBrush EndPoint="0,1" StartPoint="0,0">
+				<LinearGradientBrush EndPoint="0%,100%" StartPoint="0%,0%">
 					<GradientStop Offset="0">
 						<GradientStop.Color>
 							<controls:ControlColor Color="224"/>
