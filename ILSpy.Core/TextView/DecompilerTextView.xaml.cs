@@ -130,10 +130,8 @@ namespace ICSharpCode.ILSpy.TextView
 			textEditor.ShowLineNumbers = true;
 			DisplaySettingsPanel.CurrentDisplaySettings.PropertyChanged += CurrentDisplaySettings_PropertyChanged;
 
-			// SearchPanel
-            AttachedToLogicalTree += (s,e) => 
-			    SearchPanel.Install(textEditor.TextArea)
-				    .RegisterCommands((e.Root as MainWindow).CommandBindings);
+			// TODO: SearchPanel is automatically installed, but have to disable replace mode
+            // TemplateApplied += (s,e) => 
 			
 			ShowLineMargin();
 			
