@@ -29,7 +29,7 @@ using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using Avalonia.Threading;
-
+using ICSharpCode.ILSpy.Controls;
 using ICSharpCode.TreeView;
 using Mono.Cecil;
 

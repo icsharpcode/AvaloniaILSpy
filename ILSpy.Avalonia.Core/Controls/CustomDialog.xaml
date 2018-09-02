@@ -1,22 +1,24 @@
 ﻿<Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="CustomDialog"
+		xmlns:ae="clr-namespace:AvaloniaEdit;assembly=AvaloniaEdit"
+        Title="Message"
         Width="274" Height="400">
 	<Grid>
 		<Grid.RowDefinitions>
 			<RowDefinition Height="*"/>
-			<RowDefinition Height="80"/>
+			<RowDefinition Height="40"/>
 		</Grid.RowDefinitions>
-		<TextBlock Name="content" Grid.Row="0" />
-		<ListBox Name="buttons" Grid.Row="1">
+		
+		<ae:TextEditor Name="content" Grid.Row="0" Margin="4"/>
+		<ListBox Name="buttons" Grid.Row="1" BorderThickness="0" Padding="2">
 			<ListBox.ItemsPanel>
 				<ItemsPanelTemplate>
-					<StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch" Gap="10"/>
+					<StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch" Spacing="10"/>
 				</ItemsPanelTemplate>
 			</ListBox.ItemsPanel>
 			<ListBox.ItemTemplate>
 				<DataTemplate>
-					<Button MinWidth="120" Content="{Binding .}"/>
+					<Button Name="dialogButton" MinWidth="100" Content="{Binding}"/>
 				</DataTemplate>
 			</ListBox.ItemTemplate>
 		</ListBox>

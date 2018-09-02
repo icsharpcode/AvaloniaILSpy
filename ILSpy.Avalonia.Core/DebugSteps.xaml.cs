@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Avalonia;
 using Avalonia.Controls;
 using ICSharpCode.Decompiler.IL;
@@ -50,6 +51,12 @@ namespace ICSharpCode.ILSpy
 		{
 			AvaloniaXamlLoader.Load(this);
 			tree = this.FindControl<Avalonia.Controls.TreeView>("tree");
+			tree.DoubleTapped +=  ShowStateAfter_Click;
+			tree.KeyDown += tree_KeyDown;
+			// var items = tree.ContextMenu.Items.Cast<MenuItem>().ToList();
+			tree.FindControl<MenuItem>("ShowStateBefore").Click += ShowStateBefore_Click;
+			tree.FindControl<MenuItem>("ShowStateAfter").Click += ShowStateAfter_Click;
+			tree.FindControl<MenuItem>("DebugStep").Click += DebugStep_Click;
 		}
 
 		private void WritingOptions_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)

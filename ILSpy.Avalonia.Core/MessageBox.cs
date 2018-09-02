@@ -4,87 +4,118 @@ using System;
 using Avalonia.Controls;
 using System.Threading.Tasks;
 using System.Diagnostics;
+using ICSharpCode.ILSpy.Controls;
+using System.Collections.Generic;
 
 namespace ICSharpCode.ILSpy
 {
-	public static class MessageBox
-	{
+    public static class MessageBox
+    {
+        static readonly Dictionary<MessageBoxButton, string[]> Buttons = new Dictionary<MessageBoxButton, string[]>()
+        {
+            [MessageBoxButton.OK] = new string[] { "OK" },
+            [MessageBoxButton.OKCancel] = new string[] { "OK", "Cancel" },
+            [MessageBoxButton.YesNo] = new string[] { "Yes", "No" },
+            [MessageBoxButton.YesNoCancel] = new string[] { "Yes", "No", "Cancel" },
+        };
 
-		public static Task<MessageBoxResult> Show(string messageBoxText, string caption, MessageBoxButton button, MessageBoxImage icon, MessageBoxResult defaultResult)
-		{
-			return Show(Avalonia.Application.Current.MainWindow, messageBoxText, caption, button, icon, defaultResult, MessageBoxOptions.None);
-		}
+        static readonly Dictionary<MessageBoxButton, int> AcceptButtonID = new Dictionary<MessageBoxButton, int>()
+        {
+            [MessageBoxButton.OK] = 0,
+            [MessageBoxButton.OKCancel] = 0,
+            [MessageBoxButton.YesNo] = 1,
+            [MessageBoxButton.YesNoCancel] = 1,
+        };
 
-		public static Task<MessageBoxResult> Show(string messageBoxText, string caption, MessageBoxButton button, MessageBoxImage icon)
-		{
-			return Show(Avalonia.Application.Current.MainWindow, messageBoxText, caption, button, icon,  MessageBoxResult.None, MessageBoxOptions.None);
-		}
+        static readonly Dictionary<MessageBoxButton, int> CancelButtonID = new Dictionary<MessageBoxButton, int>()
+        {
+            [MessageBoxButton.OK] = -1,
+            [MessageBoxButton.OKCancel] = 1,
+            [MessageBoxButton.YesNo] = -1,
+            [MessageBoxButton.YesNoCancel] = 2,
+        };
 
-		public static Task<MessageBoxResult> Show(string messageBoxText, string caption, MessageBoxButton button)
-		{
-			return Show(Avalonia.Application.Current.MainWindow, messageBoxText, caption, button, MessageBoxImage.None, MessageBoxResult.None, MessageBoxOptions.None);
-		}
 
-		public static Task<MessageBoxResult> Show(string messageBoxText, string caption)
-		{
-			return Show(Avalonia.Application.Current.MainWindow, messageBoxText, caption, MessageBoxButton.OK, MessageBoxImage.None, MessageBoxResult.None, MessageBoxOptions.None);
-		}
+        public static Task<MessageBoxResult> Show(string messageBoxText, string caption, MessageBoxButton button, MessageBoxImage icon, MessageBoxResult defaultResult)
+        {
+            return Show(null, messageBoxText, caption, button, icon, defaultResult, MessageBoxOptions.None);
+        }
 
-		public static Task<MessageBoxResult> Show(string messageBoxText)
-		{
-			return Show(Avalonia.Application.Current.MainWindow, messageBoxText, "Message", MessageBoxButton.OK, MessageBoxImage.None, MessageBoxResult.None, MessageBoxOptions.None);
-		}
+        public static Task<MessageBoxResult> Show(string messageBoxText, string caption, MessageBoxButton button, MessageBoxImage icon)
+        {
+            return Show(null, messageBoxText, caption, button, icon, MessageBoxResult.None, MessageBoxOptions.None);
+        }
 
-		public static Task<MessageBoxResult> Show(Window owner, string messageBoxText, string caption, MessageBoxButton button, MessageBoxImage icon, MessageBoxResult defaultResult, MessageBoxOptions options)
-		{
-			//TODO: message box
-			//var win = new Window();
-			//win.Owner = owner;
-			//win.Title = caption;
-			//win.Content = messageBoxText;
-			//win.Topmost = true;
-			//return await win.ShowDialog<MessageBoxResult>();
-			Debug.WriteLine(caption);
-            return Task.FromResult(defaultResult);
-		}
-	}
+        public static Task<MessageBoxResult> Show(string messageBoxText, string caption, MessageBoxButton button)
+        {
+            return Show(null, messageBoxText, caption, button, MessageBoxImage.None, MessageBoxResult.None, MessageBoxOptions.None);
+        }
 
-	public enum MessageBoxOptions
-	{
-		None
-	}
-	
-	public enum MessageBoxResult
-	{
-		None = 0,
-		OK = 1,
-		Cancel = 2,
-		Yes = 6,
-		No = 7
-	}
+        public static Task<MessageBoxResult> Show(string messageBoxText, string caption)
+        {
+            return Show(null, messageBoxText, caption, MessageBoxButton.OK, MessageBoxImage.None, MessageBoxResult.None, MessageBoxOptions.None);
+        }
 
-	public enum MessageBoxImage
-	{
-		None = 0,
+        public static Task<MessageBoxResult> Show(string messageBoxText)
+        {
+            return Show(null, messageBoxText, "Message", MessageBoxButton.OK, MessageBoxImage.None, MessageBoxResult.None, MessageBoxOptions.None);
+        }
 
-		Hand = 16,
-		Stop = 16,
-		Error = 16,
+        public static async Task<MessageBoxResult> Show(Window owner, string messageBoxText, string caption, MessageBoxButton button, MessageBoxImage icon, MessageBoxResult defaultResult, MessageBoxOptions options)
+        {
+            Debug.WriteLine(caption);
 
-		Question = 32,
+            // TODO: message box
+            var buttons = Buttons[button];
+            var win = new CustomDialog(caption, messageBoxText, AcceptButtonID[button], CancelButtonID[button], buttons);
+            win.Owner = owner;
+            // TODO: add msgbox image
+            var btnIndex = await win.ShowDialog<int?>();
+            if (btnIndex == null)
+            {
+                return defaultResult;
+            }
+            return (MessageBoxResult)Enum.Parse(typeof(MessageBoxResult), buttons[btnIndex.Value]);
+            // return Task.FromResult(defaultResult);
+        }
+    }
 
-		Exclamation = 48,
-		Warning = 48,
+    public enum MessageBoxOptions
+    {
+        None
+    }
 
-		Asterisk = 64,
-		Information = 64
-	}
+    public enum MessageBoxResult
+    {
+        None = 0,
+        OK = 1,
+        Cancel = 2,
+        Yes = 6,
+        No = 7
+    }
 
-	public enum MessageBoxButton
-	{
-		OK = 0,
-		OKCancel = 1,
-		YesNoCancel = 3,
-		YesNo = 4
-	}
+    public enum MessageBoxImage
+    {
+        None = 0,
+
+        Hand = 16,
+        Stop = 16,
+        Error = 16,
+
+        Question = 32,
+
+        Exclamation = 48,
+        Warning = 48,
+
+        Asterisk = 64,
+        Information = 64
+    }
+
+    public enum MessageBoxButton
+    {
+        OK = 0,
+        OKCancel = 1,
+        YesNoCancel = 3,
+        YesNo = 4
+    }
 }

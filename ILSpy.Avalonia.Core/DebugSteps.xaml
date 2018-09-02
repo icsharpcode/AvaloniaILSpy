@@ -1,9 +1,8 @@
-﻿<UserControl x:Class="AvaloniaILSpy.DebugSteps"
-             xmlns="https://github.com/avaloniaui"
+﻿<UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:AvaloniaILSpy"
+             xmlns:local="clr-namespace:ICSharpCode.ILSpy"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
 	<DockPanel>
@@ -12,17 +11,17 @@
 			<CheckBox Margin="3" Content="UseLogicOperationSugar"  IsChecked="{Binding UseLogicOperationSugar, Source={x:Static local:DebugSteps.Options}}" />
 			<CheckBox Margin="3" Content="ShowILRanges"  IsChecked="{Binding ShowILRanges, Source={x:Static local:DebugSteps.Options}}" />
 		</StackPanel>
-		<TreeView Name="tree" MouseDoubleClick="ShowStateAfter_Click" KeyDown="tree_KeyDown">
+		<TreeView Name="tree" >
 			<TreeView.ItemTemplate>
-				<HierarchicalDataTemplate ItemsSource="{Binding Children}">
+				<HierarchicalDataTemplate Items="{Binding Children}">
 					<TextBlock Text="{Binding Description}" />
 				</HierarchicalDataTemplate>
 			</TreeView.ItemTemplate>
 			<TreeView.ContextMenu>
 				<ContextMenu>
-					<MenuItem Header="Show state before this step" Click="ShowStateBefore_Click" InputGestureText="Shift+Enter" />
-					<MenuItem Header="Show state after this step" Click="ShowStateAfter_Click" InputGestureText="Enter" />
-					<MenuItem Header="Debug this step" Click="DebugStep_Click" />
+					<MenuItem Name="ShowStateBefore" Header="Show state before this step"/>
+					<MenuItem Name="ShowStateAfter" Header="Show state after this step" />
+					<MenuItem Name="DebugStep" Header="Debug this step" />
 				</ContextMenu>
 			</TreeView.ContextMenu>
 		</TreeView>

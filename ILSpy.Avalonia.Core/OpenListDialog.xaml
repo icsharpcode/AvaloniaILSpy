@@ -1,12 +1,13 @@
-﻿<Window
-    xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:controls="clr-namespace:ICSharpCode.TreeView"
-	Title="Open List"
-	Classes="DialogWindow"
-	WindowStartupLocation="CenterOwner"
-	MinWidth="480"
-	MinHeight="250"
-	Height="350"
-	Width="480"
+﻿<Window xmlns="https://github.com/avaloniaui" 
+		xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+		xmlns:controls="clr-namespace:ICSharpCode.TreeView"
+		Title="Open List"
+		Classes="DialogWindow"
+		WindowStartupLocation="CenterOwner"
+		MinWidth="480"
+		MinHeight="250"
+		Height="350"
+		Width="480"
     >
 	<Grid Margin="12,8">
 		<Grid.RowDefinitions>

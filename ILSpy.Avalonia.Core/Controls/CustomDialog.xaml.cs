@@ -19,19 +19,21 @@
 using System;
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.Presenters;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
+using AvaloniaEdit;
+using ICSharpCode.ILSpy.Controls;
 
-namespace ICSharpCode.ILSpy
+namespace ICSharpCode.ILSpy.Controls
 {
 	public sealed class CustomDialog : DialogWindow
 	{
-		TextBlock label;
+		TextEditor label;
 		ListBox buttons;
 		int acceptButton;
 		int cancelButton;
-		int result = -1;
 
 		/// <summary>
 		/// Gets the index of the button pressed.
@@ -39,57 +41,60 @@ namespace ICSharpCode.ILSpy
 		public int Result
 		{
 			get {
-				return result;
+				return (int)DialogResult;
 			}
 		}
 
-
-		public CustomDialog(string caption, string message, int acceptButton, int cancelButton, string[] buttonLabels)
+		public CustomDialog(string caption, string message, int acceptButton = -1, int cancelButton = -1, params string[] buttonLabels)
 		{
 			this.InitializeComponent();
 #if DEBUG
 			this.AttachDevTools();
 #endif
-			this.Owner = Application.Current.MainWindow;
-
 			this.acceptButton = acceptButton;
 			this.cancelButton = cancelButton;
 			this.Title = caption;
+			this.WindowStartupLocation = WindowStartupLocation.CenterOwner;
+			this.Width = buttonLabels.Length * (100+ 10);
 
-			buttons.Items = buttonLabels;
 			buttons.ItemContainerGenerator.Materialized += (s, e) => {
 				for (int i = 0; i < e.Containers.Count; i++) {
-					var contentPresenter = e.Containers[i].ContainerControl as Avalonia.Controls.Presenters.IContentPresenter;
-					var button = (Button)contentPresenter.Child;
-					button.Tag = i;
-					button.Click += ButtonClick;
+					var  btnIndex = i;
+					var listItem = (ListBoxItem)e.Containers[i].ContainerControl;
+					listItem.TemplateApplied += (container, args) => {
+						var button = (Button)((ListBoxItem)container).Presenter.Child;
+						button.Tag = btnIndex;
+						button.Click += ButtonClick;
+					};
 				}
 			};
+			buttons.Items = buttonLabels;
+
 			
 			label.Text = message;
 		}
 
+		void InitializeComponent()
+		{
+			AvaloniaXamlLoader.Load(this);
+			this.buttons = this.FindControl<ListBox>("buttons");
+			this.label = this.FindControl<TextEditor>("content");
+			
+			this.ShowInTaskbar = false;
+			this.WindowStartupLocation = WindowStartupLocation.CenterOwner;
+		}
+
 		protected override void OnKeyDown(KeyEventArgs e)
 		{
-			if (cancelButton == -1 && e.Key == Key.Escape) {
-				this.Close();
+			if (cancelButton != -1 && e.Key == Key.Escape) {
+				this.Close(cancelButton);
 			}
 		}
 
 		void ButtonClick(object sender, RoutedEventArgs e)
 		{
-			result = (int)((Control)e.Source).Tag;
-			this.Close(result);
-		}
-
-
-		private void InitializeComponent()
-		{
-			AvaloniaXamlLoader.Load(this);
-			this.buttons = this.FindControl<ListBox>("buttons");
-			this.label = this.FindControl<TextBlock>("content");
-			this.ShowInTaskbar = false;
-			this.WindowStartupLocation = WindowStartupLocation.CenterOwner;
+			this.Close(((Control)sender).Tag);
+			e.Handled = true;
 		}
 	}
 }

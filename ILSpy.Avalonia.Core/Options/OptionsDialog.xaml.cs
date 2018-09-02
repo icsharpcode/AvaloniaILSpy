@@ -25,6 +25,7 @@ using System.Xml.Linq;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using System.Collections.Generic;
+using ICSharpCode.ILSpy.Controls;
 
 namespace ICSharpCode.ILSpy.Options
 {
@@ -68,7 +69,14 @@ namespace ICSharpCode.ILSpy.Options
 		{
 			AvaloniaXamlLoader.Load(this);
 			tabControl = this.FindControl<TabControl>("tabControl");
+			this.FindControl<Button>("okButton").Click += OKButton_Click;
+			this.FindControl<Button>("cancelButton").Click += CancelButton_Click;;
 		}
+
+        void CancelButton_Click(object sender, RoutedEventArgs e)
+        {
+            Close(false);
+        }
 
 		void OKButton_Click(object sender, RoutedEventArgs e)
 		{

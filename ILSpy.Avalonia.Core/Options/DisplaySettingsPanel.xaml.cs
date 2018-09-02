@@ -97,13 +97,12 @@ namespace ICSharpCode.ILSpy.Options
 		
 		static FontFamily[] FontLoader()
 		{
+			//TODO: font families
 			//return (from ff in Fonts.SystemFontFamilies
 			//		where !IsSymbolFont(ff)
 			//		orderby ff.Source
 			//		select ff).ToArray();
-			return (from ff in System.Drawing.FontFamily.Families
-					orderby ff.Name
-					select new FontFamily(ff.Name)).ToArray();
+			return new FontFamily[]{ FontFamily.Parse("Arial"), FontFamily.Parse("Segoe UI") };
 		}
 
 		public static DisplaySettings LoadDisplaySettings(ILSpySettings settings)
@@ -141,10 +140,14 @@ namespace ICSharpCode.ILSpy.Options
 			if (currentDisplaySettings != null)
 				currentDisplaySettings.CopyValues(s);
 		}
+
 	}
 	
+
 	public class FontSizeConverter : IValueConverter
 	{
+		public static readonly FontSizeConverter Instance = new FontSizeConverter();
+
 		public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
 		{
 			if (value is double) {
@@ -156,10 +159,18 @@ namespace ICSharpCode.ILSpy.Options
 		
 		public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
 		{
+			if (value is IContentControl context)
+			{
+				value = context.Content;
+			}
 			if (value is string) {
 				double d;
 				if (double.TryParse((string)value, out d))
 					return d * 4 / 3;
+				return 11 * 4 / 3;
+			}
+			if(value == null)
+			{
 				return 11 * 4 / 3;
 			}
 			

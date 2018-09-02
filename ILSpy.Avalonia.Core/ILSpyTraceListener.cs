@@ -22,6 +22,7 @@ using System.Diagnostics;
 using System.Threading;
 using ICSharpCode.TreeView;
 using System.Linq;
+using ICSharpCode.ILSpy.Controls;
 
 namespace ICSharpCode.ILSpy
 {
