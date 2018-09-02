@@ -13,9 +13,9 @@
 		</StackPanel>
 		<TreeView Name="tree" >
 			<TreeView.ItemTemplate>
-				<HierarchicalDataTemplate Items="{Binding Children}">
+				<TreeDataTemplate ItemsSource="{Binding Children}">
 					<TextBlock Text="{Binding Description}" />
-				</HierarchicalDataTemplate>
+				</TreeDataTemplate>
 			</TreeView.ItemTemplate>
 			<TreeView.ContextMenu>
 				<ContextMenu>
