@@ -20,7 +20,7 @@ using Avalonia.Input;
 
 namespace ICSharpCode.ILSpy
 {
-	[ExportToolbarCommand(ToolTip = "Search", ToolbarIcon = "Images/Search.png", ToolbarCategory = "Open", ToolbarOrder = 0)]
+	[ExportToolbarCommand(ToolTip = "Search", ToolbarIcon = "Images/Search.png", ToolbarCategory = "Search", ToolbarOrder = 5)]
 	sealed class SearchCommand : CommandWrapper
 	{
 		public SearchCommand()
