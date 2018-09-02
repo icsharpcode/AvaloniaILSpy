@@ -66,7 +66,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\SharpTreeView.Avalonia\SharpTreeView.Avalonia.csproj" />
+    <ProjectReference Include="..\SharpTreeView\SharpTreeView.csproj" />
     <ProjectReference Include="..\AvaloniaEdit\src\AvaloniaEdit\AvaloniaEdit.csproj" />
     <ProjectReference Include="..\ICSharpCode.Decompiler.PdbProvider.Cecil\ICSharpCode.Decompiler.PdbProvider.Cecil.csproj" />
   </ItemGroup>

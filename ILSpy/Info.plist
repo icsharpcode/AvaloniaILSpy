@@ -3,7 +3,7 @@
     <key>CFBundleIconFile</key>           <string>ILSpy</string>
 
     <key>CFBundleName</key>               <string>ILSpy</string>
-    <key>CFBundleExecutable</key>         <string>ILSpy.Avalonia</string>
+    <key>CFBundleExecutable</key>         <string>ILSpy</string>
     <key>CFBundleIdentifier</key>         <string>ilspy</string>
 
     <key>CFBundleVersion</key>            <string>4.0</string>

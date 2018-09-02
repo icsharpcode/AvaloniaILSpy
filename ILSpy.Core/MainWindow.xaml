@@ -1,6 +1,6 @@
 ﻿<Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:tv="clr-namespace:ICSharpCode.TreeView;assembly=SharpTreeView.Avalonia"
+        xmlns:tv="clr-namespace:ICSharpCode.TreeView;assembly=SharpTreeView"
           xmlns:local="clr-namespace:ICSharpCode.ILSpy"
 	      xmlns:controls="clr-namespace:ICSharpCode.ILSpy.Controls"
 	      Title="ILSpy"

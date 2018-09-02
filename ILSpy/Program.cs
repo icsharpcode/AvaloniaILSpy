@@ -1,7 +1,8 @@
 ﻿using Avalonia;
+using Avalonia.Logging.Serilog;
+using System;
 using System.IO;
 using System.Reflection;
-using Avalonia.Logging.Serilog;
 
 namespace ICSharpCode.ILSpy
 {
@@ -12,7 +13,14 @@ namespace ICSharpCode.ILSpy
         {
             Directory.SetCurrentDirectory(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location));
 
-            BuildAvaloniaApp().Start<MainWindow>();
+            try
+            {
+                BuildAvaloniaApp().Start<MainWindow>();
+            }
+            catch (Exception exception)
+            {
+			    MessageBox.Show(exception.ToString(), "Sorry, we crashed");
+            }
         }
 
         /// <summary>

@@ -11,7 +11,7 @@ var zipRootDir = artifactsDir.Combine("zips");
 var fileZipSuffix = ".zip";
 
 var netCoreAppsRoot= ".";
-var netCoreApp = "ILSpy.Avalonia";
+var netCoreApp = "ILSpy";
 
 var buildDirs = 
     GetDirectories($"{netCoreAppsRoot}/**/bin/**") + 

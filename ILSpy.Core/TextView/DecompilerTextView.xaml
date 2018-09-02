@@ -1,7 +1,7 @@
 ﻿<UserControl x:Name="self"
              xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:avalonia="clr-namespace:Avalonia;assembly=SharpTreeView.Avalonia"
+             xmlns:avalonia="clr-namespace:Avalonia;assembly=SharpTreeView"
              xmlns:ae="clr-namespace:AvaloniaEdit;assembly=AvaloniaEdit">
 	<Grid>
 		<Border BorderThickness="1,1,0,1" BorderBrush="#FF828790">

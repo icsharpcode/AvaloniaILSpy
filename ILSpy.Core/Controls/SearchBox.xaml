@@ -1,6 +1,6 @@
 ﻿<Styles xmlns="https://github.com/avaloniaui"
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:avalonia="clr-namespace:Avalonia;assembly=SharpTreeView.Avalonia"
+    xmlns:avalonia="clr-namespace:Avalonia;assembly=SharpTreeView"
 	xmlns:local="clr-namespace:ICSharpCode.ILSpy.Controls"
 	xmlns:sys="clr-namespace:System;assembly=mscorlib">
 
