@@ -15,10 +15,10 @@ Supported Features
 # Bleeding-edge Builds
 | Version | Installers (for x 64) |
 |---------|------------|
-|**Windows**|[Download](https://ci.appveyor.com/api/projects/jeffreye/AvaloniaILSpy/artifacts/artifacts/zips/ILSpy.Avalonia-win7-x64-Release.zip)|
-|**macOS**|[Download](https://ci.appveyor.com/api/projects/jeffreye/AvaloniaILSpy/artifacts/artifacts/zips/ILSpy.Avalonia-osx.10.12-x64-Release.zip)|
-|**Ubuntu**|[Download](https://ci.appveyor.com/api/projects/jeffreye/AvaloniaILSpy/artifacts/artifacts/zips/ILSpy.Avalonia-ubuntu.14.04-x64-Release.zip)|
-|**Debian**|[Download](https://ci.appveyor.com/api/projects/jeffreye/AvaloniaILSpy/artifacts/artifacts/zips/ILSpy.Avalonia-debian.8-x64-Release.zip)|
+|**Windows**|[Download](https://ci.appveyor.com/api/projects/icsharpcode/avaloniailspy/artifacts/artifacts%2Fzips%2FILSpy-win7-x64-Release.zip?branch=master)|
+|**macOS**|[Download](https://ci.appveyor.com/api/projects/icsharpcode/avaloniailspy/artifacts/artifacts%2Fzips%2FILSpy-osx.10.12-x64-Release.zip?branch=master)|
+|**Ubuntu**|[Download](https://ci.appveyor.com/api/projects/icsharpcode/avaloniailspy/artifacts/artifacts%2Fzips%2FILSpy-ubuntu.14.04-x64-Release.zip?branch=master)|
+|**Debian**|[Download](https://ci.appveyor.com/api/projects/icsharpcode/avaloniailspy/artifacts/artifacts%2Fzips%2FILSpy-debian.8-x64-Release.zip?branch=master)|
 
 How to run on Linux/macOS: 
 - grant it the rights to execute `chmod a+x ILSpy.Avalonia`
