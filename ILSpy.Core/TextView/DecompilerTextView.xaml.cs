@@ -534,7 +534,7 @@ namespace ICSharpCode.ILSpy.TextView
 				return tcs.Task;
 			}
 			
-			Thread thread = new Thread(new ThreadStart(
+			Task.Run(new Action(
 				delegate {
 					try {
 						AvaloniaEditTextOutput textOutput = new AvaloniaEditTextOutput();
@@ -548,7 +548,6 @@ namespace ICSharpCode.ILSpy.TextView
 						tcs.SetException(ex);
 					}
 				}));
-			thread.Start();
 			return tcs.Task;
 		}
 		

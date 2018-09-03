@@ -26,7 +26,7 @@ using System;
 using Avalonia.Markup.Xaml;
 using Avalonia.Controls.Presenters;
 
-namespace ICSharpCode.ILSpy
+namespace ICSharpCode.ILSpy.Controls
 {
 	/// <summary>
 	/// Interaction logic for ResourceObjectTable.xaml

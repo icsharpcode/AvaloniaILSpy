@@ -26,6 +26,7 @@ using ICSharpCode.Decompiler.Util;
 using ICSharpCode.Decompiler.Metadata;
 using ICSharpCode.TreeView;
 using ICSharpCode.ILSpy.TextView;
+using ICSharpCode.ILSpy.Controls;
 using Microsoft.Win32;
 using System.Threading.Tasks;
 using Avalonia.Controls;
