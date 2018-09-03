@@ -21,6 +21,14 @@
     <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <LangVersion>7.2</LangVersion>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <LangVersion>7.2</LangVersion>
+  </PropertyGroup>
+
   <ItemGroup>
     <Compile Include="*.cs" />
   </ItemGroup>
@@ -44,7 +52,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\AvaloniaILSpy\AvaloniaILSpy.csproj" />
+    <ProjectReference Include="..\ILSpy.Core\ILSpy.Core.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <updateInfo>
     <band id="alpha">
-        <latestVersion>3.3.0.0</latestVersion>
+        <latestVersion>4.0.0.0</latestVersion>
         <downloadUrl>
-        
+        https://ci.appveyor.com/project/jeffreye/avaloniailspy/build/artifacts
         </downloadUrl>
     </band>
 </updateInfo>

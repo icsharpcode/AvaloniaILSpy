@@ -1,0 +1,74 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
+    <EnableDefaultItems>false</EnableDefaultItems>
+    <SignAssembly>True</SignAssembly>
+    <AssemblyOriginatorKeyFile>..\ICSharpCode.Decompiler\ICSharpCode.Decompiler.snk</AssemblyOriginatorKeyFile>
+    <RootNamespace>ICSharpCode.ILSpy</RootNamespace>
+    <LangVersion>7.2</LangVersion>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+   </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
+    <DebugType>full</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+    <CheckForOverflowUnderflow>True</CheckForOverflowUnderflow>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)' == 'Release'">
+    <DebugType>pdbonly</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <CodeAnalysisRuleSet>..\ICSharpCode.Decompiler\ICSharpCode.Decompiler.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="ICSharpCode.Decompiler" Version="4.0.0.4322-beta2-debug" />
+    <PackageReference Include="Microsoft.VisualStudio.Composition" Version="15.8.98" />
+    <PackageReference Include="System.IO.Compression" Version="4.3.0" />
+    <PackageReference Include="NuGet.Client" Version="4.2.0" />
+    <PackageReference Include="Avalonia.Desktop" Version="0.6.2-build6032-beta" />
+    <PackageReference Include="Microsoft.DiaSymReader" Version="1.3.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="**\*.cs" Exclude="obj\**" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <Compile Update="**\*.xaml.cs">
+    </Compile>
+    <EmbeddedResource Include="**\*.xaml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <EmbeddedResource Include="**\*.xshd;**\*.resx;Assets\*;**\*.paml" Exclude="bin\**;obj\**;**\*.xproj;packages\**;@(EmbeddedResource)" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Images\*.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <EmbeddedResource Include="README.txt" />
+    <EmbeddedResource Include="..\doc\*.txt" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SharpTreeView\SharpTreeView.csproj" />
+    <ProjectReference Include="..\AvaloniaEdit\src\AvaloniaEdit\AvaloniaEdit.csproj" />
+    <ProjectReference Include="..\ICSharpCode.Decompiler.PdbProvider.Cecil\ICSharpCode.Decompiler.PdbProvider.Cecil.csproj" />
+  </ItemGroup>
+  
+</Project>

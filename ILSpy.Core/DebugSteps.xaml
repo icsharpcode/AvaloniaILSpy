@@ -1,0 +1,29 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:ICSharpCode.ILSpy"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+	<DockPanel>
+		<StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
+			<CheckBox Margin="3" Content="UseFieldSugar" IsChecked="{Binding UseFieldSugar, Source={x:Static local:DebugSteps.Options}}" />
+			<CheckBox Margin="3" Content="UseLogicOperationSugar"  IsChecked="{Binding UseLogicOperationSugar, Source={x:Static local:DebugSteps.Options}}" />
+			<CheckBox Margin="3" Content="ShowILRanges"  IsChecked="{Binding ShowILRanges, Source={x:Static local:DebugSteps.Options}}" />
+		</StackPanel>
+		<TreeView Name="tree" >
+			<TreeView.ItemTemplate>
+				<TreeDataTemplate ItemsSource="{Binding Children}">
+					<TextBlock Text="{Binding Description}" />
+				</TreeDataTemplate>
+			</TreeView.ItemTemplate>
+			<TreeView.ContextMenu>
+				<ContextMenu>
+					<MenuItem Name="ShowStateBefore" Header="Show state before this step"/>
+					<MenuItem Name="ShowStateAfter" Header="Show state after this step" />
+					<MenuItem Name="DebugStep" Header="Debug this step" />
+				</ContextMenu>
+			</TreeView.ContextMenu>
+		</TreeView>
+	</DockPanel>
+</UserControl>

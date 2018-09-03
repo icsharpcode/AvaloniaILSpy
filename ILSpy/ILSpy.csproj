@@ -1,0 +1,62 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <LangVersion>7.2</LangVersion>
+
+    <TieredCompilations>true</TieredCompilations>
+    <TargetLatestRuntimePatch>true</TargetLatestRuntimePatch>
+    <PreserveCompilationContext>true</PreserveCompilationContext>
+    <RuntimeIdentifiers>win7-x64;ubuntu.14.04-x64;debian.8-x64;osx.10.12-x64</RuntimeIdentifiers>
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+
+    <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
+
+    <EnableDefaultItems>false</EnableDefaultItems>
+
+    <RootNamespace>ICSharpCode.ILSpy</RootNamespace>
+
+    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+
+    <StartupObject>ICSharpCode.ILSpy.Program</StartupObject>
+    <ApplicationIcon>ILSpy.ico</ApplicationIcon>
+
+    <SignAssembly>True</SignAssembly>
+    <AssemblyOriginatorKeyFile>..\ICSharpCode.Decompiler\ICSharpCode.Decompiler.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
+    <DebugType>full</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+    <CheckForOverflowUnderflow>True</CheckForOverflowUnderflow>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)' == 'Release'">
+    <DebugType>pdbonly</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <CodeAnalysisRuleSet>..\ICSharpCode.Decompiler\ICSharpCode.Decompiler.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="Program.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Add condition for mas os -->
+    <Content Include="ILSpy.icns">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Info.plist">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ILSpy.Core\ILSpy.Core.csproj" />
+  </ItemGroup>
+
+</Project>

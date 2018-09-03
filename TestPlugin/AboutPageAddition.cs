@@ -6,7 +6,7 @@ using Avalonia;
 using Avalonia.Media;
 
 using AvaloniaEdit.Highlighting;
-using AvaloniaILSpy;
+using ICSharpCode.ILSpy;
 
 namespace TestPlugin
 {

@@ -11,12 +11,12 @@ var zipRootDir = artifactsDir.Combine("zips");
 var fileZipSuffix = ".zip";
 
 var netCoreAppsRoot= ".";
-var netCoreApp = "AvaloniaILSpy.NetCore";
+var netCoreApp = "ILSpy";
 
 var buildDirs = 
     GetDirectories($"{netCoreAppsRoot}/**/bin/**") + 
     GetDirectories($"{netCoreAppsRoot}/**/obj/**") + 
-    GetDirectories($"{netCoreAppsRoot}/artifacts/**");
+    GetDirectories($"{netCoreAppsRoot}/artifacts/*");
 
 var netCoreProject = new {
         Path = $"{netCoreAppsRoot}/{netCoreApp}",
@@ -86,8 +86,37 @@ var netCoreProject = new {
     }
  });
 
+
+ Task("Package-Mac")
+     .IsDependentOn("Publish-NetCore")
+     .Does(() =>
+ {
+    var runtimeIdentifiers = netCoreProject.Runtimes.Where(r => r.StartsWith("osx"));
+    foreach(var runtime in runtimeIdentifiers)
+    {
+        var workingDir = artifactsDir.Combine(runtime);
+        var tempDir = artifactsDir.Combine("app");
+
+        Information("Copying Info.plist");
+        EnsureDirectoryExists(tempDir.Combine("Contents"));
+        MoveFiles(workingDir.Combine("Info.plist").FullPath, tempDir.Combine("Contents"));
+
+        Information("Copying App Icons");
+        EnsureDirectoryExists(tempDir.Combine("Contents/Resources"));
+        MoveFiles(workingDir.Combine("ILSpy.icns").FullPath, tempDir.Combine("Contents/Resources"));
+
+        Information("Copying executables");
+        MoveDirectory(workingDir, tempDir.Combine("Contents/MacOS"));
+
+        Information("Finish packaging");
+        EnsureDirectoryExists(workingDir);
+        MoveDirectory(tempDir, workingDir.Combine($"{netCoreProject.Name}.app"));
+    }
+ });
+
  Task("Zip-NetCore")
      .IsDependentOn("Publish-NetCore")
+     .IsDependentOn("Package-Mac")
      .Does(() =>
  {
     EnsureDirectoryExists(zipRootDir);

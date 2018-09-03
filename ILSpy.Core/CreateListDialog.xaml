@@ -1,0 +1,22 @@
+﻿<Window
+    xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:controls="clr-namespace:ICSharpCode.TreeView"
+	Title="New list"
+	Classes="DialogWindow"
+	WindowStartupLocation="CenterOwner"
+	Width="300"
+	Height="150">
+	<Grid Margin="12,8">
+		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto" />
+			<RowDefinition Height="Auto" />
+		</Grid.RowDefinitions>
+		<StackPanel>
+			<TextBlock Margin="5">Enter a list name:</TextBlock>
+			<TextBox Margin="8,8" Name="ListName"></TextBox>
+		</StackPanel>
+		<StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="8,0">
+			<Button IsDefault="True" Margin="2,0" IsEnabled="False" Name="okButton">Create</Button>
+			<Button Margin="2,0" Name="cancelButton">Cancel</Button>
+		</StackPanel>
+	</Grid>
+</Window>

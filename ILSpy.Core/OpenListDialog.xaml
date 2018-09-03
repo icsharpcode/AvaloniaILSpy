@@ -1,0 +1,43 @@
+﻿<Window xmlns="https://github.com/avaloniaui" 
+		xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+		xmlns:controls="clr-namespace:ICSharpCode.TreeView"
+		Title="Open List"
+		Classes="DialogWindow"
+		WindowStartupLocation="CenterOwner"
+		MinWidth="480"
+		MinHeight="250"
+		Height="350"
+		Width="480"
+    >
+	<Grid Margin="12,8">
+		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto" />
+			<RowDefinition Height="1*" />
+			<RowDefinition Height="Auto" />
+		</Grid.RowDefinitions>
+		<StackPanel>
+			<TextBlock Margin="5">Select a list:</TextBlock>
+		</StackPanel>
+
+		<ListBox Name="listView" Grid.Row="1" Margin="0, 8" 
+				  SelectionMode="Single">
+			<ListBox.ItemTemplate>
+				<DataTemplate>
+					<TextBlock Text="{Binding }" />
+				</DataTemplate>
+			</ListBox.ItemTemplate>
+		</ListBox>
+		<DockPanel Grid.Row="2">
+			<StackPanel DockPanel.Dock="Right"  Orientation="Horizontal" HorizontalAlignment="Right">
+				<Button IsDefault="True" Margin="2,0" IsEnabled="False" Name="okButton" >Open</Button>
+				<Button Margin="2,0" Name="cancelButton">Cancel</Button>
+			</StackPanel>
+
+			<StackPanel DockPanel.Dock="Left" Orientation="Horizontal" HorizontalAlignment="Left">
+				<Button Margin="2,0"  Name="createButton">Create</Button>
+				<Button Margin="2,0" IsEnabled="False" Name="deleteButton" >Delete</Button>
+				<Button Margin="2,0"  Name="resetButton">Reset</Button>
+			</StackPanel>
+		</DockPanel>
+	</Grid>
+</Window>
