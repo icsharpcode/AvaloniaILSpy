@@ -27,11 +27,19 @@ using ICSharpCode.ILSpy.TextView;
 
 namespace ICSharpCode.ILSpy
 {
-	[ExportMainMenuCommand(Menu = "_File", Header = "Dialog", MenuCategory = "Open", MenuOrder = 2.5)]
-	sealed class DialogDebugCommand : SimpleCommand
-	{
+    [ExportMainMenuCommand(Menu = "_File", Header = "Dialog", MenuCategory = "Open", MenuOrder = 2.5)]
+    sealed class DialogDebugCommand : SimpleCommand
+    {
+        public override bool CanExecute(object parameter)
+        {
+#if DEBUG
+            return true;
+#else
+            return false;
+#endif
+        }
 
-		public override void Execute(object parameter)
+        public override void Execute(object parameter)
 		{
 			MessageBox.Show(Environment.StackTrace, "warning", MessageBoxButton.YesNoCancel);
 		}
