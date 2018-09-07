@@ -51,7 +51,7 @@ namespace ICSharpCode.ILSpy
 			Display(decompilerTextView);
 		}
 		
-        static readonly Uri UpdateUrl = new Uri("https://github.com/jeffreye/AvaloniaILSpy/raw/master/updates.xml");
+        static readonly Uri UpdateUrl = new Uri("https://github.com/icsharpcode/AvaloniaILSpy/raw/master/updates.xml");
 		const string band = "stable";
 		
 		static AvailableVersionInfo latestAvailableVersion;
