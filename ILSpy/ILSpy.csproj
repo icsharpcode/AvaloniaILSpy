@@ -45,8 +45,7 @@
     <Compile Include="Program.cs" />
   </ItemGroup>
 
-  <ItemGroup>
-    <!-- Add condition for mas os -->
+  <ItemGroup Condition="'$(RuntimeIdentifier)' == 'osx.10.12-x64'">
     <Content Include="ILSpy.icns">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -59,4 +58,7 @@
     <ProjectReference Include="..\ILSpy.Core\ILSpy.Core.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Avalonia.Desktop" Version="0.6.2-build6122-beta" />
+  </ItemGroup>
 </Project>

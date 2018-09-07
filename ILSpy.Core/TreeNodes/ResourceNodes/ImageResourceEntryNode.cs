@@ -41,12 +41,6 @@ namespace ICSharpCode.ILSpy.TreeNodes
 
 		public ILSpyTreeNode CreateNode(string key, object data)
 		{
-			if (data is System.Drawing.Image)
-			{
-				MemoryStream s = new MemoryStream();
-				((System.Drawing.Image)data).Save(s, System.Drawing.Imaging.ImageFormat.Bmp);
-				return new ImageResourceEntryNode(key, s);
-			}
 			if (!(data is Stream))
 			    return null;
 			foreach (string fileExt in imageFileExtensions) {
