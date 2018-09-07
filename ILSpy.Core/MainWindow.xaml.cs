@@ -24,6 +24,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Avalonia;
@@ -699,24 +700,85 @@ namespace ICSharpCode.ILSpy
 			return decompilationTask;
 		}
 
+        /// <summary>
+        /// TODO: Opens the link in browser.
+        /// </summary>
+        /// <param name="link">Link.</param>
 		public static void OpenLink(string link)
 		{
 			try {
-				Process.Start(link);
+                if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                {
+                    Process.Start(link);
+                }
+                else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+                {
+                    Process.Start("open", link);
+                }
+                else
+                {
+                    // TODO: open folder in linux and other os
+                }
 #pragma warning disable RECS0022 // A catch clause that catches System.Exception and has an empty body
-			} catch (Exception) {
+            } catch (Exception) {
 #pragma warning restore RECS0022 // A catch clause that catches System.Exception and has an empty body
 				// Process.Start can throw several errors (not all of them documented),
 				// just ignore all of them.
 			}
-		}
+        }
 
-		public static void ExecuteCommand(string fileName, string arguments)
-		{
-			try {
-				Process.Start(fileName, arguments);
+        /// <summary>
+        /// open conatiner folder
+        /// </summary>
+        /// <param name="path">full path</param>
+        public static void OpenFolder(string path)
+        {
+            try
+            {
+                if(RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                {
+                    Process.Start("explorer.exe", $"/select,\"{path}\"");
+                }
+                else if(RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+                {
+                    Process.Start("open", path);
+                }
+                else
+                {
+                    // TODO: open folder in linux and other os
+                }
 #pragma warning disable RECS0022 // A catch clause that catches System.Exception and has an empty body
-			} catch (Exception) {
+            }
+            catch (Exception)
+            {
+#pragma warning restore RECS0022 // A catch clause that catches System.Exception and has an empty body
+                // Process.Start can throw several errors (not all of them documented),
+                // just ignore all of them.
+            }
+        }
+
+        /// <summary>
+        /// Open command line interface
+        /// </summary>
+        /// <param name="path">Full path.</param>
+        public static void OpenCommandLine(string path)
+		{
+			try
+            {
+                if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                {
+                    Process.Start("cmd.exe", $"/k \"cd {path}\"");
+                }
+                else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+                {
+                    Process.Start("/Applications/Utilities/Terminal.app/Contents/MacOS/Terminal", path);
+                }
+                else
+                {
+                    // TODO: open folder in linux and other os
+                }
+#pragma warning disable RECS0022 // A catch clause that catches System.Exception and has an empty body
+            } catch (Exception) {
 #pragma warning restore RECS0022 // A catch clause that catches System.Exception and has an empty body
 				// Process.Start can throw several errors (not all of them documented),
 				// just ignore all of them.

@@ -467,9 +467,9 @@ namespace ICSharpCode.ILSpy.TreeNodes
 			if (context.SelectedTreeNodes == null)
 				return;
 			foreach (var node in context.SelectedTreeNodes.OfType<AssemblyTreeNode>()) {
-				var path = node.LoadedAssembly.FileName;
-				if (File.Exists(path)) {
-					MainWindow.ExecuteCommand("explorer.exe", $"/select,\"{path}\"");
+                var path = Path.GetDirectoryName(node.LoadedAssembly.FileName);
+                if (Directory.Exists(path)) {
+                    MainWindow.OpenFolder(path);
 				}
 			}
 		}
@@ -501,7 +501,7 @@ namespace ICSharpCode.ILSpy.TreeNodes
 			foreach (var node in context.SelectedTreeNodes.OfType<AssemblyTreeNode>()) {
 				var path = Path.GetDirectoryName(node.LoadedAssembly.FileName);
 				if (Directory.Exists(path)) {
-					MainWindow.ExecuteCommand("cmd.exe", $"/k \"cd {path}\"");
+					MainWindow.OpenCommandLine(path);
 				}
 			}
 		}
