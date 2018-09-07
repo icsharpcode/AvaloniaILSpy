@@ -26,33 +26,6 @@ namespace ICSharpCode.ILSpy.Controls
             }
         }
 
-        public new Task<TResult> ShowDialog<TResult>()
-		{
-			var affectedWindows = Application.Current.Windows.Where(w => w.IsEnabled && w != this).ToList();
-			var activated = affectedWindows.Where(w => w.IsActive).FirstOrDefault();
-
-			affectedWindows.ForEach(w => w.IsEnabled = false);
-
-			Show();
-
-			var result = new TaskCompletionSource<TResult>();
-
-			Renderer?.Start();
-
-			Observable.FromEventPattern<EventHandler, EventArgs>(
-				x => this.Closed += x,
-				x => this.Closed -= x)
-				.Take(1)
-				.Subscribe(_ =>
-				{
-					affectedWindows.ForEach(w => w.IsEnabled = true);
-					activated?.Activate();
-					result.TrySetResult((TResult)(DialogResult ?? default(TResult)));
-				});
-
-			return result.Task;
-		}
-
         Type IStyleable.StyleKey { get; } = typeof(Window);
     }
 }
