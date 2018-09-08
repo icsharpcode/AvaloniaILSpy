@@ -25,39 +25,45 @@ using AvaloniaEdit;
 using System;
 using Avalonia.Markup.Xaml;
 using Avalonia.Controls.Presenters;
+using System.Collections.Generic;
+using Avalonia.Layout;
 
 namespace ICSharpCode.ILSpy.Controls
 {
 	/// <summary>
 	/// Interaction logic for ResourceStringTable.xaml
 	/// </summary>
-	public partial class ResourceStringTable : UserControl
-	{
+	public partial class ResourceStringTable : UserControl, IRoutedCommandBindable
+    {
 		internal ListBox resourceListView;
+
+        public IList<RoutedCommandBinding> CommandBindings { get; } = new List<RoutedCommandBinding>();
 
         public ResourceStringTable(IEnumerable strings, ContentPresenter contentPresenter)
 		{
             InitializeComponent();
+            resourceListView.Items = strings;
             // set size to fit decompiler window
             contentPresenter.PropertyChanged += ContentPresenter_PropertyChanged;
-            Width = contentPresenter.DesiredSize.Width - 45;
-            MaxHeight = contentPresenter.DesiredSize.Height;
-			resourceListView.Items = strings;
-		}
+            var size = ((ILayoutable)contentPresenter).PreviousMeasure ?? Size.Empty;
+            Width = size.Width - 45;
+            Height = size.Height;
+        }
 
 		private void InitializeComponent()
 		{
 			AvaloniaXamlLoader.Load(this);
 			resourceListView = this.FindControl<ListBox>("resourceListView");
+            CommandBindings.Add(new RoutedCommandBinding(global::AvaloniaEdit.ApplicationCommands.Copy, ExecuteCopy, CanExecuteCopy));
 		}
 
         void ContentPresenter_PropertyChanged(object sender, AvaloniaPropertyChangedEventArgs e)
         {
             if (e.Property == ContentPresenter.DesiredSizeProperty)
             {
-                var desired = (Size)e.NewValue;
-                Width = desired.Width - 45;
-                MaxHeight = desired.Height;
+                var size = ((ILayoutable)sender).PreviousMeasure ?? Size.Empty;
+                Width = size.Width - 45;
+                Height = size.Height;
             }
         }
 		
