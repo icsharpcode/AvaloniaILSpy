@@ -26,6 +26,7 @@ using System;
 using Avalonia.Markup.Xaml;
 using Avalonia.Controls.Presenters;
 using System.Collections.Generic;
+using Avalonia.Layout;
 
 namespace ICSharpCode.ILSpy.Controls
 {
