@@ -43,11 +43,6 @@ namespace ICSharpCode.ILSpy.Controls
         {
             InitializeComponent();
             resourceListView.Items = resources;
-            // set size to fit decompiler window
-            contentPresenter.PropertyChanged += ContentPresenter_PropertyChanged;
-            var size = ((ILayoutable)contentPresenter).PreviousMeasure ?? Size.Empty;
-            Width = size.Width - 45;
-            Height = size.Height;
         }
 
 		private void InitializeComponent()
@@ -57,14 +52,12 @@ namespace ICSharpCode.ILSpy.Controls
             CommandBindings.Add(new RoutedCommandBinding(global::AvaloniaEdit.ApplicationCommands.Copy, ExecuteCopy, CanExecuteCopy));
         }
 
-        void ContentPresenter_PropertyChanged(object sender, AvaloniaPropertyChangedEventArgs e)
+        protected override void OnAttachedToVisualTree(VisualTreeAttachmentEventArgs e)
         {
-            if (e.Property == ContentPresenter.DesiredSizeProperty)
-            {
-                var size = ((ILayoutable)sender).PreviousMeasure ?? Size.Empty;
-                Width = size.Width - 45;
-                Height = size.Height;
-            }
+            base.OnAttachedToVisualTree(e);
+            var size = e.Parent.Bounds;
+            Width = size.Width - 45;
+            MaxHeight = size.Height;
         }
 
 		void ExecuteCopy(object sender, ExecutedRoutedEventArgs args)

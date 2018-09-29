@@ -2,11 +2,6 @@
 <UserControl xmlns="https://github.com/avaloniaui"
 			 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 >
-<!--	<UserControl.CommandBindings>
-		<CommandBinding Command="ApplicationCommands.Copy"
-						Executed="ExecuteCopy"
-						CanExecute="CanExecuteCopy" />
-	</UserControl.CommandBindings>-->
 	<Grid Margin="5,0,0,0">
         <!--
 		<Grid.Resources>
@@ -24,7 +19,7 @@
 		</Grid.Resources>
         -->
 		<Grid.RowDefinitions>
-			<RowDefinition />
+			<RowDefinition Height="30" />
 			<RowDefinition />
 		</Grid.RowDefinitions>
 		<TextBlock Margin="5" Text="String Table(Name/Value)"
