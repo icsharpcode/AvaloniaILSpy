@@ -84,7 +84,9 @@ namespace ICSharpCode.ILSpy.TextView
 	/// </summary>
 	sealed class VisualLineReferenceText : VisualLineText
 	{
-		readonly ReferenceElementGenerator parent;
+        private static readonly Cursor HandCursor = new Cursor(StandardCursorType.Hand);
+
+        readonly ReferenceElementGenerator parent;
 		readonly ReferenceSegment referenceSegment;
 		
 		/// <summary>
@@ -102,9 +104,12 @@ namespace ICSharpCode.ILSpy.TextView
 		protected override void OnQueryCursor(PointerEventArgs e)
 		{
 			e.Handled = true;
-            // TODO: cursor
-			//e.Cursor = referenceSegment.IsLocal ? Cursors.Arrow : Cursors.Hand;
-		}
+
+            if (e.Source is InputElement inputElement)
+            {
+                inputElement.Cursor = referenceSegment.IsLocal ? Cursor.Default : HandCursor;
+            }
+        }
 		
 		/// <inheritdoc/>
 		protected override VisualLineText CreateInstance(int length)
