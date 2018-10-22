@@ -21,7 +21,7 @@ using System.Diagnostics;
 
 namespace ICSharpCode.ILSpy.TreeNodes
 {
-	/*[ExportContextMenuEntry(Header = "Search MSDN...", Icon = "images/SearchMsdn.png", Order = 9999)]
+	/*[ExportContextMenuEntry(Header = "Search MSDN...", Icon = "Images/SearchMsdn.png", Order = 9999)]
 	internal sealed class SearchMsdnContextMenuEntry : IContextMenuEntry
 	{
 		private static string msdnAddress = "http://msdn.microsoft.com/en-us/library/{0}";
