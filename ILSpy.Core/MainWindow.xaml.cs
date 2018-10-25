@@ -717,7 +717,7 @@ namespace ICSharpCode.ILSpy
                 }
                 else
                 {
-                    // TODO: open folder in linux and other os
+                    Process.Start("xdg-open", link);
                 }
 #pragma warning disable RECS0022 // A catch clause that catches System.Exception and has an empty body
             } catch (Exception) {
@@ -745,7 +745,7 @@ namespace ICSharpCode.ILSpy
                 }
                 else
                 {
-                    // TODO: open folder in linux and other os
+                    Process.Start("xdg-open", path);
                 }
 #pragma warning disable RECS0022 // A catch clause that catches System.Exception and has an empty body
             }
@@ -775,7 +775,7 @@ namespace ICSharpCode.ILSpy
                 }
                 else
                 {
-                    // TODO: open folder in linux and other os
+                    Process.Start("xterm", $"-e \"cd {path}\"; bash");
                 }
 #pragma warning disable RECS0022 // A catch clause that catches System.Exception and has an empty body
             } catch (Exception) {
