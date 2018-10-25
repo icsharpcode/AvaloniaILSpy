@@ -321,7 +321,7 @@ namespace ICSharpCode.ILSpy.TreeNodes
 		}
 	}
 
-	[ExportContextMenuEntry(Header = "_Remove", Icon = "images/Delete.png")]
+	[ExportContextMenuEntry(Header = "_Remove", Icon = "Images/Delete.png")]
 	sealed class RemoveAssembly : IContextMenuEntry
 	{
 		public bool IsVisible(TextViewContext context)
@@ -346,7 +346,7 @@ namespace ICSharpCode.ILSpy.TreeNodes
 		}
 	}
 
-	[ExportContextMenuEntry(Header = "_Reload", Icon = "images/Refresh.png")]
+	[ExportContextMenuEntry(Header = "_Reload", Icon = "Images/Refresh.png")]
 	sealed class ReloadAssembly : IContextMenuEntry
 	{
 		public bool IsVisible(TextViewContext context)
