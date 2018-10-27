@@ -185,7 +185,7 @@ namespace ICSharpCode.ILSpy
 			int navigationPos = 0;
 			int openPos = 1;
 			var toolbarCommands = App.ExportProvider.GetExports<ICommand, IToolbarCommandMetadata>("ToolbarCommand");
-            var toolbarItems = toolBar.Items.Cast<IControl>().ToList();
+            var toolbarItems = toolBar.Items as IList<object> ?? new List<object>();
             foreach (var commandGroup in toolbarCommands.OrderBy(c => c.Metadata.ToolbarOrder).GroupBy(c => c.Metadata.ToolbarCategory)) {
 				if (commandGroup.Key == "Navigation") {
 					foreach (var command in commandGroup) {
@@ -228,10 +228,10 @@ namespace ICSharpCode.ILSpy
 		void InitMainMenu()
 		{
 			var mainMenuCommands = App.ExportProvider.GetExports<ICommand, IMainMenuCommandMetadata>("MainMenuCommand");
-            List<IControl> mainMenuItems = mainMenu.Items.Cast<IControl>().ToList();
+            var mainMenuItems = mainMenu.Items as IList<object> ?? new List<object>();
             foreach (var topLevelMenu in mainMenuCommands.OrderBy(c => c.Metadata.MenuOrder).GroupBy(c => c.Metadata.Menu)) {
                 MenuItem topLevelMenuItem = mainMenu.Items.OfType<MenuItem>().FirstOrDefault(m => (m.Header as string) == topLevelMenu.Key);
-                List<IControl> topLevelMenuItems = topLevelMenuItem?.Items.Cast<IControl>().ToList() ?? new List<IControl>();
+                var topLevelMenuItems = topLevelMenuItem?.Items as IList<object> ?? new List<object>();
                 foreach (var category in topLevelMenu.GroupBy(c => c.Metadata.MenuCategory)) {
 					if (topLevelMenuItem == null) {
 						topLevelMenuItem = new MenuItem();

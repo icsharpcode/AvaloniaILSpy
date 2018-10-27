@@ -64,6 +64,7 @@ namespace ICSharpCode.ILSpy
         public static async Task<MessageBoxResult> Show(Window owner, string messageBoxText, string caption, MessageBoxButton button, MessageBoxImage icon, MessageBoxResult defaultResult, MessageBoxOptions options)
         {
             Debug.WriteLine(caption);
+            Debug.WriteLine(messageBoxText);
 
             // TODO: message box
             var buttons = Buttons[button];
