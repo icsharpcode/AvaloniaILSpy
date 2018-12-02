@@ -799,7 +799,7 @@ namespace ICSharpCode.ILSpy
             };
             dlg.AllowMultiple = true;
             //dlg.RestoreDirectory = true;
-            var filenames = await dlg.ShowAsync();
+            var filenames = await dlg.ShowAsync(this);
             if (filenames != null && filenames.Length > 0)
             {
                 OpenFiles(filenames);
@@ -825,8 +825,7 @@ namespace ICSharpCode.ILSpy
 					case ".nupkg":
 						LoadedNugetPackage package = new LoadedNugetPackage(file);
 						var selectionDialog = new NugetPackageBrowserDialog(package);
-						selectionDialog.Owner = this;
-                        if (await selectionDialog.ShowDialog<bool>() != true)
+                        if (await selectionDialog.ShowDialog<bool>(this) != true)
                             break;
 						foreach (var entry in selectionDialog.SelectedItems) {
 							var nugetAsm = assemblyList.OpenAssembly("nupkg://" + file + ";" + entry.Name, entry.Stream, true);

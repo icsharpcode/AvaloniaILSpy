@@ -99,7 +99,7 @@ namespace ICSharpCode.ILSpy
 			//inputBox.StartPosition = Avalonia.Forms.FormStartPosition.CenterScreen;
 			inputBox.ShowInTaskbar = true; // make this window more visible, because it effectively interrupts the decompilation process.
 			try {
-				inputBox.ShowDialog();
+				inputBox.ShowDialog(MainWindow.Instance);
 				return inputBox.Result;
 			} finally {
 				dialogIsOpen = false;

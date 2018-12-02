@@ -69,9 +69,8 @@ namespace ICSharpCode.ILSpy
             // TODO: message box
             var buttons = Buttons[button];
             var win = new CustomDialog(caption, messageBoxText, AcceptButtonID[button], CancelButtonID[button], buttons);
-            win.Owner = owner;
             // TODO: add msgbox image
-            var btnIndex = await win.ShowDialog<int?>();
+            var btnIndex = await win.ShowDialog<int?>(owner);
             if (btnIndex == null)
             {
                 return defaultResult;

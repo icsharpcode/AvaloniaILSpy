@@ -133,7 +133,6 @@ namespace ICSharpCode.ILSpy
 		private async void CreateButton_Click(object sender, RoutedEventArgs e)
 		{
 			CreateListDialog dlg = new CreateListDialog();
-			dlg.Owner = this;
 			dlg.Closing += (s, args) =>
 			{
 				if (dlg.DialogResult == true)
@@ -145,7 +144,7 @@ namespace ICSharpCode.ILSpy
 					}
 				}
 			};
-			if (await dlg.ShowDialog<bool>() == true)
+            if (await dlg.ShowDialog<bool>(this) == true)
 			{
 				manager.CreateList(new AssemblyList(dlg.NewListName));
 			}

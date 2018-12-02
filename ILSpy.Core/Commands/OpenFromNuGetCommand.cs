@@ -37,7 +37,7 @@ namespace ICSharpCode.ILSpy
                 new FileDialogFilter() { Name = "All files", Extensions = { "*" }},
             };
             dlg.AllowMultiple = true;
-            var filenames = await dlg.ShowAsync();
+            var filenames = await dlg.ShowAsync(MainWindow.Instance);
             if (filenames != null && filenames.Length > 0)
             {
                 MainWindow.Instance.OpenFiles(filenames);
