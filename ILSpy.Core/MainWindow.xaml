@@ -59,6 +59,10 @@
 			          IsVisible="{Binding SelectedItem.HasLanguageVersions, ElementName=languageComboBox}"
 			          Items="{Binding SelectedItem.LanguageVersions, ElementName=languageComboBox}"
 			          SelectedItem="{Binding FilterSettings.LanguageVersion}"/>
+                <DropDown x:Name="Themes" SelectedIndex="0" Width="100">
+                    <DropDownItem>Light</DropDownItem>
+                    <DropDownItem>Dark</DropDownItem>
+                </DropDown>
 		</ListBox>
 		<!-- Status bar -->
 		<Border x:Name="statusBar" BorderThickness="1" BorderBrush="Gray" DockPanel.Dock="Bottom" Height="26" IsVisible="false">

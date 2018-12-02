@@ -175,9 +175,9 @@
             <Setter.Value>
                 <ControlTemplate>
                     <Border Background="Transparent">
-                        <Border Background="{TemplateBinding Background}">
+                        <Border Background="{DynamicResource ThemeBackgroundBrush}">
                             <local:SharpTreeNodeView Name="nodeView"
-                                                       Foreground="{Binding Foreground}"
+                                                       Foreground="{DynamicResource ThemeForegroundBrush}}"
                                                        HorizontalAlignment="Left" />
                         </Border>
                     </Border>

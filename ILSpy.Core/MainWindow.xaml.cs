@@ -33,6 +33,7 @@ using Avalonia.Controls.Presenters;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
+using Avalonia.Markup.Xaml.Styling;
 using Avalonia.Media;
 using Avalonia.Media.Imaging;
 using Avalonia.Threading;
@@ -160,6 +161,23 @@ namespace ICSharpCode.ILSpy
             mainPane = this.FindControl<ContentPresenter>("mainPane");
             bottomPane = this.FindControl<DockedPane>("bottomPane");
             bottomPane.CloseButtonClicked += BottomPane_CloseButtonClicked;
+
+            var light = AvaloniaXamlLoader.Parse<StyleInclude>(@"<StyleInclude xmlns='https://github.com/avaloniaui' Source='resm:Avalonia.Themes.Default.Accents.BaseLight.xaml?assembly=Avalonia.Themes.Default'/>");
+            var dark = AvaloniaXamlLoader.Parse<StyleInclude>(@"<StyleInclude xmlns='https://github.com/avaloniaui' Source='resm:Avalonia.Themes.Default.Accents.BaseDark.xaml?assembly=Avalonia.Themes.Default'/>");
+            var themes = this.Find<DropDown>("Themes");
+            themes.SelectionChanged += (sender, e) =>
+            {
+                switch (themes.SelectedIndex)
+                {
+                    case 0:
+                        Styles[0] = light;
+                        break;
+                    case 1:
+                        Styles[0] = dark;
+                        break;
+                }
+            };
+            Styles.Add(light);
 
             CommandBindings.Add(new RoutedCommandBinding(ApplicationCommands.Open, OpenCommandExecuted));
             CommandBindings.Add(new RoutedCommandBinding(ApplicationCommands.Refresh, RefreshCommandExecuted));
