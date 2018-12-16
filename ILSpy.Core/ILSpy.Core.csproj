@@ -56,6 +56,8 @@
     <Content Include="Images\*.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <EmbeddedResource Include="Images\ILSpy.png;Images\PrivateInternal.png">
+    </EmbeddedResource>
   </ItemGroup>
 
 
