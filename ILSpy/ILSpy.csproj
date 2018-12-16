@@ -59,6 +59,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Avalonia.Desktop" Version="0.7.1-build782-beta" />
+    <PackageReference Include="Avalonia.Desktop" Version="0.7.1-build989-beta" />
   </ItemGroup>
 </Project>
