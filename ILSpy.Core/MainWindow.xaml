@@ -7,7 +7,7 @@
 	      MinWidth="250"
 	      MinHeight="200"
 	      UseLayoutRounding="True"
-          Icon="resm:ICSharpCode.ILSpy.Images.ILSpy.png?assembly=ILSpy.Core"
+          Icon="/Images/ILSpy.png"
 	      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" d:DesignHeight="500" d:DesignWidth="500"
 	      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d"
           x:Class="ICSharpCode.ILSpy.MainWindow"
@@ -49,7 +49,7 @@
 			<Separator />
 			<CheckBox IsChecked="{Binding FilterSettings.ShowInternalApi}"
                 ToolTip.Tip="Show internal types and members">
-				<Image Width="16" Height="16" Source="resm:ICSharpCode.ILSpy.Images.PrivateInternal.png?assembly=ILSpy.Core" />
+				<Image Width="16" Height="16" Source="/Images/PrivateInternal.png" />
 			</CheckBox>
 			<Separator />
 			<DropDown Name="languageComboBox" Width="100" 

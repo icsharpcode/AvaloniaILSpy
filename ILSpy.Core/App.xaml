@@ -5,9 +5,9 @@
 		<StyleInclude Source="avares://Avalonia.Themes.Default/DefaultTheme.xaml"/>
 		<StyleInclude Source="avares://Avalonia.Themes.Default/Accents/BaseLight.xaml"/>
 		<StyleInclude Source="resm:AvaloniaEdit.AvaloniaEdit.xaml?assembly=AvaloniaEdit" />
-		<StyleInclude Source="resm:ICSharpCode.TreeView.Themes.TreeView.xaml?assembly=SharpTreeView" />
-		<StyleInclude Source="resm:ICSharpCode.ILSpy.Controls.DockedPane.xaml" />
-		<StyleInclude Source="resm:ICSharpCode.ILSpy.Controls.SearchBox.xaml" />
+		<StyleInclude Source="avares://SharpTreeView/Themes/TreeView.xaml" />
+        <StyleInclude Source="/Controls/DockedPane.xaml" />
+        <StyleInclude Source="/Controls/SearchBox.xaml" />
 
 		<Style Selector="Window.DialogWindow" >
 			<Setter Property="ShowInTaskbar" Value="False"/>
