@@ -153,16 +153,17 @@ namespace ICSharpCode.ILSpy
 			// runs on background thread
 			if (stream != null)
 			{
-				// Read the module from a precrafted stream
-				module = new PEFile(fileName, stream);
-			}
-			else
+                // Read the module from a precrafted stream
+                module = new PEFile(fileName, stream, metadataOptions: DecompilerSettingsPanel.CurrentDecompilerSettings.ApplyWindowsRuntimeProjections ? MetadataReaderOptions.ApplyWindowsRuntimeProjections : MetadataReaderOptions.None);
+            }
+            else
 			{
-				// Read the module from disk (by default)
-				module = new PEFile(fileName, new FileStream(fileName, FileMode.Open, FileAccess.Read), PEStreamOptions.PrefetchEntireImage);
-			}
+                // Read the module from disk (by default)
+                module = new PEFile(fileName, new FileStream(fileName, FileMode.Open, FileAccess.Read), PEStreamOptions.PrefetchEntireImage,
+                    metadataOptions: DecompilerSettingsPanel.CurrentDecompilerSettings.ApplyWindowsRuntimeProjections ? MetadataReaderOptions.ApplyWindowsRuntimeProjections : MetadataReaderOptions.None);
+            }
 
-			if (DecompilerSettingsPanel.CurrentDecompilerSettings.UseDebugSymbols) {
+            if (DecompilerSettingsPanel.CurrentDecompilerSettings.UseDebugSymbols) {
 				try {
 					LoadSymbols(module);
 				} catch (IOException) {
@@ -323,9 +324,9 @@ namespace ICSharpCode.ILSpy
 		class MyUniversalResolver : UniversalAssemblyResolver
 		{
 			public MyUniversalResolver(LoadedAssembly assembly)
-				: base(assembly.FileName, false, assembly.GetTargetFrameworkIdAsync().Result, PEStreamOptions.PrefetchEntireImage)
-			{
-			}
+                : base(assembly.FileName, false, assembly.GetTargetFrameworkIdAsync().Result, PEStreamOptions.PrefetchEntireImage, DecompilerSettingsPanel.CurrentDecompilerSettings.ApplyWindowsRuntimeProjections ? MetadataReaderOptions.ApplyWindowsRuntimeProjections : MetadataReaderOptions.None)
+            {
+            }
 		}
 
 		static Dictionary<string, LoadedAssembly> loadingAssemblies = new Dictionary<string, LoadedAssembly>();

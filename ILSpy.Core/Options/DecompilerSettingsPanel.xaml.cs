@@ -64,7 +64,8 @@ namespace ICSharpCode.ILSpy.Options
 			s.RemoveDeadCode = (bool?)e.Attribute("removeDeadCode") ?? s.RemoveDeadCode;
 			s.UsingDeclarations = (bool?)e.Attribute("usingDeclarations") ?? s.UsingDeclarations;
 			s.AlwaysUseBraces = (bool?)e.Attribute("alwaysUseBraces") ?? s.AlwaysUseBraces;
-			return s;
+            s.ApplyWindowsRuntimeProjections = (bool?)e.Attribute("applyWindowsRuntimeProjections") ?? s.ApplyWindowsRuntimeProjections;
+            return s;
 		}
 		
 		public void Save(XElement root)
@@ -79,8 +80,9 @@ namespace ICSharpCode.ILSpy.Options
 			section.SetAttributeValue("removeDeadCode", s.RemoveDeadCode);
 			section.SetAttributeValue("usingDeclarations", s.UsingDeclarations);
 			section.SetAttributeValue("alwaysUseBraces", s.AlwaysUseBraces);
+            section.SetAttributeValue("applyWindowsRuntimeProjections", s.ApplyWindowsRuntimeProjections);
 
-			XElement existingElement = root.Element("DecompilerSettings");
+            XElement existingElement = root.Element("DecompilerSettings");
 			if (existingElement != null)
 				existingElement.ReplaceWith(section);
 			else
@@ -212,7 +214,25 @@ namespace ICSharpCode.ILSpy.Options
 			}
 		}
 
-		public event PropertyChangedEventHandler PropertyChanged;
+        bool applyWindowsRuntimeProjections = true;
+
+        /// <summary>
+        /// Gets/Sets whether to Windows Runtime projections to all loaded assemblies. 
+        /// </summary>
+        public bool ApplyWindowsRuntimeProjections
+        {
+            get { return applyWindowsRuntimeProjections; }
+            set
+            {
+                if (applyWindowsRuntimeProjections != value)
+                {
+                    applyWindowsRuntimeProjections = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
 
 		protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
 		{
