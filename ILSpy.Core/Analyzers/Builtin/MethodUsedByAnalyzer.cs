@@ -99,7 +99,7 @@ namespace ICSharpCode.ILSpy.Analyzers.Builtin
 				ILOpCode opCode;
 				try {
 					opCode = blob.DecodeOpCode();
-					if (opCode != ILOpCode.Call && opCode != ILOpCode.Callvirt && opCode != ILOpCode.Ldtoken) {
+                    if (!IsSupportedOpCode(opCode)) {
 						ILParser.SkipOperand(ref blob, opCode);
 						continue;
 					}
@@ -132,7 +132,23 @@ namespace ICSharpCode.ILSpy.Analyzers.Builtin
 			return false;
 		}
 
-		static bool IsSameMember(IMember analyzedMethod, IMember m)
+        static bool IsSupportedOpCode(ILOpCode opCode)
+        {
+            switch (opCode)
+            {
+                case ILOpCode.Call:
+                case ILOpCode.Callvirt:
+                case ILOpCode.Ldtoken:
+                case ILOpCode.Ldftn:
+                case ILOpCode.Ldvirtftn:
+                case ILOpCode.Newobj:
+                    return true;
+                default:
+                    return false;
+            }
+        }
+
+        static bool IsSameMember(IMember analyzedMethod, IMember m)
 		{
 			return m.MetadataToken == analyzedMethod.MetadataToken
 				&& m.ParentModule.PEFile == analyzedMethod.ParentModule.PEFile;

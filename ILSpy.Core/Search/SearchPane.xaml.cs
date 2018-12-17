@@ -363,7 +363,8 @@ namespace ICSharpCode.ILSpy.Search
 		
 		public string Location { get; set; }
 		public string Name { get; set; }
-		public IBitmap Image { get; set; }
+        public object ToolTip { get; set; }
+        public IBitmap Image { get; set; }
 		public IBitmap LocationImage { get; set; }
 		
 		public override string ToString()

@@ -46,7 +46,7 @@
             <!--TODO:TextTrimming-->
 						<StackPanel Orientation="Horizontal" Grid.Column="0">
 							<Image Height="16" Margin="0,0,4,0" Width="16" Source="{Binding Image}" />
-							<TextBlock Text="{Binding Name}" />
+							<TextBlock Text="{Binding Name}" ToolTip="{Binding ToolTip}" />
 						</StackPanel>
 						<StackPanel Orientation="Horizontal"  Grid.Column="1">
 							<Image Height="16" Margin="4,0,4,0" Width="16" Source="{Binding LocationImage}" />

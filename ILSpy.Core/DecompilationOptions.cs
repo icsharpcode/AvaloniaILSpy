@@ -90,7 +90,8 @@ namespace ICSharpCode.ILSpy
 				ShowXmlDocumentation = settings.ShowXmlDocumentation,
 				UseDebugSymbols = settings.UseDebugSymbols,
 				UsingDeclarations = settings.UsingDeclarations,
-			};
+                ApplyWindowsRuntimeProjections = settings.ApplyWindowsRuntimeProjections,
+            };
 		}
 	}
 }
