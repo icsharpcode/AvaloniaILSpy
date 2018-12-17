@@ -176,8 +176,12 @@ namespace ICSharpCode.ILSpy
                         Styles[0] = dark;
                         break;
                 }
+
+                ApplyTheme();
             };
-            Styles.Add(light);
+
+            Styles.Insert(0, light);
+            ApplyTheme();
 
             CommandBindings.Add(new RoutedCommandBinding(ApplicationCommands.Open, OpenCommandExecuted));
             CommandBindings.Add(new RoutedCommandBinding(ApplicationCommands.Refresh, RefreshCommandExecuted));
@@ -187,6 +191,17 @@ namespace ICSharpCode.ILSpy
             CommandBindings.Add(new RoutedCommandBinding(NavigationCommands.Search, SearchCommandExecuted));
 
             TemplateApplied += MainWindow_Loaded;
+        }
+
+        private void ApplyTheme()
+        {
+            object backgroundColor;
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX) && Styles[0].TryGetResource("ThemeBackgroundBrush", out backgroundColor) && backgroundColor is ISolidColorBrush brush)
+            {
+                // HACK: SetTitleBarColor is a method in Avalonia.Native.WindowImpl
+                var setTitleBarColorMethod = PlatformImpl.GetType().GetMethod("SetTitleBarColor");
+                setTitleBarColorMethod?.Invoke(PlatformImpl, new object[] { brush.Color });
+            }
         }
 
         void SetWindowBounds(Rect bounds)
