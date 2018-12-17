@@ -17,7 +17,7 @@
 					<ColumnDefinition Width="Auto" />
 				</Grid.ColumnDefinitions>
 				<local:SearchBox x:Name="searchBox" DockPanel.Dock="Top" Grid.Column="0" Grid.Row="0" Margin="1"
-            SearchIcon="Images/Search.png" ClearSearchIcon="Images/ClearSearch.png"
+            SearchIcon="resm:ICSharpCode.ILSpy.Images.Search.png?assembly=ILSpy.Core" ClearSearchIcon="resm:ICSharpCode.ILSpy.Images.ClearSearch.png?assembly=ILSpy.Core"
 						Text="{Binding SearchTerm, ElementName=searchPane}" ToolTip.Tip="Search" UpdateDelay="0:0:0.1"
 						WatermarkColor="Gray" Watermark="Search for t:TypeName, m:Member or c:Constant; use exact match (=term), 'should not contain' (-term) or 'must contain' (+term); use /reg(ular)?Ex(pressions)?/ or both - t:/Type(Name)?/..." />
 				<StackPanel Grid.Column="1" Grid.Row="0" Orientation="Horizontal">
@@ -46,7 +46,7 @@
             <!--TODO:TextTrimming-->
 						<StackPanel Orientation="Horizontal" Grid.Column="0">
 							<Image Height="16" Margin="0,0,4,0" Width="16" Source="{Binding Image}" />
-							<TextBlock Text="{Binding Name}" ToolTip="{Binding ToolTip}" />
+							<TextBlock Text="{Binding Name}" ToolTip.Tip="{Binding ToolTip}" />
 						</StackPanel>
 						<StackPanel Orientation="Horizontal"  Grid.Column="1">
 							<Image Height="16" Margin="4,0,4,0" Width="16" Source="{Binding LocationImage}" />
