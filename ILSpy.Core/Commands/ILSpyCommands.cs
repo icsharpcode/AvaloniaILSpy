@@ -34,8 +34,8 @@ namespace ICSharpCode.ILSpy
 
     public static class NavigationCommands
     {
-        public static RoutedCommand BrowseBack { get; } = new RoutedCommand(nameof(BrowseBack), new KeyGesture { Modifiers = InputModifiers.Control, Key = Key.BrowserBack });
-        public static RoutedCommand BrowseForward { get; } = new RoutedCommand(nameof(BrowseForward), new KeyGesture { Modifiers = InputModifiers.Control, Key = Key.BrowserForward });
+        public static RoutedCommand BrowseBack { get; } = new NavigationCommand(nameof(BrowseBack), new KeyGesture { Modifiers = InputModifiers.Control, Key = Key.BrowserBack });
+        public static RoutedCommand BrowseForward { get; } = new NavigationCommand(nameof(BrowseForward), new KeyGesture { Modifiers = InputModifiers.Control, Key = Key.BrowserForward });
         public static RoutedCommand Search { get; } = new RoutedCommand(nameof(Search), new KeyGesture { Modifiers = InputModifiers.Control | InputModifiers.Shift, Key = Key.F });
     }
 
