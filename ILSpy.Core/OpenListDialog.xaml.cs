@@ -22,7 +22,6 @@ using Mono.Cecil;
 using Avalonia.Input;
 using System;
 using Avalonia.Interactivity;
-using Avalonia.Input;
 using ICSharpCode.TreeView;
 using Avalonia.Markup.Xaml;
 using ICSharpCode.ILSpy.Controls;
