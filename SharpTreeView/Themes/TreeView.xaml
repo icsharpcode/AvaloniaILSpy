@@ -189,7 +189,7 @@
     <Style Selector="local|SharpTreeViewItem[IsSelected=true] /template/ local|SharpTreeNodeView#nodeView" > 
 	    <Setter
 	            Property="TextBackground"
-	            Value="{DynamicResource ThemeAccentBrush4}}" />
+	            Value="{DynamicResource ThemeAccentBrush4}" />
 	    <Setter
 	            Property="Foreground"
 	            Value="{x:Static avalonia:SystemColors.HighlightTextBrush}" />
