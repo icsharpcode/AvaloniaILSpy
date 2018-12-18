@@ -10,7 +10,7 @@
 			<RowDefinition Height="Auto"  />
 			<RowDefinition Height="*" />
 		</Grid.RowDefinitions>
-		<Border BorderThickness="0,0,0,1" BorderBrush="{x:Static avalonia:SystemColors.ControlLightBrush}" Background="{x:Static avalonia:SystemColors.ControlBrush}">
+		<Border BorderThickness="0,0,0,1" BorderBrush="{DynamicResource ThemeBorderLowBrush}" Background="{DynamicResource ThemeBackgroundBrush}}">
 			<Grid Height="23">
 				<Grid.ColumnDefinitions>
 					<ColumnDefinition Width="*" />
@@ -21,8 +21,8 @@
 						Text="{Binding SearchTerm, ElementName=searchPane}" ToolTip.Tip="Search" UpdateDelay="0:0:0.1"
 						WatermarkColor="Gray" Watermark="Search for t:TypeName, m:Member or c:Constant; use exact match (=term), 'should not contain' (-term) or 'must contain' (+term); use /reg(ular)?Ex(pressions)?/ or both - t:/Type(Name)?/..." />
 				<StackPanel Grid.Column="1" Grid.Row="0" Orientation="Horizontal">
-					<TextBlock Margin="0,-1">_Search for:</TextBlock>
-					<DropDown Width="100" Name="searchModeComboBox" Margin="1">
+					<TextBlock VerticalAlignment="Center">Search for:</TextBlock>
+					<DropDown Width="150" Name="searchModeComboBox" Margin="1">
 						<DropDown.ItemTemplate>
 							<DataTemplate>
 								<StackPanel Orientation="Horizontal">

@@ -28,6 +28,7 @@ using Avalonia.Media.Imaging;
 using System.ComponentModel;
 using Avalonia.Markup.Xaml.Converters;
 using Avalonia.Controls.Primitives;
+using Avalonia.Data.Converters;
 
 namespace ICSharpCode.ILSpy.Controls
 {
@@ -39,16 +40,18 @@ namespace ICSharpCode.ILSpy.Controls
 
         public static StyledProperty<IBitmap> ClearSearchIconProperty = AvaloniaProperty.Register<SearchBox, IBitmap>(nameof(ClearSearchIcon));
 
-		public static StyledProperty<IBrush> WatermarkColorProperty = AvaloniaProperty.Register<SearchBox, IBrush>(nameof(WatermarkColor));
-		
-		public static readonly StyledProperty<TimeSpan> UpdateDelayProperty =
+        public static StyledProperty<IBrush> WatermarkColorProperty = AvaloniaProperty.Register<SearchBox, IBrush>(nameof(WatermarkColor));
+
+        public static readonly IValueConverter GridLengthConvert = new FuncValueConverter<double, GridLength>(n => new GridLength(n));
+
+        public static readonly StyledProperty<TimeSpan> UpdateDelayProperty =
 			AvaloniaProperty.Register<SearchBox, TimeSpan>(nameof(UpdateDelay), TimeSpan.FromMilliseconds(200));
 
         #endregion
 
         public SearchBox()
         {
-            PseudoClass(TextProperty, t=>!string.IsNullOrEmpty(t), ":hastext");
+            PseudoClass<SearchBox, string>(TextProperty, t=>!string.IsNullOrEmpty(t), ":hastext");
         }
 		
 		#region Public Properties
@@ -75,18 +78,18 @@ namespace ICSharpCode.ILSpy.Controls
             get { return GetValue(ClearSearchIconProperty); }
             set { SetValue(ClearSearchIconProperty, value); }
         }
-		
-		#endregion
-		
-		#region Handlers
+
+        #endregion
+
+        #region Handlers
 
 		private void IconBorder_MouseLeftButtonUp(object obj, PointerReleasedEventArgs e) {
             this.Text = string.Empty;
 		}
 
-		#endregion
-		
-		#region Overrides
+        #endregion
+
+        #region Overrides
 
         protected override void OnTemplateApplied(TemplateAppliedEventArgs e)
         {
@@ -107,6 +110,6 @@ namespace ICSharpCode.ILSpy.Controls
 				base.OnKeyDown(e);
 			}
 		}
-		#endregion
-	}
+        #endregion
+    }
 }

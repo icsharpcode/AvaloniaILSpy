@@ -5,10 +5,10 @@
 	xmlns:sys="clr-namespace:System;assembly=mscorlib">
 
 	<Style Selector="local|SearchBox">
-		<Setter Property="Background" Value="White" />
-		<Setter Property="BorderBrush" Value="{x:Static avalonia:SystemColors.ControlDarkBrush}" />
-		<Setter Property="Foreground" Value="{x:Static avalonia:SystemColors.ControlTextBrush}" />
-		<Setter Property="BorderThickness" Value="1" />
+		<Setter Property="Background" Value="{DynamicResource ThemeBackgroundBrush}" />
+		<Setter Property="BorderBrush" Value="{DynamicResource ThemeBorderMidBrush}" />
+		<Setter Property="Foreground" Value="{DynamicResource ThemeForegroundBrush}" />
+        <Setter Property="BorderThickness" Value="1" />
 		<Setter Property="Template">
 			<Setter.Value>
 				<ControlTemplate>
@@ -19,29 +19,29 @@
 						<Grid x:Name="LayoutGrid">
 							<Grid.ColumnDefinitions>
 								<ColumnDefinition Width="*" />
-								<ColumnDefinition Width="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=ActualHeight}" />
+								<ColumnDefinition Width="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Bounds.Height, Converter={x:Static local:SearchBox.GridLengthConvert}}}" />
 							</Grid.ColumnDefinitions>
               
-              <ScrollViewer Grid.Column="0" HorizontalScrollBarVisibility="{TemplateBinding (ScrollViewer.HorizontalScrollBarVisibility)}"
-              VerticalScrollBarVisibility="{TemplateBinding (ScrollViewer.VerticalScrollBarVisibility)}">
+                          <ScrollViewer Grid.Column="0" HorizontalScrollBarVisibility="{TemplateBinding (ScrollViewer.HorizontalScrollBarVisibility)}"
+                          VerticalScrollBarVisibility="{TemplateBinding (ScrollViewer.VerticalScrollBarVisibility)}">
 
-                <Panel>
-                  <TextBlock Name="WatermarkLabel"
-                             Opacity="0.5"
-							               Foreground="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=WatermarkColor}"
-							               Text="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Watermark}"
-                             IsVisible="{TemplateBinding Text, Converter={x:Static StringConverters.NullOrEmpty}}"
-                             FontStyle="Italic" />
-                  <TextPresenter Name="PART_TextPresenter"
-                                 Text="{TemplateBinding Text, Mode=TwoWay}"
-                                 CaretIndex="{TemplateBinding CaretIndex}"
-                                 SelectionStart="{TemplateBinding SelectionStart}"
-                                 SelectionEnd="{TemplateBinding SelectionEnd}"
-                                 TextAlignment="{TemplateBinding TextAlignment}"
-                                 TextWrapping="{TemplateBinding TextWrapping}"
-                                 PasswordChar="{TemplateBinding PasswordChar}"/>
-                </Panel>
-              </ScrollViewer>
+                            <Panel>
+                              <TextBlock Name="WatermarkLabel"
+                                         Opacity="0.5"
+            							               Foreground="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=WatermarkColor}"
+            							               Text="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Watermark}"
+                                         IsVisible="{TemplateBinding Text, Converter={x:Static StringConverters.NullOrEmpty}}"
+                                         FontStyle="Italic" />
+                              <TextPresenter Name="PART_TextPresenter"
+                                             Text="{TemplateBinding Text, Mode=TwoWay}"
+                                             CaretIndex="{TemplateBinding CaretIndex}"
+                                             SelectionStart="{TemplateBinding SelectionStart}"
+                                             SelectionEnd="{TemplateBinding SelectionEnd}"
+                                             TextAlignment="{TemplateBinding TextAlignment}"
+                                             TextWrapping="{TemplateBinding TextWrapping}"
+                                             PasswordChar="{TemplateBinding PasswordChar}"/>
+                            </Panel>
+                          </ScrollViewer>
               
 							<Border Name="PART_IconBorder"
 							        Grid.Column="1"
@@ -50,12 +50,12 @@
 							        HorizontalAlignment="Stretch"
 							        BorderBrush="Transparent"
 							        Background="Transparent">
-                <Image Name="SearchIcon"
-                       Cursor="Arrow"
-                       Stretch="None"
-                       HorizontalAlignment="Center"
-                       VerticalAlignment="Center" >
-                </Image>
+                                <Image Name="SearchIcon"
+                                       Cursor="Arrow"
+                                       Stretch="None"
+                                       HorizontalAlignment="Center"
+                                       VerticalAlignment="Center" >
+                                </Image>
 							</Border>
 						</Grid>
 					</Border>
