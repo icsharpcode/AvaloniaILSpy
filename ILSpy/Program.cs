@@ -41,21 +41,7 @@ namespace ICSharpCode.ILSpy
             Logger.Sink = new ProxyLogSink(Logger.Sink);
 #endif
 
-
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
-            {
-                result.UseAvaloniaNative(null, opts =>
-                {
-                    opts.UseDeferredRendering = false;
-                    opts.UseGpu = true;
-                }).UseSkia();
-            }
-            else
-            {
-                result.UsePlatformDetect();
-            }
-
-            return result;
+            return result.UsePlatformDetect();
         }
 
         class ProxyLogSink : ILogSink
