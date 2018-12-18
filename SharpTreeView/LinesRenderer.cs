@@ -3,6 +3,7 @@
 
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Layout;
 using Avalonia.Media;
 using System.Diagnostics;
 
@@ -21,7 +22,6 @@ namespace ICSharpCode.TreeView
 		{
 			get { return TemplatedParent as SharpTreeNodeView; }
 		}
-		
 
 		public override void Render(DrawingContext dc)
 		{
@@ -31,20 +31,21 @@ namespace ICSharpCode.TreeView
 				Debug.WriteLine($"LinesRenderer.OnRender() called with DataContext={NodeView.DataContext}");
 				return;
 			}
-			var indent = NodeView.CalculateIndent();
+
+            var indent = NodeView.CalculateIndent();
 			var p = new Point(indent + 4.5, 0);
 
 			if (!NodeView.Node.IsRoot || NodeView.ParentTreeView.ShowRootExpander) {
-				dc.DrawLine(pen, new Point(p.X, Height / 2), new Point(p.X + 10, Height / 2));
+				dc.DrawLine(pen, new Point(p.X, Bounds.Height / 2), new Point(p.X + 10, Bounds.Height / 2));
 			}
 
 			if (NodeView.Node.IsRoot) return;
 
 			if (NodeView.Node.IsLast) {
-				dc.DrawLine(pen, p, new Point(p.X, Height / 2));
+				dc.DrawLine(pen, p, new Point(p.X, Bounds.Height / 2));
 			}
 			else {
-				dc.DrawLine(pen, p, new Point(p.X, Height));
+				dc.DrawLine(pen, p, new Point(p.X, Bounds.Height));
 			}
 
 			var current = NodeView.Node;
@@ -53,7 +54,7 @@ namespace ICSharpCode.TreeView
 				current = current.Parent;
 				if (p.X < 0) break;
 				if (!current.IsLast) {
-					dc.DrawLine(pen, p, new Point(p.X, Height));
+					dc.DrawLine(pen, p, new Point(p.X, Bounds.Height));
 				}
 			}
 		}

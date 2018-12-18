@@ -1,6 +1,7 @@
 ﻿<UserControl 
 	xmlns="https://github.com/avaloniaui"
-	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    x:Class="ICSharpCode.ILSpy.Options.DecompilerSettingsPanel">
 	<StackPanel Margin="10">
 		<CheckBox IsChecked="{Binding UseDebugSymbols}">Use variable names from debug symbols, if available</CheckBox>
 		<CheckBox IsChecked="{Binding ShowDebugInfo}">Show info from debug symbols, if available</CheckBox>

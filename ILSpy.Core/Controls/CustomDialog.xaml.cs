@@ -30,7 +30,7 @@ namespace ICSharpCode.ILSpy.Controls
 {
 	public sealed class CustomDialog : DialogWindow
 	{
-		TextEditor label;
+        TextBlock label;
 		ListBox buttons;
 		int acceptButton;
 		int cancelButton;
@@ -78,7 +78,7 @@ namespace ICSharpCode.ILSpy.Controls
 		{
 			AvaloniaXamlLoader.Load(this);
 			this.buttons = this.FindControl<ListBox>("buttons");
-			this.label = this.FindControl<TextEditor>("content");
+			this.label = this.FindControl<TextBlock>("content");
 			
 			this.ShowInTaskbar = false;
 			this.WindowStartupLocation = WindowStartupLocation.CenterOwner;

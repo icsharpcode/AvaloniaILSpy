@@ -8,6 +8,7 @@
 		MinHeight="250"
 		Height="350"
 		Width="480"
+        x:Class="ICSharpCode.ILSpy.OpenListDialog"
     >
 	<Grid Margin="12,8">
 		<Grid.RowDefinitions>

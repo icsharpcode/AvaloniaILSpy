@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <UserControl xmlns="https://github.com/avaloniaui"
-			 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+			 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="ICSharpCode.ILSpy.Controls.ResourceObjectTable">
 	<Grid Margin="5,0,0,0">
         <!--
 		<Grid.Resources>

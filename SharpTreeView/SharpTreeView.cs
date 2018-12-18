@@ -257,9 +257,6 @@ namespace ICSharpCode.TreeView
 			if (doNotScrollOnExpanding)
 				return;
 
-            // TODO: make sure node is materialized
-            return;
-
 			SharpTreeNode lastVisibleChild = node;
 			while (true) {
 				SharpTreeNode tmp = lastVisibleChild.Children.LastOrDefault(c => c.IsVisible);
@@ -301,10 +298,10 @@ namespace ICSharpCode.TreeView
 						if (!container.Node.IsExpanded && container.Node.ShowExpander) {
 							container.Node.IsExpanded = true;
 						} else if (container.Node.Children.Count > 0) {
-							// jump to first child:
+                            // jump to first child:
 							
-							//container.MoveFocus(new TraversalRequest(FocusNavigationDirection.Down));
-						}
+                            //container.MoveFocus(new TraversalRequest(FocusNavigationDirection.Down));
+                        }
 						e.Handled = true;
 					}
 					break;

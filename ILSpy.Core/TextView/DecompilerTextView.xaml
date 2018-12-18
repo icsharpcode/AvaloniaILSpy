@@ -2,7 +2,8 @@
              xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:avalonia="clr-namespace:Avalonia;assembly=SharpTreeView"
-             xmlns:ae="clr-namespace:AvaloniaEdit;assembly=AvaloniaEdit">
+             xmlns:ae="clr-namespace:AvaloniaEdit;assembly=AvaloniaEdit"
+             x:Class="ICSharpCode.ILSpy.TextView.DecompilerTextView">
 	<Grid>
 		<Border BorderThickness="1,1,0,1" BorderBrush="#FF828790">
 			<Grid>

@@ -148,9 +148,6 @@ namespace ICSharpCode.ILSpy.TextView
             progressBar = this.FindControl<ProgressBar>("progressBar");
             cancelButton = this.FindControl<Button>("cancelButton");
             cancelButton.Click += cancelButton_Click;
-
-            textEditor.Foreground = SystemColors.InfoTextBrush;
-            textEditor.Background = SystemColors.InfoBrush;
         }
 
         void RemoveEditCommand(RoutedCommand command)

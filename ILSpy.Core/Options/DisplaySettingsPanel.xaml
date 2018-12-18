@@ -1,6 +1,7 @@
 ﻿<UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:ICSharpCode.ILSpy.Options">
+             xmlns:local="clr-namespace:ICSharpCode.ILSpy.Options"
+             x:Class="ICSharpCode.ILSpy.Options.DisplaySettingsPanel">
 	<Grid>
 		<Grid.RowDefinitions>
 			<RowDefinition Height="Auto"/>
@@ -48,7 +49,7 @@
 					<DropDownItem>23</DropDownItem>
 					<DropDownItem>24</DropDownItem>
 				</DropDown>
-				<Border Grid.Row="1" Grid.ColumnSpan="4" BorderBrush="Black" BorderThickness="1" Background="White" Margin="3,5">
+				<Border Grid.Row="1" Grid.ColumnSpan="4" BorderBrush="{DynamicResource ThemeControlHighlightHighBrush}" BorderThickness="1" Margin="3,5">
 					<TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Text="AaBbCcXxYyZz" FontFamily="{Binding SelectedFont}" FontSize="{Binding SelectedFontSize}" />
 				</Border>
 			</Grid>

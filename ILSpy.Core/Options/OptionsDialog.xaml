@@ -3,7 +3,8 @@
         Classes="DialogWindow"
 		CanResize="True"
         WindowStartupLocation="CenterOwner"
-        Title="Options" Height="400" Width="500">
+        Title="Options" Height="400" Width="500"
+        x:Class="ICSharpCode.ILSpy.Options.OptionsDialog">
 	<Grid>
 		<Grid.RowDefinitions>
 			<RowDefinition

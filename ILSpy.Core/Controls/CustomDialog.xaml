@@ -2,14 +2,15 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 		xmlns:ae="clr-namespace:AvaloniaEdit;assembly=AvaloniaEdit"
         Title="Message"
-        Width="274" Height="400">
+        Width="274" Height="400"
+        x:Class="ICSharpCode.ILSpy.Controls.CustomDialog">
 	<Grid>
 		<Grid.RowDefinitions>
 			<RowDefinition Height="*"/>
 			<RowDefinition Height="40"/>
 		</Grid.RowDefinitions>
 		
-		<ae:TextEditor Name="content" Grid.Row="0" Margin="4"/>
+		<TextBlock Name="content" Grid.Row="0" Margin="4" TextWrapping="Wrap"/>
 		<ListBox Name="buttons" Grid.Row="1" BorderThickness="0" Padding="2">
 			<ListBox.ItemsPanel>
 				<ItemsPanelTemplate>

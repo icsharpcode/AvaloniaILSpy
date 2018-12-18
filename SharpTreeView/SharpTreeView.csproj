@@ -17,7 +17,7 @@
     <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Themes\TreeView.xaml" />
+    <AvaloniaResource Include="Themes\TreeView.xaml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Consts.cs" />
@@ -48,5 +48,6 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\AvaloniaEdit\src\AvaloniaEdit\AvaloniaEdit.csproj" />
+    <PackageReference Include="Avalonia" Version="0.7.1-build989-beta" />
   </ItemGroup>
 </Project>
