@@ -162,8 +162,8 @@ namespace ICSharpCode.ILSpy
             bottomPane = this.FindControl<DockedPane>("bottomPane");
             bottomPane.CloseButtonClicked += BottomPane_CloseButtonClicked;
 
-            var light = AvaloniaXamlLoader.Parse<StyleInclude>(@"<StyleInclude xmlns='https://github.com/avaloniaui' Source='resm:Avalonia.Themes.Default.Accents.BaseLight.xaml?assembly=Avalonia.Themes.Default'/>");
-            var dark = AvaloniaXamlLoader.Parse<StyleInclude>(@"<StyleInclude xmlns='https://github.com/avaloniaui' Source='resm:Avalonia.Themes.Default.Accents.BaseDark.xaml?assembly=Avalonia.Themes.Default'/>");
+            var light = new Themes.Light();
+            var dark = new Themes.Dark();
             var themes = this.Find<DropDown>("Themes");
             themes.SelectionChanged += (sender, e) =>
             {
