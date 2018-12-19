@@ -49,7 +49,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="Images\*.png">
+    <Content Include="Images\*.png;**\*.xshd;">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <AvaloniaResource Include="Images\ILSpy.png;Images\PrivateInternal.png;Images\Search.png;Images\ClearSearch.png;">
@@ -60,7 +60,7 @@
   <ItemGroup>
     <EmbeddedResource Include="README.txt" />
     <EmbeddedResource Include="..\doc\*.txt" />
-    <EmbeddedResource Include="**\*.xshd;**\*.resx;Assets\*;**\*.paml" Exclude="bin\**;obj\**;**\*.xproj;packages\**;@(EmbeddedResource)" />
+    <EmbeddedResource Include="**\*.resx;Assets\*;**\*.paml" Exclude="bin\**;obj\**;**\*.xproj;packages\**;@(EmbeddedResource)" />
   </ItemGroup>
 
   <ItemGroup>

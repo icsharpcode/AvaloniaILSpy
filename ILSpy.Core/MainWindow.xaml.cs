@@ -28,6 +28,7 @@ using System.Reflection.Metadata;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using System.Xml;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Presenters;
@@ -39,6 +40,8 @@ using Avalonia.Media;
 using Avalonia.Media.Imaging;
 using Avalonia.Threading;
 using AvaloniaEdit;
+using AvaloniaEdit.Highlighting;
+using AvaloniaEdit.Highlighting.Xshd;
 using ICSharpCode.Decompiler;
 using ICSharpCode.Decompiler.Documentation;
 using ICSharpCode.Decompiler.Metadata;
@@ -171,9 +174,59 @@ namespace ICSharpCode.ILSpy
                 {
                     case 0:
                         Styles[0] = light;
+
+                        HighlightingManager.Instance.RegisterHighlighting(
+                            "ILAsm", new string[] { ".il" },
+                            delegate {
+                                using (Stream s = File.OpenRead("TextView/ILAsm-Mode.xshd"))
+                                {
+                                    using (XmlTextReader reader = new XmlTextReader(s))
+                                    {
+                                        return HighlightingLoader.Load(reader, HighlightingManager.Instance);
+                                    }
+                                }
+                            });
+
+                        HighlightingManager.Instance.RegisterHighlighting(
+                            "C#", new string[] { ".cs" },
+                            delegate {
+                                using (Stream s = File.OpenRead("TextView/CSharp-Mode.xshd"))
+                                {
+                                    using (XmlTextReader reader = new XmlTextReader(s))
+                                    {
+                                        return HighlightingLoader.Load(reader, HighlightingManager.Instance);
+                                    }
+                                }
+                            });
+
                         break;
                     case 1:
                         Styles[0] = dark;
+
+                        HighlightingManager.Instance.RegisterHighlighting(
+                            "ILAsm", new string[] { ".il" },
+                            delegate {
+                                using (Stream s = File.OpenRead("TextView/ILAsm-Mode-Dark.xshd"))
+                                {
+                                    using (XmlTextReader reader = new XmlTextReader(s))
+                                    {
+                                        return HighlightingLoader.Load(reader, HighlightingManager.Instance);
+                                    }
+                                }
+                            });
+
+                        HighlightingManager.Instance.RegisterHighlighting(
+                            "C#", new string[] { ".cs" },
+                            delegate {
+                                using (Stream s = File.OpenRead("TextView/CSharp-Mode-Dark.xshd"))
+                                {
+                                    using (XmlTextReader reader = new XmlTextReader(s))
+                                    {
+                                        return HighlightingLoader.Load(reader, HighlightingManager.Instance);
+                                    }
+                                }
+                            });
+
                         break;
                 }
 
@@ -202,6 +255,9 @@ namespace ICSharpCode.ILSpy
                 var setTitleBarColorMethod = PlatformImpl.GetType().GetMethod("SetTitleBarColor");
                 setTitleBarColorMethod?.Invoke(PlatformImpl, new object[] { brush.Color });
             }
+
+            //Reload text editor
+            DecompileSelectedNodes();
         }
 
         void SetWindowBounds(Rect bounds)
@@ -975,6 +1031,9 @@ namespace ICSharpCode.ILSpy
 				return;
 
             if (treeView.SelectedItems.Count == 0 && refreshInProgress)
+                return;
+
+            if (decompilerTextView == null)
                 return;
 
             if (recordHistory) {
