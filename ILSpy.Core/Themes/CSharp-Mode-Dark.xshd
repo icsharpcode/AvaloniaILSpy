@@ -5,44 +5,44 @@
 	-->
 	
 	<!-- The named colors 'Comment' and 'String' are used in SharpDevelop to detect if a line is inside a multiline string/comment -->
-	<Color name="Comment" foreground="White" exampleText="// comment" />
-	<Color name="String" foreground="Blue" exampleText="string text = &quot;Hello, World!&quot;"/>
-	<Color name="StringInterpolation" foreground="Black" exampleText="string text = $&quot;Hello, {name}!&quot;"/>
-	<Color name="Char" foreground="Magenta" exampleText="char linefeed = '\n';"/>
-	<Color name="Preprocessor" foreground="Green" exampleText="#region Title" />
+	<Color name="Comment" foreground="#00D100" exampleText="// comment" />
+	<Color name="String" foreground="#4D48E0" exampleText="string text = &quot;Hello, World!&quot;"/>
+	<Color name="StringInterpolation" foreground="#1515A3" exampleText="string text = $&quot;Hello, {name}!&quot;"/>
+	<Color name="Char" foreground="#4D48E0" exampleText="char linefeed = '\n';"/>
+	<Color name="Preprocessor" foreground="#FF6666" exampleText="#region Title" />
 	<Color name="Punctuation" exampleText="a(b.c);" />
-	<Color name="ValueTypeKeywords" fontWeight="bold" foreground="Red" exampleText="bool b = true;" />
-	<Color name="ReferenceTypeKeywords" foreground="Red" exampleText="object o;" />
-	<Color name="NumberLiteral" foreground="DarkBlue" exampleText="3.1415f"/>
+	<Color name="ValueTypeKeywords" fontWeight="bold" foreground="#10AD10" exampleText="bool b = true;" />
+	<Color name="ReferenceTypeKeywords" foreground="#D7DA3E" exampleText="object o;" />
+	<Color name="NumberLiteral" foreground="#209DEE" exampleText="3.1415f"/>
 	<Color name="ThisOrBaseReference" fontWeight="bold" exampleText="this.Do(); base.Do();"/>
 	<Color name="NullOrValueKeywords" fontWeight="bold" exampleText="if (value == null)"/>
-	<Color name="Keywords" fontWeight="bold" foreground="Blue" exampleText="if (a) {} else {}"/>
-	<Color name="GotoKeywords" foreground="Navy" exampleText="continue; return null;"/>
-	<Color name="QueryKeywords" foreground="Navy" exampleText="from x in y select z;"/>
-	<Color name="ExceptionKeywords" fontWeight="bold" foreground="Teal" exampleText="try {} catch {} finally {}"/>
-	<Color name="CheckedKeyword" fontWeight="bold" foreground="DarkGray" exampleText="checked {}"/>
-	<Color name="UnsafeKeywords" foreground="Olive" exampleText="unsafe { fixed (..) {} }"/>
-	<Color name="OperatorKeywords" fontWeight="bold" foreground="Pink" exampleText="public static implicit operator..."/>
-	<Color name="ParameterModifiers" fontWeight="bold" foreground="DeepPink" exampleText="(ref int a, params int[] b)"/>
-	<Color name="Modifiers" foreground="Brown" exampleText="static readonly int a;"/>
+	<Color name="Keywords" fontWeight="bold" foreground="#E78E4B" exampleText="if (a) {} else {}"/>
+	<Color name="GotoKeywords" foreground="#E78E4B" exampleText="continue; return null;"/>
+	<Color name="QueryKeywords" foreground="#E78E4B" exampleText="from x in y select z;"/>
+	<Color name="ExceptionKeywords" fontWeight="bold" foreground="#E78E4B" exampleText="try {} catch {} finally {}"/>
+	<Color name="CheckedKeyword" fontWeight="bold" foreground="#E78E4B" exampleText="checked {}"/>
+	<Color name="UnsafeKeywords" foreground="#E78E4B" exampleText="unsafe { fixed (..) {} }"/>
+	<Color name="OperatorKeywords" fontWeight="bold" foreground="#C29FF4" exampleText="public static implicit operator..."/>
+	<Color name="ParameterModifiers" fontWeight="bold" foreground="#E78E4B" exampleText="(ref int a, params int[] b)"/>
+	<Color name="Modifiers" foreground="#E78E4B" exampleText="static readonly int a;"/>
 	<Color name="Visibility" fontWeight="bold" foreground="Blue" exampleText="public override void ToString();"/>
 	<Color name="NamespaceKeywords" fontWeight="bold" foreground="Green" exampleText="namespace A.B { using System; }"/>
 	<Color name="GetSetAddRemove" foreground="SaddleBrown" exampleText="int Prop { get; set; }"/>
 	<Color name="TrueFalse" fontWeight="bold" foreground="DarkCyan" exampleText="b = false; a = true;" />
-	<Color name="TypeKeywords" fontWeight="bold" foreground="DarkCyan" exampleText="if (x is int) { a = x as int; type = typeof(int); size = sizeof(int); c = new object(); }"/>
+	<Color name="TypeKeywords" fontWeight="bold" foreground="#D7DA3E" exampleText="if (x is int) { a = x as int; type = typeof(int); size = sizeof(int); c = new object(); }"/>
 	<Color name="AttributeKeywords" foreground="Navy" exampleText="[assembly: AssemblyVersion(&quot;1.0.0.*&quot;)]" />
 	
 	<!-- Colors used for semantic highlighting -->
-	<Color name="ReferenceTypes" foreground="#004085" exampleText="System.#{#Uri#}# uri;"/>
-	<Color name="InterfaceTypes" foreground="#004085" exampleText="System.#{#IDisposable#}# obj;"/>
+	<Color name="ReferenceTypes" foreground="#D7DA3E" exampleText="System.#{#Uri#}# uri;"/>
+	<Color name="InterfaceTypes" foreground="#D7DA3E" exampleText="System.#{#IDisposable#}# obj;"/>
 	<Color name="TypeParameters" foreground="#004085" exampleText="class MyList&lt;#{#T#}#&gt; { }"/>
-	<Color name="DelegateTypes" foreground="#004085" exampleText="System.#{#Action#}#; action;"/>
-	<Color name="ValueTypes" fontWeight="bold" foreground="#004085" exampleText="System.#{#DateTime#}# date;"/>
-	<Color name="EnumTypes" fontWeight="bold" foreground="#004085" exampleText="System.#{#ConsoleKey#}# key;"/>
-	<Color name="MethodCall" foreground="MidnightBlue" fontWeight="bold" exampleText="o.#{#ToString#}#();"/>
+	<Color name="DelegateTypes" foreground="#AF912B" exampleText="System.#{#Action#}#; action;"/>
+	<Color name="ValueTypes" fontWeight="bold" foreground="#10AD10" exampleText="System.#{#DateTime#}# date;"/>
+	<Color name="EnumTypes" fontWeight="bold" foreground="#00ADB8" exampleText="System.#{#ConsoleKey#}# key;"/>
+	<Color name="MethodCall" foreground="#C29FF4" fontWeight="bold" exampleText="o.#{#ToString#}#();"/>
 	<Color name="FieldAccess" fontStyle="italic" exampleText="return this.#{#name#}#;"/>
-	<Color name="InactiveCode" foreground="Gray" exampleText="#{#Deactivated by #if#}#"/>
-	<Color name="SemanticError" foreground="DarkRed" exampleText="o.#{#MissingMethod#}#()"/>
+	<Color name="InactiveCode" foreground="#808080" exampleText="#{#Deactivated by #if#}#"/>
+	<Color name="SemanticError" foreground="#0000FF" exampleText="o.#{#MissingMethod#}#()"/>
 	
 	<Property name="DocCommentMarker" value="///" />
 	

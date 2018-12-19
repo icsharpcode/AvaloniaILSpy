@@ -170,9 +170,16 @@ namespace ICSharpCode.ILSpy
             List<IStyle> themes = new List<IStyle>();
             foreach(string file in Directory.EnumerateFiles("Themes", "*.xaml"))
             {
-                var theme = AvaloniaXamlLoader.Parse<Styles>(File.ReadAllText(file));
-                themes.Add(theme);
-                themeNames.Add(Path.GetFileNameWithoutExtension(file));
+                try
+                {
+                    var theme = AvaloniaXamlLoader.Parse<Styles>(File.ReadAllText(file));
+                    themes.Add(theme);
+                    themeNames.Add(Path.GetFileNameWithoutExtension(file));
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, $"Unable to load theme on {file}");
+                }
             }
 
             if (themes.Count == 0)
