@@ -38,6 +38,7 @@ using Avalonia.Markup.Xaml;
 using Avalonia.Markup.Xaml.Styling;
 using Avalonia.Media;
 using Avalonia.Media.Imaging;
+using Avalonia.Styling;
 using Avalonia.Threading;
 using AvaloniaEdit;
 using AvaloniaEdit.Highlighting;
@@ -165,76 +166,32 @@ namespace ICSharpCode.ILSpy
             bottomPane = this.FindControl<DockedPane>("bottomPane");
             bottomPane.CloseButtonClicked += BottomPane_CloseButtonClicked;
 
-            var light = new Themes.Light();
-            var dark = new Themes.Dark();
-            var themes = this.Find<DropDown>("Themes");
-            themes.SelectionChanged += (sender, e) =>
+            List<string> themeNames = new List<string>();
+            List<IStyle> themes = new List<IStyle>();
+            foreach(string file in Directory.EnumerateFiles("Themes", "*.xaml"))
             {
-                switch (themes.SelectedIndex)
-                {
-                    case 0:
-                        Styles[0] = light;
+                var theme = AvaloniaXamlLoader.Parse<Styles>(File.ReadAllText(file));
+                themes.Add(theme);
+                themeNames.Add(Path.GetFileNameWithoutExtension(file));
+            }
 
-                        HighlightingManager.Instance.RegisterHighlighting(
-                            "ILAsm", new string[] { ".il" },
-                            delegate {
-                                using (Stream s = File.OpenRead("TextView/ILAsm-Mode.xshd"))
-                                {
-                                    using (XmlTextReader reader = new XmlTextReader(s))
-                                    {
-                                        return HighlightingLoader.Load(reader, HighlightingManager.Instance);
-                                    }
-                                }
-                            });
+            if (themes.Count == 0)
+            {
+                var light = AvaloniaXamlLoader.Parse<StyleInclude>(@"<StyleInclude xmlns='https://github.com/avaloniaui' Source='resm:Avalonia.Themes.Default.Accents.BaseLight.xaml?assembly=Avalonia.Themes.Default'/>");
+                themes.Add(light);
+                themeNames.Add("Light");
+            }
 
-                        HighlightingManager.Instance.RegisterHighlighting(
-                            "C#", new string[] { ".cs" },
-                            delegate {
-                                using (Stream s = File.OpenRead("TextView/CSharp-Mode.xshd"))
-                                {
-                                    using (XmlTextReader reader = new XmlTextReader(s))
-                                    {
-                                        return HighlightingLoader.Load(reader, HighlightingManager.Instance);
-                                    }
-                                }
-                            });
-
-                        break;
-                    case 1:
-                        Styles[0] = dark;
-
-                        HighlightingManager.Instance.RegisterHighlighting(
-                            "ILAsm", new string[] { ".il" },
-                            delegate {
-                                using (Stream s = File.OpenRead("TextView/ILAsm-Mode-Dark.xshd"))
-                                {
-                                    using (XmlTextReader reader = new XmlTextReader(s))
-                                    {
-                                        return HighlightingLoader.Load(reader, HighlightingManager.Instance);
-                                    }
-                                }
-                            });
-
-                        HighlightingManager.Instance.RegisterHighlighting(
-                            "C#", new string[] { ".cs" },
-                            delegate {
-                                using (Stream s = File.OpenRead("TextView/CSharp-Mode-Dark.xshd"))
-                                {
-                                    using (XmlTextReader reader = new XmlTextReader(s))
-                                    {
-                                        return HighlightingLoader.Load(reader, HighlightingManager.Instance);
-                                    }
-                                }
-                            });
-
-                        break;
-                }
-
+            var themesDropDown = this.Find<DropDown>("Themes");
+            themesDropDown.Items = themeNames;
+            themesDropDown.SelectionChanged += (sender, e) =>
+            {
+                Styles[0] = themes[themesDropDown.SelectedIndex];
                 ApplyTheme();
             };
 
-            Styles.Insert(0, light);
-            ApplyTheme();
+            Styles.Add(themes[0]);
+            themesDropDown.SelectedIndex = 0;
 
             CommandBindings.Add(new RoutedCommandBinding(ApplicationCommands.Open, OpenCommandExecuted));
             CommandBindings.Add(new RoutedCommandBinding(ApplicationCommands.Refresh, RefreshCommandExecuted));
@@ -248,12 +205,73 @@ namespace ICSharpCode.ILSpy
 
         private void ApplyTheme()
         {
-            object backgroundColor;
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX) && Styles[0].TryGetResource("ThemeBackgroundBrush", out backgroundColor) && backgroundColor is ISolidColorBrush brush)
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX) && Styles[0].TryGetResource("ThemeBackgroundBrush", out object backgroundColor) && backgroundColor is ISolidColorBrush brush)
             {
                 // HACK: SetTitleBarColor is a method in Avalonia.Native.WindowImpl
                 var setTitleBarColorMethod = PlatformImpl.GetType().GetMethod("SetTitleBarColor");
                 setTitleBarColorMethod?.Invoke(PlatformImpl, new object[] { brush.Color });
+            }
+
+            if (Styles[0].TryGetResource("ILAsm-Mode", out object ilasm) && ilasm is string ilmode)
+            {
+                HighlightingManager.Instance.RegisterHighlighting(
+                    "ILAsm", new string[] { ".il" },
+                    delegate
+                    {
+                        using (Stream s = File.OpenRead($"Themes/{ilmode}"))
+                        {
+                            using (XmlTextReader reader = new XmlTextReader(s))
+                            {
+                                return HighlightingLoader.Load(reader, HighlightingManager.Instance);
+                            }
+                        }
+                    });
+            }
+            else
+            {
+                HighlightingManager.Instance.RegisterHighlighting(
+                    "ILAsm", new string[] { ".il" },
+                    delegate
+                    {
+                        using (Stream s = typeof(DecompilerTextView).Assembly.GetManifestResourceStream("ICSharpCode.ILSpy.Themes.ILAsm-Mode.xshd"))
+                        {
+                            using (XmlTextReader reader = new XmlTextReader(s))
+                            {
+                                return HighlightingLoader.Load(reader, HighlightingManager.Instance);
+                            }
+                        }
+                    });
+            }
+
+            if (Styles[0].TryGetResource("CSharp-Mode", out object csharp) && csharp is string csmode)
+            {
+                HighlightingManager.Instance.RegisterHighlighting(
+                "C#", new string[] { ".cs" },
+                    delegate
+                    {
+                        using (Stream s = File.OpenRead($"Themes/{csmode}"))
+                        {
+                            using (XmlTextReader reader = new XmlTextReader(s))
+                            {
+                                return HighlightingLoader.Load(reader, HighlightingManager.Instance);
+                            }
+                        }
+                    });
+            }
+            else
+            {
+                HighlightingManager.Instance.RegisterHighlighting(
+                "C#", new string[] { ".cs" },
+                    delegate
+                    {
+                        using (Stream s = typeof(DecompilerTextView).Assembly.GetManifestResourceStream("ICSharpCode.ILSpy.Themes.CSharp-Mode.xshd"))
+                        {
+                            using (XmlTextReader reader = new XmlTextReader(s))
+                            {
+                                return HighlightingLoader.Load(reader, HighlightingManager.Instance);
+                            }
+                        }
+                    });
             }
 
             //Reload text editor
