@@ -30,14 +30,15 @@ using ICSharpCode.ILSpy.Options;
 using Microsoft.VisualStudio.Composition;
 using Avalonia;
 using Avalonia.Markup.Xaml;
-using Avalonia.Threading;
+using Avalonia.Controls;
+using AvaloniaEdit.Rendering;
 
 namespace ICSharpCode.ILSpy
 {
-	/// <summary>
-	/// Interaction logic for App.xaml
-	/// </summary>
-	public partial class App : Application
+    /// <summary>
+    /// Interaction logic for App.xaml
+    /// </summary>
+    public partial class App : Application
 	{
 		
 		internal static CommandLineArguments CommandLineArguments;
@@ -122,14 +123,12 @@ namespace ICSharpCode.ILSpy
 			TaskScheduler.UnobservedTaskException += DotNet40_UnobservedTaskException;
 			Languages.Initialize(exportProvider);
 
-			//TODO: hyperlink event handler
-			//EventManager.RegisterClassHandler(typeof(Window),
-			//                                  Hyperlink.RequestNavigateEvent,
-			//                                  new RequestNavigateEventHandler(Window_RequestNavigate));
-			ILSpyTraceListener.Install();
-		}
+            VisualLineLinkText.OpenUriEvent.AddClassHandler<Window>(win => Window_RequestNavigate);
 
-		string FullyQualifyPath(string argument)
+            ILSpyTraceListener.Install();
+        }
+
+        string FullyQualifyPath(string argument)
 		{
 			// Fully qualify the paths before passing them to another process,
 			// because that process might use a different current directory.
@@ -178,24 +177,32 @@ namespace ICSharpCode.ILSpy
 			}
 			MessageBox.Show(exception.ToString(), "Sorry, we crashed");
 		}
-		#endregion
+        #endregion
 
-		
-		//void Window_RequestNavigate(object sender, RequestNavigateEventArgs e)
-		//{
-		//	if (e.Uri.Scheme == "resource") {
-		//		AvaloniaEditTextOutput output = new AvaloniaEditTextOutput();
-		//		using (Stream s = typeof(App).Assembly.GetManifestResourceStream(typeof(App), e.Uri.AbsolutePath)) {
-		//			using (StreamReader r = new StreamReader(s)) {
-		//				string line;
-		//				while ((line = r.ReadLine()) != null) {
-		//					output.Write(line);
-		//					output.WriteLine();
-		//				}
-		//			}
-		//		}
-		//		ILSpy.MainWindow.Instance.TextView.ShowText(output);
-		//	}
-		//}
-	}
+
+        void Window_RequestNavigate(OpenUriRoutedEventArgs e)
+        {
+            if (e.Uri.Scheme == "resource")
+            {
+                AvaloniaEditTextOutput output = new AvaloniaEditTextOutput();
+                using (Stream s = typeof(App).Assembly.GetManifestResourceStream(typeof(App), e.Uri.AbsolutePath))
+                {
+                    using (StreamReader r = new StreamReader(s))
+                    {
+                        string line;
+                        while ((line = r.ReadLine()) != null)
+                        {
+                            output.Write(line);
+                            output.WriteLine();
+                        }
+                    }
+                }
+                ILSpy.MainWindow.Instance.TextView.ShowText(output);
+            }
+            else
+            {
+                ILSpy.MainWindow.OpenLink(e.Uri.ToString());
+            }
+        }
+    }
 }
