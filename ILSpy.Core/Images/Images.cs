@@ -18,14 +18,14 @@
 
 using System;
 using Avalonia.Media.Imaging;
-using Avalonia.Media;
 using Avalonia;
 using System.Collections.Generic;
-using Avalonia.Rendering;
+using Avalonia.Controls.Platform.Surfaces;
+using Avalonia.Platform;
 
 namespace ICSharpCode.ILSpy
 {
-	static class Images
+    static class Images
 	{
 		static IBitmap LoadBitmap(string name)
 		{
@@ -245,7 +245,18 @@ namespace ICSharpCode.ILSpy
 			}
 		}
 
-		private abstract class IconCache<T>
+        private class WbFb : IFramebufferPlatformSurface
+        {
+            WriteableBitmap _bitmap;
+            public ILockedFramebuffer Lock() => _bitmap.Lock();
+
+            public WbFb(WriteableBitmap bitmap)
+            {
+                _bitmap = bitmap;
+            }
+        }
+
+        private abstract class IconCache<T>
 		{
 			private readonly Dictionary<Tuple<T, AccessOverlayIcon, bool>, IBitmap> cache = new Dictionary<Tuple<T, AccessOverlayIcon, bool>, IBitmap>();
 
@@ -310,26 +321,32 @@ namespace ICSharpCode.ILSpy
 
 			private static readonly Rect iconRect = new Rect(0, 0, 16, 16);
 
-			private static IBitmap CreateOverlayImage(IBitmap baseImage, IBitmap overlay, bool isStatic)
+            private static IBitmap CreateOverlayImage(IBitmap baseImage, IBitmap overlay, bool isStatic)
 			{
-				//var group = new DrawingGroup();
+                var image = new WriteableBitmap(new PixelSize(16, 16), new Vector(96, 96));
 
-				//group.Children.Add(new ImageDrawing(baseImage, iconRect));
+                using (var rt = AvaloniaLocator.Current.GetService<IPlatformRenderInterface>().CreateRenderTarget(new[] { new WbFb(image)})) {
 
-				//if (overlay != null) {
-				//	group.Children.Add(new ImageDrawing(overlay, iconRect));
-				//}
+                    using (var ctx = rt.CreateDrawingContext(null)) {
 
-				//if (isStatic) {
-				//	group.Children.Add(new ImageDrawing(Images.OverlayStatic, iconRect));
-				//}
+                        ctx.DrawImage(baseImage.PlatformImpl, 1.0, iconRect, iconRect);
 
-				// TODO: mix images
-				//var image = new DrawingImage(group);
-				//image.Freeze();
-				return baseImage;
-			}
-		}
+                        if (overlay != null) {
+                            ctx.DrawImage(overlay.PlatformImpl, 1.0, iconRect, iconRect);
+                        }
+
+                        if (isStatic) {
+                            ctx.DrawImage(Images.OverlayStatic.PlatformImpl, 1.0, iconRect, iconRect);
+                        }
+
+                    }
+
+                }
+
+                // TODO: image.Freeze()
+                return image;
+            }
+        }
 
 		#endregion
 	}
