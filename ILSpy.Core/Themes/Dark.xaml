@@ -8,7 +8,7 @@
         <Style.Resources>
         
             <Color x:Key="ThemeCodeBackgroundColor">#FF1E1E1E</Color>
-            <Color x:Key="ThemeCodeForegroundColor">#FFDEDEDE</Color>
+            <Color x:Key="ThemeCodeForegroundColor">#FFFFFFFF</Color>
 
             <SolidColorBrush x:Key="ThemeCodeBackgroundBrush" Color="{DynamicResource ThemeCodeBackgroundColor}"></SolidColorBrush>
             <SolidColorBrush x:Key="ThemeCodeForegroundBrush" Color="{DynamicResource ThemeCodeForegroundColor}"></SolidColorBrush>
