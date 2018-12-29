@@ -183,7 +183,6 @@ namespace ICSharpCode.ILSpy.TextView
 		#endregion
 		
 		#region Tooltip support
-		ToolTip tooltip;
 		
 		void TextViewMouseHoverStopped(object sender, PointerEventArgs e)
         {

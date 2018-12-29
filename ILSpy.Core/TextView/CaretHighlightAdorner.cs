@@ -62,9 +62,9 @@ namespace ICSharpCode.ILSpy.TextView
             rect = min;
             brush = TextBlock.GetForeground(textArea.TextView).ToImmutable();
 
-			// TODO: PORTED round corner
-			//geometry = new RectangleGeometry(min, 2, 2);
-            // TODO: PORTED animations
+            // TODO: AVALONIA round corner
+            //geometry = new RectangleGeometry(min, 2, 2);
+            // TODO: AVALONIA animations
             //geometry.BeginAnimation(RectangleGeometry.RectProperty, new RectAnimation(min, max, new Duration(TimeSpan.FromMilliseconds(300))) { AutoReverse = true });
             //pen.Brush.BeginAnimation(Brush.OpacityProperty, new DoubleAnimation(1, 0, new Duration(TimeSpan.FromMilliseconds(200))) { BeginTime = TimeSpan.FromMilliseconds(450) });
 

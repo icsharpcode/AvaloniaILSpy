@@ -88,6 +88,7 @@ namespace ICSharpCode.ILSpy
 		/// </summary>
 		public PEFile GetPEFileOrNull()
 		{
+            if (!File.Exists(fileName)) return null;
 			try {
 				return GetPEFileAsync().Result;
 			} catch (Exception ex) {
