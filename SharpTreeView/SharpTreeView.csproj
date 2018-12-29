@@ -48,6 +48,6 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\AvaloniaEdit\src\AvaloniaEdit\AvaloniaEdit.csproj" />
-    <PackageReference Include="Avalonia" Version="0.7.1-build989-beta" />
+    <PackageReference Include="Avalonia" Version="0.7.1-build1056-beta" />
   </ItemGroup>
 </Project>
