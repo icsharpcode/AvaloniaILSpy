@@ -139,7 +139,7 @@ namespace ICSharpCode.ILSpy
 					if (manager.AssemblyLists.Contains(dlg.NewListName))
 					{
 						args.Cancel = true;
-						MessageBox.Show("A list with the same name was found.", null, MessageBoxButton.OK);
+						MessageBox.Show("A list with the same name was found.", "Error!", MessageBoxButton.OK);
 					}
 				}
 			};

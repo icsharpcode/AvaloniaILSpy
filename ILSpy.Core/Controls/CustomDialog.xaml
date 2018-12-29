@@ -2,7 +2,9 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 		xmlns:ae="clr-namespace:AvaloniaEdit;assembly=AvaloniaEdit"
         Title="Message"
-        Width="274" Height="400"
+        ShowInTaskbar="false"
+        WindowStartupLocation="CenterOwner"
+        Width="400" Height="280"
         x:Class="ICSharpCode.ILSpy.Controls.CustomDialog">
 	<Grid>
 		<Grid.RowDefinitions>

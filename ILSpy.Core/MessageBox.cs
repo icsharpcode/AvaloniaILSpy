@@ -31,7 +31,7 @@ namespace ICSharpCode.ILSpy
         {
             [MessageBoxButton.OK] = -1,
             [MessageBoxButton.OKCancel] = 1,
-            [MessageBoxButton.YesNo] = -1,
+            [MessageBoxButton.YesNo] = 1,
             [MessageBoxButton.YesNoCancel] = 2,
         };
 
@@ -63,20 +63,24 @@ namespace ICSharpCode.ILSpy
 
         public static async Task<MessageBoxResult> Show(Window owner, string messageBoxText, string caption, MessageBoxButton button, MessageBoxImage icon, MessageBoxResult defaultResult, MessageBoxOptions options)
         {
-            Debug.WriteLine(caption);
-            Debug.WriteLine(messageBoxText);
+            if (caption == null)
+                throw new ArgumentNullException(nameof(caption));
+            if (messageBoxText == null)
+                throw new ArgumentNullException(nameof(messageBoxText));
 
-            // TODO: message box
+            // Button Strings
             var buttons = Buttons[button];
+
+            // Show Message Window
             var win = new CustomDialog(caption, messageBoxText, AcceptButtonID[button], CancelButtonID[button], buttons);
-            // TODO: add msgbox image
-            var btnIndex = await win.ShowDialog<int?>(owner);
-            if (btnIndex == null)
+            var btnIndex = await win.ShowDialog<int?>(owner ?? App.Current.MainWindow);
+
+            if (btnIndex != null && Enum.TryParse(buttons[btnIndex.Value], out MessageBoxResult result))
             {
-                return defaultResult;
+                return result;
             }
-            return (MessageBoxResult)Enum.Parse(typeof(MessageBoxResult), buttons[btnIndex.Value]);
-            // return Task.FromResult(defaultResult);
+
+            return defaultResult;
         }
     }
 

@@ -32,6 +32,7 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Presenters;
 using Avalonia.Input;
+using Avalonia.Input.Raw;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using Avalonia.Media;
@@ -55,7 +56,7 @@ namespace ICSharpCode.ILSpy
 	/// <summary>
 	/// The main window of the application.
 	/// </summary>
-	public partial class MainWindow : Window, IRoutedCommandBindable
+	public partial class MainWindow : PlatformDependentWindow, IRoutedCommandBindable
     {
         bool refreshInProgress;
         readonly NavigationHistory<NavigationState> history = new NavigationHistory<NavigationState>();
@@ -102,8 +103,8 @@ namespace ICSharpCode.ILSpy
         public IList<RoutedCommandBinding> CommandBindings { get; } = new List<RoutedCommandBinding>();
 
         public MainWindow()
-		{
-			instance = this;
+        {
+            instance = this;
 			spySettings = ILSpySettings.Load();
 			this.sessionSettings = new SessionSettings(spySettings);
 			this.assemblyListManager = new AssemblyListManager(spySettings);
@@ -177,10 +178,10 @@ namespace ICSharpCode.ILSpy
             this.Width = bounds.Width;
 			this.Height = bounds.Height;
 		}
-		
-		#region Toolbar extensibility
-		
-		void InitToolbar()
+
+        #region Toolbar extensibility
+
+        void InitToolbar()
 		{
 			int navigationPos = 0;
 			int openPos = 1;
@@ -957,20 +958,20 @@ namespace ICSharpCode.ILSpy
 					return;
 			}
 			decompilationTask = decompilerTextView.DecompileAsync(this.CurrentLanguage, this.SelectedNodes, new DecompilationOptions() { TextViewState = state });
-		}
-		
-		async void SaveCommandExecuted(object sender, ExecutedRoutedEventArgs e)
-		{
+        }
+
+        async void SaveCommandExecuted(object sender, ExecutedRoutedEventArgs e)
+        {
 			if (this.SelectedNodes.Count() == 1) {
-				if (await this.SelectedNodes.Single().Save(this.TextView))
-					return;
-			}
-			this.TextView.SaveToDisk(this.CurrentLanguage,
-				this.SelectedNodes,
-				new DecompilationOptions() { FullDecompilation = true });
-		}
-		
-		public void RefreshDecompiledView()
+                if (await this.SelectedNodes.Single().Save(this.TextView))
+                    return;
+            }
+            this.TextView.SaveToDisk(this.CurrentLanguage,
+                this.SelectedNodes,
+                new DecompilationOptions() { FullDecompilation = true });
+        }
+
+        public void RefreshDecompiledView()
         {
             try
             {

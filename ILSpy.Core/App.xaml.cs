@@ -203,6 +203,7 @@ namespace ICSharpCode.ILSpy
             {
                 ILSpy.MainWindow.OpenLink(e.Uri.ToString());
             }
+            e.Handled = true;
         }
     }
 }
