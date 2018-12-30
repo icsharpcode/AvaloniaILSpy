@@ -55,8 +55,10 @@ namespace ICSharpCode.ILSpy
 		{
 			this.assemblyList = assemblyList ?? throw new ArgumentNullException(nameof(assemblyList));
 			this.fileName = fileName ?? throw new ArgumentNullException(nameof(fileName));
-			
-			this.assemblyTask = Task.Factory.StartNew(LoadAssembly, stream); // requires that this.fileName is set
+
+            this.assemblyTask = stream != null || File.Exists(fileName) ?
+                                Task.Factory.StartNew(LoadAssembly, stream) : // requires that this.fileName is set
+                                Task.FromResult<PEFile>(null);
 			this.shortName = Path.GetFileNameWithoutExtension(fileName);
 		}
 
@@ -141,7 +143,7 @@ namespace ICSharpCode.ILSpy
 
 		public bool IsLoaded => assemblyTask.IsCompleted;
 
-		public bool HasLoadError => assemblyTask.IsFaulted;
+		public bool HasLoadError => assemblyTask.IsFaulted || assemblyTask.Result == null;
 
 		public bool IsAutoLoaded { get; set; }
 

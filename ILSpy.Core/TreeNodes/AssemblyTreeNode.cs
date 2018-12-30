@@ -31,6 +31,7 @@ using ICSharpCode.TreeView;
 using Microsoft.Win32;
 using ICSharpCode.Decompiler.TypeSystem;
 using TypeDefinitionHandle = System.Reflection.Metadata.TypeDefinitionHandle;
+using System.Text;
 
 namespace ICSharpCode.ILSpy.TreeNodes
 {
@@ -76,41 +77,74 @@ namespace ICSharpCode.ILSpy.TreeNodes
 			}
 		}
 
-		TextBlock tooltip;
+        //TextBlock tooltip;
+        string tooltip;
 
 		public override object ToolTip {
 			get {
 				if (LoadedAssembly.HasLoadError)
 					return "Assembly could not be loaded. Click here for details.";
 
-                // TODO: add inlines tooltip
-				//if (tooltip == null && LoadedAssembly.IsLoaded) {
-				//	tooltip = new TextBlock();
-				//	var module = LoadedAssembly.GetPEFileOrNull();
-				//	var metadata = module?.Metadata;
-				//	if (metadata?.IsAssembly == true) {
-				//		tooltip.Inlines.Add(new Bold(new Run("Name: ")));
-				//		tooltip.Inlines.Add(new Run(metadata.GetFullAssemblyName()));
-				//		tooltip.Inlines.Add(new LineBreak());
-				//	}
-				//	tooltip.Inlines.Add(new Bold(new Run("Location: ")));
-				//	tooltip.Inlines.Add(new Run(LoadedAssembly.FileName));
-				//	tooltip.Inlines.Add(new LineBreak());
-				//	tooltip.Inlines.Add(new Bold(new Run("Architecture: ")));
-				//	tooltip.Inlines.Add(new Run(Language.GetPlatformDisplayName(module)));
-				//	string runtimeName = Language.GetRuntimeDisplayName(module);
-				//	if (runtimeName != null) {
-				//		tooltip.Inlines.Add(new LineBreak());
-				//		tooltip.Inlines.Add(new Bold(new Run("Runtime: ")));
-				//		tooltip.Inlines.Add(new Run(runtimeName));
-				//	}
-				//	var debugInfo = LoadedAssembly.GetDebugInfoOrNull();
-				//	tooltip.Inlines.Add(new LineBreak());
-				//	tooltip.Inlines.Add(new Bold(new Run("Debug info: ")));
-				//	tooltip.Inlines.Add(new Run(debugInfo?.Description ?? "none"));
-				//}
+                // TODO: AVALONIA: add inlines tooltip
+                //if (tooltip == null && LoadedAssembly.IsLoaded) {
+                //	tooltip = new TextBlock();
+                //	var module = LoadedAssembly.GetPEFileOrNull();
+                //	var metadata = module?.Metadata;
+                //	if (metadata?.IsAssembly == true) {
+                //		tooltip.Inlines.Add(new Bold(new Run("Name: ")));
+                //		tooltip.Inlines.Add(new Run(metadata.GetFullAssemblyName()));
+                //		tooltip.Inlines.Add(new LineBreak());
+                //	}
+                //	tooltip.Inlines.Add(new Bold(new Run("Location: ")));
+                //	tooltip.Inlines.Add(new Run(LoadedAssembly.FileName));
+                //	tooltip.Inlines.Add(new LineBreak());
+                //	tooltip.Inlines.Add(new Bold(new Run("Architecture: ")));
+                //	tooltip.Inlines.Add(new Run(Language.GetPlatformDisplayName(module)));
+                //	string runtimeName = Language.GetRuntimeDisplayName(module);
+                //	if (runtimeName != null) {
+                //		tooltip.Inlines.Add(new LineBreak());
+                //		tooltip.Inlines.Add(new Bold(new Run("Runtime: ")));
+                //		tooltip.Inlines.Add(new Run(runtimeName));
+                //	}
+                //	var debugInfo = LoadedAssembly.GetDebugInfoOrNull();
+                //	tooltip.Inlines.Add(new LineBreak());
+                //	tooltip.Inlines.Add(new Bold(new Run("Debug info: ")));
+                //	tooltip.Inlines.Add(new Run(debugInfo?.Description ?? "none"));
+                //}
 
-				return tooltip;
+                if (tooltip == null && LoadedAssembly.IsLoaded) {
+                  var sb = new StringBuilder();
+                  var module = LoadedAssembly.GetPEFileOrNull();
+                  var metadata = module?.Metadata;
+                  if (metadata?.IsAssembly == true) {
+                        sb.Append("Name: ");
+                        sb.Append(metadata.GetFullAssemblyName());
+                        sb.AppendLine();
+                    }
+                    sb.Append("Location: ");
+                    sb.Append(LoadedAssembly.FileName);
+                    sb.AppendLine();
+
+                    sb.Append("Architecture: ");
+                    sb.Append(Language.GetPlatformDisplayName(module));
+                    string runtimeName = Language.GetRuntimeDisplayName(module);
+                    if (runtimeName != null)
+                    {
+                        sb.AppendLine();
+                        sb.Append("Runtime: ");
+                        sb.Append(runtimeName);
+                    }
+                    sb.AppendLine();
+
+                    var debugInfo = LoadedAssembly.GetDebugInfoOrNull();
+                    sb.AppendLine();
+                    sb.Append("Debug info: ");
+                    sb.Append(debugInfo?.Description ?? "none");
+
+                    tooltip = sb.ToString();
+                }
+
+                return tooltip;
 			}
 		}
 

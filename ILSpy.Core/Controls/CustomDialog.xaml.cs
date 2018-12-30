@@ -59,11 +59,9 @@ namespace ICSharpCode.ILSpy.Controls
 
 			buttons.ItemContainerGenerator.Materialized += (s, e) => {
 				for (int i = 0; i < e.Containers.Count; i++) {
-					var  btnIndex = i;
 					var listItem = (ListBoxItem)e.Containers[i].ContainerControl;
 					listItem.TemplateApplied += (container, args) => {
 						var button = (Button)((ListBoxItem)container).Presenter.Child;
-						button.Tag = btnIndex;
 						button.Click += ButtonClick;
 					};
 				}
@@ -79,9 +77,6 @@ namespace ICSharpCode.ILSpy.Controls
 			AvaloniaXamlLoader.Load(this);
 			this.buttons = this.FindControl<ListBox>("buttons");
 			this.label = this.FindControl<TextBlock>("content");
-			
-			this.ShowInTaskbar = false;
-			this.WindowStartupLocation = WindowStartupLocation.CenterOwner;
 		}
 
 		protected override void OnKeyDown(KeyEventArgs e)
@@ -93,7 +88,9 @@ namespace ICSharpCode.ILSpy.Controls
 
 		void ButtonClick(object sender, RoutedEventArgs e)
 		{
-			this.Close(((Control)sender).Tag);
+            Button button = sender as Button;
+            int index = buttons.ItemContainerGenerator.IndexFromContainer(button.Parent);
+            this.Close(index);
 			e.Handled = true;
 		}
 	}

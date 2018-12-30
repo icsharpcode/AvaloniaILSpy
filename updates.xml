@@ -3,7 +3,7 @@
     <band id="alpha">
         <latestVersion>4.0.0.0</latestVersion>
         <downloadUrl>
-        https://ci.appveyor.com/project/icsharpcode/avaloniailspy/build/artifacts
+        https://github.com/icsharpcode/AvaloniaILSpy/releases
         </downloadUrl>
     </band>
 </updateInfo>

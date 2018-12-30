@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
     <LangVersion>7.2</LangVersion>
 
     <TieredCompilations>true</TieredCompilations>
@@ -59,6 +59,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Avalonia.Desktop" Version="0.7.1-build989-beta" />
+    <PackageReference Include="Avalonia.Desktop" Version="0.7.1-build1059-beta" />
+    <PackageReference Include="NSubsys" Version="0.7.0-build20180604-0047" />
   </ItemGroup>
 </Project>
