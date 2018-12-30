@@ -85,26 +85,6 @@ namespace ICSharpCode.ILSpy.TextView
         #region Constructor
         public DecompilerTextView()
 		{
-			HighlightingManager.Instance.RegisterHighlighting(
-				"ILAsm", new string[] { ".il" },
-				delegate {
-					using (Stream s = typeof(DecompilerTextView).Assembly.GetManifestResourceStream(typeof(DecompilerTextView), "ILAsm-Mode.xshd")) {
-						using (XmlTextReader reader = new XmlTextReader(s)) {
-							return HighlightingLoader.Load(reader, HighlightingManager.Instance);
-						}
-					}
-				});
-
-			HighlightingManager.Instance.RegisterHighlighting(
-				"C#", new string[] { ".cs" },
-				delegate {
-					using (Stream s = typeof(DecompilerTextView).Assembly.GetManifestResourceStream(typeof(DecompilerTextView), "CSharp-Mode.xshd")) {
-						using (XmlTextReader reader = new XmlTextReader(s)) {
-							return HighlightingLoader.Load(reader, HighlightingManager.Instance);
-						}
-					}
-				});
-
 			InitializeComponent();
 			
 			this.referenceElementGenerator = new ReferenceElementGenerator(this.JumpToReference, this.IsLink);

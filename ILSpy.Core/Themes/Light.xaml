@@ -1,0 +1,22 @@
+﻿<Styles xmlns="https://github.com/avaloniaui"
+       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+       xmlns:sys="clr-namespace:System;assembly=mscorlib">
+    
+    <StyleInclude Source="avares://Avalonia.Themes.Default/Accents/BaseLight.xaml"/>
+    
+    <Style>
+        <Style.Resources>
+            
+            <Color x:Key="ThemeCodeBackgroundColor">#FFFFFFE1</Color>
+            <Color x:Key="ThemeCodeForegroundColor">#FF000000</Color>
+
+            <SolidColorBrush x:Key="ThemeCodeBackgroundBrush" Color="{DynamicResource ThemeCodeBackgroundColor}"></SolidColorBrush>
+            <SolidColorBrush x:Key="ThemeCodeForegroundBrush" Color="{DynamicResource ThemeCodeForegroundColor}"></SolidColorBrush>
+            
+            <sys:String x:Key="CSharp-Mode">CSharp-Mode.xshd</sys:String>
+            <sys:String x:Key="ILAsm-Mode">ILAsm-Mode.xshd</sys:String>
+            
+        </Style.Resources>
+    </Style>
+    
+</Styles>

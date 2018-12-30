@@ -28,6 +28,7 @@ using System.Reflection.Metadata;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using System.Xml;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Presenters;
@@ -35,10 +36,14 @@ using Avalonia.Input;
 using Avalonia.Input.Raw;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
+using Avalonia.Markup.Xaml.Styling;
 using Avalonia.Media;
 using Avalonia.Media.Imaging;
+using Avalonia.Styling;
 using Avalonia.Threading;
 using AvaloniaEdit;
+using AvaloniaEdit.Highlighting;
+using AvaloniaEdit.Highlighting.Xshd;
 using ICSharpCode.Decompiler;
 using ICSharpCode.Decompiler.Documentation;
 using ICSharpCode.Decompiler.Metadata;
@@ -162,6 +167,40 @@ namespace ICSharpCode.ILSpy
             bottomPane = this.FindControl<DockedPane>("bottomPane");
             bottomPane.CloseButtonClicked += BottomPane_CloseButtonClicked;
 
+            List<string> themeNames = new List<string>();
+            List<IStyle> themes = new List<IStyle>();
+            foreach(string file in Directory.EnumerateFiles("Themes", "*.xaml"))
+            {
+                try
+                {
+                    var theme = AvaloniaXamlLoader.Parse<Styles>(File.ReadAllText(file));
+                    themes.Add(theme);
+                    themeNames.Add(Path.GetFileNameWithoutExtension(file));
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, $"Unable to load theme on {file}");
+                }
+            }
+
+            if (themes.Count == 0)
+            {
+                var light = AvaloniaXamlLoader.Parse<StyleInclude>(@"<StyleInclude xmlns='https://github.com/avaloniaui' Source='resm:Avalonia.Themes.Default.Accents.BaseLight.xaml?assembly=Avalonia.Themes.Default'/>");
+                themes.Add(light);
+                themeNames.Add("Light");
+            }
+
+            var themesDropDown = this.Find<DropDown>("Themes");
+            themesDropDown.Items = themeNames;
+            themesDropDown.SelectionChanged += (sender, e) =>
+            {
+                Styles[0] = themes[themesDropDown.SelectedIndex];
+                ApplyTheme();
+            };
+
+            Styles.Add(themes[0]);
+            themesDropDown.SelectedIndex = 0;
+
             CommandBindings.Add(new RoutedCommandBinding(ApplicationCommands.Open, OpenCommandExecuted));
             CommandBindings.Add(new RoutedCommandBinding(ApplicationCommands.Refresh, RefreshCommandExecuted));
             CommandBindings.Add(new RoutedCommandBinding(ApplicationCommands.Save, SaveCommandExecuted));
@@ -170,6 +209,81 @@ namespace ICSharpCode.ILSpy
             CommandBindings.Add(new RoutedCommandBinding(NavigationCommands.Search, SearchCommandExecuted));
 
             TemplateApplied += MainWindow_Loaded;
+        }
+
+        private void ApplyTheme()
+        {
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX) && Styles[0].TryGetResource("ThemeBackgroundBrush", out object backgroundColor) && backgroundColor is ISolidColorBrush brush)
+            {
+                // HACK: SetTitleBarColor is a method in Avalonia.Native.WindowImpl
+                var setTitleBarColorMethod = PlatformImpl.GetType().GetMethod("SetTitleBarColor");
+                setTitleBarColorMethod?.Invoke(PlatformImpl, new object[] { brush.Color });
+            }
+
+            if (Styles[0].TryGetResource("ILAsm-Mode", out object ilasm) && ilasm is string ilmode)
+            {
+                HighlightingManager.Instance.RegisterHighlighting(
+                    "ILAsm", new string[] { ".il" },
+                    delegate
+                    {
+                        using (Stream s = File.OpenRead($"Themes/{ilmode}"))
+                        {
+                            using (XmlTextReader reader = new XmlTextReader(s))
+                            {
+                                return HighlightingLoader.Load(reader, HighlightingManager.Instance);
+                            }
+                        }
+                    });
+            }
+            else
+            {
+                HighlightingManager.Instance.RegisterHighlighting(
+                    "ILAsm", new string[] { ".il" },
+                    delegate
+                    {
+                        using (Stream s = typeof(DecompilerTextView).Assembly.GetManifestResourceStream("ICSharpCode.ILSpy.Themes.ILAsm-Mode.xshd"))
+                        {
+                            using (XmlTextReader reader = new XmlTextReader(s))
+                            {
+                                return HighlightingLoader.Load(reader, HighlightingManager.Instance);
+                            }
+                        }
+                    });
+            }
+
+            if (Styles[0].TryGetResource("CSharp-Mode", out object csharp) && csharp is string csmode)
+            {
+                HighlightingManager.Instance.RegisterHighlighting(
+                "C#", new string[] { ".cs" },
+                    delegate
+                    {
+                        using (Stream s = File.OpenRead($"Themes/{csmode}"))
+                        {
+                            using (XmlTextReader reader = new XmlTextReader(s))
+                            {
+                                return HighlightingLoader.Load(reader, HighlightingManager.Instance);
+                            }
+                        }
+                    });
+            }
+            else
+            {
+                HighlightingManager.Instance.RegisterHighlighting(
+                "C#", new string[] { ".cs" },
+                    delegate
+                    {
+                        using (Stream s = typeof(DecompilerTextView).Assembly.GetManifestResourceStream("ICSharpCode.ILSpy.Themes.CSharp-Mode.xshd"))
+                        {
+                            using (XmlTextReader reader = new XmlTextReader(s))
+                            {
+                                return HighlightingLoader.Load(reader, HighlightingManager.Instance);
+                            }
+                        }
+                    });
+            }
+
+            //Reload text editor
+            DecompileSelectedNodes();
         }
 
         void SetWindowBounds(Rect bounds)
@@ -943,6 +1057,9 @@ namespace ICSharpCode.ILSpy
 				return;
 
             if (treeView.SelectedItems.Count == 0 && refreshInProgress)
+                return;
+
+            if (decompilerTextView == null)
                 return;
 
             if (recordHistory) {

@@ -8,8 +8,8 @@
 		<Border BorderThickness="1,1,0,1" BorderBrush="#FF828790">
 			<Grid>
 				<ae:TextEditor Name="textEditor" FontFamily="Consolas" FontSize="10" IsReadOnly="True"
-				               Background="{x:Static avalonia:SystemColors.InfoBrush}}"
-				               Foreground="{x:Static avalonia:SystemColors.InfoTextBrush}}">
+				               Background="{DynamicResource ThemeCodeBackgroundBrush}"
+				               Foreground="{DynamicResource ThemeCodeForegroundBrush}">
 				</ae:TextEditor>
 				<Border Name="waitAdorner" Background="#C0FFFFFF" IsVisible="false">
 					<StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
