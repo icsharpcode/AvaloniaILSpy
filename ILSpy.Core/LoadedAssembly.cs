@@ -58,7 +58,7 @@ namespace ICSharpCode.ILSpy
 
             this.assemblyTask = stream != null || File.Exists(fileName) ?
                                 Task.Factory.StartNew(LoadAssembly, stream) : // requires that this.fileName is set
-                                Task.FromResult<PEFile>(null);
+                                Task.FromException<PEFile>(new FileNotFoundException("Assembly file not found", fileName));
 			this.shortName = Path.GetFileNameWithoutExtension(fileName);
 		}
 
@@ -91,6 +91,7 @@ namespace ICSharpCode.ILSpy
 		public PEFile GetPEFileOrNull()
 		{
 			try {
+                if (IsLoaded && HasLoadError) return null;
 				return GetPEFileAsync().Result;
 			} catch (Exception ex) {
 				System.Diagnostics.Trace.TraceError(ex.ToString());
@@ -143,7 +144,7 @@ namespace ICSharpCode.ILSpy
 
 		public bool IsLoaded => assemblyTask.IsCompleted;
 
-		public bool HasLoadError => assemblyTask.IsFaulted || assemblyTask.Result == null;
+		public bool HasLoadError => assemblyTask.IsFaulted;
 
 		public bool IsAutoLoaded { get; set; }
 
