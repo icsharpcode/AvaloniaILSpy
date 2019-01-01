@@ -30,7 +30,6 @@
 		<ListBox Name="resourceListView"
 			  FontFamily="Segoe UI"
 			  FontSize="9"
-			  Foreground="Black"
 			  Grid.Row="1">
 			<ListBox.ItemTemplate>
 				<DataTemplate>
