@@ -28,12 +28,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="ICSharpCode.Decompiler" Version="4.0.0.4447-beta3" />
+    <PackageReference Include="ICSharpCode.Decompiler" Version="4.0.0.4511-rc1-debug" />
     <PackageReference Include="Microsoft.VisualStudio.Composition" Version="15.8.98" />
     <PackageReference Include="System.IO.Compression" Version="4.3.0" />
     <PackageReference Include="NuGet.Client" Version="4.2.0" />
     <PackageReference Include="Microsoft.DiaSymReader" Version="1.3.0" />
-    <PackageReference Include="Avalonia" Version="0.7.1-build1059-beta" />
+    <PackageReference Include="Avalonia" Version="0.7.1-build1091-beta" />
   </ItemGroup>
 
   <ItemGroup>
@@ -52,7 +52,7 @@
     <Content Include="Images\*.png;Themes\*">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <AvaloniaResource Include="Images\ILSpy.png;Images\PrivateInternal.png;Images\Search.png;Images\ClearSearch.png;">
+    <AvaloniaResource Include="Images\ILSpy.png;Images\PrivateInternal.png;Images\ShowAll.png;Images\Search.png;Images\ClearSearch.png;">
     </AvaloniaResource>
   </ItemGroup>
 

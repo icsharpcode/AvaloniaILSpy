@@ -247,7 +247,7 @@ namespace ICSharpCode.ILSpy
 					if (automaticUpdateCheckEnabled != value) {
 						automaticUpdateCheckEnabled = value;
 						Save();
-						OnPropertyChanged("AutomaticUpdateCheckEnabled");
+						OnPropertyChanged(nameof(AutomaticUpdateCheckEnabled));
 					}
 				}
 			}
@@ -260,7 +260,7 @@ namespace ICSharpCode.ILSpy
 					if (lastSuccessfulUpdateCheck != value) {
 						lastSuccessfulUpdateCheck = value;
 						Save();
-						OnPropertyChanged("LastSuccessfulUpdateCheck");
+						OnPropertyChanged(nameof(LastSuccessfulUpdateCheck));
 					}
 				}
 			}

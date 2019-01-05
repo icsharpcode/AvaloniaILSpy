@@ -21,6 +21,7 @@ using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Reflection.Metadata;
 using System.Text;
 using Avalonia;
@@ -270,7 +271,7 @@ namespace ICSharpCode.ILSpy
 			PEFile assembly = @event.ParentModule.PEFile;
 			AddReferenceAssemblyWarningMessage(assembly, output);
 			AddReferenceWarningMessage(assembly, output);
-			base.WriteCommentLine(output, TypeToString(@event.DeclaringType, includeNamespace: true));
+			WriteCommentLine(output, TypeToString(@event.DeclaringType, includeNamespace: true));
 			CSharpDecompiler decompiler = CreateDecompiler(assembly, options);
 			WriteCode(output, options.DecompilerSettings, decompiler.Decompile(@event.MetadataToken), decompiler.TypeSystem);
 		}
@@ -381,7 +382,25 @@ namespace ICSharpCode.ILSpy
 					if (runtimeName != null) {
 						output.WriteLine("// Runtime: " + runtimeName);
 					}
-					var debugInfo = assembly.GetDebugInfoOrNull();
+                    if ((corHeader.Flags & System.Reflection.PortableExecutable.CorFlags.StrongNameSigned) != 0)
+                    {
+                        output.WriteLine("// This assembly is signed with a strong name key.");
+                    }
+                    if (metadata.IsAssembly)
+                    {
+                        var asm = metadata.GetAssemblyDefinition();
+                        if (asm.HashAlgorithm != System.Reflection.AssemblyHashAlgorithm.None)
+                            output.WriteLine("// Hash algorithm: " + asm.HashAlgorithm.ToString().ToUpper());
+                        if (!asm.PublicKey.IsNil)
+                        {
+                            output.Write("// Public key: ");
+                            var reader = metadata.GetBlobReader(asm.PublicKey);
+                            while (reader.RemainingBytes > 0)
+                                output.Write(reader.ReadByte().ToString("x"));
+                            output.WriteLine();
+                        }
+                    }
+                    var debugInfo = assembly.GetDebugInfoOrNull();
 					if (debugInfo != null) {
 						output.WriteLine("// Debug info: " + debugInfo.Description);
 					}
@@ -454,11 +473,18 @@ namespace ICSharpCode.ILSpy
 			if (type == null)
 				throw new ArgumentNullException(nameof(type));
 			var ambience = CreateAmbience();
-			// Do not forget to update CSharpAmbienceTests.ILSpyMainTreeViewFlags, if this ever changes.
-			if (includeNamespace)
-				ambience.ConversionFlags |= ConversionFlags.UseFullyQualifiedTypeNames;
-			if (type is ITypeDefinition definition) {
+            // Do not forget to update CSharpAmbienceTests.ILSpyMainTreeViewFlags, if this ever changes.
+            if (includeNamespace) {
+                ambience.ConversionFlags |= ConversionFlags.UseFullyQualifiedTypeNames;
+                ambience.ConversionFlags |= ConversionFlags.UseFullyQualifiedEntityNames;
+            }
+
+            if (type is ITypeDefinition definition) {
 				return ambience.ConvertSymbol(definition);
+                // HACK : UnknownType is not supported by CSharpAmbience.
+            } else if (type.Kind == TypeKind.Unknown) {
+                return (includeNamespace ? type.FullName : type.Name)
+                    + (type.TypeParameterCount > 0 ? "<" + string.Join(",", type.TypeArguments.Select(t => t.Name)) + ">" : "");
 			} else {
 				return ambience.ConvertType(type);
 			}
@@ -541,23 +567,38 @@ namespace ICSharpCode.ILSpy
 					var md = metadata.GetMethodDefinition((MethodDefinitionHandle)handle);
 					declaringType = md.GetDeclaringType();
 					string methodName = metadata.GetString(md.Name);
-					if (methodName == ".ctor" || methodName == ".cctor") {
-						var td = metadata.GetTypeDefinition(declaringType);
-						methodName = ReflectionHelper.SplitTypeParameterCountFromReflectionName(metadata.GetString(td.Name));
-					} else {
-						var genericParams = md.GetGenericParameters();
-						if (genericParams.Count > 0) {
-							methodName += "<";
-							int i = 0;
-							foreach (var h in genericParams) {
-								if (i > 0)
-									methodName += ",";
-								var gp = metadata.GetGenericParameter(h);
-								methodName += metadata.GetString(gp.Name);
-							}
-							methodName += ">";
-						}
-					}
+                    switch (methodName)
+                    {
+                        case ".ctor":
+                        case ".cctor":
+                            var td = metadata.GetTypeDefinition(declaringType);
+						    methodName = ReflectionHelper.SplitTypeParameterCountFromReflectionName(metadata.GetString(td.Name));
+                            break;
+                        case "Finalize":
+                            const MethodAttributes finalizerAttributes = (MethodAttributes.Virtual | MethodAttributes.Family | MethodAttributes.HideBySig);
+                            if ((md.Attributes & finalizerAttributes) != finalizerAttributes)
+                                goto default;
+                            MethodSignature<IType> methodSignature = md.DecodeSignature(MetadataExtensions.MinimalSignatureTypeProvider, default);
+                            if (methodSignature.GenericParameterCount != 0 || methodSignature.ParameterTypes.Length != 0)
+                                goto default;
+                            td = metadata.GetTypeDefinition(declaringType);
+                            methodName = "~" + ReflectionHelper.SplitTypeParameterCountFromReflectionName(metadata.GetString(td.Name));
+                            break;
+                        default:
+                            var genericParams = md.GetGenericParameters();
+    						if (genericParams.Count > 0) {
+    							methodName += "<";
+    							int i = 0;
+    							foreach (var h in genericParams) {
+    								if (i > 0)
+    									methodName += ",";
+    								var gp = metadata.GetGenericParameter(h);
+    								methodName += metadata.GetString(gp.Name);
+    							}
+    							methodName += ">";
+                            }
+                            break;
+                    }
 					if (fullName)
 						return ToCSharpString(metadata, declaringType, fullName) + "." + methodName;
 					return methodName;

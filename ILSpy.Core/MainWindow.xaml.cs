@@ -195,11 +195,13 @@ namespace ICSharpCode.ILSpy
             themesDropDown.SelectionChanged += (sender, e) =>
             {
                 Styles[0] = themes[themesDropDown.SelectedIndex];
+                sessionSettings.Theme = themeNames[themesDropDown.SelectedIndex];
                 ApplyTheme();
             };
 
             Styles.Add(themes[0]);
-            themesDropDown.SelectedIndex = 0;
+            int selectedTheme = themeNames.IndexOf(sessionSettings.Theme);
+            themesDropDown.SelectedIndex = selectedTheme < 0? 0: selectedTheme;
 
             CommandBindings.Add(new RoutedCommandBinding(ApplicationCommands.Open, OpenCommandExecuted));
             CommandBindings.Add(new RoutedCommandBinding(ApplicationCommands.Refresh, RefreshCommandExecuted));

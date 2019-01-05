@@ -60,11 +60,11 @@ namespace ICSharpCode.ILSpy.TreeNodes
 		}
 
 		public override FilterResult Filter(FilterSettings settings)
-		{
-			if (!settings.ShowInternalApi && !IsPublicAPI)
-				return FilterResult.Hidden;
-			if (settings.SearchTermMatches(FieldDefinition.Name) && settings.Language.ShowMember(FieldDefinition))
-				return FilterResult.Match;
+        {
+            if (settings.ShowApiLevel == ApiVisibility.PublicOnly && !IsPublicAPI)
+                return FilterResult.Hidden;
+            if (settings.SearchTermMatches(FieldDefinition.Name) && (settings.ShowApiLevel == ApiVisibility.All || settings.Language.ShowMember(FieldDefinition)))
+                return FilterResult.Match;
 			else
 				return FilterResult.Hidden;
 		}

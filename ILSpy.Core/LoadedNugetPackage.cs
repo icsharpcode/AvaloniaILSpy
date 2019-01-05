@@ -60,9 +60,9 @@ namespace ICSharpCode.ILSpy
 					SelectedEntries.Add(entry);
 				else
 					SelectedEntries.Remove(entry);
-				OnPropertyChanged("SelectedEntries");
-			}
-		}
+                OnPropertyChanged(nameof(SelectedEntries));
+            }
+        }
 
 		protected virtual void OnPropertyChanged(PropertyChangedEventArgs e)
 		{

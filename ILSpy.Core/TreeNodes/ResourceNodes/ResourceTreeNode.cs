@@ -59,9 +59,9 @@ namespace ICSharpCode.ILSpy.TreeNodes
 		}
 		
 		public override FilterResult Filter(FilterSettings settings)
-		{
-			if (!settings.ShowInternalApi && (r.Attributes & ManifestResourceAttributes.VisibilityMask) == ManifestResourceAttributes.Private)
-				return FilterResult.Hidden;
+        {
+            if (settings.ShowApiLevel == ApiVisibility.PublicOnly && (r.Attributes & ManifestResourceAttributes.VisibilityMask) == ManifestResourceAttributes.Private)
+                return FilterResult.Hidden;
 			if (settings.SearchTermMatches(r.Name))
 				return FilterResult.Match;
 			else

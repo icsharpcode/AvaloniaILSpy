@@ -25,6 +25,11 @@
 						<Image Width="16" Height="16" Source="Images/PrivateInternal.png" />
 					</MenuItem.Icon>
 				</MenuItem>
+                <MenuItem Header="Show _all types and members" IsCheckable="True" IsChecked="{Binding FilterSettings.ShowAllApi}">
+                    <MenuItem.Icon>
+                        <Image Width="16" Height="16" Source="Images/ShowAll.png" />
+                    </MenuItem.Icon>
+                </MenuItem>
 			</MenuItem>-->
 		</Menu>
 		<!-- ToolBar -->
@@ -51,6 +56,10 @@
                 ToolTip.Tip="Show internal types and members">
 				<Image Width="16" Height="16" Source="/Images/PrivateInternal.png" />
 			</CheckBox>
+            <CheckBox IsChecked="{Binding FilterSettings.ShowAllApi}"
+                ToolTip.Tip="Show all types and members">
+                <Image Width="16" Height="16" Source="/Images/ShowAll.png" />
+            </CheckBox>
 			<Separator />
 			<DropDown Name="languageComboBox" Width="100" 
 					  BorderThickness="1"
