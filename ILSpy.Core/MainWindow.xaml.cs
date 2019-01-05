@@ -107,6 +107,11 @@ namespace ICSharpCode.ILSpy
 
         public IList<RoutedCommandBinding> CommandBindings { get; } = new List<RoutedCommandBinding>();
 
+        static MainWindow()
+        {
+            IsVisibleProperty.Changed.Subscribe(OnShow);
+        }
+
         public MainWindow()
         {
             instance = this;
@@ -290,10 +295,9 @@ namespace ICSharpCode.ILSpy
 
         void SetWindowBounds(Rect bounds)
         {
-            this.Position = bounds.Position;
-            this.Width = bounds.Width;
-			this.Height = bounds.Height;
-		}
+            ClientSize = bounds.Size;
+            Position = bounds.Position;
+        }
 
         #region Toolbar extensibility
 
@@ -378,27 +382,35 @@ namespace ICSharpCode.ILSpy
             }
             mainMenu.Items = mainMenuItems;
         }
-		#endregion
-		
-		#region Message Hook
-        public override void Show()
-        {
-            base.Show();
+        #endregion
 
-            // Validate and Set Window Bounds
-            var boundsRect = sessionSettings.WindowBounds;
-            bool boundsOK = false;
-            foreach (var screen in this.Screens.All) {
-                var intersection = boundsRect.Intersect(screen.WorkingArea);
-                if (intersection.Width > 10 && intersection.Height > 10)
-                    boundsOK = true;
+        #region Message Hook
+
+        static void OnShow(AvaloniaPropertyChangedEventArgs args)
+        {
+            if (args.Sender == instance && (bool)args.NewValue)
+            {
+                // Validate and Set Window Bounds
+                if (instance.sessionSettings.WindowState == WindowState.Normal)
+                {
+                    var boundsRect = instance.sessionSettings.WindowBounds;
+                    bool boundsOK = false;
+                    foreach (var screen in instance.Screens.All)
+                    {
+                        var intersection = boundsRect.Intersect(screen.WorkingArea);
+                        if (intersection.Width > 10 && intersection.Height > 10)
+                            boundsOK = true;
+                    }
+                    if (boundsOK)
+                        instance.SetWindowBounds(instance.sessionSettings.WindowBounds);
+                    else
+                        instance.SetWindowBounds(SessionSettings.DefaultWindowBounds);
+                }
+                else
+                {
+                    instance.WindowState = instance.sessionSettings.WindowState;
+                }
             }
-            if (boundsOK)
-                SetWindowBounds(sessionSettings.WindowBounds);
-            else
-                SetWindowBounds(SessionSettings.DefaultWindowBounds);
-            
-            this.WindowState = sessionSettings.WindowState;
         }
 		#endregion
 		
@@ -1181,7 +1193,7 @@ namespace ICSharpCode.ILSpy
             sessionSettings.ActiveAssemblyList = assemblyList.ListName;
             sessionSettings.ActiveTreeViewPath = GetPathForNode(treeView.SelectedItem as SharpTreeNode);
             sessionSettings.ActiveAutoLoadedAssembly = GetAutoLoadedAssemblyNode(treeView.SelectedItem as SharpTreeNode);
-            sessionSettings.WindowBounds = this.Bounds;
+            sessionSettings.WindowBounds = new Rect(Position, ClientSize);
             sessionSettings.SplitterPosition = leftColumn.Width.Value / (leftColumn.Width.Value + rightColumn.Width.Value);
             if (topPane.IsVisible == true)
                 sessionSettings.TopPaneSplitterPosition = topPaneRow.Height.Value / (topPaneRow.Height.Value + textViewRow.Height.Value);
