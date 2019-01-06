@@ -1,5 +1,6 @@
 ﻿<UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
              xmlns:local="clr-namespace:ICSharpCode.ILSpy.Options"
              x:Class="ICSharpCode.ILSpy.Options.DisplaySettingsPanel">
 	<Grid>
@@ -29,25 +30,27 @@
 				</DropDown>
 				<TextBlock Grid.Column="2" Margin="3,0">Size:</TextBlock>
 				<DropDown Grid.Column="3" SelectedItem="{Binding SelectedFontSize, Converter={x:Static local:FontSizeConverter.Instance}}" Margin="3,0">
-					<DropDownItem>6</DropDownItem>
-					<DropDownItem>7</DropDownItem>
-					<DropDownItem>8</DropDownItem>
-					<DropDownItem>9</DropDownItem>
-					<DropDownItem>10</DropDownItem>
-					<DropDownItem>11</DropDownItem>
-					<DropDownItem>12</DropDownItem>
-					<DropDownItem>13</DropDownItem>
-					<DropDownItem>14</DropDownItem>
-					<DropDownItem>15</DropDownItem>
-					<DropDownItem>16</DropDownItem>
-					<DropDownItem>17</DropDownItem>
-					<DropDownItem>18</DropDownItem>
-					<DropDownItem>19</DropDownItem>
-					<DropDownItem>20</DropDownItem>
-					<DropDownItem>21</DropDownItem>
-					<DropDownItem>22</DropDownItem>
-					<DropDownItem>23</DropDownItem>
-					<DropDownItem>24</DropDownItem>
+					<DropDown.Items>
+                        <sys:Double>6</sys:Double>
+                        <sys:Double>7</sys:Double>
+                        <sys:Double>8</sys:Double>
+                        <sys:Double>9</sys:Double>
+                        <sys:Double>10</sys:Double>
+                        <sys:Double>11</sys:Double>
+                        <sys:Double>12</sys:Double>
+                        <sys:Double>13</sys:Double>
+                        <sys:Double>14</sys:Double>
+                        <sys:Double>15</sys:Double>
+                        <sys:Double>16</sys:Double>
+                        <sys:Double>17</sys:Double>
+                        <sys:Double>18</sys:Double>
+                        <sys:Double>19</sys:Double>
+                        <sys:Double>20</sys:Double>
+                        <sys:Double>21</sys:Double>
+                        <sys:Double>22</sys:Double>
+                        <sys:Double>23</sys:Double>
+                        <sys:Double>24</sys:Double>
+                   </DropDown.Items>
 				</DropDown>
 				<Border Grid.Row="1" Grid.ColumnSpan="4" BorderBrush="{DynamicResource ThemeControlHighlightHighBrush}" BorderThickness="1" Margin="3,5">
 					<TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Text="AaBbCcXxYyZz" FontFamily="{Binding SelectedFont}" FontSize="{Binding SelectedFontSize}" />

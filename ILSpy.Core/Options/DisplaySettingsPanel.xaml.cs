@@ -155,8 +155,12 @@ namespace ICSharpCode.ILSpy.Options
 		public static readonly FontSizeConverter Instance = new FontSizeConverter();
 
 		public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
-		{
-			if (value is double d) {
+        {
+            if (value == null) {
+                return 11.0;
+            }
+
+            if (value is double d) {
 				return Math.Round(d / 4 * 3);
 			}
 			
@@ -164,9 +168,16 @@ namespace ICSharpCode.ILSpy.Options
 		}
 		
 		public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
-		{
-            if (value is string s)
-            {
+        {
+            if (value == null) {
+                return 11.0 * 4 / 3;
+            }
+
+            if (value is double dd) {
+                return dd * 4 / 3;
+            }
+
+            if (value is string s) {
                 if (double.TryParse(s, out double d))
                     return d * 4 / 3;
                 return 11.0 * 4 / 3;
