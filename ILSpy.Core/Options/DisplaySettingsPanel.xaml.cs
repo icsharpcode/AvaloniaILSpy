@@ -17,23 +17,22 @@
 // DEALINGS IN THE SOFTWARE.
 
 using System;
-using System.Linq;
 using System.Threading.Tasks;
-using Avalonia;
-using Avalonia.Controls;
-using Avalonia.Data;
-using Avalonia.Media;
-using Avalonia.Threading;
 using System.Xml.Linq;
+using Avalonia.Controls;
 using Avalonia.Data.Converters;
 using Avalonia.Markup.Xaml;
+using Avalonia.Media;
+using Avalonia.Threading;
+using AvaloniaEdit;
+using AvaloniaEdit.Document;
 
 namespace ICSharpCode.ILSpy.Options
 {
-	/// <summary>
-	/// Interaction logic for DisplaySettingsPanel.xaml
-	/// </summary>
-	[ExportOptionPage(Title = "Display", Order = 1)]
+    /// <summary>
+    /// Interaction logic for DisplaySettingsPanel.xaml
+    /// </summary>
+    [ExportOptionPage(Title = "Display", Order = 1)]
 	public partial class DisplaySettingsPanel : UserControl, IOptionPage
 	{
 		internal DropDown fontSelector;
@@ -66,14 +65,17 @@ namespace ICSharpCode.ILSpy.Options
 		{
 			AvaloniaXamlLoader.Load(this);
 			fontSelector = this.FindControl<DropDown>("fontSelector");
-		}
+            var textEditor = this.FindControl<TextEditor>("textEditor");
+
+            textEditor.Document = new TextDocument("AaBbCcXxYyZz".ToCharArray());
+        }
 
 		public void Load(ILSpySettings settings)
 		{
 			this.DataContext = LoadDisplaySettings(settings);
-		}
-		
-		static DisplaySettings currentDisplaySettings;
+        }
+
+        static DisplaySettings currentDisplaySettings;
 		
 		public static DisplaySettings CurrentDisplaySettings {
 			get {
@@ -102,7 +104,13 @@ namespace ICSharpCode.ILSpy.Options
 			//		where !IsSymbolFont(ff)
 			//		orderby ff.Source
 			//		select ff).ToArray();
-			return new FontFamily[]{ FontFamily.Parse("Arial"), FontFamily.Parse("Segoe UI") };
+			return new FontFamily[] {
+                FontFamily.Parse("Arial"),
+                FontFamily.Parse("Consolas"), 
+                FontFamily.Parse("Segoe UI"),
+                FontFamily.Parse("Courier"),
+                FontFamily.Parse("Courier New"),
+            };
 		}
 
 		public static DisplaySettings LoadDisplaySettings(ILSpySettings settings)
