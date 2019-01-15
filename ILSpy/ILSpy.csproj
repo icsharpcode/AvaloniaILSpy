@@ -59,7 +59,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Avalonia.Desktop" Version="0.7.1-build1091-beta" />
+    <PackageReference Include="Avalonia.Desktop" Version="0.7.1-build1190-beta" />
     <PackageReference Include="NSubsys" Version="0.7.0-build20180604-0047" />
   </ItemGroup>
 </Project>

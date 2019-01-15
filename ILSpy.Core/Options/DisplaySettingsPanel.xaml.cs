@@ -17,6 +17,7 @@
 // DEALINGS IN THE SOFTWARE.
 
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using Avalonia.Controls;
@@ -99,18 +100,8 @@ namespace ICSharpCode.ILSpy.Options
 		
 		static FontFamily[] FontLoader()
 		{
-			//TODO: font families
-			//return (from ff in Fonts.SystemFontFamilies
-			//		where !IsSymbolFont(ff)
-			//		orderby ff.Source
-			//		select ff).ToArray();
-			return new FontFamily[] {
-                FontFamily.Parse("Arial"),
-                FontFamily.Parse("Consolas"), 
-                FontFamily.Parse("Segoe UI"),
-                FontFamily.Parse("Courier"),
-                FontFamily.Parse("Courier New"),
-            };
+            // TODO: filter SymbolFonts
+            return FontFamily.SystemFontFamilies.ToArray();
 		}
 
 		public static DisplaySettings LoadDisplaySettings(ILSpySettings settings)

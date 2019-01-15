@@ -25,7 +25,7 @@
 				<DropDown x:Name="fontSelector" SelectedItem="{Binding SelectedFont}" Grid.Column="1">
 					<DropDown.ItemTemplate>
 						<DataTemplate>
-							<TextBlock Text="{Binding Name}" />
+							<TextBlock Text="{Binding Name}" FontFamily="{Binding}" />
 						</DataTemplate>
 					</DropDown.ItemTemplate>
 				</DropDown>
