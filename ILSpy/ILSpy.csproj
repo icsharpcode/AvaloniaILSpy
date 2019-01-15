@@ -43,6 +43,9 @@
 
   <ItemGroup>
     <Compile Include="Program.cs" />
+    <Compile Include="..\ILSpy.Core\Properties\AssemblyInfo.cs">
+      <Link>AssemblyInfo.cs</Link>
+    </Compile>
   </ItemGroup>
 
   <ItemGroup Condition="'$(RuntimeIdentifier)' == 'osx.10.12-x64'">

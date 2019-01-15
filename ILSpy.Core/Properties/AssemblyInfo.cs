@@ -16,7 +16,7 @@ using System.Diagnostics.CodeAnalysis;
 [assembly: AssemblyDescription(".NET assembly inspector and decompiler")]
 [assembly: AssemblyCompany("ic#code")]
 [assembly: AssemblyProduct("ILSpy")]
-[assembly: AssemblyCopyright("Copyright 2011-2018 AlphaSierraPapa for the SharpDevelop Team")]
+[assembly: AssemblyCopyright("Copyright 2011-2019 AlphaSierraPapa for the SharpDevelop Team")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -42,7 +42,7 @@ internal static class RevisionClass
 	public const string Minor = "0";
 	public const string Build = "0";
 	public const string Revision = "1";
-	public const string VersionName = "rc1";
+	public const string VersionName = "rc2";
 	
 	public const string FullVersion = Major + "." + Minor + "." + Build + "." + Revision + "." + VersionName;
 }
