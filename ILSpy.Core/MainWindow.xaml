@@ -61,7 +61,7 @@
                 <Image Width="16" Height="16" Source="/Images/ShowAll.png" />
             </CheckBox>
 			<Separator />
-			<DropDown Name="languageComboBox" Width="100" 
+			<DropDown Name="languageComboBox" Width="120" 
 					  BorderThickness="1"
 			          Items="{x:Static local:Languages.AllLanguages}"
 			          SelectedItem="{Binding FilterSettings.Language}"/>

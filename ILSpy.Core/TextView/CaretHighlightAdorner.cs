@@ -54,10 +54,10 @@ namespace ICSharpCode.ILSpy.TextView
         public CaretHighlightAdorner(TextArea textArea)
 		{
             Rect min = textArea.Caret.CalculateCaretRectangle();
-			
-			Rect max = min.Translate(-textArea.TextView.ScrollOffset);
-			double size = Math.Max(min.Width, min.Height) * 0.25;
-			max = max.Inflate(size);
+            min = min.Translate(-textArea.TextView.ScrollOffset);
+
+            double size = Math.Max(min.Width, min.Height) * 0.25;
+            Rect max = min.Inflate(size);
 
             pen = new Pen(TextBlock.GetForeground(textArea.TextView).ToImmutable());
 

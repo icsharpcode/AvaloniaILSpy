@@ -24,11 +24,12 @@ namespace ICSharpCode.ILSpy.Options
 	public class MiscSettings : INotifyPropertyChanged
 	{
 		bool allowMultipleInstances;
+        bool loadPreviousAssemblies;
 
-		/// <summary>
-		/// Allow multiple instances.
-		/// </summary>
-		public bool AllowMultipleInstances
+        /// <summary>
+        /// Allow multiple instances.
+        /// </summary>
+        public bool AllowMultipleInstances
 		{
 			get { return allowMultipleInstances; }
 			set {
@@ -39,9 +40,25 @@ namespace ICSharpCode.ILSpy.Options
 			}
 		}
 
-		#region INotifyPropertyChanged Implementation
+        /// <summary>
+        /// Load assemblies that were loaded in the previous instance
+        /// </summary>
+        public bool LoadPreviousAssemblies
+        {
+            get { return loadPreviousAssemblies; }
+            set
+            {
+                if (loadPreviousAssemblies != value)
+                {
+                    loadPreviousAssemblies = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
 
-		public event PropertyChangedEventHandler PropertyChanged;
+        #region INotifyPropertyChanged Implementation
+
+        public event PropertyChangedEventHandler PropertyChanged;
 
 		protected virtual void OnPropertyChanged(PropertyChangedEventArgs e)
 		{

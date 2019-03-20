@@ -28,12 +28,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="ICSharpCode.Decompiler" Version="4.0.0.4520-rc2-debug" />
+    <PackageReference Include="ICSharpCode.Decompiler" Version="5.0.0.4688-preview1" />
     <PackageReference Include="Microsoft.VisualStudio.Composition" Version="15.8.98" />
+    <PackageReference Include="Microsoft.DiaSymReader.Converter.Xml" Version="1.1.0-beta1-63314-01" />
     <PackageReference Include="System.IO.Compression" Version="4.3.0" />
     <PackageReference Include="NuGet.Client" Version="4.2.0" />
     <PackageReference Include="Microsoft.DiaSymReader" Version="1.3.0" />
-    <PackageReference Include="Avalonia" Version="0.7.1-build1190-beta" />
+    <PackageReference Include="Avalonia" Version="0.7.1-cibuild0001689-beta" />
   </ItemGroup>
 
   <ItemGroup>
