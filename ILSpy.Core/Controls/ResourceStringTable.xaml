@@ -15,8 +15,8 @@
                   FontFamily="Segoe UI"
                   FontSize="9"
                   Grid.Row="1"
-                  RowBackground="White"
-                  AlternatingRowBackground="Beige"
+                  RowBackground="{DynamicResource ThemeBackgroundBrush}"
+                  AlternatingRowBackground="{DynamicResource ThemeAccentBrush4}"
                   CanUserResizeColumns="True">
           <DataGrid.Columns>
             <DataGridTextColumn Header="Key" Binding="{Binding Key}" Width="*" />
