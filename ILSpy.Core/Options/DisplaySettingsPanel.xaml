@@ -22,16 +22,16 @@
 					<RowDefinition Height="50" />
 				</Grid.RowDefinitions>
 				<TextBlock Margin="3,0">Font:</TextBlock>
-				<DropDown x:Name="fontSelector" SelectedItem="{Binding SelectedFont}" Grid.Column="1">
-					<DropDown.ItemTemplate>
+				<ComboBox x:Name="fontSelector" SelectedItem="{Binding SelectedFont}" Grid.Column="1">
+					<ComboBox.ItemTemplate>
 						<DataTemplate>
 							<TextBlock Text="{Binding Name}" FontFamily="{Binding}" />
 						</DataTemplate>
-					</DropDown.ItemTemplate>
-				</DropDown>
+					</ComboBox.ItemTemplate>
+				</ComboBox>
 				<TextBlock Grid.Column="2" Margin="3,0">Size:</TextBlock>
-				<DropDown Grid.Column="3" SelectedItem="{Binding SelectedFontSize, Converter={x:Static local:FontSizeConverter.Instance}}" Margin="3,0">
-					<DropDown.Items>
+				<ComboBox Grid.Column="3" SelectedItem="{Binding SelectedFontSize, Converter={x:Static local:FontSizeConverter.Instance}}" Margin="3,0">
+					<ComboBox.Items>
                         <sys:Double>6</sys:Double>
                         <sys:Double>7</sys:Double>
                         <sys:Double>8</sys:Double>
@@ -51,8 +51,8 @@
                         <sys:Double>22</sys:Double>
                         <sys:Double>23</sys:Double>
                         <sys:Double>24</sys:Double>
-                   </DropDown.Items>
-				</DropDown>
+                   </ComboBox.Items>
+				</ComboBox>
 				<Border Grid.Row="1" Grid.ColumnSpan="4" BorderBrush="{DynamicResource ThemeControlHighlightHighBrush}" BorderThickness="1" Margin="3,5">
                     <ae:TextEditor Name="textEditor" FontFamily="{Binding SelectedFont}" FontSize="{Binding SelectedFontSize}" IsReadOnly="True"
                                HorizontalAlignment="Center" VerticalAlignment="Center">

@@ -54,7 +54,7 @@ namespace ICSharpCode.ILSpy.Search
 		}
 
         internal SearchBox searchBox;
-        internal DropDown searchModeComboBox;
+        internal ComboBox searchModeComboBox;
         internal ListBox listBox;
 
         private SearchPane()
@@ -83,7 +83,7 @@ namespace ICSharpCode.ILSpy.Search
         {
             AvaloniaXamlLoader.Load(this);
             searchBox = this.FindControl<SearchBox>("searchBox");
-            searchModeComboBox = this.FindControl<DropDown>("searchModeComboBox");
+            searchModeComboBox = this.FindControl<ComboBox>("searchModeComboBox");
             listBox = this.FindControl<ListBox>("listBox");
 
             searchBox.KeyDown += SearchBox_PreviewKeyDown;

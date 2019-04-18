@@ -22,16 +22,16 @@
 						WatermarkColor="Gray" Watermark="Search for t:TypeName, m:Member or c:Constant; use exact match (=term), 'should not contain' (-term) or 'must contain' (+term); use /reg(ular)?Ex(pressions)?/ or both - t:/Type(Name)?/..." />
 				<StackPanel Grid.Column="1" Grid.Row="0" Orientation="Horizontal">
 					<TextBlock VerticalAlignment="Center">Search for:</TextBlock>
-					<DropDown Width="150" Name="searchModeComboBox" Margin="1">
-						<DropDown.ItemTemplate>
+					<ComboBox Width="150" Name="searchModeComboBox" Margin="1">
+						<ComboBox.ItemTemplate>
 							<DataTemplate>
 								<StackPanel Orientation="Horizontal">
 									<Image Height="16" Margin="0,0,4,0" Width="16" Source="{Binding Image}" />
 									<TextBlock Text="{Binding Name}" />
 								</StackPanel>
 							</DataTemplate>
-						</DropDown.ItemTemplate>
-					</DropDown>
+						</ComboBox.ItemTemplate>
+					</ComboBox>
 				</StackPanel>
 			</Grid>
 		</Border>

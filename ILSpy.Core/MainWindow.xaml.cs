@@ -78,8 +78,8 @@ namespace ICSharpCode.ILSpy
 
         internal Menu mainMenu;
         internal ItemsControl toolBar;
-        internal DropDown languageComboBox;
-        internal DropDown languageVersionComboBox;
+        internal ComboBox languageComboBox;
+        internal ComboBox languageVersionComboBox;
         internal IControl statusBar;
         internal TextBlock StatusLabel;
         internal Grid mainGrid;
@@ -145,8 +145,8 @@ namespace ICSharpCode.ILSpy
             AvaloniaXamlLoader.Load(this);
             mainMenu = this.FindControl<Menu>("mainMenu");
             toolBar = this.FindControl<ItemsControl>("toolBar");
-            languageComboBox = this.FindControl<DropDown>("languageComboBox");
-            languageVersionComboBox = this.FindControl<DropDown>("languageVersionComboBox");
+            languageComboBox = this.FindControl<ComboBox>("languageComboBox");
+            languageVersionComboBox = this.FindControl<ComboBox>("languageVersionComboBox");
             statusBar = this.FindControl<Border>("statusBar");
             StatusLabel = this.FindControl<TextBlock>("StatusLabel");
             mainGrid = this.FindControl<Grid>("mainGrid");
@@ -196,7 +196,7 @@ namespace ICSharpCode.ILSpy
                 themeNames.Add("Light");
             }
 
-            var themesDropDown = this.Find<DropDown>("Themes");
+            var themesDropDown = this.Find<ComboBox>("Themes");
             themesDropDown.Items = themeNames;
             themesDropDown.SelectionChanged += (sender, e) =>
             {

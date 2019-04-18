@@ -36,7 +36,7 @@ namespace ICSharpCode.ILSpy.Options
     [ExportOptionPage(Title = "Display", Order = 1)]
 	public partial class DisplaySettingsPanel : UserControl, IOptionPage
 	{
-		internal DropDown fontSelector;
+		internal ComboBox fontSelector;
 
 		public DisplaySettingsPanel()
 		{
@@ -65,7 +65,7 @@ namespace ICSharpCode.ILSpy.Options
 		private void InitializeComponent()
 		{
 			AvaloniaXamlLoader.Load(this);
-			fontSelector = this.FindControl<DropDown>("fontSelector");
+			fontSelector = this.FindControl<ComboBox>("fontSelector");
             var textEditor = this.FindControl<TextEditor>("textEditor");
 
             textEditor.Document = new TextDocument("AaBbCcXxYyZz".ToCharArray());
