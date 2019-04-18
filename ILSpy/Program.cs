@@ -15,15 +15,15 @@ namespace ICSharpCode.ILSpy
         
         static void Main(string[] args)
         {
-            Directory.SetCurrentDirectory(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location));
-
             try
             {
                 BuildAvaloniaApp().Start<MainWindow>();
             }
             catch (Exception exception)
             {
-			    MessageBox.Show(exception.ToString(), "Sorry, we crashed");
+                Console.WriteLine("Sorry, we crashed");
+                Console.WriteLine(exception.ToString());
+                //MessageBox.Show(exception.ToString(), "Sorry, we crashed");
             }
         }
 
