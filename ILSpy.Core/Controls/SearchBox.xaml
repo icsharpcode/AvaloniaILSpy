@@ -30,7 +30,7 @@
                                          Opacity="0.5"
             							               Foreground="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=WatermarkColor}"
             							               Text="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Watermark}"
-                                         IsVisible="{TemplateBinding Text, Converter={x:Static StringConverters.NullOrEmpty}}"
+                                         IsVisible="{TemplateBinding Text, Converter={x:Static StringConverters.IsNullOrEmpty}}"
                                          FontStyle="Italic" />
                               <TextPresenter Name="PART_TextPresenter"
                                              Text="{TemplateBinding Text, Mode=TwoWay}"
