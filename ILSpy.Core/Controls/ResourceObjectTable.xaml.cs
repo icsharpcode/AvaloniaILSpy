@@ -35,7 +35,7 @@ namespace ICSharpCode.ILSpy.Controls
 	/// </summary>
 	public partial class ResourceObjectTable : UserControl, IRoutedCommandBindable
     {
-		internal ListBox resourceListView;
+		internal DataGrid resourceListView;
 
         public IList<RoutedCommandBinding> CommandBindings { get; } = new List<RoutedCommandBinding>();
 
@@ -48,7 +48,7 @@ namespace ICSharpCode.ILSpy.Controls
 		private void InitializeComponent()
 		{
 			AvaloniaXamlLoader.Load(this);
-			resourceListView = this.FindControl<ListBox>("resourceListView");
+			resourceListView = this.FindControl<DataGrid>("resourceListView");
             CommandBindings.Add(new RoutedCommandBinding(global::AvaloniaEdit.ApplicationCommands.Copy, ExecuteCopy, CanExecuteCopy));
         }
 

@@ -3,20 +3,6 @@
 			 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              x:Class="ICSharpCode.ILSpy.Controls.ResourceObjectTable">
 	<Grid Margin="5,0,0,0">
-        <!--
-		<Grid.Resources>
-			<AlternationConverter x:Key="BackgroundConverter">
-				<SolidColorBrush Color="White"></SolidColorBrush>
-				<SolidColorBrush Color="Beige"></SolidColorBrush>
-			</AlternationConverter>
-			<Style Selector="ListBoxItem.alternatingWithBinding">
-				<Setter Property="Background"
-						Value="{Binding RelativeSource={RelativeSource Self},
-					 Path=(ItemsControl.AlternationIndex),
-					 Converter={StaticResource BackgroundConverter}}" />
-			</Style>
-		</Grid.Resources>
-        -->
 		<Grid.RowDefinitions>
 			<RowDefinition Height="30"/>
 			<RowDefinition />
@@ -25,25 +11,18 @@
 			   FontFamily="Segoe UI"
 			   FontWeight="Bold"
 			   FontSize="12" />
-		<ListBox Name="resourceListView"
-				  FontFamily="Segoe UI"
-				  FontSize="9"
-				  Grid.Row="1">
-
-			<ListBox.ItemTemplate>
-				<DataTemplate>
-					<Grid>
-						<Grid.ColumnDefinitions>
-							<ColumnDefinition Width="*" />
-							<ColumnDefinition Width="*" />
-							<ColumnDefinition Width="*" />
-						</Grid.ColumnDefinitions>
-						<TextBlock Text="{Binding Key}" Grid.Column="0"/>
-						<TextBlock Text="{Binding Value}" Grid.Column="1"/>
-						<TextBlock Text="{Binding Type}" Grid.Column="2"/>
-					</Grid>
-				</DataTemplate>
-			</ListBox.ItemTemplate>
-		</ListBox>
+        <DataGrid Name="resourceListView"
+                  FontFamily="Segoe UI"
+                  FontSize="9"
+                  Grid.Row="1"
+                  RowBackground="White"
+                  AlternatingRowBackground="Beige"
+                  CanUserResizeColumns="True">
+          <DataGrid.Columns>
+            <DataGridTextColumn Header="Key" Binding="{Binding Key}" Width="*" />
+            <DataGridTextColumn Header="Value" Binding="{Binding Value}" Width="*" />
+            <DataGridTextColumn Header="Type" Binding="{Binding Type}" Width="*" />
+          </DataGrid.Columns>
+        </DataGrid>
 	</Grid>
 </UserControl>

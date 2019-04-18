@@ -5,6 +5,7 @@
 		<StyleInclude Source="avares://Avalonia.Themes.Default/DefaultTheme.xaml"/>
 		<StyleInclude Source="avares://Avalonia.Themes.Default/Accents/BaseLight.xaml"/>
 		<StyleInclude Source="resm:AvaloniaEdit.AvaloniaEdit.xaml?assembly=AvaloniaEdit" />
+        <StyleInclude Source="resm:Avalonia.Controls.DataGrid.Themes.Default.xaml?assembly=Avalonia.Controls.DataGrid"/>
 		<StyleInclude Source="avares://SharpTreeView/Themes/TreeView.xaml" />
         <StyleInclude Source="/Controls/DockedPane.xaml" />
         <StyleInclude Source="/Controls/SearchBox.xaml" />

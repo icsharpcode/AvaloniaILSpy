@@ -35,6 +35,7 @@
     <PackageReference Include="NuGet.Client" Version="4.2.0" />
     <PackageReference Include="Microsoft.DiaSymReader" Version="1.3.0" />
     <PackageReference Include="Avalonia" Version="0.8.0" />
+    <PackageReference Include="Avalonia.Controls.DataGrid" Version="0.8.0" />
   </ItemGroup>
 
   <ItemGroup>

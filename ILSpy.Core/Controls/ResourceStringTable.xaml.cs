@@ -28,6 +28,7 @@ using Avalonia.Controls.Presenters;
 using System.Collections.Generic;
 using Avalonia.Layout;
 using Avalonia.LogicalTree;
+using Avalonia.VisualTree;
 
 namespace ICSharpCode.ILSpy.Controls
 {
@@ -36,7 +37,7 @@ namespace ICSharpCode.ILSpy.Controls
 	/// </summary>
 	public partial class ResourceStringTable : UserControl, IRoutedCommandBindable
     {
-		internal ListBox resourceListView;
+		internal DataGrid resourceListView;
 
         public IList<RoutedCommandBinding> CommandBindings { get; } = new List<RoutedCommandBinding>();
 
@@ -49,7 +50,7 @@ namespace ICSharpCode.ILSpy.Controls
 		private void InitializeComponent()
 		{
 			AvaloniaXamlLoader.Load(this);
-			resourceListView = this.FindControl<ListBox>("resourceListView");
+			resourceListView = this.FindControl<DataGrid>("resourceListView");
             CommandBindings.Add(new RoutedCommandBinding(global::AvaloniaEdit.ApplicationCommands.Copy, ExecuteCopy, CanExecuteCopy));
 		}
 
@@ -60,8 +61,8 @@ namespace ICSharpCode.ILSpy.Controls
             Width = size.Width - 45;
             MaxHeight = size.Height;
         }
-		
-		void ExecuteCopy(object sender, ExecutedRoutedEventArgs args)
+
+        void ExecuteCopy(object sender, ExecutedRoutedEventArgs args)
 		{
 			StringBuilder sb = new StringBuilder();
 			foreach (var item in resourceListView.SelectedItems)
