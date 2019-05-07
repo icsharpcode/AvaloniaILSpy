@@ -15,6 +15,8 @@ namespace ICSharpCode.ILSpy
         
         static void Main(string[] args)
         {
+            Directory.SetCurrentDirectory(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location));
+
             try
             {
                 BuildAvaloniaApp().Start<MainWindow>();
