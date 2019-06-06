@@ -1024,7 +1024,8 @@ namespace ICSharpCode.ILSpy
 		async void LoadAssemblies(IEnumerable<string> fileNames, List<LoadedAssembly> loadedAssemblies = null, bool focusNode = true)
 		{
 			SharpTreeNode lastNode = null;
-			foreach (string file in fileNames) {
+			foreach (string name in fileNames) {
+                string file = Uri.UnescapeDataString(name);
 				switch (Path.GetExtension(file)) {
 					case ".nupkg":
 						LoadedNugetPackage package = new LoadedNugetPackage(file);
