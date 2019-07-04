@@ -24,6 +24,13 @@ namespace ICSharpCode.ILSpy.Controls
         {
             if (args is RawKeyEventArgs rawKeyEventArgs)
             {
+                // cmd + back = delete
+                if (rawKeyEventArgs.Modifiers.HasFlag(InputModifiers.Windows) && rawKeyEventArgs.Key == Key.Back)
+                {
+                    rawKeyEventArgs.Modifiers = InputModifiers.None;
+                    rawKeyEventArgs.Key = Key.Delete;
+                }
+
                 // swap cmd and ctrl
                 var modifier = rawKeyEventArgs.Modifiers & ~InputModifiers.Control & ~InputModifiers.Windows;
                 if (rawKeyEventArgs.Modifiers.HasFlag(InputModifiers.Windows))

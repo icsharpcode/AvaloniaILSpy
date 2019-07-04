@@ -218,6 +218,20 @@ namespace ICSharpCode.ILSpy
             CommandBindings.Add(new RoutedCommandBinding(NavigationCommands.Search, SearchCommandExecuted));
 
             TemplateApplied += MainWindow_Loaded;
+            KeyDown += MainWindow_KeyDown;
+        }
+
+        private void MainWindow_KeyDown(object sender, KeyEventArgs e)
+        {
+            foreach (var commandBinding in CommandBindings)
+            {
+                if (commandBinding.Command.Gesture?.Matches(e) == true)
+                {
+                    commandBinding.Command.Execute(null, this);
+                    e.Handled = true;
+                    break;
+                }
+            }
         }
 
         private void ApplyTheme()

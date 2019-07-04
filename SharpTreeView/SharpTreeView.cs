@@ -20,8 +20,8 @@ using AvaloniaEdit;
 
 namespace ICSharpCode.TreeView
 {
-	public class SharpTreeView : ListBox, IStyleable
-	{
+	public class SharpTreeView : ListBox, IStyleable, IRoutedCommandBindable
+    {
 		static SharpTreeView()
 		{
 			(SelectionModeProperty as StyledProperty<SelectionMode>)?.OverrideDefaultValue<SharpTreeView>(SelectionMode.Multiple);
@@ -31,8 +31,6 @@ namespace ICSharpCode.TreeView
 			//                                          new FrameworkPropertyMetadata(2));
 
 			//VirtualizationModeProperty.OverrideDefaultValue<SharpTreeView>(ItemVirtualizationMode.Recycling);
-			
-			RegisterCommands();
 
 			DragDrop.DragEnterEvent.AddClassHandler<SharpTreeView>(x => x.OnDragEnter);
 			DragDrop.DragOverEvent.AddClassHandler<SharpTreeView>(x => x.OnDragOver);
@@ -42,7 +40,8 @@ namespace ICSharpCode.TreeView
 		public SharpTreeView()
 		{
 			SelectionChanged += OnSelectionChanged;
-		}
+            RegisterCommands();
+        }
 
 		public static readonly StyledProperty<SharpTreeNode> RootProperty =
 			AvaloniaProperty.Register<SharpTreeView, SharpTreeNode>(nameof(Root));
@@ -340,7 +339,18 @@ namespace ICSharpCode.TreeView
 					}
 					break;
 			}
-			if (!e.Handled)
+
+            foreach (var commandBinding in CommandBindings)
+            {
+                if (commandBinding.Command.Gesture?.Matches(e) == true)
+                {
+                    commandBinding.Command.Execute(null, this);
+                    e.Handled = true;
+                    break;
+                }
+            }
+
+            if (!e.Handled)
 				base.OnKeyDown(e);
 		}
 
@@ -668,26 +678,21 @@ namespace ICSharpCode.TreeView
 				previewNodeView = null;
 			}
 		}
-		#endregion
-		
-		#region Cut / Copy / Paste / Delete Commands
+        #endregion
 
-		static void RegisterCommands()
-		{
-			//CommandManager.RegisterClassCommandBinding(typeof(SharpTreeView),
-			//                                           new CommandBinding(ApplicationCommands.Cut, HandleExecuted_Cut, HandleCanExecute_Cut));
+        #region Cut / Copy / Paste / Delete Commands
 
-			//CommandManager.RegisterClassCommandBinding(typeof(SharpTreeView),
-			//                                           new CommandBinding(ApplicationCommands.Copy, HandleExecuted_Copy, HandleCanExecute_Copy));
+        public IList<RoutedCommandBinding> CommandBindings { get; } = new List<RoutedCommandBinding>();
 
-			//CommandManager.RegisterClassCommandBinding(typeof(SharpTreeView),
-			//                                           new CommandBinding(ApplicationCommands.Paste, HandleExecuted_Paste, HandleCanExecute_Paste));
+        void RegisterCommands()
+        {
+            CommandBindings.Add(new RoutedCommandBinding(ApplicationCommands.Cut, HandleExecuted_Cut, HandleCanExecute_Cut));
+            CommandBindings.Add(new RoutedCommandBinding(ApplicationCommands.Copy, HandleExecuted_Copy, HandleCanExecute_Copy));
+            CommandBindings.Add(new RoutedCommandBinding(ApplicationCommands.Paste, HandleExecuted_Paste, HandleCanExecute_Paste));
+            CommandBindings.Add(new RoutedCommandBinding(ApplicationCommands.Delete, HandleExecuted_Delete, HandleCanExecute_Delete));
+        }
 
-			//CommandManager.RegisterClassCommandBinding(typeof(SharpTreeView),
-			                                           //new CommandBinding(ApplicationCommands.Delete, HandleExecuted_Delete, HandleCanExecute_Delete));
-		}
-
-		static void HandleExecuted_Cut(object sender, ExecutedRoutedEventArgs e)
+        static void HandleExecuted_Cut(object sender, ExecutedRoutedEventArgs e)
 		{
 			
 		}
