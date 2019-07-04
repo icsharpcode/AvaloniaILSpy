@@ -1,14 +1,24 @@
 ﻿<UserControl 
 	xmlns="https://github.com/avaloniaui"
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:properties="clr-namespace:ICSharpCode.ILSpy.Properties"
     x:Class="ICSharpCode.ILSpy.Options.DecompilerSettingsPanel">
-	<StackPanel Margin="10">
-		<CheckBox IsChecked="{Binding UseDebugSymbols}">Use variable names from debug symbols, if available</CheckBox>
-		<CheckBox IsChecked="{Binding ShowDebugInfo}">Show info from debug symbols, if available</CheckBox>
-		<CheckBox IsChecked="{Binding ShowXmlDocumentation}">Show XML documentation in decompiled code</CheckBox>
-		<CheckBox IsChecked="{Binding RemoveDeadCode}">Remove dead and side effect free code</CheckBox>
-		<CheckBox IsChecked="{Binding UsingDeclarations}">Insert using declarations</CheckBox>
-		<CheckBox IsChecked="{Binding AlwaysUseBraces}">Always use braces</CheckBox>
-        <CheckBox IsChecked="{Binding ApplyWindowsRuntimeProjections}">Apply Windows Runtime projections on loaded assemblies</CheckBox>
-	</StackPanel>
+    
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <TextBlock Margin="3" TextWrapping="Wrap" Text="{x:Static properties:Resources.DecompilerSettingsPanelLongText}" />
+        <DataGrid Grid.Row="1" Margin="1" 
+                  HeadersVisibility="None"
+                  RowBackground="{DynamicResource ThemeBackgroundBrush}"
+                  AlternatingRowBackground="{DynamicResource ThemeBackgroundBrush}"
+                  Items="{Binding AsCollectionView}" >
+              <DataGrid.Columns>
+                <DataGridCheckBoxColumn Binding="{Binding IsEnabled}" IsReadOnly="false" Width="20" />
+                <DataGridTextColumn Binding="{Binding Description}" IsReadOnly="true" Width="*" />
+              </DataGrid.Columns>
+        </DataGrid>
+    </Grid>
 </UserControl>

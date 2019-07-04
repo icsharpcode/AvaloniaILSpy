@@ -23,59 +23,60 @@ using Avalonia.Controls;
 using Avalonia.Media.Imaging;
 using ICSharpCode.ILSpy.TextView;
 using Mono.Cecil;
+using ICSharpCode.ILSpy.Properties;
 
 //TODO: support .ico bitmap frames
 namespace ICSharpCode.ILSpy.TreeNodes
 {
-	//[Export(typeof(IResourceNodeFactory))]
-	//sealed class IconResourceNodeFactory : IResourceNodeFactory
-	//{
-	//	public ILSpyTreeNode CreateNode(Resource resource)
-	//	{
-	//		EmbeddedResource er = resource as EmbeddedResource;
-	//		if (er != null) {
-	//			return CreateNode(er.Name, er.GetResourceStream());
-	//		}
-	//		return null;
-	//	}
+    //[Export(typeof(IResourceNodeFactory))]
+    //sealed class IconResourceNodeFactory : IResourceNodeFactory
+    //{
+    //	public ILSpyTreeNode CreateNode(Resource resource)
+    //	{
+    //		EmbeddedResource er = resource as EmbeddedResource;
+    //		if (er != null) {
+    //			return CreateNode(er.Name, er.GetResourceStream());
+    //		}
+    //		return null;
+    //	}
 
-	//	public ILSpyTreeNode CreateNode(string key, object data)
-	//	{
-	//		if (data is System.Drawing.Icon) {
-	//			MemoryStream s = new MemoryStream();
-	//			((System.Drawing.Icon)data).Save(s);
-	//			return new IconResourceEntryNode(key, s);
-	//		}
-	//		if (data is Stream && key.EndsWith(".ico", StringComparison.OrdinalIgnoreCase))
-	//			return new IconResourceEntryNode(key, (Stream)data);
-	//		return null;
-	//	}
-	//}
+    //	public ILSpyTreeNode CreateNode(string key, object data)
+    //	{
+    //		if (data is System.Drawing.Icon) {
+    //			MemoryStream s = new MemoryStream();
+    //			((System.Drawing.Icon)data).Save(s);
+    //			return new IconResourceEntryNode(key, s);
+    //		}
+    //		if (data is Stream && key.EndsWith(".ico", StringComparison.OrdinalIgnoreCase))
+    //			return new IconResourceEntryNode(key, (Stream)data);
+    //		return null;
+    //	}
+    //}
 
-	//sealed class IconResourceEntryNode : ResourceEntryNode
-	//{
-	//	public IconResourceEntryNode(string key, Stream data)
-	//		: base(key, data)
-	//	{
-	//	}
+    //sealed class IconResourceEntryNode : ResourceEntryNode
+    //{
+    //	public IconResourceEntryNode(string key, Stream data)
+    //		: base(key, data)
+    //	{
+    //	}
 
-	//	public override object Icon
-	//	{
-	//		get { return Images.ResourceImage; }
-	//	}
+    //	public override object Icon
+    //	{
+    //		get { return Images.ResourceImage; }
+    //	}
 
-	//	public override bool View(DecompilerTextView textView)
-	//	{
-	//		try {
-	//			AvaloniaEditTextOutput output = new AvaloniaEditTextOutput();
-	//			Data.Position = 0;
-	//			IconBitmapDecoder decoder = new IconBitmapDecoder(Data, BitmapCreateOptions.PreservePixelFormat, BitmapCacheOption.None);
-	//			foreach (var frame in decoder.Frames) {
-	//				output.Write(String.Format("{0}x{1}, {2} bit: ", frame.PixelHeight, frame.PixelWidth, frame.Thumbnail.Format.BitsPerPixel));
-	//				AddIcon(output, frame);
-	//				output.WriteLine();
-	//			}
-	//			output.AddButton(Images.Save, "Save", delegate {
+    //	public override bool View(DecompilerTextView textView)
+    //	{
+    //		try {
+    //			AvaloniaEditTextOutput output = new AvaloniaEditTextOutput();
+    //			Data.Position = 0;
+    //			IconBitmapDecoder decoder = new IconBitmapDecoder(Data, BitmapCreateOptions.PreservePixelFormat, BitmapCacheOption.None);
+    //			foreach (var frame in decoder.Frames) {
+    //				output.Write(String.Format("{0}x{1}, {2} bit: ", frame.PixelHeight, frame.PixelWidth, frame.Thumbnail.Format.BitsPerPixel));
+    //				AddIcon(output, frame);
+    //				output.WriteLine();
+    //			}
+    //          output.AddButton(Images.Save, Resources.Save, delegate {
 	//				Save(null);
 	//			});
 	//			textView.ShowNode(output, this);

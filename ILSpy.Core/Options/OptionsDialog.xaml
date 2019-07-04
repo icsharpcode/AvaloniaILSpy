@@ -1,10 +1,11 @@
 ﻿<Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:properties="clr-namespace:ICSharpCode.ILSpy.Properties"
+        x:Class="ICSharpCode.ILSpy.Options.OptionsDialog"
         Classes="DialogWindow"
 		CanResize="True"
         WindowStartupLocation="CenterOwner"
-        Title="Options" Height="400" Width="500"
-        x:Class="ICSharpCode.ILSpy.Options.OptionsDialog">
+        Title="{x:Static properties:Resources.Options}" Height="500" Width="600">
 	<Grid>
 		<Grid.RowDefinitions>
 			<RowDefinition
@@ -14,8 +15,8 @@
 		</Grid.RowDefinitions>
 		<TabControl Name="tabControl" />
 		<StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right" Margin="12,8">
-			<Button Margin="2,0" Name="okButton">OK</Button>
-			<Button Margin="2,0" Name="cancelButton">Cancel</Button>
+			<Button Margin="2,0" Name="okButton"  Content="{x:Static properties:Resources.OK}" />
+			<Button Margin="2,0" Name="cancelButton"  Content="{x:Static properties:Resources.Cancel}" />
 		</StackPanel>
 	</Grid>
 </Window>

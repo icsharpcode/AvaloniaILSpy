@@ -26,6 +26,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection.Metadata;
 using System.Runtime.InteropServices;
+using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Xml;
@@ -308,13 +309,13 @@ namespace ICSharpCode.ILSpy
 			int openPos = 1;
 			var toolbarCommands = App.ExportProvider.GetExports<ICommand, IToolbarCommandMetadata>("ToolbarCommand");
             var toolbarItems = toolBar.Items as IList<object> ?? new List<object>();
-            foreach (var commandGroup in toolbarCommands.OrderBy(c => c.Metadata.ToolbarOrder).GroupBy(c => c.Metadata.ToolbarCategory)) {
-				if (commandGroup.Key == "Navigation") {
+			foreach (var commandGroup in toolbarCommands.OrderBy(c => c.Metadata.ToolbarOrder).GroupBy(c => Properties.Resources.ResourceManager.GetString(c.Metadata.ToolbarCategory))) {
+				if (commandGroup.Key == Properties.Resources.ResourceManager.GetString("Navigation")) {
 					foreach (var command in commandGroup) {
                         toolbarItems.Insert(navigationPos++, MakeToolbarItem(command));
                         openPos++;
 					}
-				} else if (commandGroup.Key == "Open") {
+				} else if (commandGroup.Key == Properties.Resources.ResourceManager.GetString("Open")) {
 					foreach (var command in commandGroup) {
                         toolbarItems.Insert(openPos++, MakeToolbarItem(command));
                     }
@@ -340,7 +341,7 @@ namespace ICSharpCode.ILSpy
 					Source = Images.LoadImage(command.Value, command.Metadata.ToolbarIcon)
 				}
 			};
-            ToolTip.SetTip(toolbarButton, command.Metadata.ToolTip);
+            ToolTip.SetTip(toolbarButton, Properties.Resources.ResourceManager.GetString(command.Metadata.ToolTip));
             return toolbarButton;
         }
 		#endregion
@@ -351,13 +352,13 @@ namespace ICSharpCode.ILSpy
 		{
 			var mainMenuCommands = App.ExportProvider.GetExports<ICommand, IMainMenuCommandMetadata>("MainMenuCommand");
             var mainMenuItems = mainMenu.Items as IList<object> ?? new List<object>();
-            foreach (var topLevelMenu in mainMenuCommands.OrderBy(c => c.Metadata.MenuOrder).GroupBy(c => c.Metadata.Menu)) {
-                MenuItem topLevelMenuItem = mainMenu.Items.OfType<MenuItem>().FirstOrDefault(m => (m.Header as string) == topLevelMenu.Key);
+            foreach (var topLevelMenu in mainMenuCommands.OrderBy(c => c.Metadata.MenuOrder).GroupBy(c => GetResourceString(c.Metadata.Menu))) {
+                MenuItem topLevelMenuItem = mainMenu.Items.OfType<MenuItem>().FirstOrDefault(m => (GetResourceString(m.Header as string)) == topLevelMenu.Key);
                 var topLevelMenuItems = topLevelMenuItem?.Items as IList<object> ?? new List<object>();
-                foreach (var category in topLevelMenu.GroupBy(c => c.Metadata.MenuCategory)) {
+                foreach (var category in topLevelMenu.GroupBy(c => GetResourceString(c.Metadata.MenuCategory))) {
 					if (topLevelMenuItem == null) {
 						topLevelMenuItem = new MenuItem();
-						topLevelMenuItem.Header = topLevelMenu.Key;
+                        topLevelMenuItem.Header = GetResourceString(topLevelMenu.Key);
                         mainMenuItems.Add(topLevelMenuItem);
                     } else if (topLevelMenuItems.Count > 0) {
                         topLevelMenuItems.Add(new Separator());
@@ -365,9 +366,9 @@ namespace ICSharpCode.ILSpy
 					foreach (var entry in category) {
 						MenuItem menuItem = new MenuItem();
 						menuItem.Command = CommandWrapper.Unwrap(entry.Value);
-						if (!string.IsNullOrEmpty(entry.Metadata.Header))
-							menuItem.Header = entry.Metadata.Header;
-						if (!string.IsNullOrEmpty(entry.Metadata.MenuIcon)) {
+                        if (!string.IsNullOrEmpty(GetResourceString(entry.Metadata.Header)))
+                            menuItem.Header = GetResourceString(entry.Metadata.Header);
+                        if (!string.IsNullOrEmpty(entry.Metadata.MenuIcon)) {
 							menuItem.Icon = new Image {
 								Width = 16,
 								Height = 16,
@@ -383,6 +384,13 @@ namespace ICSharpCode.ILSpy
             }
             mainMenu.Items = mainMenuItems;
         }
+
+		internal static string GetResourceString(string key)
+		{
+			var str = !string.IsNullOrEmpty(key)? Properties.Resources.ResourceManager.GetString(key):null;
+			return string.IsNullOrEmpty(key)||  string.IsNullOrEmpty(str) ? key :  str;
+		}
+
         #endregion
 
         #region Message Hook
@@ -453,24 +461,25 @@ namespace ICSharpCode.ILSpy
 				LoadAssemblies(nugetPackagesToLoad, commandLineLoadedAssemblies, focusNode: false);
 				nugetPackagesToLoad.Clear();
 			}
-            NavigateOnLaunch(args.NavigateTo, sessionSettings.ActiveTreeViewPath, spySettings);
+            var relevantAssemblies = commandLineLoadedAssemblies.ToList();
+            commandLineLoadedAssemblies.Clear(); // clear references once we don't need them anymore
+            NavigateOnLaunch(args.NavigateTo, sessionSettings.ActiveTreeViewPath, spySettings, relevantAssemblies);
             if (args.Search != null)
             {
                 SearchPane.Instance.SearchTerm = args.Search;
                 SearchPane.Instance.Show();
             }
-            commandLineLoadedAssemblies.Clear(); // clear references once we don't need them anymore
         }
 
-        async void NavigateOnLaunch(string navigateTo, string[] activeTreeViewPath, ILSpySettings spySettings)
+        async void NavigateOnLaunch(string navigateTo, string[] activeTreeViewPath, ILSpySettings spySettings, List<LoadedAssembly> relevantAssemblies)
         {
             var initialSelection = treeView.SelectedItem;
             if (navigateTo != null) {
                 bool found = false;
                 if (navigateTo.StartsWith("N:", StringComparison.Ordinal)) {
                     string namespaceName = navigateTo.Substring(2);
-					foreach (LoadedAssembly asm in commandLineLoadedAssemblies) {
-						AssemblyTreeNode asmNode = assemblyListTreeNode.FindAssemblyNode(asm);
+                    foreach (LoadedAssembly asm in relevantAssemblies) {
+                        AssemblyTreeNode asmNode = assemblyListTreeNode.FindAssemblyNode(asm);
 						if (asmNode != null) {
                             // FindNamespaceNode() blocks the UI if the assembly is not yet loaded,
                             // so use an async wait instead.
@@ -486,7 +495,7 @@ namespace ICSharpCode.ILSpy
 						}
 					}
 				} else {
-                    IEntity mr = await Task.Run(() => FindEntityInCommandLineLoadedAssemblies(navigateTo));
+                    IEntity mr = await Task.Run(() => FindEntityInRelevantAssemblies(navigateTo, relevantAssemblies));
                     if (mr != null && mr.ParentModule.PEFile != null) {
                         found = true;
                         if (treeView.SelectedItem == initialSelection) {
@@ -531,7 +540,7 @@ namespace ICSharpCode.ILSpy
             }
         }
 
-        private IEntity FindEntityInCommandLineLoadedAssemblies(string navigateTo)
+        private IEntity FindEntityInRelevantAssemblies(string navigateTo, IEnumerable<LoadedAssembly> relevantAssemblies)
         {
             ITypeReference typeRef = null;
             IMemberReference memberRef = null;
@@ -542,7 +551,7 @@ namespace ICSharpCode.ILSpy
                 memberRef = IdStringProvider.ParseMemberIdString(navigateTo);
                 typeRef = memberRef.DeclaringTypeReference;
             }
-            foreach (LoadedAssembly asm in commandLineLoadedAssemblies) {
+			foreach (LoadedAssembly asm in relevantAssemblies.ToList()) {
                 var module = asm.GetPEFileOrNull();
                 if (CanResolveTypeInPEFile(module, typeRef, out var typeHandle)) {
                     ICompilation compilation = typeHandle.Kind == HandleKind.ExportedType
@@ -628,24 +637,35 @@ namespace ICSharpCode.ILSpy
 		}
 		
 		bool FormatExceptions(App.ExceptionData[] exceptions, ITextOutput output)
-		{
-			if (exceptions.Length == 0) return false;
+        {
+            var stringBuilder = new StringBuilder();
+            var result = FormatExceptions(exceptions, stringBuilder);
+            if (result)
+            {
+                output.Write(stringBuilder.ToString());
+            }
+            return result;
+        }
+
+        internal static bool FormatExceptions(App.ExceptionData[] exceptions, StringBuilder output)
+        {
+            if (exceptions.Length == 0) return false;
 			bool first = true;
 			
 			foreach (var item in exceptions) {
 				if (first)
 					first = false;
 				else
-					output.WriteLine("-------------------------------------------------");
-				output.WriteLine("Error(s) loading plugin: " + item.PluginName);
+					output.AppendLine("-------------------------------------------------");
+				output.AppendLine("Error(s) loading plugin: " + item.PluginName);
 				if (item.Exception is System.Reflection.ReflectionTypeLoadException) {
 					var e = (System.Reflection.ReflectionTypeLoadException)item.Exception;
 					foreach (var ex in e.LoaderExceptions) {
-						output.WriteLine(ex.ToString());
-						output.WriteLine();
+						output.AppendLine(ex.ToString());
+						output.AppendLine();
 					}
 				} else
-					output.WriteLine(item.Exception.ToString());
+					output.AppendLine(item.Exception.ToString());
 			}
 			
 			return true;
@@ -686,13 +706,14 @@ namespace ICSharpCode.ILSpy
 			updateAvailableDownloadUrl = task.Result;
             updatePanel.IsVisible = displayMessage ? true : false;
 			if (task.Result != null) {
-				updatePanelMessage.Text = "A new ILSpy version is available.";
-				downloadOrCheckUpdateButton.Content = "Download";
-			} else {
-				updatePanelMessage.Text = "No update for ILSpy found.";
-				downloadOrCheckUpdateButton.Content = "Check again";
-			}
-		}
+                updatePanelMessage.Text = Properties.Resources.ILSpyVersionAvailable;
+                downloadOrCheckUpdateButton.Content = Properties.Resources.Download;
+            }
+            else {
+                updatePanelMessage.Text = Properties.Resources.UpdateILSpyFound;
+                downloadOrCheckUpdateButton.Content = Properties.Resources.CheckAgain;
+            }
+        }
 		#endregion
 		
 		public void ShowAssemblyList(string name)

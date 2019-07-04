@@ -1,6 +1,7 @@
 ﻿<Window xmlns="https://github.com/avaloniaui" 
 		xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
 		xmlns:controls="clr-namespace:ICSharpCode.TreeView"
+        xmlns:properties="clr-namespace:ICSharpCode.ILSpy.Properties"
 		Title="Open List"
 		Classes="DialogWindow"
 		WindowStartupLocation="CenterOwner"
@@ -17,7 +18,7 @@
 			<RowDefinition Height="Auto" />
 		</Grid.RowDefinitions>
 		<StackPanel>
-			<TextBlock Margin="5">Select a list:</TextBlock>
+			<TextBlock Margin="5" Text="{x:Static properties:Resources.SelectList}" />
 		</StackPanel>
 
 		<ListBox Name="listView" Grid.Row="1" Margin="0, 8" 
@@ -30,14 +31,14 @@
 		</ListBox>
 		<DockPanel Grid.Row="2">
 			<StackPanel DockPanel.Dock="Right"  Orientation="Horizontal" HorizontalAlignment="Right">
-				<Button IsDefault="True" Margin="2,0" IsEnabled="False" Name="okButton" >Open</Button>
-				<Button Margin="2,0" Name="cancelButton">Cancel</Button>
+				<Button IsDefault="True" Margin="2,0" IsEnabled="False" Name="okButton" Content="{x:Static properties:Resources.OpenListDialog__Open}" />
+				<Button Margin="2,0" Name="cancelButton" Content="{x:Static properties:Resources.Cancel}" />
 			</StackPanel>
 
 			<StackPanel DockPanel.Dock="Left" Orientation="Horizontal" HorizontalAlignment="Left">
-				<Button Margin="2,0"  Name="createButton">Create</Button>
-				<Button Margin="2,0" IsEnabled="False" Name="deleteButton" >Delete</Button>
-				<Button Margin="2,0"  Name="resetButton">Reset</Button>
+				<Button Margin="2,0"  Name="createButton" Content="{x:Static properties:Resources._Create}" />
+				<Button Margin="2,0" IsEnabled="False" Name="deleteButton" Content="{x:Static properties:Resources.OpenListDialog__Delete}" />
+				<Button Margin="2,0"  Name="resetButton" Content="{x:Static properties:Resources._Reset}" />
 			</StackPanel>
 		</DockPanel>
 	</Grid>

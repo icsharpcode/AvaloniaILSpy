@@ -35,12 +35,12 @@ using AvaloniaEdit.Rendering;
 using ICSharpCode.Decompiler;
 using ICSharpCode.ILSpy.TextView;
 using Avalonia.Layout;
-using System.Windows.Input;
+using ICSharpCode.ILSpy.Properties;
 
 namespace ICSharpCode.ILSpy
 {
-	[ExportMainMenuCommand(Menu = "_Help", Header = "_About", MenuOrder = 99999)]
-	sealed class AboutPage : SimpleCommand
+    [ExportMainMenuCommand(Menu = nameof(Resources._Help), Header = nameof(Resources._About), MenuOrder = 99999)]
+    sealed class AboutPage : SimpleCommand
 	{
 		[Import]
 		DecompilerTextView decompilerTextView = null;
@@ -59,8 +59,8 @@ namespace ICSharpCode.ILSpy
 		public static void Display(DecompilerTextView textView)
 		{
 			AvaloniaEditTextOutput output = new AvaloniaEditTextOutput();
-			output.WriteLine("ILSpy version " + RevisionClass.FullVersion);
-			output.AddUIElement(
+            output.WriteLine(Resources.ILSpyVersion + RevisionClass.FullVersion);
+            output.AddUIElement(
 				delegate {
 					StackPanel stackPanel = new StackPanel();
 					stackPanel.HorizontalAlignment = HorizontalAlignment.Center;
@@ -73,7 +73,7 @@ namespace ICSharpCode.ILSpy
 					}
 					CheckBox checkBox = new CheckBox();
 					checkBox.Margin = new Thickness(4);
-					checkBox.Content = "Automatically check for updates every week";
+                    checkBox.Content = Resources.AutomaticallyCheckUpdatesEveryWeek;
 					UpdateSettings settings = new UpdateSettings(ILSpySettings.Load());
 					checkBox.Bind(CheckBox.IsCheckedProperty, new Binding("AutomaticUpdateCheckEnabled") { Source = settings });
 					return new StackPanel {
@@ -121,12 +121,12 @@ namespace ICSharpCode.ILSpy
 		static void AddUpdateCheckButton(StackPanel stackPanel, DecompilerTextView textView)
 		{
 			Button button = new Button();
-			button.Content = "Check for updates";
+            button.Content = Resources.CheckUpdates;
 			button.Cursor = Cursor.Default;
 			stackPanel.Children.Add(button);
 			
 			button.Click += delegate {
-				button.Content = "Checking...";
+                button.Content = Resources.Checking;
 				button.IsEnabled = false;
 				GetLatestVersionAsync().ContinueWith(
 					delegate (Task<AvailableVersionInfo> task) {
@@ -155,19 +155,19 @@ namespace ICSharpCode.ILSpy
 					});
 				stackPanel.Children.Add(
 					new TextBlock {
-						Text = "You are using the latest release.",
+                        Text = Resources.UsingLatestRelease,
 						VerticalAlignment = VerticalAlignment.Bottom
 					});
 			} else if (currentVersion < availableVersion.Version) {
 				stackPanel.Children.Add(
 					new TextBlock {
-						Text = "Version " + availableVersion.Version + " is available.",
+                        Text = string.Format(Resources.VersionAvailable, availableVersion.Version),
 						Margin = new Thickness(0,0,8,0),
 						VerticalAlignment = VerticalAlignment.Bottom
 					});
 				if (availableVersion.DownloadUrl != null) {
 					Button button = new Button();
-					button.Content = "Download";
+                    button.Content = Resources.Download;
 					button.Cursor = Cursor.Default;
 					button.Click += delegate {
 						MainWindow.OpenLink(availableVersion.DownloadUrl);
@@ -175,7 +175,7 @@ namespace ICSharpCode.ILSpy
 					stackPanel.Children.Add(button);
 				}
 			} else {
-				stackPanel.Children.Add(new TextBlock { Text = "You are using a nightly build newer than the latest release." });
+                stackPanel.Children.Add(new TextBlock { Text = Resources.UsingNightlyBuildNewerThanLatestRelease });
 			}
 		}
 		

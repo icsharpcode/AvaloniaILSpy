@@ -1,7 +1,10 @@
 ﻿<Window
-    xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:controls="clr-namespace:ICSharpCode.TreeView"
-	Title="New list"
-	Classes="DialogWindow"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:properties="clr-namespace:ICSharpCode.ILSpy.Properties"   
+    xmlns:controls="clr-namespace:ICSharpCode.TreeView"
+    Title="{x:Static properties:Resources.List}"
+    Classes="DialogWindow"
 	WindowStartupLocation="CenterOwner"
 	Width="300"
 	Height="150"
@@ -12,12 +15,12 @@
 			<RowDefinition Height="Auto" />
 		</Grid.RowDefinitions>
 		<StackPanel>
-			<TextBlock Margin="5">Enter a list name:</TextBlock>
+			<TextBlock Margin="5" Text="{x:Static properties:Resources.EnterListName}" />
 			<TextBox Margin="8,8" Name="ListName"></TextBox>
 		</StackPanel>
 		<StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="8,0">
-			<Button IsDefault="True" Margin="2,0" IsEnabled="False" Name="okButton" Click="OKButton_Click">Create</Button>
-			<Button Margin="2,0" Name="cancelButton" Click="CancelButton_Click">Cancel</Button>
+            <Button IsDefault="True" Margin="2,0" IsEnabled="False" Name="okButton" Click="OKButton_Click"  Content="{x:Static properties:Resources.Create}" />
+            <Button Margin="2,0" Name="cancelButton" Click="CancelButton_Click" Content="{x:Static properties:Resources.Cancel}" />
 		</StackPanel>
 	</Grid>
 </Window>

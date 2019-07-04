@@ -59,7 +59,6 @@ namespace ICSharpCode.ILSpy
 		string MenuCategory { get; }
 		string InputGestureText { get; }
 		bool IsEnabled { get; }
-		
 		double MenuOrder { get; }
 	}
 	

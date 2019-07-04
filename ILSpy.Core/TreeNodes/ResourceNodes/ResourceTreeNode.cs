@@ -26,6 +26,7 @@ using AvaloniaEdit.Highlighting;
 using AvaloniaEdit.Utils;
 using ICSharpCode.Decompiler;
 using ICSharpCode.Decompiler.Metadata;
+using ICSharpCode.ILSpy.Properties;
 using ICSharpCode.ILSpy.TextView;
 using Microsoft.Win32;
 
@@ -74,7 +75,7 @@ namespace ICSharpCode.ILSpy.TreeNodes
 			
 			ISmartTextOutput smartOutput = output as ISmartTextOutput;
 			if (smartOutput != null) {
-				smartOutput.AddButton(Images.Save, "Save", delegate { Save(null); });
+                smartOutput.AddButton(Images.Save, Resources.Save, delegate { Save(MainWindow.Instance.TextView); });
 				output.WriteLine();
 			}
 		}
@@ -101,7 +102,7 @@ namespace ICSharpCode.ILSpy.TreeNodes
 			return false;
 		}
 		
-		public override async Task<bool> Save(DecompilerTextView textView)
+	    public override async Task<bool> Save(DecompilerTextView textView)
 		{
 			Stream s = Resource.TryOpenStream();
 			if (s == null)

@@ -19,12 +19,13 @@
 
 using System.Collections.Generic;
 using Avalonia.Controls;
+using ICSharpCode.ILSpy.Properties;
 using NuGet.Common;
 
 namespace ICSharpCode.ILSpy
 {
-	[ExportMainMenuCommand(Menu = "_File", Header = "Open from NuGet Packages...", MenuIcon = "Images/AssemblyListGAC.png", MenuCategory = "Open", MenuOrder = 1)]
-	sealed class OpenFromNuGetCommand : SimpleCommand
+    [ExportMainMenuCommand(Menu = nameof(Resources._File), Header = nameof(Resources.OpenFrom_GAC), MenuIcon = "Images/AssemblyListGAC.png", MenuCategory = nameof(Resources.Open), MenuOrder = 1)]
+    sealed class OpenFromNuGetCommand : SimpleCommand
 	{
 		public override async void Execute(object parameter)
 		{

@@ -16,45 +16,34 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 
-using ICSharpCode.ILSpy.Properties;
+using Avalonia.Controls;
+using Avalonia.Markup.Xaml;
+using ICSharpCode.ILSpy.Controls;
 
-namespace ICSharpCode.ILSpy.TextView
+namespace ICSharpCode.ILSpy.Search
 {
-	[ExportContextMenuEntry(Header = nameof(Resources.Copy), Category = nameof(Resources.Editor))]
-	sealed class CopyContextMenuEntry : IContextMenuEntry
+    /// <summary>
+    /// Search pane
+    /// </summary>
+    public partial class SearchPane
 	{
-		public bool IsVisible(TextViewContext context)
-		{
-			return context.TextView != null;
-		}
+        internal SearchBox searchBox;
+        internal ComboBox searchModeComboBox;
+        internal ListBox listBox;
+        internal ProgressBar searchProgressBar;
 
-		public bool IsEnabled(TextViewContext context)
-		{
-			return context.TextView != null && context.TextView.textEditor.SelectionLength > 0;
-		}
+        private void InitializeComponent()
+        {
+            AvaloniaXamlLoader.Load(this);
+            searchBox = this.FindControl<SearchBox>("searchBox");
+            searchModeComboBox = this.FindControl<ComboBox>("searchModeComboBox");
+            listBox = this.FindControl<ListBox>("listBox");
+            searchProgressBar = this.FindControl<ProgressBar>("searchProgressBar");
 
-		public void Execute(TextViewContext context)
-		{
-			context.TextView.textEditor.Copy();
-		}
-	}
-
-	[ExportContextMenuEntry(Header = nameof(Resources.Select), Category = nameof(Resources.Editor))]
-	sealed class SelectAllContextMenuEntry : IContextMenuEntry
-	{
-		public bool IsVisible(TextViewContext context)
-		{
-			return context.TextView != null;
-		}
-
-		public bool IsEnabled(TextViewContext context)
-		{
-			return context.TextView != null;
-		}
-
-		public void Execute(TextViewContext context)
-		{
-			context.TextView.textEditor.SelectAll();
-		}
+            searchBox.KeyDown += SearchBox_PreviewKeyDown;
+            searchModeComboBox.SelectionChanged += SearchModeComboBox_SelectionChanged;
+            listBox.KeyDown += ListBox_KeyDown;
+            listBox.DoubleTapped += ListBox_MouseDoubleClick;
+        }
 	}
 }

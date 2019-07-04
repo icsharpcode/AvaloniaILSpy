@@ -1,13 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<UserControl xmlns="https://github.com/avaloniaui"
-			 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             x:Class="ICSharpCode.ILSpy.Controls.ResourceStringTable">
+<UserControl x:Class="ICSharpCode.ILSpy.Controls.ResourceStringTable"
+    xmlns="https://github.com/avaloniaui" 
+    xmlns:properties="clr-namespace:ICSharpCode.ILSpy.Properties"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 	<Grid Margin="5,0,0,0">
 		<Grid.RowDefinitions>
 			<RowDefinition Height="30" />
 			<RowDefinition />
 		</Grid.RowDefinitions>
-		<TextBlock Margin="5" Text="String Table(Name/Value)"
+		<TextBlock Margin="5" Text="{x:Static properties:Resources.StringTable}"
 			   FontFamily="Segoe UI"
 			   FontWeight="Bold"
 			   FontSize="12" />
@@ -19,8 +20,8 @@
                   AlternatingRowBackground="{DynamicResource ThemeAccentBrush4}"
                   CanUserResizeColumns="True">
           <DataGrid.Columns>
-            <DataGridTextColumn Header="Key" Binding="{Binding Key}" Width="*" />
-            <DataGridTextColumn Header="Value" Binding="{Binding Value}" Width="*" />
+            <DataGridTextColumn Header="{x:Static properties:Resources.Name}" Binding="{Binding Key}" Width="*" />
+            <DataGridTextColumn Header="{x:Static properties:Resources.Value}" Binding="{Binding Value}" Width="*" />
           </DataGrid.Columns>
         </DataGrid>
 	</Grid>

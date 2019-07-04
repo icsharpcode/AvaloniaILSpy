@@ -3,25 +3,27 @@
 		xmlns:local="clr-namespace:ICSharpCode.ILSpy.Controls"
 		xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:avalonia="clr-namespace:Avalonia;assembly=SharpTreeView"
+        xmlns:properties="clr-namespace:ICSharpCode.ILSpy.Properties"   
 		xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" x:Name="searchPane" mc:Ignorable="d"
 		d:DesignHeight="300" d:DesignWidth="300">
 	<Grid>
 		<Grid.RowDefinitions>
 			<RowDefinition Height="Auto"  />
+            <RowDefinition Height="3" />
 			<RowDefinition Height="*" />
 		</Grid.RowDefinitions>
-		<Border BorderThickness="0,0,0,1" BorderBrush="{DynamicResource ThemeBorderLowBrush}" Background="{DynamicResource ThemeBackgroundBrush}}">
+		<Border BorderBrush="{DynamicResource ThemeBorderLowBrush}" Background="{DynamicResource ThemeBackgroundBrush}" Margin="0">
 			<Grid Height="23">
 				<Grid.ColumnDefinitions>
 					<ColumnDefinition Width="*" />
 					<ColumnDefinition Width="Auto" />
 				</Grid.ColumnDefinitions>
 				<local:SearchBox x:Name="searchBox" DockPanel.Dock="Top" Grid.Column="0" Grid.Row="0" Margin="1"
-            SearchIcon="/Images/Search.png" ClearSearchIcon="/Images/ClearSearch.png"
-						Text="{Binding SearchTerm, ElementName=searchPane}" ToolTip.Tip="Search" UpdateDelay="0:0:0.1"
-						WatermarkColor="Gray" Watermark="Search for t:TypeName, m:Member or c:Constant; use exact match (=term), 'should not contain' (-term) or 'must contain' (+term); use /reg(ular)?Ex(pressions)?/ or both - t:/Type(Name)?/..." />
+                                 SearchIcon="/Images/Search.png" ClearSearchIcon="/Images/ClearSearch.png"
+                                 Text="{Binding SearchTerm, ElementName=searchPane}" ToolTip.Tip="{x:Static properties:Resources.SearchPane_Search}" UpdateDelay="0:0:0.1"
+                                 WatermarkColor="Gray" Watermark="{x:Static properties:Resources.WatermarkText}" />
 				<StackPanel Grid.Column="1" Grid.Row="0" Orientation="Horizontal">
-					<TextBlock VerticalAlignment="Center">Search for:</TextBlock>
+					<TextBlock VerticalAlignment="Center" Text="{x:Static properties:Resources._SearchFor}" />
 					<ComboBox Width="150" Name="searchModeComboBox" Margin="1">
 						<ComboBox.ItemTemplate>
 							<DataTemplate>
@@ -35,7 +37,8 @@
 				</StackPanel>
 			</Grid>
 		</Border>
-		<ListBox Grid.Row="1" BorderThickness="0,0,0,0" Name="listBox" SelectionMode="Single">
+        <ProgressBar Name="searchProgressBar" Grid.Row="1" BorderThickness="0" Background="{DynamicResource ThemeBackgroundBrush}" />
+        <ListBox Grid.Row="1" BorderThickness="0,0,0,0" Name="listBox" SelectionMode="Single">
 			<ListBox.ItemTemplate>
 				<DataTemplate>
 					<Grid>

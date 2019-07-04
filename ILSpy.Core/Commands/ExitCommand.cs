@@ -17,10 +17,12 @@
 // DEALINGS IN THE SOFTWARE.
 
 
+using ICSharpCode.ILSpy.Properties;
+
 namespace ICSharpCode.ILSpy
 {
-	[ExportMainMenuCommand(Menu = "_File", Header = "E_xit", MenuOrder = 99999, MenuCategory = "Exit")]
-	sealed class ExitCommand : SimpleCommand
+    [ExportMainMenuCommand(Menu = nameof(Resources._File), Header = nameof(Resources.E_xit), MenuOrder = 99999, MenuCategory = nameof(Resources.Exit))]
+    sealed class ExitCommand : SimpleCommand
 	{
 		public override void Execute(object parameter)
 		{

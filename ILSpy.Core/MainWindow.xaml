@@ -1,16 +1,17 @@
 ﻿<Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:tv="clr-namespace:ICSharpCode.TreeView;assembly=SharpTreeView"
-          xmlns:local="clr-namespace:ICSharpCode.ILSpy"
-	      xmlns:controls="clr-namespace:ICSharpCode.ILSpy.Controls"
-	      Title="ILSpy"
-	      MinWidth="250"
-	      MinHeight="200"
-	      UseLayoutRounding="True"
-          Icon="/Images/ILSpy.png"
-	      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" d:DesignHeight="500" d:DesignWidth="500"
-	      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d"
-          x:Class="ICSharpCode.ILSpy.MainWindow"
+        xmlns:local="clr-namespace:ICSharpCode.ILSpy"
+        xmlns:controls="clr-namespace:ICSharpCode.ILSpy.Controls"
+        xmlns:properties="clr-namespace:ICSharpCode.ILSpy.Properties"   
+        Title="ILSpy"
+        MinWidth="250"
+        MinHeight="200"
+        UseLayoutRounding="True"
+        Icon="/Images/ILSpy.png"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008" d:DesignHeight="500" d:DesignWidth="500"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d"
+        x:Class="ICSharpCode.ILSpy.MainWindow"
 >
 <!--	<Window.TaskbarItemInfo>
 		<TaskbarItemInfo />
@@ -18,19 +19,7 @@
 	<DockPanel>
 		<!-- Main menu -->
 		<Menu DockPanel.Dock="Top" Name="mainMenu" Height="23" KeyboardNavigation.TabNavigation="None">
-			<MenuItem Header="_File" /> <!-- contents of file menu are added using MEF -->
-<!--			<MenuItem Header="_View">
-				<MenuItem Header="Show _internal types and members" IsCheckable="True" IsChecked="{Binding FilterSettings.ShowInternalApi}">
-					<MenuItem.Icon>
-						<Image Width="16" Height="16" Source="Images/PrivateInternal.png" />
-					</MenuItem.Icon>
-				</MenuItem>
-                <MenuItem Header="Show _all types and members" IsCheckable="True" IsChecked="{Binding FilterSettings.ShowAllApi}">
-                    <MenuItem.Icon>
-                        <Image Width="16" Height="16" Source="Images/ShowAll.png" />
-                    </MenuItem.Icon>
-                </MenuItem>
-			</MenuItem>-->
+			<MenuItem Header="{x:Static properties:Resources._File}" /> <!-- contents of file menu are added using MEF -->
 		</Menu>
 		<!-- ToolBar -->
 		<ListBox
@@ -53,11 +42,11 @@
 			<!-- 'Open' toolbar category is inserted here -->
 			<Separator />
 			<CheckBox IsChecked="{Binding FilterSettings.ShowInternalApi}"
-                ToolTip.Tip="Show internal types and members">
+                ToolTip.Tip="{x:Static properties:Resources.Show_internalTypesMembers}">
 				<Image Width="16" Height="16" Source="/Images/PrivateInternal.png" />
 			</CheckBox>
             <CheckBox IsChecked="{Binding FilterSettings.ShowAllApi}"
-                ToolTip.Tip="Show all types and members">
+                ToolTip.Tip="{x:Static properties:Resources.Show_allTypesAndMembers}">
                 <Image Width="16" Height="16" Source="/Images/ShowAll.png" />
             </CheckBox>
 			<Separator />
@@ -80,8 +69,8 @@
 			<TextBlock VerticalAlignment="Center"
 					   HorizontalAlignment="Right"
 					   x:Name="StatusLabel"
-             ToolTip.Tip="Status"
-					   Text="Stand by..."/>
+                       ToolTip.Tip="{x:Static properties:Resources.Status}"
+					   Text="{x:Static properties:Resources.StandBy}"/>
 		</Border>
 		<!-- Main grid separating left pane (treeView) from main pane (textEditor) -->
 		<Grid x:Name="mainGrid">
@@ -132,8 +121,8 @@
 					<DockPanel KeyboardNavigation.TabNavigation="Contained">
 						<Button Name="updatePanelCloseButton" DockPanel.Dock="Right" MinWidth="0">X</Button>
 						<StackPanel Orientation="Horizontal">
-							<TextBlock Name="updatePanelMessage" Margin="4,0" VerticalAlignment="Center">A new ILSpy version is available.</TextBlock>
-							<Button Name="downloadOrCheckUpdateButton">Download</Button>
+							<TextBlock Name="updatePanelMessage" Margin="4,0" VerticalAlignment="Center"  Text="{x:Static properties:Resources.ILSpyVersionAvailable}" />
+							<Button Name="downloadOrCheckUpdateButton" Content="{x:Static properties:Resources.Download}" />
 						</StackPanel>
 					</DockPanel>
 				</Border>

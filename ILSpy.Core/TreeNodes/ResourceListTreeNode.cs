@@ -21,6 +21,7 @@ using System.Linq;
 using Avalonia.Threading;
 using ICSharpCode.Decompiler;
 using ICSharpCode.Decompiler.Metadata;
+using ICSharpCode.ILSpy.Properties;
 
 namespace ICSharpCode.ILSpy.TreeNodes
 {
@@ -38,10 +39,10 @@ namespace ICSharpCode.ILSpy.TreeNodes
 		}
 		
 		public override object Text {
-			get { return "Resources"; }
-		}
-		
-		public override object Icon {
+            get { return Resources._Resources; }
+        }
+
+        public override object Icon {
 			get { return Images.FolderClosed; }
 		}
 

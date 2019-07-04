@@ -23,6 +23,7 @@ using Avalonia.Controls;
 using Avalonia.Media.Imaging;
 using ICSharpCode.Decompiler.Metadata;
 using ICSharpCode.ILSpy.TextView;
+using ICSharpCode.ILSpy.Properties;
 
 namespace ICSharpCode.ILSpy.TreeNodes
 {
@@ -71,7 +72,7 @@ namespace ICSharpCode.ILSpy.TreeNodes
                 IBitmap image = new Bitmap(Data);
                 output.AddUIElement(() => new Image { Source = image });
 				output.WriteLine();
-                output.AddButton(Images.Save, "Save", async delegate {
+                output.AddButton(Images.Save, Resources.Save, async delegate {
                     await Save(null);
                 });
 				textView.ShowNode(output, this);

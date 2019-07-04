@@ -39,9 +39,10 @@ namespace ICSharpCode.ILSpy
     /// Interaction logic for App.xaml
     /// </summary>
     public partial class App : Application
-	{
-		
-		internal static CommandLineArguments CommandLineArguments;
+    {
+        const bool alwaysShowErrorBox = true;
+
+        internal static CommandLineArguments CommandLineArguments;
 
 		static ExportProvider exportProvider;
 		
@@ -73,11 +74,19 @@ namespace ICSharpCode.ILSpy
 					//Environment.Exit(0);
 				}
 			}
-			//InitializeComponent();
-			
-			// Cannot show MessageBox here, because WPF would crash with a XamlParseException
-			// Remember and show exceptions in text output, once MainWindow is properly initialized
-			try {
+            //InitializeComponent();
+
+            if (alwaysShowErrorBox || !Debugger.IsAttached)
+            {
+                AppDomain.CurrentDomain.UnhandledException += ShowErrorBox;
+                //TODO: dispatcher UnhandledException
+                //Dispatcher.CurrentDispatcher.UnhandledException += Dispatcher_UnhandledException;
+            }
+            TaskScheduler.UnobservedTaskException += DotNet40_UnobservedTaskException;
+
+            // Cannot show MessageBox here, because WPF would crash with a XamlParseException
+            // Remember and show exceptions in text output, once MainWindow is properly initialized
+            try {
 				// Set up VS MEF. For now, only do MEF1 part discovery, since that was in use before.
 				// To support both MEF1 and MEF2 parts, just change this to:
 				// var discovery = PartDiscovery.Combine(new AttributedPartDiscoveryV1(Resolver.DefaultInstance),
@@ -110,17 +119,9 @@ namespace ICSharpCode.ILSpy
 				// This throws exceptions for composition failures. Alternatively, the configuration's CompositionErrors property
 				// could be used to log the errors directly. Used at the end so that it does not prevent the export provider setup.
 				config.ThrowOnErrors();
-			}
-			catch (Exception ex) {
+			} catch (Exception ex) {
 				StartupExceptions.Add(new ExceptionData { Exception = ex });
 			}
-			const bool alwaysShowErrorBox = true;
-			if (alwaysShowErrorBox || !Debugger.IsAttached) {
-				AppDomain.CurrentDomain.UnhandledException += ShowErrorBox;
-				//TODO: dispatcher UnhandledException
-				//Dispatcher.CurrentDispatcher.UnhandledException += Dispatcher_UnhandledException;
-			}
-			TaskScheduler.UnobservedTaskException += DotNet40_UnobservedTaskException;
 			Languages.Initialize(exportProvider);
 
             VisualLineLinkText.OpenUriEvent.AddClassHandler<Window>(win => Window_RequestNavigate);
@@ -177,6 +178,18 @@ namespace ICSharpCode.ILSpy
 			}
 			MessageBox.Show(exception.ToString(), "Sorry, we crashed");
 		}
+
+        //protected override void OnStartup(StartupEventArgs e)
+        //{
+        //    var output = new StringBuilder();
+        //    if (ILSpy.MainWindow.FormatExceptions(StartupExceptions.ToArray(), output))
+        //    {
+        //        MessageBox.Show(output.ToString(), "Sorry we crashed!");
+        //        Environment.Exit(1);
+        //    }
+        //    base.OnStartup(e);
+        //}
+
         #endregion
 
 

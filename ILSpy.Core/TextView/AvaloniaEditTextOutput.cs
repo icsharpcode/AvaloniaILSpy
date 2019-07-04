@@ -41,7 +41,7 @@ namespace ICSharpCode.ILSpy.TextView
 	{
 		public object Reference;
 		public bool IsLocal;
-		public bool IsLocalTarget;
+		public bool IsDefinition;
 	}
 	
 	/// <summary>
@@ -94,9 +94,11 @@ namespace ICSharpCode.ILSpy.TextView
 		internal readonly List<NewFolding> Foldings = new List<NewFolding>();
 		
 		internal readonly DefinitionLookup DefinitionLookup = new DefinitionLookup();
-		
-		/// <summary>Embedded UIElements, see <see cref="UIElementGenerator"/>.</summary>
-		internal readonly List<KeyValuePair<int, Lazy<IControl>>> UIElements = new List<KeyValuePair<int, Lazy<IControl>>>();
+
+        internal bool EnableHyperlinks { get; set; }
+
+        /// <summary>Embedded UIElements, see <see cref="UIElementGenerator"/>.</summary>
+        internal readonly List<KeyValuePair<int, Lazy<IControl>>> UIElements = new List<KeyValuePair<int, Lazy<IControl>>>();
 
 		public RichTextModel HighlightingModel { get; } = new RichTextModel();
 		
@@ -210,13 +212,24 @@ namespace ICSharpCode.ILSpy.TextView
 			}
 		}
 
-		public void WriteReference(Decompiler.Disassembler.OpCodeInfo opCode)
-		{
-			WriteIndent();
+        public void WriteReference(Decompiler.Disassembler.OpCodeInfo opCode, bool omitSuffix = false)
+        {
+            WriteIndent();
 			int start = this.TextLength;
-			b.Append(opCode.Name);
-			int end = this.TextLength;
-			references.Add(new ReferenceSegment { StartOffset = start, EndOffset = end, Reference = opCode });
+            if (omitSuffix)
+            {
+                int lastDot = opCode.Name.LastIndexOf('.');
+                if (lastDot > 0)
+                {
+                    b.Append(opCode.Name.Remove(lastDot + 1));
+                }
+            }
+            else
+            {
+                b.Append(opCode.Name);
+            }
+            int end = this.TextLength - 1;
+            references.Add(new ReferenceSegment { StartOffset = start, EndOffset = end, Reference = opCode });
 		}
 
 		public void WriteReference(PEFile module, EntityHandle handle, string text, bool isDefinition = false)
@@ -227,11 +240,9 @@ namespace ICSharpCode.ILSpy.TextView
 			int end = this.TextLength;
 			if (isDefinition) {
 				this.DefinitionLookup.AddDefinition((module, handle), this.TextLength);
-				references.Add(new ReferenceSegment { StartOffset = start, EndOffset = end, Reference = (module, handle) });
-			} else {
-				references.Add(new ReferenceSegment { StartOffset = start, EndOffset = end, Reference = (module, handle) });
-			}
-		}
+            }
+            references.Add(new ReferenceSegment { StartOffset = start, EndOffset = end, Reference = (module, handle), IsDefinition = isDefinition });
+        }
 
 		public void WriteReference(IType type, string text, bool isDefinition = false)
 		{
@@ -241,13 +252,11 @@ namespace ICSharpCode.ILSpy.TextView
 			int end = this.TextLength;
 			if (isDefinition) {
 				this.DefinitionLookup.AddDefinition(type, this.TextLength);
-				references.Add(new ReferenceSegment { StartOffset = start, EndOffset = end, Reference = type });
-			} else {
-				references.Add(new ReferenceSegment { StartOffset = start, EndOffset = end, Reference = type });
 			}
-		}
+            references.Add(new ReferenceSegment { StartOffset = start, EndOffset = end, Reference = type, IsDefinition = isDefinition });
+        }
 
-		public void WriteReference(IMember member, string text, bool isDefinition = false)
+        public void WriteReference(IMember member, string text, bool isDefinition = false)
 		{
 			WriteIndent();
 			int start = this.TextLength;
@@ -255,13 +264,11 @@ namespace ICSharpCode.ILSpy.TextView
 			int end = this.TextLength;
 			if (isDefinition) {
 				this.DefinitionLookup.AddDefinition(member, this.TextLength);
-				references.Add(new ReferenceSegment { StartOffset = start, EndOffset = end, Reference = member });
-			} else {
-				references.Add(new ReferenceSegment { StartOffset = start, EndOffset = end, Reference = member });
-			}
-		}
+            }
+            references.Add(new ReferenceSegment { StartOffset = start, EndOffset = end, Reference = member, IsDefinition = isDefinition });
+        }
 
-		public void WriteLocalReference(string text, object reference, bool isDefinition = false)
+        public void WriteLocalReference(string text, object reference, bool isDefinition = false)
 		{
 			WriteIndent();
 			int start = this.TextLength;
@@ -269,13 +276,11 @@ namespace ICSharpCode.ILSpy.TextView
 			int end = this.TextLength;
 			if (isDefinition) {
 				this.DefinitionLookup.AddDefinition(reference, this.TextLength);
-				references.Add(new ReferenceSegment { StartOffset = start, EndOffset = end, Reference = reference, IsLocal = true, IsLocalTarget = true });
-			} else {
-				references.Add(new ReferenceSegment { StartOffset = start, EndOffset = end, Reference = reference, IsLocal = true });
-			}
-		}
+            }
+            references.Add(new ReferenceSegment { StartOffset = start, EndOffset = end, Reference = reference, IsLocal = true, IsDefinition = isDefinition });
+        }
 
-		public void MarkFoldStart(string collapsedText = "...", bool defaultCollapsed = false)
+        public void MarkFoldStart(string collapsedText = "...", bool defaultCollapsed = false)
 		{
 			WriteIndent();
 			openFoldings.Push(

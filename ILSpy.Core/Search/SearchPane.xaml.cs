@@ -17,21 +17,24 @@
 // DEALINGS IN THE SOFTWARE.
 
 using System;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
+using System.ComponentModel;
+using System.Diagnostics;
+using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
-using Avalonia.Markup.Xaml;
+using Avalonia.Media;
 using Avalonia.Media.Imaging;
 using Avalonia.Threading;
 using ICSharpCode.Decompiler.TypeSystem;
-using ICSharpCode.ILSpy.Controls;
-using ICSharpCode.ILSpy.Search;
 using ICSharpCode.ILSpy.TreeNodes;
-using ICSharpCode.TreeView;
 
 namespace ICSharpCode.ILSpy.Search
 {
@@ -40,9 +43,18 @@ namespace ICSharpCode.ILSpy.Search
 	/// </summary>
 	public partial class SearchPane : UserControl, IPane
 	{
+		const int MAX_RESULTS = 1000;
+		const int MAX_REFRESH_TIME_MS = 10; // More means quicker forward of data, less means better responsibility
 		static SearchPane instance;
 		RunningSearch currentSearch;
-		
+		bool runSearchOnNextShow;
+
+		public static readonly AvaloniaProperty<ObservableCollection<SearchResult>> ResultsProperty =
+			AvaloniaProperty.Register<SearchPane, ObservableCollection<SearchResult>>("Results", defaultValue: new ObservableCollection<SearchResult>());
+		public ObservableCollection<SearchResult> Results {
+			get { return GetValue(ResultsProperty); }
+		}
+
 		public static SearchPane Instance {
 			get {
 				if (instance == null) {
@@ -52,16 +64,12 @@ namespace ICSharpCode.ILSpy.Search
 				return instance;
 			}
 		}
-
-        internal SearchBox searchBox;
-        internal ComboBox searchModeComboBox;
-        internal ListBox listBox;
-
-        private SearchPane()
+		
+		private SearchPane()
 		{
 			InitializeComponent();
-            searchModeComboBox.Items = new[] {
-                new { Image = Images.Library, Name = "Types and Members" },
+			searchModeComboBox.Items = new []{
+			    new { Image = Images.Library, Name = "Types and Members" },
 			    new { Image = Images.Class, Name = "Type" },
 			    new { Image = Images.Property, Name = "Member" },
 			    new { Image = Images.Method, Name = "Method" },
@@ -72,30 +80,22 @@ namespace ICSharpCode.ILSpy.Search
 			    new { Image = Images.Library, Name = "Metadata Token" }
             };
 
+			ContextMenuProvider.Add(listBox);
+			MainWindow.Instance.CurrentAssemblyListChanged += MainWindow_Instance_CurrentAssemblyListChanged;
+			MainWindow.Instance.SessionSettings.FilterSettings.PropertyChanged += FilterSettings_PropertyChanged;
+
+			// This starts empty search right away, so do at the end (we're still in ctor)
 			searchModeComboBox.SelectedIndex = (int)MainWindow.Instance.SessionSettings.SelectedSearchMode;
 			searchModeComboBox.SelectionChanged += (sender, e) => MainWindow.Instance.SessionSettings.SelectedSearchMode = (Search.SearchMode)searchModeComboBox.SelectedIndex;
-			ContextMenuProvider.Add(listBox);
-			
-			MainWindow.Instance.CurrentAssemblyListChanged += MainWindow_Instance_CurrentAssemblyListChanged;
-        }
+		}
 
-        private void InitializeComponent()
+        public override void Render(DrawingContext context)
         {
-            AvaloniaXamlLoader.Load(this);
-            searchBox = this.FindControl<SearchBox>("searchBox");
-            searchModeComboBox = this.FindControl<ComboBox>("searchModeComboBox");
-            listBox = this.FindControl<ListBox>("listBox");
-
-            searchBox.KeyDown += SearchBox_PreviewKeyDown;
-            searchModeComboBox.SelectionChanged += SearchModeComboBox_SelectionChanged;
-            listBox.KeyDown += ListBox_KeyDown;
-            listBox.DoubleTapped += ListBox_MouseDoubleClick;
+            UpdateResults(this, EventArgs.Empty);
+            base.Render(context);
         }
 
-
-        bool runSearchOnNextShow;
-		
-		void MainWindow_Instance_CurrentAssemblyListChanged(object sender, NotifyCollectionChangedEventArgs e)
+        void MainWindow_Instance_CurrentAssemblyListChanged(object sender, NotifyCollectionChangedEventArgs e)
 		{
 			if (VisualRoot != null) {
 				StartSearch(this.SearchTerm);
@@ -104,11 +104,24 @@ namespace ICSharpCode.ILSpy.Search
 				runSearchOnNextShow = true;
 			}
 		}
-		
+
+		void FilterSettings_PropertyChanged(object sender, PropertyChangedEventArgs e)
+		{
+			if (e.PropertyName != nameof(FilterSettings.ShowApiLevel))
+				return;
+
+			if (IsVisible) {
+				StartSearch(this.SearchTerm);
+			} else {
+				StartSearch(null);
+				runSearchOnNextShow = true;
+			}
+		}
+
 		public void Show()
 		{
 			if (VisualRoot == null) {
-				MainWindow.Instance.ShowInTopPane("Search", this);
+				MainWindow.Instance.ShowInTopPane(Properties.Resources.SearchPane_Search, this);
 				if (runSearchOnNextShow) {
 					runSearchOnNextShow = false;
 					StartSearch(this.SearchTerm);
@@ -132,34 +145,18 @@ namespace ICSharpCode.ILSpy.Search
 			get { return (string)GetValue(SearchTermProperty); }
 			set { SetValue(SearchTermProperty, value); }
 		}
-		
-		static void OnSearchTermChanged(IAvaloniaObject o, bool changed)
+
+        static void OnSearchTermChanged(IAvaloniaObject o, bool changed)
+        {
+            ((SearchPane)o).StartSearch(o.GetValue(SearchTermProperty));
+        }
+
+        void SearchModeComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
 		{
-			((SearchPane)o).StartSearch(o.GetValue(SearchTermProperty));
-		}
-		
-		void SearchModeComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-		{
+			MainWindow.Instance.SessionSettings.SelectedSearchMode = (SearchMode)searchModeComboBox.SelectedIndex;
 			StartSearch(this.SearchTerm);
 		}
-		
-		void StartSearch(string searchTerm)
-		{
-			if (currentSearch != null) {
-				currentSearch.Cancel();
-			}
-			if (string.IsNullOrEmpty(searchTerm)) {
-				currentSearch = null;
-				listBox.Items = null;
-			} else {
-				MainWindow mainWindow = MainWindow.Instance;
-				currentSearch = new RunningSearch(mainWindow.CurrentAssemblyList.GetAssemblies(), searchTerm,
-					(SearchMode)searchModeComboBox.SelectedIndex, mainWindow.CurrentLanguage);
-				listBox.Items = currentSearch.Results;
-				new Thread(currentSearch.Run).Start();
-			}
-		}
-		
+
 		void IPane.Closed()
 		{
 			this.SearchTerm = string.Empty;
@@ -176,17 +173,13 @@ namespace ICSharpCode.ILSpy.Search
 			if (e.Key == Key.Return) {
 				e.Handled = true;
 				JumpToSelectedItem();
+			} else if(e.Key == Key.Up && listBox.SelectedIndex == 0) {
+				e.Handled = true;
+				listBox.SelectedIndex = -1;
+				searchBox.Focus();
 			}
 		}
-		
-		void JumpToSelectedItem()
-		{
-			SearchResult result = listBox.SelectedItem as SearchResult;
-			if (result != null) {
-				MainWindow.Instance.JumpToReference(result.Member);
-			}
-		}
-		
+
 		protected override void OnKeyDown(KeyEventArgs e)
 		{
 			base.OnKeyDown(e);
@@ -201,152 +194,228 @@ namespace ICSharpCode.ILSpy.Search
 				e.Handled = true;
 			}
 		}
-		
+
 		void SearchBox_PreviewKeyDown(object sender, KeyEventArgs e)
 		{
 			if (e.Key == Key.Down && listBox.ItemCount > 0) {
 				e.Handled = true;
-                // TODO: move focus
-                //listBox.MoveFocus(new TraversalRequest(FocusNavigationDirection.First));
+                // TODO: movefocus
+				//listBox.MoveFocus(new TraversalRequest(FocusNavigationDirection.First));
 				listBox.SelectedIndex = 0;
 			}
 		}
 
+		void UpdateResults(object sender, EventArgs e)
+		{
+			if (currentSearch == null)
+				return;
+
+			var timer = Stopwatch.StartNew();
+			int resultsAdded = 0;
+			while (Results.Count < MAX_RESULTS && timer.ElapsedMilliseconds < MAX_REFRESH_TIME_MS && currentSearch.resultQueue.TryTake(out var result)) {
+				InsertResult(Results, result);
+				++resultsAdded;
+			}
+
+			if (resultsAdded > 0 && Results.Count == MAX_RESULTS) {
+				Results.Add(new SearchResult { Name = Properties.Resources.SearchAbortedMoreThan1000ResultsFound });
+				currentSearch.Cancel();
+			}
+		}
+
+		async void StartSearch(string searchTerm)
+		{
+			if (currentSearch != null) {
+				currentSearch.Cancel();
+				currentSearch = null;
+			}
+
+			Results.Clear();
+
+			RunningSearch startedSearch = null;
+			if (!string.IsNullOrEmpty(searchTerm)) {
+				MainWindow mainWindow = MainWindow.Instance;
+
+				searchProgressBar.IsIndeterminate = true;
+				startedSearch = new RunningSearch(mainWindow.CurrentAssemblyList.GetAssemblies(), searchTerm,
+					(SearchMode)searchModeComboBox.SelectedIndex, mainWindow.CurrentLanguage, 
+					mainWindow.SessionSettings.FilterSettings.ShowApiLevel);
+				currentSearch = startedSearch;
+
+				await startedSearch.Run();
+			}
+
+			if (currentSearch == startedSearch) { //are we still running the same search
+				searchProgressBar.IsIndeterminate = false;
+			}
+		}
+
+		void InsertResult(IList<SearchResult> results, SearchResult result)
+		{
+			if (results.Count == 0) {
+				results.Add(result);
+			} else if (Options.DisplaySettingsPanel.CurrentDisplaySettings.SortResults) {
+				// Keep results collection sorted by "Fitness" by inserting result into correct place
+				// Inserts in the beginning shifts all elements, but there can be no more than 1000 items.
+				for (int i = 0; i < results.Count; i++) {
+					if (results[i].Fitness < result.Fitness) {
+						results.Insert(i, result);
+						return;
+					}
+				}
+				results.Insert(results.Count - 1, result);
+			} else {
+				// Original Code
+				int index = results.BinarySearch(result, 0, results.Count - 1, SearchResult.Comparer);
+				results.Insert(index < 0 ? ~index : index, result);
+			}
+		}
+
+		void JumpToSelectedItem()
+		{
+			if (listBox.SelectedItem is SearchResult result) {
+				MainWindow.Instance.JumpToReference(result.Member);
+			}
+		}
+		
 		sealed class RunningSearch
 		{
-			readonly Dispatcher dispatcher;
 			readonly CancellationTokenSource cts = new CancellationTokenSource();
 			readonly LoadedAssembly[] assemblies;
 			readonly string[] searchTerm;
 			readonly SearchMode searchMode;
 			readonly Language language;
-			public readonly ObservableCollection<SearchResult> Results = new ObservableCollection<SearchResult>();
-			int resultCount;
+			readonly ApiVisibility apiVisibility;
+			public readonly IProducerConsumerCollection<SearchResult> resultQueue = new ConcurrentQueue<SearchResult>(); 
 
-			public RunningSearch(LoadedAssembly[] assemblies, string searchTerm, SearchMode searchMode, Language language)
+			public RunningSearch(LoadedAssembly[] assemblies, string searchTerm, SearchMode searchMode, Language language, ApiVisibility apiVisibility)
 			{
-				this.dispatcher = Dispatcher.UIThread;
 				this.assemblies = assemblies;
-				this.searchTerm = searchTerm.Split(new char[] {' '}, StringSplitOptions.RemoveEmptyEntries);
+				this.searchTerm = CommandLineToArgumentArray(searchTerm);
 				this.language = language;
 				this.searchMode = searchMode;
-				
-				this.Results.Add(new SearchResult { Name = "Searching..." });
+				this.apiVisibility = apiVisibility;
 			}
+
+            static IEnumerable<string> Split(string str, Func<char, bool> controller)
+            {
+                int nextPiece = 0;
+                for (int c = 0; c < str.Length; c++)
+                {
+                    if (controller(str[c]))
+                    {
+                        yield return str.Substring(nextPiece, c - nextPiece);
+                        nextPiece = c + 1;
+                    }
+                }
+
+                yield return str.Substring(nextPiece);
+            }
+
+            static string TrimMatchingQuotes(string input, char quote)
+            {
+                input = input.Trim();
+                if (input.Length >= 2 && input[0] == quote && input[input.Length-1] == quote)
+                {
+                    return input.Substring(1, input.Length - 2);
+                }
+                return input;
+            }
+
+            string[] CommandLineToArgumentArray(string commandLine)
+            {
+                bool inQuotes = false;
+
+                return Split(commandLine, c =>
+                {
+                    if (c == '\"')
+                    {
+                        inQuotes = !inQuotes;
+                    }
+                    return !inQuotes && c == ' ';
+                }).Select(arg => TrimMatchingQuotes(arg, '\"'))
+                .Where(arg => !string.IsNullOrEmpty(arg))
+                .ToArray();
+            }
 			
 			public void Cancel()
 			{
 				cts.Cancel();
 			}
 			
-			public void Run()
+			public async Task Run()
 			{
 				try {
-					var searcher = GetSearchStrategy(searchMode, searchTerm);
-					// TODO : parallelize
-					foreach (var loadedAssembly in assemblies) {
-						var module = loadedAssembly.GetPEFileOrNull();
-						if (module == null)
-							continue;
-						CancellationToken cancellationToken = cts.Token;
-						searcher.Search(module);
-					}
-				} catch (OperationCanceledException) {
+					await Task.Factory.StartNew(() => {
+						var searcher = GetSearchStrategy();
+						try {
+							foreach (var loadedAssembly in assemblies) {
+								var module = loadedAssembly.GetPEFileOrNull();
+								if (module == null)
+									continue;
+								searcher.Search(module, cts.Token);
+							}
+						} catch (OperationCanceledException) {
+							// ignore cancellation
+						}
+
+					}, cts.Token, TaskCreationOptions.LongRunning, TaskScheduler.Current).ConfigureAwait(false);
+				} catch (TaskCanceledException) {
 					// ignore cancellation
 				}
-				// remove the 'Searching...' entry
-				dispatcher.InvokeAsync(
-					new Action(delegate { this.Results.RemoveAt(this.Results.Count - 1); }),
-                    DispatcherPriority.Normal);
-			}
-			
-			void AddResult(SearchResult result)
-			{
-				if (++resultCount == 1000) {
-					result = new SearchResult { Name = "Search aborted, more than 1000 results found." };
-					cts.Cancel();
-				}
-				dispatcher.InvokeAsync(
-					new Action(delegate { InsertResult(this.Results, result); }),
-                    DispatcherPriority.Normal);
-				cts.Token.ThrowIfCancellationRequested();
 			}
 
-			void InsertResult(ObservableCollection<SearchResult> results, SearchResult result)
+			AbstractSearchStrategy GetSearchStrategy()
 			{
-				if (Options.DisplaySettingsPanel.CurrentDisplaySettings.SortResults)
-				{
-					// Keep results collection sorted by "Fitness" by inserting result into correct place
-					// Inserts in the beginning shifts all elements, but there can be no more than 1000 items.
-					for (int i = 0; i < results.Count; i++)
-					{
-						if (results[i].Fitness < result.Fitness)
-						{
-							results.Insert(i, result);
-							return;
-						}
-					}
-					results.Insert(results.Count - 1, result);
-				}
-				else
-				{
-					// Original Code
-					int index = results.BinarySearch(result, 0, results.Count - 1, SearchResult.Comparer);
-					results.Insert(index < 0 ? ~index : index, result);
-				}
-			}
+				if (searchTerm.Length == 1) {
+					if (searchTerm[0].StartsWith("tm:", StringComparison.Ordinal))
+						return new MemberSearchStrategy(language, apiVisibility, searchTerm[0].Substring(3), resultQueue);
 
-			AbstractSearchStrategy GetSearchStrategy(SearchMode mode, string[] terms)
-			{
-				if (terms.Length == 1) {
-					if (terms[0].StartsWith("tm:", StringComparison.Ordinal))
-						return new MemberSearchStrategy(language, AddResult, terms[0].Substring(3));
+					if (searchTerm[0].StartsWith("t:", StringComparison.Ordinal))
+						return new MemberSearchStrategy(language, apiVisibility, searchTerm[0].Substring(2), resultQueue, MemberSearchKind.Type);
 
-					if (terms[0].StartsWith("t:", StringComparison.Ordinal))
-						return new MemberSearchStrategy(language, AddResult, terms[0].Substring(2), MemberSearchKind.Type);
+					if (searchTerm[0].StartsWith("m:", StringComparison.Ordinal))
+						return new MemberSearchStrategy(language, apiVisibility, searchTerm[0].Substring(2), resultQueue, MemberSearchKind.Member);
 
-					if (terms[0].StartsWith("m:", StringComparison.Ordinal))
-						return new MemberSearchStrategy(language, AddResult, terms[0].Substring(2), MemberSearchKind.Member);
+					if (searchTerm[0].StartsWith("md:", StringComparison.Ordinal))
+						return new MemberSearchStrategy(language, apiVisibility, searchTerm[0].Substring(3), resultQueue, MemberSearchKind.Method);
 
-					if (terms[0].StartsWith("md:", StringComparison.Ordinal))
-						return new MemberSearchStrategy(language, AddResult, terms[0].Substring(3), MemberSearchKind.Method);
+					if (searchTerm[0].StartsWith("f:", StringComparison.Ordinal))
+						return new MemberSearchStrategy(language, apiVisibility, searchTerm[0].Substring(2), resultQueue, MemberSearchKind.Field);
 
-					if (terms[0].StartsWith("f:", StringComparison.Ordinal))
-						return new MemberSearchStrategy(language, AddResult, terms[0].Substring(2), MemberSearchKind.Field);
+					if (searchTerm[0].StartsWith("p:", StringComparison.Ordinal))
+						return new MemberSearchStrategy(language, apiVisibility, searchTerm[0].Substring(2), resultQueue, MemberSearchKind.Property);
 
-					if (terms[0].StartsWith("p:", StringComparison.Ordinal))
-						return new MemberSearchStrategy(language, AddResult, terms[0].Substring(2), MemberSearchKind.Property);
+					if (searchTerm[0].StartsWith("e:", StringComparison.Ordinal))
+						return new MemberSearchStrategy(language, apiVisibility, searchTerm[0].Substring(2), resultQueue, MemberSearchKind.Event);
 
-					if (terms[0].StartsWith("e:", StringComparison.Ordinal))
-						return new MemberSearchStrategy(language, AddResult, terms[0].Substring(2), MemberSearchKind.Event);
+					if (searchTerm[0].StartsWith("c:", StringComparison.Ordinal))
+						return new LiteralSearchStrategy(language, apiVisibility, resultQueue, searchTerm[0].Substring(2));
 
-					if (terms[0].StartsWith("c:", StringComparison.Ordinal))
-						return new LiteralSearchStrategy(language, AddResult, terms[0].Substring(2));
-
-					if (terms[0].StartsWith("@", StringComparison.Ordinal))
-						return new MetadataTokenSearchStrategy(language, AddResult, terms[0].Substring(1));
+					if (searchTerm[0].StartsWith("@", StringComparison.Ordinal))
+						return new MetadataTokenSearchStrategy(language, apiVisibility, resultQueue, searchTerm[0].Substring(1));
 				}
 
-				switch (mode)
+				switch (searchMode)
 				{
 					case SearchMode.TypeAndMember:
-						return new MemberSearchStrategy(language, AddResult, terms);
+						return new MemberSearchStrategy(language, apiVisibility, resultQueue, searchTerm);
 					case SearchMode.Type:
-						return new MemberSearchStrategy(language, AddResult, terms, MemberSearchKind.Type);
+						return new MemberSearchStrategy(language, apiVisibility, resultQueue, searchTerm, MemberSearchKind.Type);
 					case SearchMode.Member:
-						return new MemberSearchStrategy(language, AddResult, terms, MemberSearchKind.Member);
+						return new MemberSearchStrategy(language, apiVisibility, resultQueue, searchTerm, MemberSearchKind.Member);
 					case SearchMode.Literal:
-						return new LiteralSearchStrategy(language, AddResult, terms);
+						return new LiteralSearchStrategy(language, apiVisibility, resultQueue, searchTerm);
 					case SearchMode.Method:
-						return new MemberSearchStrategy(language, AddResult, terms, MemberSearchKind.Method);
+						return new MemberSearchStrategy(language, apiVisibility, resultQueue, searchTerm, MemberSearchKind.Method);
 					case SearchMode.Field:
-						return new MemberSearchStrategy(language, AddResult, terms, MemberSearchKind.Field);
+						return new MemberSearchStrategy(language, apiVisibility, resultQueue, searchTerm, MemberSearchKind.Field);
 					case SearchMode.Property:
-						return new MemberSearchStrategy(language, AddResult, terms, MemberSearchKind.Property);
+						return new MemberSearchStrategy(language, apiVisibility, resultQueue, searchTerm, MemberSearchKind.Property);
 					case SearchMode.Event:
-						return new MemberSearchStrategy(language, AddResult, terms, MemberSearchKind.Event);
+						return new MemberSearchStrategy(language, apiVisibility, resultQueue, searchTerm, MemberSearchKind.Event);
 					case SearchMode.Token:
-						return new MetadataTokenSearchStrategy(language, AddResult, terms);
+						return new MetadataTokenSearchStrategy(language, apiVisibility, resultQueue, searchTerm);
 				}
 
 				return null;
@@ -354,7 +423,7 @@ namespace ICSharpCode.ILSpy.Search
 		}
 	}
 
-	sealed class SearchResult : IMemberTreeNode
+	public sealed class SearchResult : IMemberTreeNode
 	{
 		public static readonly System.Collections.Generic.IComparer<SearchResult> Comparer = new SearchResultComparer();
 		
@@ -363,8 +432,8 @@ namespace ICSharpCode.ILSpy.Search
 		
 		public string Location { get; set; }
 		public string Name { get; set; }
-        public object ToolTip { get; set; }
-        public IBitmap Image { get; set; }
+		public object ToolTip { get; set; }
+		public IBitmap Image { get; set; }
 		public IBitmap LocationImage { get; set; }
 		
 		public override string ToString()
@@ -378,6 +447,19 @@ namespace ICSharpCode.ILSpy.Search
 			{
 				return StringComparer.Ordinal.Compare(x?.Name ?? "", y?.Name ?? "");
 			}
+		}
+	}
+
+	[ExportMainMenuCommand(Menu = nameof(Properties.Resources._View), Header =nameof(Properties.Resources.Search), MenuIcon = "Images/Find.png", MenuCategory = nameof(Properties.Resources.View), MenuOrder = 100)]
+	[ExportToolbarCommand(ToolTip = nameof(Properties.Resources.SearchCtrlShiftFOrCtrlE), ToolbarIcon = "Images/Find.png", ToolbarCategory = nameof(Properties.Resources.View), ToolbarOrder = 100)]
+	sealed class ShowSearchCommand : CommandWrapper
+	{
+		public ShowSearchCommand()
+			: base(NavigationCommands.Search)
+		{
+			//NavigationCommands.Search.InputGestures.Clear();
+			//NavigationCommands.Search.InputGestures.Add(new KeyGesture(Key.F, ModifierKeys.Control | ModifierKeys.Shift));
+			//NavigationCommands.Search.InputGestures.Add(new KeyGesture(Key.E, ModifierKeys.Control));
 		}
 	}
 

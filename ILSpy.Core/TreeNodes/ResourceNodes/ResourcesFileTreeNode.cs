@@ -31,6 +31,7 @@ using ICSharpCode.ILSpy.Controls;
 using Microsoft.Win32;
 using System.Threading.Tasks;
 using Avalonia.Controls;
+using ICSharpCode.ILSpy.Properties;
 
 namespace ICSharpCode.ILSpy.TreeNodes
 {
@@ -76,9 +77,13 @@ namespace ICSharpCode.ILSpy.TreeNodes
 					ProcessResourceEntry(entry);
 				}
 			} catch (BadImageFormatException) {
-				// ignore errors
-			}
-		}
+                // ignore errors
+            }
+            catch (EndOfStreamException)
+            {
+                // ignore errors
+            }
+        }
 
 		private void ProcessResourceEntry(KeyValuePair<string, object> entry)
 		{
@@ -126,10 +131,23 @@ namespace ICSharpCode.ILSpy.TreeNodes
                         s.CopyTo(fs);
                     }
                 } else {
-                    using (var writer = new ResXResourceWriter(File.OpenWrite(filename))) {
-                        foreach (var entry in new ResourcesFile(s)) {
-                            writer.AddResource(entry.Key, entry.Value);
+                    try
+                    {
+                        using (var writer = new ResXResourceWriter(File.OpenWrite(filename)))
+                        {
+                            foreach (var entry in new ResourcesFile(s))
+                            {
+                                writer.AddResource(entry.Key, entry.Value);
+                            }
                         }
+                    }
+                    catch (BadImageFormatException)
+                    {
+                        // ignore errors
+                    }
+                    catch (EndOfStreamException)
+                    {
+                        // ignore errors
                     }
                 }
             }

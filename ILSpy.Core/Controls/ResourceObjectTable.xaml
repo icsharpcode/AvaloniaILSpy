@@ -1,16 +1,19 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<UserControl xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" x:Class="ICSharpCode.ILSpy.Controls.ResourceObjectTable">
+<UserControl x:Class="ICSharpCode.ILSpy.Controls.ResourceObjectTable"
+    xmlns="https://github.com/avaloniaui" 
+    xmlns:properties="clr-namespace:ICSharpCode.ILSpy.Properties"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" >
     <Grid Margin="5,0,0,0">
         <Grid.RowDefinitions>
             <RowDefinition Height="30" />
             <RowDefinition />
         </Grid.RowDefinitions>
-        <TextBlock Margin="5" Text="Other Resources (Name/ Value/ Type)" FontFamily="Segoe UI" FontWeight="Bold" FontSize="12" />
+        <TextBlock Margin="5" Text="{x:Static properties:Resources.OtherResources}" FontFamily="Segoe UI" FontWeight="Bold" FontSize="12" />
         <DataGrid Name="resourceListView" FontFamily="Segoe UI" FontSize="9" Grid.Row="1" RowBackground="{DynamicResource ThemeBackgroundBrush}" AlternatingRowBackground="{DynamicResource ThemeAccentBrush4}" CanUserResizeColumns="True">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Key" Binding="{Binding Key}" Width="*" />
-                <DataGridTextColumn Header="Value" Binding="{Binding Value}" Width="*" />
-                <DataGridTextColumn Header="Type" Binding="{Binding Type}" Width="*" />
+                <DataGridTextColumn Header="{x:Static properties:Resources.Name}" Binding="{Binding Key}" Width="*" />
+                <DataGridTextColumn Header="{x:Static properties:Resources.ValueString}" Binding="{Binding Value}" Width="*" />
+                <DataGridTextColumn Header="{x:Static properties:Resources.Type}" Binding="{Binding Type}" Width="*" />
             </DataGrid.Columns>
         </DataGrid>
     </Grid>

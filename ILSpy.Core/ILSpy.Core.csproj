@@ -28,7 +28,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="ICSharpCode.Decompiler" Version="5.0.0.4688-preview1" />
+    <PackageReference Include="ICSharpCode.Decompiler" Version="5.0.0.4850-preview2-debug" />
     <PackageReference Include="Microsoft.VisualStudio.Composition" Version="15.8.98" />
     <PackageReference Include="Microsoft.DiaSymReader.Converter.Xml" Version="1.1.0-beta1-63314-01" />
     <PackageReference Include="System.IO.Compression" Version="4.3.0" />

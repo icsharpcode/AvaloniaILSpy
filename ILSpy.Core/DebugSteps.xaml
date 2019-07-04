@@ -3,14 +3,16 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:ICSharpCode.ILSpy"
+             xmlns:properties="clr-namespace:ICSharpCode.ILSpy.Properties"   
              x:Class="ICSharpCode.ILSpy.DebugSteps"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
 	<DockPanel>
 		<StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
-			<CheckBox Margin="3" Content="UseFieldSugar" IsChecked="{Binding UseFieldSugar, Source={x:Static local:DebugSteps.Options}}" />
-			<CheckBox Margin="3" Content="UseLogicOperationSugar"  IsChecked="{Binding UseLogicOperationSugar, Source={x:Static local:DebugSteps.Options}}" />
-			<CheckBox Margin="3" Content="ShowILRanges"  IsChecked="{Binding ShowILRanges, Source={x:Static local:DebugSteps.Options}}" />
+            <CheckBox Margin="3" Content="{x:Static properties:Resources.UseFieldSugar}" IsChecked="{Binding UseFieldSugar, Source={x:Static local:DebugSteps.Options}}" />
+            <CheckBox Margin="3" Content="{x:Static properties:Resources.UseLogicOperationSugar}"  IsChecked="{Binding UseLogicOperationSugar, Source={x:Static local:DebugSteps.Options}}" />
+            <CheckBox Margin="3" Content="{x:Static properties:Resources.ShowILRanges}"  IsChecked="{Binding ShowILRanges, Source={x:Static local:DebugSteps.Options}}" />
+            <CheckBox Margin="3" Content="{x:Static properties:Resources.ShowChildIndexInBlock}"  IsChecked="{Binding ShowChildIndexInBlock, Source={x:Static local:DebugSteps.Options}}" />
 		</StackPanel>
 		<TreeView Name="tree" >
 			<TreeView.ItemTemplate>
@@ -20,9 +22,9 @@
 			</TreeView.ItemTemplate>
 			<TreeView.ContextMenu>
 				<ContextMenu>
-					<MenuItem Name="ShowStateBefore" Header="Show state before this step"/>
-					<MenuItem Name="ShowStateAfter" Header="Show state after this step" />
-					<MenuItem Name="DebugStep" Header="Debug this step" />
+					<MenuItem Name="ShowStateBefore" Header="{x:Static properties:Resources.ShowStateBeforeThisStep}"/>
+					<MenuItem Name="ShowStateAfter" Header="{x:Static properties:Resources.ShowStateAfterThisStep}"  />
+					<MenuItem Name="DebugStep" Header="{x:Static properties:Resources.DebugThisStep}" />
 				</ContextMenu>
 			</TreeView.ContextMenu>
 		</TreeView>

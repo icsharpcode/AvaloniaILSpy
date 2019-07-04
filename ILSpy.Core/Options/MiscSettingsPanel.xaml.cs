@@ -23,11 +23,11 @@ using System.Xml.Linq;
 
 namespace ICSharpCode.ILSpy.Options
 {
-	/// <summary>
-	/// Interaction logic for MiscSettingsPanel.xaml
-	/// </summary>
-	[ExportOptionPage(Title = "Misc", Order = 2)]
-	public partial class MiscSettingsPanel : UserControl, IOptionPage
+    /// <summary>
+    /// Interaction logic for MiscSettingsPanel.xaml
+    /// </summary>
+    [ExportOptionPage(Title = nameof(Properties.Resources.Misc), Order = 30)]
+    public partial class MiscSettingsPanel : UserControl, IOptionPage
 	{
 		public MiscSettingsPanel()
 		{

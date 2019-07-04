@@ -20,11 +20,9 @@ using System;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
-using Avalonia.Media;
 using AvaloniaEdit.Highlighting;
 using ICSharpCode.Decompiler;
 using Avalonia.Media.Imaging;
-using Avalonia.Input;
 using Avalonia.Interactivity;
 
 namespace ICSharpCode.ILSpy

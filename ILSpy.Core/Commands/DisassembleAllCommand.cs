@@ -21,12 +21,13 @@
 using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
+using ICSharpCode.ILSpy.Properties;
 using ICSharpCode.ILSpy.TextView;
 
 namespace ICSharpCode.ILSpy
 {
-	[ExportMainMenuCommand(Menu = "_File", Header = "DEBUG -- Disassemble All", MenuCategory = "Open", MenuOrder = 2.5)]
-	sealed class DisassembleAllCommand : SimpleCommand
+    [ExportMainMenuCommand(Menu = nameof(Resources._File), Header = nameof(Resources.DEBUGDisassemble), MenuCategory = nameof(Resources.Open), MenuOrder = 2.5)]
+    sealed class DisassembleAllCommand : SimpleCommand
 	{
 		public override bool CanExecute(object parameter)
 		{

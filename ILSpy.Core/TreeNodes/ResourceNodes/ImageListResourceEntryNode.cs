@@ -19,6 +19,7 @@
 using System.ComponentModel.Composition;
 using System.Drawing;
 using ICSharpCode.Decompiler;
+using ICSharpCode.ILSpy.Properties;
 
 // TODO: Support image list
 namespace ICSharpCode.ILSpy.TreeNodes

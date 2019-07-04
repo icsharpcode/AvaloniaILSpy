@@ -20,8 +20,12 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Data.Converters;
+using Avalonia.Input;
+using Avalonia.Input.Platform;
+using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using Avalonia.Media;
 using Avalonia.Threading;
@@ -33,8 +37,8 @@ namespace ICSharpCode.ILSpy.Options
     /// <summary>
     /// Interaction logic for DisplaySettingsPanel.xaml
     /// </summary>
-    [ExportOptionPage(Title = "Display", Order = 1)]
-	public partial class DisplaySettingsPanel : UserControl, IOptionPage
+	[ExportOptionPage(Title = nameof(Properties.Resources.Display), Order = 20)]
+    public partial class DisplaySettingsPanel : UserControl, IOptionPage
 	{
 		internal ComboBox fontSelector;
 
@@ -42,7 +46,7 @@ namespace ICSharpCode.ILSpy.Options
 		{
 			InitializeComponent();
 
-			Task<FontFamily[]> task = new Task<FontFamily[]>(FontLoader);
+            Task<FontFamily[]> task = new Task<FontFamily[]>(FontLoader);
 			task.Start();
 			task.ContinueWith(
 				delegate(Task continuation) {
@@ -111,12 +115,17 @@ namespace ICSharpCode.ILSpy.Options
 			s.SelectedFont = new FontFamily((string)e.Attribute("Font") ?? "Consolas");
 			s.SelectedFontSize = (double?)e.Attribute("FontSize") ?? 10.0 * 4 / 3;
 			s.ShowLineNumbers = (bool?)e.Attribute("ShowLineNumbers") ?? false;
-			s.ShowMetadataTokens = (bool?) e.Attribute("ShowMetadataTokens") ?? false;
+            s.ShowDebugInfo = (bool?)e.Attribute("ShowDebugInfo") ?? false;
+            s.ShowMetadataTokens = (bool?) e.Attribute("ShowMetadataTokens") ?? false;
             s.ShowMetadataTokensInBase10 = (bool?)e.Attribute("ShowMetadataTokensInBase10") ?? false;
             s.EnableWordWrap = (bool?)e.Attribute("EnableWordWrap") ?? false;
 			s.SortResults = (bool?)e.Attribute("SortResults") ?? true;
             s.FoldBraces = (bool?)e.Attribute("FoldBraces") ?? false;
             s.ExpandMemberDefinitions = (bool?)e.Attribute("ExpandMemberDefinitions") ?? false;
+            s.ExpandUsingDeclarations = (bool?)e.Attribute("ExpandUsingDeclarations") ?? false;
+            s.IndentationUseTabs = (bool?)e.Attribute("IndentationUseTabs") ?? true;
+            s.IndentationSize = (int?)e.Attribute("IndentationSize") ?? 4;
+            s.IndentationTabSize = (int?)e.Attribute("IndentationTabSize") ?? 4;
 
             return s;
 		}
@@ -129,12 +138,16 @@ namespace ICSharpCode.ILSpy.Options
 			section.SetAttributeValue("Font", s.SelectedFont.Name);
 			section.SetAttributeValue("FontSize", s.SelectedFontSize);
 			section.SetAttributeValue("ShowLineNumbers", s.ShowLineNumbers);
-			section.SetAttributeValue("ShowMetadataTokens", s.ShowMetadataTokens);
+            section.SetAttributeValue("ShowDebugInfo", s.ShowDebugInfo);
+            section.SetAttributeValue("ShowMetadataTokens", s.ShowMetadataTokens);
             section.SetAttributeValue("ShowMetadataTokensInBase10", s.ShowMetadataTokensInBase10);
             section.SetAttributeValue("EnableWordWrap", s.EnableWordWrap);
 			section.SetAttributeValue("SortResults", s.SortResults);
             section.SetAttributeValue("FoldBraces", s.FoldBraces);
             section.SetAttributeValue("ExpandMemberDefinitions", s.ExpandMemberDefinitions);
+            section.SetAttributeValue("IndentationUseTabs", s.IndentationUseTabs);
+            section.SetAttributeValue("IndentationSize", s.IndentationSize);
+            section.SetAttributeValue("IndentationTabSize", s.IndentationTabSize);
 
             XElement existingElement = root.Element("DisplaySettings");
 			if (existingElement != null)
@@ -146,10 +159,15 @@ namespace ICSharpCode.ILSpy.Options
 				currentDisplaySettings.CopyValues(s);
 		}
 
-	}
-	
+        private void TextBox_PreviewTextInput(object sender, TextInputEventArgs e)
+        {
+            if (!e.Text.All(char.IsDigit))
+                e.Handled = true;
+        }
+    }
 
-	public class FontSizeConverter : IValueConverter
+
+    public class FontSizeConverter : IValueConverter
 	{
 		public static readonly FontSizeConverter Instance = new FontSizeConverter();
 

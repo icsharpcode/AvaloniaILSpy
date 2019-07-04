@@ -377,7 +377,9 @@ namespace ICSharpCode.ILSpy.TextView
 			references = textOutput.References;
 			definitionLookup = textOutput.DefinitionLookup;
 			textEditor.SyntaxHighlighting = highlighting;
-			if (activeRichTextColorizer != null)
+            textEditor.Options.EnableEmailHyperlinks = textOutput.EnableHyperlinks;
+            textEditor.Options.EnableHyperlinks = textOutput.EnableHyperlinks;
+            if (activeRichTextColorizer != null)
 				textEditor.TextArea.TextView.LineTransformers.Remove(activeRichTextColorizer);
 			if (textOutput.HighlightingModel != null) {
 				activeRichTextColorizer = new RichTextColorizer(textOutput.HighlightingModel);
@@ -555,7 +557,7 @@ namespace ICSharpCode.ILSpy.TextView
 			output.WriteLine();
 			if (wasNormalLimit) {
 				output.AddButton(
-					Images.ViewCode, "Display Code",
+					Images.ViewCode, Properties.Resources.DisplayCode,
 					delegate {
 						DoDecompile(context, ExtendedOutputLengthLimit).HandleExceptions();
 					});
@@ -563,7 +565,7 @@ namespace ICSharpCode.ILSpy.TextView
 			}
 			
 			output.AddButton(
-				Images.Save, "Save Code",
+				Images.Save, Properties.Resources.SaveCode,
 				delegate {
 					SaveToDisk(context.Language, context.TreeNodes, context.Options);
 				});
@@ -584,7 +586,7 @@ namespace ICSharpCode.ILSpy.TextView
 					foreach (var r in references) {
 						if (reference.Equals(r.Reference)) {
 							var mark = textMarkerService.Create(r.StartOffset, r.Length);
-							mark.BackgroundColor = r.IsLocalTarget ? Colors.LightSeaGreen : Colors.GreenYellow;
+							mark.BackgroundColor = r.IsDefinition ? Colors.LightSeaGreen : Colors.GreenYellow;
 							localReferenceMarks.Add(mark);
 						}
 					}
@@ -628,7 +630,7 @@ namespace ICSharpCode.ILSpy.TextView
 				var referenceSegment = GetReferenceSegmentAtMousePosition();
 				if (referenceSegment == null) {
 					ClearLocalReferenceMarks();
-				} else {
+				} else if(referenceSegment.IsLocal || !referenceSegment.IsDefinition) {
 					JumpToReference(referenceSegment);
 					textEditor.TextArea.ClearSelection();
 				}
@@ -651,7 +653,7 @@ namespace ICSharpCode.ILSpy.TextView
 		/// </summary>
 		bool IsLink(ReferenceSegment referenceSegment)
 		{
-			return true;
+			return referenceSegment.IsLocal || !referenceSegment.IsDefinition;
 		}
         #endregion
 
@@ -669,7 +671,7 @@ namespace ICSharpCode.ILSpy.TextView
             dlg.Filters = new List<FileDialogFilter>()
             {
                 new FileDialogFilter() { Name = language.Name, Extensions = { language.FileExtension } },
-                new FileDialogFilter(){ Name = "All Files", Extensions = { "*" } }
+                new FileDialogFilter(){ Name = Properties.Resources.AllFiles, Extensions = { "*" } }
             };
             dlg.InitialFileName = CleanUpName(treeNodes.First().ToString()) + language.FileExtension;
             var fileName = await dlg.ShowAsync(App.Current.MainWindow);
@@ -729,7 +731,7 @@ namespace ICSharpCode.ILSpy.TextView
 						AvaloniaEditTextOutput output = new AvaloniaEditTextOutput();
 						output.WriteLine("Decompilation complete in " + stopwatch.Elapsed.TotalSeconds.ToString("F1") + " seconds.");
 						output.WriteLine();
-						output.AddButton(null, "Open Explorer", delegate { Process.Start("explorer", "/select,\"" + fileName + "\""); });
+						output.AddButton(null, Properties.Resources.OpenExplorer, delegate { Process.Start("explorer", "/select,\"" + fileName + "\""); });
 						output.WriteLine();
 						tcs.SetResult(output);
 					} catch (OperationCanceledException) {

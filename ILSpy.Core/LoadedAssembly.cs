@@ -18,6 +18,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Reflection.Metadata;
 using System.Reflection.PortableExecutable;
@@ -26,7 +27,6 @@ using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
 using Avalonia.Threading;
-using ICSharpCode.Decompiler;
 using ICSharpCode.Decompiler.DebugInfo;
 using ICSharpCode.Decompiler.Metadata;
 using ICSharpCode.Decompiler.PdbProvider.Cecil;
@@ -35,14 +35,13 @@ using ICSharpCode.Decompiler.TypeSystem.Implementation;
 using ICSharpCode.ILSpy.DebugInfo;
 using ICSharpCode.ILSpy.Options;
 
-using static System.Reflection.Metadata.PEReaderExtensions;
-
 namespace ICSharpCode.ILSpy
 {
-	/// <summary>
-	/// Represents an assembly loaded into ILSpy.
-	/// </summary>
-	public sealed class LoadedAssembly
+    /// <summary>
+    /// Represents an assembly loaded into ILSpy.
+    /// </summary>
+    [DebuggerDisplay("[LoadedAssembly {shortName}]")]
+    public sealed class LoadedAssembly
 	{
 		internal static readonly ConditionalWeakTable<PEFile, LoadedAssembly> loadedAssemblies = new ConditionalWeakTable<PEFile, LoadedAssembly>();
 

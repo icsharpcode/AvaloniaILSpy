@@ -1,4 +1,4 @@
-// Copyright (c) 2011 AlphaSierraPapa for the SharpDevelop Team
+﻿// Copyright (c) 2011 AlphaSierraPapa for the SharpDevelop Team
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this
 // software and associated documentation files (the "Software"), to deal in the Software
@@ -22,6 +22,7 @@ using System.IO;
 using Avalonia.Controls;
 using Avalonia.Media.Imaging;
 using ICSharpCode.Decompiler.Metadata;
+using ICSharpCode.ILSpy.Properties;
 using ICSharpCode.ILSpy.TextView;
 
 namespace ICSharpCode.ILSpy.TreeNodes
@@ -87,7 +88,7 @@ namespace ICSharpCode.ILSpy.TreeNodes
 
 				output.AddUIElement(() => new Image { Source = image });
 				output.WriteLine();
-                output.AddButton(Images.Save, "Save", async delegate {
+                output.AddButton(Images.Save, Resources.Save, async delegate {
                     await Save(null);
                 });
                 textView.ShowNode(output, this);

@@ -121,7 +121,8 @@ namespace ICSharpCode.ILSpy
 		public string Header { get; set; }
 		public string Category { get; set; }
 		public double Order { get; set; }
-	}
+        public string InputGestureText { get; set; }
+    }
 	
 	internal class ContextMenuProvider
 	{
@@ -222,8 +223,8 @@ namespace ICSharpCode.ILSpy
 							needSeparatorForCategory = false;
 						}
 						MenuItem menuItem = new MenuItem();
-						menuItem.Header = entryPair.Metadata.Header;
-						if (!string.IsNullOrEmpty(entryPair.Metadata.Icon)) {
+                        menuItem.Header = MainWindow.GetResourceString(entryPair.Metadata.Header);
+                        if (!string.IsNullOrEmpty(entryPair.Metadata.Icon)) {
 							menuItem.Icon = new Image {
 								Width = 16,
 								Height = 16,
