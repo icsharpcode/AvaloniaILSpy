@@ -28,6 +28,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Collections;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Media;
@@ -48,12 +49,9 @@ namespace ICSharpCode.ILSpy.Search
 		static SearchPane instance;
 		RunningSearch currentSearch;
 		bool runSearchOnNextShow;
+        DispatcherTimer updateResultTimer = new DispatcherTimer() { Interval = TimeSpan.FromMilliseconds(2D) };
 
-		public static readonly AvaloniaProperty<ObservableCollection<SearchResult>> ResultsProperty =
-			AvaloniaProperty.Register<SearchPane, ObservableCollection<SearchResult>>("Results", defaultValue: new ObservableCollection<SearchResult>());
-		public ObservableCollection<SearchResult> Results {
-			get { return GetValue(ResultsProperty); }
-		}
+        public ObservableCollection<SearchResult> Results { get; } = new ObservableCollection<SearchResult>();
 
 		public static SearchPane Instance {
 			get {
@@ -80,19 +78,17 @@ namespace ICSharpCode.ILSpy.Search
 			    new { Image = Images.Library, Name = "Metadata Token" }
             };
 
+
 			ContextMenuProvider.Add(listBox);
 			MainWindow.Instance.CurrentAssemblyListChanged += MainWindow_Instance_CurrentAssemblyListChanged;
 			MainWindow.Instance.SessionSettings.FilterSettings.PropertyChanged += FilterSettings_PropertyChanged;
 
-			// This starts empty search right away, so do at the end (we're still in ctor)
-			searchModeComboBox.SelectedIndex = (int)MainWindow.Instance.SessionSettings.SelectedSearchMode;
+            // This starts empty search right away, so do at the end (we're still in ctor)
+            searchModeComboBox.SelectedIndex = (int)MainWindow.Instance.SessionSettings.SelectedSearchMode;
 			searchModeComboBox.SelectionChanged += (sender, e) => MainWindow.Instance.SessionSettings.SelectedSearchMode = (Search.SearchMode)searchModeComboBox.SelectedIndex;
-		}
+            updateResultTimer.Tick += UpdateResults;
 
-        public override void Render(DrawingContext context)
-        {
-            UpdateResults(this, EventArgs.Empty);
-            base.Render(context);
+            this.DataContext = new DataGridCollectionView(Results);
         }
 
         void MainWindow_Instance_CurrentAssemblyListChanged(object sender, NotifyCollectionChangedEventArgs e)
@@ -136,19 +132,23 @@ namespace ICSharpCode.ILSpy.Search
                         searchBox.SelectionEnd = searchBox.Text?.Length ?? 0;
                     }),
                 DispatcherPriority.Background);
+            updateResultTimer.Start();
         }
 
         public static readonly StyledProperty<string> SearchTermProperty =
             AvaloniaProperty.Register<SearchPane, string>("SearchTerm", string.Empty, notifying: OnSearchTermChanged);
 
         public string SearchTerm {
-			get { return (string)GetValue(SearchTermProperty); }
-			set { SetValue(SearchTermProperty, value); }
+			get { return GetValue(SearchTermProperty) ?? string.Empty; }
+			set { SetValue(SearchTermProperty, value ?? string.Empty); }
 		}
 
         static void OnSearchTermChanged(IAvaloniaObject o, bool changed)
         {
-            ((SearchPane)o).StartSearch(o.GetValue(SearchTermProperty));
+            if (changed)
+            {
+                ((SearchPane)o).StartSearch(o.GetValue(SearchTermProperty));
+            }
         }
 
         void SearchModeComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -160,7 +160,8 @@ namespace ICSharpCode.ILSpy.Search
 		void IPane.Closed()
 		{
 			this.SearchTerm = string.Empty;
-		}
+            updateResultTimer.Stop();
+        }
 		
 		void ListBox_MouseDoubleClick(object sender, RoutedEventArgs e)
 		{
@@ -197,7 +198,7 @@ namespace ICSharpCode.ILSpy.Search
 
 		void SearchBox_PreviewKeyDown(object sender, KeyEventArgs e)
 		{
-			if (e.Key == Key.Down && listBox.ItemCount > 0) {
+			if (e.Key == Key.Down && Results.Count > 0) {
 				e.Handled = true;
                 // TODO: movefocus
 				//listBox.MoveFocus(new TraversalRequest(FocusNavigationDirection.First));

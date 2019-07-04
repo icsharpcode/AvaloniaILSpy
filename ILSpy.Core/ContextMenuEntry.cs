@@ -28,6 +28,7 @@ using ICSharpCode.TreeView;
 using System.ComponentModel;
 using Avalonia;
 using ICSharpCode.ILSpy.Search;
+using Avalonia.Controls.Primitives;
 
 namespace ICSharpCode.ILSpy
 {
@@ -76,7 +77,7 @@ namespace ICSharpCode.ILSpy
 		/// </summary>
 		public TextViewPosition? Position { get; private set; }
 		
-		public static TextViewContext Create(SharpTreeView treeView = null, DecompilerTextView textView = null, ListBox listBox = null)
+		public static TextViewContext Create(SharpTreeView treeView = null, DecompilerTextView textView = null, DataGrid listBox = null)
 		{
 			ReferenceSegment reference;
 			if (textView != null)
@@ -145,7 +146,7 @@ namespace ICSharpCode.ILSpy
 			}
 		}
 		
-		public static void Add(ListBox listBox)
+		public static void Add(DataGrid listBox)
 		{
 			var provider = new ContextMenuProvider(listBox);
             listBox.ContextMenu = new ContextMenu();
@@ -154,7 +155,7 @@ namespace ICSharpCode.ILSpy
 		
 		readonly SharpTreeView treeView;
 		readonly DecompilerTextView textView;
-		readonly ListBox listBox;
+		readonly DataGrid listBox;
 		readonly Lazy<IContextMenuEntry, IContextMenuEntryMetadata>[] entries;
 		
 		private ContextMenuProvider()
@@ -168,7 +169,7 @@ namespace ICSharpCode.ILSpy
 			this.textView = textView;
 		}
 		
-		ContextMenuProvider(ListBox listBox) : this()
+		ContextMenuProvider(DataGrid listBox) : this()
 		{
 			this.listBox = listBox;
 		}

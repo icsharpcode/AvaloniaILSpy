@@ -9,7 +9,7 @@
 	<Grid>
 		<Grid.RowDefinitions>
 			<RowDefinition Height="Auto"  />
-            <RowDefinition Height="3" />
+            <RowDefinition Height="5" />
 			<RowDefinition Height="*" />
 		</Grid.RowDefinitions>
 		<Border BorderBrush="{DynamicResource ThemeBorderLowBrush}" Background="{DynamicResource ThemeBackgroundBrush}" Margin="0">
@@ -37,27 +37,42 @@
 				</StackPanel>
 			</Grid>
 		</Border>
-        <ProgressBar Name="searchProgressBar" Grid.Row="1" BorderThickness="0" Background="{DynamicResource ThemeBackgroundBrush}" />
-        <ListBox Grid.Row="1" BorderThickness="0,0,0,0" Name="listBox" SelectionMode="Single">
-			<ListBox.ItemTemplate>
-				<DataTemplate>
-					<Grid>
-						<Grid.ColumnDefinitions>
-							<ColumnDefinition Width="*" />
-							<ColumnDefinition Width="*" />
-						</Grid.ColumnDefinitions>
+        <ProgressBar Name="searchProgressBar" Grid.Row="1" BorderThickness="0" Background="{x:Null}" />
+        <DataGrid Name="listBox"
+                  Grid.Row="2" BorderThickness="0,1,0,0" 
+                  RowBackground="{DynamicResource ThemeBackgroundBrush}"
+                  AlternatingRowBackground="{DynamicResource ThemeBackgroundBrush}"
+                  SelectionMode="Single" 
+                  CanUserReorderColumns="False"
+                  CanUserSortColumns="True"
+                  KeyDown="ListBox_KeyDown"
+                  DoubleTapped="ListBox_MouseDoubleClick"
+                  Items="{Binding }" >
+            
             <!--TODO:TextTrimming-->
-						<StackPanel Orientation="Horizontal" Grid.Column="0">
-							<Image Height="16" Margin="0,0,4,0" Width="16" Source="{Binding Image}" />
-							<TextBlock Text="{Binding Name}" ToolTip.Tip="{Binding ToolTip}" />
-						</StackPanel>
-						<StackPanel Orientation="Horizontal"  Grid.Column="1">
-							<Image Height="16" Margin="4,0,4,0" Width="16" Source="{Binding LocationImage}" />
-							<TextBlock Text="{Binding Location}"/>
-						</StackPanel>
-					</Grid>
-				</DataTemplate>
-			</ListBox.ItemTemplate>
-		</ListBox>
+              <DataGrid.Columns>
+                <DataGridTemplateColumn Header="{x:Static properties:Resources.Name}" SortMemberPath="Name" Width="3*">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <Image Height="16" Margin="0,0,4,0" Width="16" Source="{Binding Image}" />
+                                <TextBlock Text="{Binding Name}" ToolTip.Tip="{Binding ToolTip}" />
+                            </StackPanel>  
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                
+                <DataGridTemplateColumn Header="{x:Static properties:Resources.Location}" SortMemberPath="Location" Width="7*">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <Image Height="16" Margin="4,0,4,0" Width="16" Source="{Binding LocationImage}" />
+                                <TextBlock Text="{Binding Location}"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+              </DataGrid.Columns>
+        </DataGrid>
 	</Grid>
 </UserControl>

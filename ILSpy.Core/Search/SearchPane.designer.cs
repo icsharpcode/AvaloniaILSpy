@@ -29,7 +29,7 @@ namespace ICSharpCode.ILSpy.Search
 	{
         internal SearchBox searchBox;
         internal ComboBox searchModeComboBox;
-        internal ListBox listBox;
+        internal DataGrid listBox;
         internal ProgressBar searchProgressBar;
 
         private void InitializeComponent()
@@ -37,13 +37,11 @@ namespace ICSharpCode.ILSpy.Search
             AvaloniaXamlLoader.Load(this);
             searchBox = this.FindControl<SearchBox>("searchBox");
             searchModeComboBox = this.FindControl<ComboBox>("searchModeComboBox");
-            listBox = this.FindControl<ListBox>("listBox");
+            listBox = this.FindControl<DataGrid>("listBox");
             searchProgressBar = this.FindControl<ProgressBar>("searchProgressBar");
 
             searchBox.KeyDown += SearchBox_PreviewKeyDown;
             searchModeComboBox.SelectionChanged += SearchModeComboBox_SelectionChanged;
-            listBox.KeyDown += ListBox_KeyDown;
-            listBox.DoubleTapped += ListBox_MouseDoubleClick;
         }
 	}
 }
