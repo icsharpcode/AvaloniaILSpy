@@ -63,8 +63,8 @@ namespace ICSharpCode.ILSpy
 			SaveFileDialog dlg = new SaveFileDialog();
 			dlg.InitialFileName = DecompilerTextView.CleanUpName(assembly.ShortName) + ".pdb";
 			dlg.Filters = new List<FileDialogFilter> { new FileDialogFilter { Name = "Portable PDB", Extensions = { "pdb" } }, new FileDialogFilter { Name = "All files", Extensions = { "*" } } };
-            dlg.InitialDirectory = Path.GetDirectoryName(assembly.FileName);
-            string fileName = await dlg.ShowAsync(App.Current.MainWindow);
+            dlg.Directory = Path.GetDirectoryName(assembly.FileName);
+            string fileName = await dlg.ShowAsync(App.Current.GetMainWindow());
             if (string.IsNullOrEmpty(fileName)) return;
 			DecompilationOptions options = new DecompilationOptions();
 			MainWindow.Instance.TextView.RunWithCancellation(ct => Task<AvaloniaEditTextOutput>.Factory.StartNew(() => {

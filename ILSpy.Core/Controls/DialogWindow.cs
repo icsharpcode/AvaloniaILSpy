@@ -29,7 +29,7 @@ namespace ICSharpCode.ILSpy.Controls
         protected override void OnKeyDown(KeyEventArgs e)
         {
             base.OnKeyDown(e);
-            if (e.Key == Key.Escape && e.Modifiers == InputModifiers.None)
+            if (e.Key == Key.Escape && e.KeyModifiers == KeyModifiers.None)
             {
                 Close();
                 e.Handled = true;

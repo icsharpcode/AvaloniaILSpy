@@ -129,6 +129,9 @@ namespace ICSharpCode.ILSpy
             ILSpyTraceListener.Install();
         }
 
+		public override void OnFrameworkInitializationCompleted() =>
+			this.GetDesktopLifetime().MainWindow = new MainWindow();
+
         string FullyQualifyPath(string argument)
 		{
 			// Fully qualify the paths before passing them to another process,

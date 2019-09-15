@@ -674,7 +674,7 @@ namespace ICSharpCode.ILSpy.TextView
                 new FileDialogFilter(){ Name = Properties.Resources.AllFiles, Extensions = { "*" } }
             };
             dlg.InitialFileName = CleanUpName(treeNodes.First().ToString()) + language.FileExtension;
-            var fileName = await dlg.ShowAsync(App.Current.MainWindow);
+            var fileName = await dlg.ShowAsync(App.Current.GetMainWindow());
             if (fileName != null)
             {
                 SaveToDisk(new DecompilationContext(language, treeNodes.ToArray(), options), fileName);

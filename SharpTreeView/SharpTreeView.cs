@@ -306,7 +306,7 @@ namespace ICSharpCode.TreeView
 					break;
 				case Key.Return:
 				case Key.Space:
-					if (container != null && e.Modifiers == InputModifiers.None && this.SelectedItems.Count == 1 && this.SelectedItem == container.Node) {
+					if (container != null && e.KeyModifiers == KeyModifiers.None && this.SelectedItems.Count == 1 && this.SelectedItem == container.Node) {
 						container.Node.ActivateItem(e);
 					}
 					break;
@@ -629,13 +629,13 @@ namespace ICSharpCode.TreeView
 				if (insertMarker == null) {
 					var adornerLayer = AdornerLayer.GetAdornerLayer(this);
 					insertMarker = new InsertMarker();
-					var adorner = new AdornerDecorator() { Child = insertMarker };
+					var adorner = new VisualLayerManager() { Child = insertMarker };
 					adornerLayer.Children.Add(adorner);
 				}
 
 				insertMarker.IsVisible = true;
 
-				var p1 = previewNodeView.TranslatePoint(new Point(),this);
+				var p1 = previewNodeView.TranslatePoint(new Point(),this).Value;
 				var p = new Point(p1.X + previewNodeView.CalculateIndent() + 4.5, p1.Y - 3);
 
 				if (place == DropPlace.After) {
@@ -659,7 +659,7 @@ namespace ICSharpCode.TreeView
 				var w = p1.X + previewNodeView.Width - p.X;
 
 				if (secondNodeView != null) {
-					var p2 = secondNodeView.TranslatePoint(new Point(), this);
+					var p2 = secondNodeView.TranslatePoint(new Point(), this).Value;
 					w = Math.Max(w, p2.X + secondNodeView.Width - p.X);
 				}
 

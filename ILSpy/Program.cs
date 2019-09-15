@@ -3,7 +3,6 @@ using Avalonia.Logging.Serilog;
 using System;
 using System.IO;
 using System.Reflection;
-using System.Runtime.InteropServices;
 using Avalonia.Logging;
 using System.Collections.Generic;
 using Avalonia.Controls;
@@ -19,7 +18,7 @@ namespace ICSharpCode.ILSpy
 
             try
             {
-                BuildAvaloniaApp().Start<MainWindow>();
+                BuildAvaloniaApp().StartWithClassicDesktopLifetime(args);
             }
             catch (Exception exception)
             {
@@ -43,7 +42,7 @@ namespace ICSharpCode.ILSpy
             Logger.Sink = new ProxyLogSink(Logger.Sink);
 #endif
 
-            return result.UsePlatformDetect().UseDataGrid();
+            return result.UsePlatformDetect();
         }
 
         class ProxyLogSink : ILogSink

@@ -30,7 +30,7 @@ namespace ICSharpCode.ILSpy
 		public override async void Execute(object parameter)
 		{
             OpenFileDialog dlg = new OpenFileDialog();
-            dlg.InitialDirectory = NuGetEnvironment.GetFolderPath(NuGetFolderPath.NuGetHome);
+            dlg.Directory = NuGetEnvironment.GetFolderPath(NuGetFolderPath.NuGetHome);
             dlg.Filters = new List<FileDialogFilter>()
             {
                 new FileDialogFilter() { Name = "Nuget Packages (*.nupkg)", Extensions = { "nupkg" }},

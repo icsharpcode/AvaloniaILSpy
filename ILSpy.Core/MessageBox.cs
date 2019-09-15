@@ -73,7 +73,7 @@ namespace ICSharpCode.ILSpy
 
             // Show Message Window
             var win = new CustomDialog(caption, messageBoxText, AcceptButtonID[button], CancelButtonID[button], buttons);
-            var btnIndex = await win.ShowDialog<int?>(owner ?? App.Current.MainWindow);
+            var btnIndex = await win.ShowDialog<int?>(owner ?? App.Current.GetMainWindow());
 
             if (btnIndex != null && Enum.TryParse(buttons[btnIndex.Value], out MessageBoxResult result))
             {

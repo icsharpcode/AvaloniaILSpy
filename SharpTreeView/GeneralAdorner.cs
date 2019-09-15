@@ -8,7 +8,7 @@ using Avalonia.Controls;
 
 namespace ICSharpCode.TreeView
 {
-	public class GeneralAdorner : AdornerDecorator
+	public class GeneralAdorner : VisualLayerManager
 	{
 		public GeneralAdorner()
 		{

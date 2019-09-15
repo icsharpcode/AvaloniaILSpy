@@ -20,11 +20,9 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
-using System.IO;
 using System.Linq;
-using System.Reflection.PortableExecutable;
-using System.Windows;
 using Avalonia.Input;
+using Avalonia.Threading;
 using ICSharpCode.Decompiler;
 using ICSharpCode.Decompiler.Metadata;
 using ICSharpCode.Decompiler.TypeSystem;
@@ -190,7 +188,7 @@ namespace ICSharpCode.ILSpy.TreeNodes
 		{
 			if (module == null)
 				return null;
-            App.Current.MainWindow.VerifyAccess();
+            Dispatcher.UIThread.VerifyAccess();
             foreach (AssemblyTreeNode node in this.Children) {
 				if (node.LoadedAssembly.IsLoaded && node.LoadedAssembly.GetPEFileOrNull() == module)
 					return node;
@@ -202,7 +200,7 @@ namespace ICSharpCode.ILSpy.TreeNodes
 		{
 			if (asm == null)
 				return null;
-			App.Current.MainWindow.VerifyAccess();
+			Dispatcher.UIThread.VerifyAccess();
 			foreach (AssemblyTreeNode node in this.Children) {
 				if (node.LoadedAssembly == asm)
 					return node;

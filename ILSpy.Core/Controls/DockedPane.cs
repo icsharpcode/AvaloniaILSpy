@@ -57,7 +57,7 @@ namespace ICSharpCode.ILSpy.Controls
 		protected override void OnKeyDown(KeyEventArgs e)
 		{
 			base.OnKeyDown(e);
-			if (e.Key == Key.F4 && e.Modifiers == InputModifiers.Control || e.Key == Key.Escape) {
+			if (e.Key == Key.F4 && e.KeyModifiers == KeyModifiers.Control || e.Key == Key.Escape) {
 				if (CloseButtonClicked != null)
 					CloseButtonClicked(this, e);
 				e.Handled = true;
