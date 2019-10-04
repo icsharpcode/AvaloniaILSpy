@@ -8,7 +8,7 @@
     <TieredCompilations>true</TieredCompilations>
     <TargetLatestRuntimePatch>true</TargetLatestRuntimePatch>
     <PreserveCompilationContext>true</PreserveCompilationContext>
-    <RuntimeIdentifiers>win7-x64;ubuntu.14.04-x64;debian.8-x64;osx.10.12-x64</RuntimeIdentifiers>
+    <RuntimeIdentifiers>win10-x64;linux-x64;osx-x64</RuntimeIdentifiers>
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
 
     <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
@@ -48,7 +48,7 @@
     </Compile>
   </ItemGroup>
 
-  <ItemGroup Condition="'$(RuntimeIdentifier)' == 'osx.10.12-x64'">
+  <ItemGroup Condition="'$(RuntimeIdentifier)' == 'osx-x64'">
     <Content Include="ILSpy.icns">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
