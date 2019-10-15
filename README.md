@@ -16,10 +16,9 @@ Supported Features
 # Bleeding-edge Builds
 | Version | Installers (for x 64) |
 |---------|------------|
-|**Windows**|[Download](https://ci.appveyor.com/api/projects/icsharpcode/avaloniailspy/artifacts/artifacts%2Fzips%2FILSpy-win7-x64-Release.zip?branch=master)|
-|**macOS**|[Download](https://ci.appveyor.com/api/projects/icsharpcode/avaloniailspy/artifacts/artifacts%2Fzips%2FILSpy-osx.10.12-x64-Release.zip?branch=master)|
-|**Ubuntu**|[Download](https://ci.appveyor.com/api/projects/icsharpcode/avaloniailspy/artifacts/artifacts%2Fzips%2FILSpy-ubuntu.14.04-x64-Release.zip?branch=master)|
-|**Debian**|[Download](https://ci.appveyor.com/api/projects/icsharpcode/avaloniailspy/artifacts/artifacts%2Fzips%2FILSpy-debian.8-x64-Release.zip?branch=master)|
+|**Windows**|[Download](https://ci.appveyor.com/api/projects/icsharpcode/avaloniailspy/artifacts/artifacts%2Fzips%2FILSpy-win10-x64-Release.zip?branch=master)|
+|**macOS**|[Download](https://ci.appveyor.com/api/projects/icsharpcode/avaloniailspy/artifacts/artifacts%2Fzips%2FILSpy-osx-x64-Release.zip?branch=master)|
+|**Linux**|[Download](https://ci.appveyor.com/api/projects/icsharpcode/avaloniailspy/artifacts/artifacts%2Fzips%2FILSpy-linux-x64-Release.zip?branch=master)|
 
 How to run on Linux: 
 - grant it the rights to execute `chmod a+x ILSpy`
