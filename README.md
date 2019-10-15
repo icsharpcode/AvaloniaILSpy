@@ -13,7 +13,13 @@ Supported Features
  * Extensible via MEF Extensibility (Check out TestPlugin folder). Note: This is not compatible with ILSpy Plugins.
  * Check out [feature support status](https://github.com/icsharpcode/AvaloniaILSpy/issues/1)
 
-# Bleeding-edge Builds
+# Download
+
+## Stable Release
+
+https://github.com/icsharpcode/AvaloniaILSpy/releases
+
+## Bleeding-edge Builds
 | Version | Installers (for x 64) |
 |---------|------------|
 |**Windows**|[Download](https://ci.appveyor.com/api/projects/icsharpcode/avaloniailspy/artifacts/artifacts%2Fzips%2FILSpy-win7-x64-Release.zip?branch=master)|
