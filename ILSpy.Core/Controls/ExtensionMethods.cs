@@ -18,8 +18,7 @@
 
 using System;
 using Avalonia;
-using Avalonia.Markup;
-using Portable.Xaml.Markup;
+using Avalonia.Markup.Xaml;
 
 namespace ICSharpCode.ILSpy.Controls
 {

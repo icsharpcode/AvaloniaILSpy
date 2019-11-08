@@ -8,7 +8,6 @@
     <SignAssembly>True</SignAssembly>
     <AssemblyOriginatorKeyFile>..\ICSharpCode.Decompiler\ICSharpCode.Decompiler.snk</AssemblyOriginatorKeyFile>
     <RootNamespace>ICSharpCode.ILSpy</RootNamespace>
-    <LangVersion>7.2</LangVersion>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
    </PropertyGroup>
 
@@ -28,14 +27,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Avalonia" />
+    <PackageReference Include="Avalonia.Controls.DataGrid" />
     <PackageReference Include="ICSharpCode.Decompiler" Version="5.0.0.4850-preview2-debug" />
-    <PackageReference Include="Microsoft.VisualStudio.Composition" Version="15.8.98" />
-    <PackageReference Include="Microsoft.DiaSymReader.Converter.Xml" Version="1.1.0-beta1-63314-01" />
-    <PackageReference Include="System.IO.Compression" Version="4.3.0" />
-    <PackageReference Include="NuGet.Client" Version="4.2.0" />
     <PackageReference Include="Microsoft.DiaSymReader" Version="1.3.0" />
-    <PackageReference Include="Avalonia" Version="0.8.0" />
-    <PackageReference Include="Avalonia.Controls.DataGrid" Version="0.8.0" />
+    <PackageReference Include="Microsoft.DiaSymReader.Converter.Xml" Version="1.1.0-beta1-63314-01" />
+    <PackageReference Include="Microsoft.VisualStudio.Composition" Version="15.8.98" />
+    <PackageReference Include="NuGet.Client" Version="4.2.0" />
+    <PackageReference Include="System.IO.Compression" Version="4.3.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -43,19 +42,13 @@
   </ItemGroup>
   
   <ItemGroup>
-    <Compile Update="**\*.xaml.cs">
-    </Compile>
-    <AvaloniaResource Include="**\*.xaml" Exclude="Themes\*">
-      <SubType>Designer</SubType>
-    </AvaloniaResource>
+    <Compile Update="**\*.xaml.cs" DependentUpon="%(Filename)" />
+    <AvaloniaResource Include="**\*.xaml" Exclude="Themes\*" SubType="Designer" />
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="Images\*.png;Themes\*">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <AvaloniaResource Include="Images\ILSpy.png;Images\PrivateInternal.png;Images\ShowAll.png;Images\Search.png;Images\ClearSearch.png;">
-    </AvaloniaResource>
+    <Content Include="Images\*.png;Themes\*" CopyToOutputDirectory="PreserveNewest" />
+    <AvaloniaResource Include="Images\ILSpy.png;Images\PrivateInternal.png;Images\ShowAll.png;Images\Search.png;Images\ClearSearch.png;" />
   </ItemGroup>
 
 

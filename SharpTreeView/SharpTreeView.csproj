@@ -4,7 +4,6 @@
     <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
     <EnableDefaultItems>false</EnableDefaultItems>
     <SignAssembly>True</SignAssembly>
-    <LangVersion>7.2</LangVersion>
     <AssemblyOriginatorKeyFile>..\ICSharpCode.Decompiler\ICSharpCode.Decompiler.snk</AssemblyOriginatorKeyFile>
     <RootNamespace>ICSharpCode.TreeView</RootNamespace>
   </PropertyGroup>
@@ -48,6 +47,6 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\AvaloniaEdit\src\AvaloniaEdit\AvaloniaEdit.csproj" />
-    <PackageReference Include="Avalonia" Version="0.8.0" />
+    <PackageReference Include="Avalonia" />
   </ItemGroup>
 </Project>

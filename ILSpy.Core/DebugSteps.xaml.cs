@@ -30,7 +30,8 @@ namespace ICSharpCode.ILSpy
 
 		internal Avalonia.Controls.TreeView tree;
 
-		DebugSteps()
+		// wasn't public, workaround for https://github.com/AvaloniaUI/Avalonia/issues/2593
+		public DebugSteps()
 		{
 			InitializeComponent();
 
@@ -155,7 +156,7 @@ namespace ICSharpCode.ILSpy
 		private void tree_KeyDown(object sender, KeyEventArgs e)
 		{
 			if (e.Key == Key.Enter || e.Key == Key.Return) {
-				if (e.Modifiers == InputModifiers.Shift)
+				if (e.KeyModifiers == KeyModifiers.Shift)
 					ShowStateBefore_Click(sender, e);
 				else
 					ShowStateAfter_Click(sender, e);

@@ -20,6 +20,7 @@ using System;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
+using Avalonia.Layout;
 using AvaloniaEdit.Highlighting;
 using ICSharpCode.Decompiler;
 using Avalonia.Media.Imaging;

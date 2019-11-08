@@ -26,6 +26,7 @@ using System.Reflection.Metadata;
 using System.Text;
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Layout;
 using Avalonia.Media.Imaging;
 using ICSharpCode.Decompiler;
 using ICSharpCode.Decompiler.CSharp;

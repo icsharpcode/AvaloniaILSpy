@@ -592,12 +592,12 @@ namespace ICSharpCode.TreeView
 			return false;
 		}
 
-		public virtual async void StartDrag(AvaloniaObject dragSource, SharpTreeNode[] nodes)
+		public virtual async void StartDrag(PointerEventArgs e, AvaloniaObject dragSource, SharpTreeNode[] nodes)
 		{
 			DragDropEffects effects = DragDropEffects.Copy | DragDropEffects.Link | DragDropEffects.Move;
 			if (!nodes.All(n => n.CanDelete()))
 				effects &= ~DragDropEffects.Move;
-			DragDropEffects result = await DragDrop.DoDragDrop(Copy(nodes), effects);
+			DragDropEffects result = await DragDrop.DoDragDrop(e, Copy(nodes), effects);
 			if (result == DragDropEffects.Move) {
 				foreach (SharpTreeNode node in nodes)
 					node.DeleteCore();

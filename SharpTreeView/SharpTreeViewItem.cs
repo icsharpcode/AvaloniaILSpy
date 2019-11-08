@@ -59,7 +59,7 @@ namespace ICSharpCode.TreeView
 
 			if (e.MouseButton == MouseButton.Left) {
 				startPoint = e.GetPosition(this);
-				e.Device.Capture(this);
+				e.Pointer.Capture(this);
 
 				if (e.ClickCount == 2) {
 					wasDoubleClick = true;
@@ -69,14 +69,14 @@ namespace ICSharpCode.TreeView
 
 		protected override void OnPointerMoved(PointerEventArgs e)
 		{
-			if (e.Device.Captured == this) {
+			if (e.Pointer.Captured == this) {
 				var currentPoint = e.GetPosition(this);
 				if (Math.Abs(currentPoint.X - startPoint.X) >= SystemParameters.MinimumHorizontalDragDistance ||
 					Math.Abs(currentPoint.Y - startPoint.Y) >= SystemParameters.MinimumVerticalDragDistance) {
 
 					var selection = ParentTreeView.GetTopLevelSelection().ToArray();
 					if (Node.CanDrag(selection)) {
-						Node.StartDrag(this, selection);
+						Node.StartDrag(e, this, selection);
 					}
 				}
 			} else {
@@ -98,7 +98,7 @@ namespace ICSharpCode.TreeView
 			}
 
 			//ReleaseMouseCapture();
-			e.Device.Capture(null);
+			e.Pointer.Capture(null);
 			if (wasSelected) {
 				base.OnPointerReleased(e);
 			}

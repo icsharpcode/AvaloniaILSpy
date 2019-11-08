@@ -31,7 +31,6 @@ using Avalonia.Controls;
 using Avalonia.Collections;
 using Avalonia.Input;
 using Avalonia.Interactivity;
-using Avalonia.Media;
 using Avalonia.Media.Imaging;
 using Avalonia.Threading;
 using ICSharpCode.Decompiler.TypeSystem;
@@ -56,14 +55,15 @@ namespace ICSharpCode.ILSpy.Search
 		public static SearchPane Instance {
 			get {
 				if (instance == null) {
-					App.Current.MainWindow.VerifyAccess();
+					Dispatcher.UIThread.VerifyAccess();
 					instance = new SearchPane();
 				}
 				return instance;
 			}
 		}
 		
-		private SearchPane()
+		// was private, workaround for https://github.com/AvaloniaUI/Avalonia/issues/2593
+		public SearchPane()
 		{
 			InitializeComponent();
 			searchModeComboBox.Items = new []{
@@ -184,13 +184,13 @@ namespace ICSharpCode.ILSpy.Search
 		protected override void OnKeyDown(KeyEventArgs e)
 		{
 			base.OnKeyDown(e);
-			if (e.Key == Key.T && e.Modifiers == InputModifiers.Control) {
+			if (e.Key == Key.T && e.KeyModifiers == KeyModifiers.Control) {
 				searchModeComboBox.SelectedIndex = (int)SearchMode.Type;
 				e.Handled = true;
-			} else if (e.Key == Key.M && e.Modifiers == InputModifiers.Control) {
+			} else if (e.Key == Key.M && e.KeyModifiers == KeyModifiers.Control) {
 				searchModeComboBox.SelectedIndex = (int)SearchMode.Member;
 				e.Handled = true;
-			} else if (e.Key == Key.S && e.Modifiers == InputModifiers.Control) {
+			} else if (e.Key == Key.S && e.KeyModifiers == KeyModifiers.Control) {
 				searchModeComboBox.SelectedIndex = (int)SearchMode.Literal;
 				e.Handled = true;
 			}

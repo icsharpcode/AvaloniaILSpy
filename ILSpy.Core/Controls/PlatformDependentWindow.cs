@@ -25,21 +25,21 @@ namespace ICSharpCode.ILSpy.Controls
             if (args is RawKeyEventArgs rawKeyEventArgs)
             {
                 // cmd + back = delete
-                if (rawKeyEventArgs.Modifiers.HasFlag(InputModifiers.Windows) && rawKeyEventArgs.Key == Key.Back)
+                if (rawKeyEventArgs.Modifiers.HasFlag(RawInputModifiers.Meta) && rawKeyEventArgs.Key == Key.Back)
                 {
-                    rawKeyEventArgs.Modifiers = InputModifiers.None;
+                    rawKeyEventArgs.Modifiers = RawInputModifiers.None;
                     rawKeyEventArgs.Key = Key.Delete;
                 }
 
                 // swap cmd and ctrl
-                var modifier = rawKeyEventArgs.Modifiers & ~InputModifiers.Control & ~InputModifiers.Windows;
-                if (rawKeyEventArgs.Modifiers.HasFlag(InputModifiers.Windows))
+                var modifier = rawKeyEventArgs.Modifiers & ~RawInputModifiers.Control & ~RawInputModifiers.Meta;
+                if (rawKeyEventArgs.Modifiers.HasFlag(RawInputModifiers.Meta))
                 {
-                    modifier |= InputModifiers.Control;
+                    modifier |= RawInputModifiers.Control;
                 }
-                if (rawKeyEventArgs.Modifiers.HasFlag(InputModifiers.Control))
+                if (rawKeyEventArgs.Modifiers.HasFlag(RawInputModifiers.Control))
                 {
-                    modifier |= InputModifiers.Windows;
+                    modifier |= RawInputModifiers.Meta;
                 }
 
                 rawKeyEventArgs.Modifiers = modifier;
@@ -56,14 +56,14 @@ namespace ICSharpCode.ILSpy.Controls
             if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
             {
                 // Cmd + W
-                if (!e.Handled && e.Modifiers.HasFlag(InputModifiers.Control) && e.Key == Key.W)
+                if (!e.Handled && e.KeyModifiers.HasFlag(KeyModifiers.Control) && e.Key == Key.W)
                 {
                     Close();
                     e.Handled = true;
                 }
 
                 // Cmd + Q
-                if (!e.Handled && e.Modifiers.HasFlag(InputModifiers.Control) && e.Key == Key.Q)
+                if (!e.Handled && e.KeyModifiers.HasFlag(KeyModifiers.Control) && e.Key == Key.Q)
                 {
                     Application.Current.Exit();
                     e.Handled = true;

@@ -109,7 +109,7 @@ namespace ICSharpCode.ILSpy.TreeNodes
 				return false;
             SaveFileDialog dlg = new SaveFileDialog();
             dlg.InitialFileName = DecompilerTextView.CleanUpName(Resource.Name);
-            var filename = await dlg.ShowAsync(App.Current.MainWindow);
+            var filename = await dlg.ShowAsync(App.Current.GetMainWindow());
             if (!string.IsNullOrEmpty(filename))
             {
                 s.Position = 0;

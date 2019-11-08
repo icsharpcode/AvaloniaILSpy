@@ -55,12 +55,12 @@
                     <Grid>
                         <Border VerticalAlignment="Center"
                                 Height="2"
-                                Background="{DynamicResource {x:Static avalonia:SystemColors.HighlightBrush}}" />
+                                Background="{x:Static avalonia:SystemColors.HighlightBrush}" />
                         <Path Data="m 0 0 l 3 3 l -3 3"
-                              Fill="{DynamicResource {x:Static avalonia:SystemColors.HighlightBrush}}"
+                              Fill="{x:Static avalonia:SystemColors.HighlightBrush}"
                               HorizontalAlignment="Left" />
                         <Path Data="m 0 0 l -3 3 l 3 3"
-                              Fill="{DynamicResource {x:Static avalonia:SystemColors.HighlightBrush}}"
+                              Fill="{x:Static avalonia:SystemColors.HighlightBrush}"
                               HorizontalAlignment="Right" />
                     </Grid>
                 </ControlTemplate>
@@ -70,7 +70,7 @@
 
     <Style Selector="local|EditTextBox">
         <Setter Property="Foreground"
-                Value="{DynamicResource {x:Static avalonia:SystemColors.ControlTextBrush}}" />
+                Value="{x:Static avalonia:SystemColors.ControlTextBrush}" />
         <Setter Property="KeyboardNavigation.TabNavigation"
                 Value="None" />
 <!--

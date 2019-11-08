@@ -18,13 +18,12 @@
 
 using System;
 using Avalonia;
-using Avalonia.Markup;
+using Avalonia.Markup.Xaml;
 using Avalonia.Media;
-using Portable.Xaml.Markup;
 
 namespace ICSharpCode.ILSpy.Controls
 {
-	[MarkupExtensionReturnType(typeof(Color))]
+	//[MarkupExtensionReturnType(typeof(Color))]
 	public class ControlColor : MarkupExtension
 	{
 		[ConstructorArgument("color")]

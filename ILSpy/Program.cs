@@ -3,7 +3,6 @@ using Avalonia.Logging.Serilog;
 using System;
 using System.IO;
 using System.Reflection;
-using System.Runtime.InteropServices;
 using Avalonia.Logging;
 using System.Collections.Generic;
 using Avalonia.Controls;
@@ -19,7 +18,7 @@ namespace ICSharpCode.ILSpy
 
             try
             {
-                BuildAvaloniaApp().Start<MainWindow>();
+                BuildAvaloniaApp().StartWithClassicDesktopLifetime(args);
             }
             catch (Exception exception)
             {
@@ -43,7 +42,7 @@ namespace ICSharpCode.ILSpy
             Logger.Sink = new ProxyLogSink(Logger.Sink);
 #endif
 
-            return result.UsePlatformDetect().UseDataGrid();
+            return result.UsePlatformDetect();
         }
 
         class ProxyLogSink : ILogSink
@@ -55,9 +54,23 @@ namespace ICSharpCode.ILSpy
                 this.sink = sink;
             }
 
+            public bool IsEnabled(LogEventLevel level) => true;
+
+            public void Log(LogEventLevel level, string area, object source, string messageTemplate) =>
+                Log(level, area, source, messageTemplate, Array.Empty<object>());
+
+            public void Log<T0>(LogEventLevel level, string area, object source, string messageTemplate, T0 propertyValue0) =>
+                Log(level, area, source, messageTemplate, new object[] { propertyValue0 });
+
+            public void Log<T0, T1>(LogEventLevel level, string area, object source, string messageTemplate, T0 propertyValue0, T1 propertyValue1) =>
+                Log(level, area, source, messageTemplate, new object[] { propertyValue0, propertyValue1 });
+
+            public void Log<T0, T1, T2>(LogEventLevel level, string area, object source, string messageTemplate, T0 propertyValue0, T1 propertyValue1, T2 propertyValue2) =>
+                Log(level, area, source, messageTemplate, new object[] { propertyValue0, propertyValue1, propertyValue2 });
+
             public void Log(LogEventLevel level, string area, object source, string messageTemplate, params object[] propertyValues)
             {
-                for(int i = 0; i < propertyValues.Length; i++)
+                for (int i = 0; i < propertyValues.Length; i++)
                 {
                     propertyValues[i] = GetHierachy(propertyValues[i]);
                 }

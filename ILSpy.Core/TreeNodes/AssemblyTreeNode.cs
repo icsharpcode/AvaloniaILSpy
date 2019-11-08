@@ -238,9 +238,9 @@ namespace ICSharpCode.ILSpy.TreeNodes
 			return nodes.All(n => n is AssemblyTreeNode);
 		}
 
-		public override void StartDrag(AvaloniaObject dragSource, SharpTreeNode[] nodes)
+		public override void StartDrag(PointerEventArgs e, AvaloniaObject dragSource, SharpTreeNode[] nodes)
 		{
-			DragDrop.DoDragDrop(Copy(nodes), DragDropEffects.Copy | DragDropEffects.Link | DragDropEffects.Move);
+			DragDrop.DoDragDrop(e, Copy(nodes), DragDropEffects.Copy | DragDropEffects.Link | DragDropEffects.Move);
 		}
 
 		public override bool CanDelete()
@@ -325,7 +325,7 @@ namespace ICSharpCode.ILSpy.TreeNodes
 				new FileDialogFilter() { Name = "All files", Extensions = { "*" }}
 			};
 
-			var filename = await dlg.ShowAsync(App.Current.MainWindow);
+			var filename = await dlg.ShowAsync(App.Current.GetMainWindow());
 			if (!string.IsNullOrEmpty(filename)) {
 				DecompilationOptions options = new DecompilationOptions();
 				options.FullDecompilation = true;

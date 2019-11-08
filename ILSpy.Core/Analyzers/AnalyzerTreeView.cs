@@ -20,8 +20,8 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
-using System.Windows;
 using Avalonia;
+using Avalonia.Threading;
 using ICSharpCode.Decompiler.TypeSystem;
 using ICSharpCode.ILSpy.Analyzers.TreeNodes;
 using ICSharpCode.TreeView;
@@ -40,7 +40,7 @@ namespace ICSharpCode.ILSpy.Analyzers
 			get
 			{
 				if (instance == null) {
-					App.Current.MainWindow.VerifyAccess();
+					Dispatcher.UIThread.VerifyAccess();
 					instance = new AnalyzerTreeView();
 				}
 				return instance;

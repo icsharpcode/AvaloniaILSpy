@@ -123,7 +123,7 @@ namespace ICSharpCode.ILSpy.TreeNodes
                 new FileDialogFilter(){ Name="Resources file(*.resources)", Extensions = { "resources" } },
                 new FileDialogFilter(){ Name="Resource XML file(*.resx)", Extensions = { "resx" } }
             };
-            var filename = await dlg.ShowAsync(App.Current.MainWindow);
+            var filename = await dlg.ShowAsync(App.Current.GetMainWindow());
             if (!string.IsNullOrEmpty(filename)) {
                 s.Position = 0;
                 if (filename.Contains("resources")) {

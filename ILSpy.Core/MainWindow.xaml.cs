@@ -121,9 +121,9 @@ namespace ICSharpCode.ILSpy
             this.sessionSettings = new SessionSettings(spySettings);
 			this.assemblyListManager = new AssemblyListManager(spySettings);
 
-            this.DataContext = sessionSettings;
-
             InitializeComponent();
+
+            this.DataContext = sessionSettings;
 
 #if DEBUG
             this.AttachDevTools();

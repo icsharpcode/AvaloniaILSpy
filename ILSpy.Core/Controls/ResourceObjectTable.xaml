@@ -1,8 +1,13 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <UserControl x:Class="ICSharpCode.ILSpy.Controls.ResourceObjectTable"
     xmlns="https://github.com/avaloniaui" 
-    xmlns:properties="clr-namespace:ICSharpCode.ILSpy.Properties"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" >
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:properties="clr-namespace:ICSharpCode.ILSpy.Properties">
+    <!-- Workaround for https://github.com/AvaloniaUI/Avalonia/issues/2593 -->
+    <x:Arguments>
+        <x:Null />
+        <x:Null />
+    </x:Arguments>
     <Grid Margin="5,0,0,0">
         <Grid.RowDefinitions>
             <RowDefinition Height="30" />
