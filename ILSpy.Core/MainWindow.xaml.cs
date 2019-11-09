@@ -606,7 +606,7 @@ namespace ICSharpCode.ILSpy
 
         void MainWindow_Loaded(object sender, EventArgs e)
         {
-            Application.Current.FocusManager.Focus(treeView);
+            Application.Current.FocusManager.Focus(this);
 
             InitMainMenu();
             InitToolbar();

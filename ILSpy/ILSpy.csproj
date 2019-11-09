@@ -62,6 +62,5 @@
 
   <ItemGroup>
     <PackageReference Include="Avalonia.Desktop" />
-    <PackageReference Include="NSubsys" Version="1.0.0" />
   </ItemGroup>
 </Project>
