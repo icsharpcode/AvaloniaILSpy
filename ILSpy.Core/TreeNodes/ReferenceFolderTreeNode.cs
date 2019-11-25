@@ -89,7 +89,6 @@ namespace ICSharpCode.ILSpy.TreeNodes
                 output.WriteLine();
             }
 
-
         }
     }
 }

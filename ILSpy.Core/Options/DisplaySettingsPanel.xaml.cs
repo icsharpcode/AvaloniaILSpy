@@ -126,6 +126,7 @@ namespace ICSharpCode.ILSpy.Options
             s.IndentationUseTabs = (bool?)e.Attribute("IndentationUseTabs") ?? true;
             s.IndentationSize = (int?)e.Attribute("IndentationSize") ?? 4;
             s.IndentationTabSize = (int?)e.Attribute("IndentationTabSize") ?? 4;
+            s.HighlightMatchingBraces = (bool?)e.Attribute("HighlightMatchingBraces") ?? true;
 
             return s;
 		}
@@ -145,9 +146,11 @@ namespace ICSharpCode.ILSpy.Options
 			section.SetAttributeValue("SortResults", s.SortResults);
             section.SetAttributeValue("FoldBraces", s.FoldBraces);
             section.SetAttributeValue("ExpandMemberDefinitions", s.ExpandMemberDefinitions);
+            section.SetAttributeValue("ExpandUsingDeclarations", s.ExpandUsingDeclarations);
             section.SetAttributeValue("IndentationUseTabs", s.IndentationUseTabs);
             section.SetAttributeValue("IndentationSize", s.IndentationSize);
             section.SetAttributeValue("IndentationTabSize", s.IndentationTabSize);
+            section.SetAttributeValue("HighlightMatchingBraces", s.HighlightMatchingBraces);
 
             XElement existingElement = root.Element("DisplaySettings");
 			if (existingElement != null)

@@ -53,12 +53,14 @@
 			<ComboBox Name="languageComboBox" Width="120" 
 					  BorderThickness="1"
 			          Items="{x:Static local:Languages.AllLanguages}"
-			          SelectedItem="{Binding FilterSettings.Language}"/>
+			          SelectedItem="{Binding FilterSettings.Language}"
+                      ToolTip.Tip="{x:Static properties:Resources.SelectLanguageDropdownTooltip}"/>
 			<ComboBox Name="languageVersionComboBox" Width="160" 
 					  BorderThickness="1"
 			          IsVisible="{Binding SelectedItem.HasLanguageVersions, ElementName=languageComboBox}"
 			          Items="{Binding SelectedItem.LanguageVersions, ElementName=languageComboBox}"
-			          SelectedItem="{Binding FilterSettings.LanguageVersion}"/>
+			          SelectedItem="{Binding FilterSettings.LanguageVersion}"
+                      ToolTip.Tip="{x:Static properties:Resources.SelectVersionDropdownTooltip}"/>
             <ComboBox x:Name="Themes" SelectedIndex="0" Width="100">
                 <ComboBoxItem>Light</ComboBoxItem>
                 <ComboBoxItem>Dark</ComboBoxItem>

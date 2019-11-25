@@ -133,7 +133,11 @@ namespace ICSharpCode.ILSpy.Analyzers
 		{
 			yield return self;
 
-			foreach (var assembly in AssemblyList.GetAssemblies()) {
+            string reflectionTypeScopeName = typeScope.Name;
+            if (typeScope.TypeParameterCount > 0)
+                reflectionTypeScopeName += "`" + typeScope.TypeParameterCount;
+
+            foreach (var assembly in AssemblyList.GetAssemblies()) {
 				ct.ThrowIfCancellationRequested();
 				bool found = false;
 				var module = assembly.GetPEFileOrNull();
@@ -148,7 +152,7 @@ namespace ICSharpCode.ILSpy.Analyzers
 						}
 					}
 				}
-				if (found && ModuleReferencesScopeType(module.Metadata, typeScope.Name, typeScope.Namespace))
+				if (found && ModuleReferencesScopeType(module.Metadata, reflectionTypeScopeName, typeScope.Namespace))
 					yield return module;
 			}
 		}

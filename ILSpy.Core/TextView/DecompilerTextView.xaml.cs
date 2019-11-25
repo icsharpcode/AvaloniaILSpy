@@ -67,7 +67,8 @@ namespace ICSharpCode.ILSpy.TextView
 		readonly UIElementGenerator uiElementGenerator;
 		List<VisualLineElementGenerator> activeCustomElementGenerators = new List<VisualLineElementGenerator>();
 		RichTextColorizer activeRichTextColorizer;
-		FoldingManager foldingManager;
+        BracketHighlightRenderer bracketHighlightRenderer;
+        FoldingManager foldingManager;
 		ILSpyTreeNode[] decompiledNodes;
 		
 		DefinitionLookup definitionLookup;
@@ -90,12 +91,14 @@ namespace ICSharpCode.ILSpy.TextView
 			this.referenceElementGenerator = new ReferenceElementGenerator(this.JumpToReference, this.IsLink);
 			textEditor.TextArea.TextView.ElementGenerators.Add(referenceElementGenerator);
 			this.uiElementGenerator = new UIElementGenerator();
-			textEditor.TextArea.TextView.ElementGenerators.Add(uiElementGenerator);
+            this.bracketHighlightRenderer = new BracketHighlightRenderer(textEditor.TextArea.TextView);
+            textEditor.TextArea.TextView.ElementGenerators.Add(uiElementGenerator);
 			textEditor.Options.RequireControlModifierForHyperlinkClick = false;
             textEditor.TextArea.TextView.PointerHover += TextViewMouseHover;
             textEditor.TextArea.TextView.PointerHoverStopped += TextViewMouseHoverStopped;
             textEditor.TextArea.AddHandler(PointerPressedEvent, TextAreaMouseDown, RoutingStrategies.Tunnel);
             textEditor.TextArea.AddHandler(PointerReleasedEvent, TextAreaMouseUp, RoutingStrategies.Tunnel);
+            textEditor.TextArea.Caret.PositionChanged += HighlightBrackets;
             textEditor.Bind(TextEditor.FontFamilyProperty, new Binding { Source = DisplaySettingsPanel.CurrentDisplaySettings, Path = "SelectedFont" });
             textEditor.Bind(TextEditor.FontSizeProperty, new Binding { Source = DisplaySettingsPanel.CurrentDisplaySettings, Path = "SelectedFontSize" });
             textEditor.Bind(TextEditor.WordWrapProperty, new Binding { Source = DisplaySettingsPanel.CurrentDisplaySettings, Path = "EnableWordWrap" });
@@ -239,18 +242,33 @@ namespace ICSharpCode.ILSpy.TextView
 			}
 			return renderer.CreateTextBlock();
 		}
-		#endregion
+        #endregion
 
-		#region RunWithCancellation
-		/// <summary>
-		/// Switches the GUI into "waiting" mode, then calls <paramref name="taskCreation"/> to create
-		/// the task.
-		/// When the task completes without being cancelled, the <paramref name="taskCompleted"/>
-		/// callback is called on the GUI thread.
-		/// When the task is cancelled before completing, the callback is not called; and any result
-		/// of the task (including exceptions) are ignored.
-		/// </summary>
-		[Obsolete("RunWithCancellation(taskCreation).ContinueWith(taskCompleted) instead")]
+        #region Highlight brackets
+        void HighlightBrackets(object sender, EventArgs e)
+        {
+            if (DisplaySettingsPanel.CurrentDisplaySettings.HighlightMatchingBraces)
+            {
+                var result = MainWindow.Instance.CurrentLanguage.BracketSearcher.SearchBracket(textEditor.Document, textEditor.CaretOffset);
+                bracketHighlightRenderer.SetHighlight(result);
+            }
+            else
+            {
+                bracketHighlightRenderer.SetHighlight(null);
+            }
+        }
+        #endregion
+
+        #region RunWithCancellation
+        /// <summary>
+        /// Switches the GUI into "waiting" mode, then calls <paramref name="taskCreation"/> to create
+        /// the task.
+        /// When the task completes without being cancelled, the <paramref name="taskCompleted"/>
+        /// callback is called on the GUI thread.
+        /// When the task is cancelled before completing, the callback is not called; and any result
+        /// of the task (including exceptions) are ignored.
+        /// </summary>
+        [Obsolete("RunWithCancellation(taskCreation).ContinueWith(taskCompleted) instead")]
 		public void RunWithCancellation<T>(Func<CancellationToken, Task<T>> taskCreation, Action<Task<T>> taskCompleted)
 		{
 			RunWithCancellation(taskCreation).ContinueWith(taskCompleted, CancellationToken.None, TaskContinuationOptions.NotOnCanceled, TaskScheduler.FromCurrentSynchronizationContext());
@@ -631,13 +649,14 @@ namespace ICSharpCode.ILSpy.TextView
 				if (referenceSegment == null) {
 					ClearLocalReferenceMarks();
 				} else if(referenceSegment.IsLocal || !referenceSegment.IsDefinition) {
-					JumpToReference(referenceSegment);
 					textEditor.TextArea.ClearSelection();
-				}
-				// cancel mouse selection to avoid AvalonEdit selecting between the new
-				// cursor position and the mouse position.
-				//textEditor.TextArea.MouseSelectionMode = MouseSelectionMode.None;
-			}
+                    // cancel mouse selection to avoid AvalonEdit selecting between the new
+                    // cursor position and the mouse position.
+                    textEditor.TextArea.Selection = Selection.Create(textEditor.TextArea, 0, 0);
+
+                    JumpToReference(referenceSegment);
+                }
+            }
 		}
 		
 		void ClearLocalReferenceMarks()

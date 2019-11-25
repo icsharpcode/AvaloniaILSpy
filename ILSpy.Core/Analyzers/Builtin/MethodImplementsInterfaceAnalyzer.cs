@@ -45,16 +45,17 @@ namespace ICSharpCode.ILSpy.Analyzers.Builtin
 
 		IEnumerable<IEntity> AnalyzeType(IMethod analyzedEntity, ITypeDefinition type)
 		{
-			var token = analyzedEntity.DeclaringTypeDefinition.MetadataToken;
-			var module = analyzedEntity.DeclaringTypeDefinition.ParentModule.PEFile;
-			if (!type.GetAllBaseTypeDefinitions()
-				.Any(t => t.MetadataToken == token && t.ParentModule.PEFile == module))
-				yield break;
+            var token = analyzedEntity.MetadataToken;
+            var declaringTypeToken = analyzedEntity.DeclaringTypeDefinition.MetadataToken;
+            var module = analyzedEntity.DeclaringTypeDefinition.ParentModule.PEFile;
+            var allTypes = type.GetAllBaseTypeDefinitions();
+            if (!allTypes.Any(t => t.MetadataToken == declaringTypeToken && t.ParentModule.PEFile == module))
+                yield break;
 
-			foreach (var method in type.GetMethods(options: GetMemberOptions.ReturnMemberDefinitions)) {
-				if (InheritanceHelper.GetBaseMembers(method, true)
-					.Any(m => m.DeclaringTypeDefinition.MetadataToken == token && m.ParentModule.PEFile == module))
-					yield return method;
+            foreach (var method in type.Methods) {
+                var baseMembers = InheritanceHelper.GetBaseMembers(method, true);
+                if (baseMembers.Any(m => m.MetadataToken == token && m.ParentModule.PEFile == module))
+                    yield return method;
 			}
 		}
 

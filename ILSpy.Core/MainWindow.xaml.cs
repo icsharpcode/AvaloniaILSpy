@@ -65,6 +65,7 @@ namespace ICSharpCode.ILSpy
 	public partial class MainWindow : PlatformDependentWindow, IRoutedCommandBindable
     {
         bool refreshInProgress;
+        bool handlingNugetPackageSelection;
         readonly NavigationHistory<NavigationState> history = new NavigationHistory<NavigationState>();
         ILSpySettings spySettingsForMainWindow_Loaded;
         internal SessionSettings sessionSettings;
@@ -212,7 +213,7 @@ namespace ICSharpCode.ILSpy
 
             CommandBindings.Add(new RoutedCommandBinding(ApplicationCommands.Open, OpenCommandExecuted));
             CommandBindings.Add(new RoutedCommandBinding(ApplicationCommands.Refresh, RefreshCommandExecuted));
-            CommandBindings.Add(new RoutedCommandBinding(ApplicationCommands.Save, SaveCommandExecuted));
+            CommandBindings.Add(new RoutedCommandBinding(ApplicationCommands.Save, SaveCommandExecuted, SaveCommandCanExecute));
             CommandBindings.Add(new RoutedCommandBinding(NavigationCommands.BrowseBack, BackCommandExecuted, BackCommandCanExecute));
             CommandBindings.Add(new RoutedCommandBinding(NavigationCommands.BrowseForward, ForwardCommandExecuted, ForwardCommandCanExecute));
             CommandBindings.Add(new RoutedCommandBinding(NavigationCommands.Search, SearchCommandExecuted));
@@ -459,7 +460,7 @@ namespace ICSharpCode.ILSpy
 					i++;
 				}
 			}
-			LoadAssemblies(args.AssembliesToLoad, commandLineLoadedAssemblies, false);
+			LoadAssemblies(args.AssembliesToLoad, commandLineLoadedAssemblies, focusNode: false);
 			if (args.Language != null)
 				sessionSettings.FilterSettings.Language = Languages.GetLanguage(args.Language);
 			return true;
@@ -472,9 +473,13 @@ namespace ICSharpCode.ILSpy
         void HandleCommandLineArgumentsAfterShowList(CommandLineArguments args, ILSpySettings spySettings = null)
         {
             if (nugetPackagesToLoad.Count > 0) {
-				LoadAssemblies(nugetPackagesToLoad, commandLineLoadedAssemblies, focusNode: false);
+                var relevantPackages = nugetPackagesToLoad.ToArray();
 				nugetPackagesToLoad.Clear();
-			}
+
+                // Show the nuget package open dialog after the command line/window message was processed.
+                Dispatcher.UIThread.InvokeAsync(new Action(() => LoadAssemblies(relevantPackages, commandLineLoadedAssemblies, focusNode: false)), DispatcherPriority.Normal);
+
+            }
             var relevantAssemblies = commandLineLoadedAssemblies.ToList();
             commandLineLoadedAssemblies.Clear(); // clear references once we don't need them anymore
             NavigateOnLaunch(args.NavigateTo, sessionSettings.ActiveTreeViewPath, spySettings, relevantAssemblies);
@@ -508,7 +513,14 @@ namespace ICSharpCode.ILSpy
 							}
 						}
 					}
-				} else {
+                }
+                else if (navigateTo == "none")
+                {
+                    // Don't navigate anywhere; start empty.
+                    // Used by ILSpy VS addin, it'll send us the real location to navigate to via IPC.
+                    found = true;
+
+                } else {
                     IEntity mr = await Task.Run(() => FindEntityInRelevantAssemblies(navigateTo, relevantAssemblies));
                     if (mr != null && mr.ParentModule.PEFile != null) {
                         found = true;
@@ -522,24 +534,24 @@ namespace ICSharpCode.ILSpy
                     output.Write(string.Format("Cannot find '{0}' in command line specified assemblies.", navigateTo));
                     decompilerTextView.ShowText(output);
                 }
-            } else if (commandLineLoadedAssemblies.Count == 1) {
+            } else if (relevantAssemblies.Count == 1) {
                 // NavigateTo == null and an assembly was given on the command-line:
                 // Select the newly loaded assembly
-                AssemblyTreeNode asmNode = assemblyListTreeNode.FindAssemblyNode(commandLineLoadedAssemblies[0]);
+                AssemblyTreeNode asmNode = assemblyListTreeNode.FindAssemblyNode(relevantAssemblies[0]);
                 if (asmNode != null && treeView.SelectedItem == initialSelection) {
                     SelectNode(asmNode);
                 }
             } else if (spySettings != null) {
                 SharpTreeNode node = null;
-                if (sessionSettings.ActiveTreeViewPath?.Length > 0) {
+                if (activeTreeViewPath?.Length > 0) {
                     foreach (var asm in assemblyList.GetAssemblies()) {
-                        if (asm.FileName == sessionSettings.ActiveTreeViewPath[0]) {
+                        if (asm.FileName == activeTreeViewPath[0]) {
                             // FindNodeByPath() blocks the UI if the assembly is not yet loaded,
                             // so use an async wait instead.
                             await asm.GetPEFileAsync().Catch<Exception>(ex => { });
                         }
                     }
-                    node = FindNodeByPath(sessionSettings.ActiveTreeViewPath, true);
+                    node = FindNodeByPath(activeTreeViewPath, true);
                 }
                 if (treeView.SelectedItem == initialSelection) {
                     if (node != null) {
@@ -781,7 +793,7 @@ namespace ICSharpCode.ILSpy
 			if (CurrentAssemblyListChanged != null)
 				CurrentAssemblyListChanged(this, e);
 		}
-		
+
 		void LoadInitialAssemblies()
 		{
 			// Called when loading an empty assembly list; so that
@@ -795,7 +807,7 @@ namespace ICSharpCode.ILSpy
 			foreach (System.Reflection.Assembly asm in initialAssemblies)
 				assemblyList.OpenAssembly(asm.Location);
 		}
-		
+
 		void filterSettings_PropertyChanged(object sender, PropertyChangedEventArgs e)
 		{
 			RefreshTreeViewFilter();
@@ -803,7 +815,7 @@ namespace ICSharpCode.ILSpy
 				DecompileSelectedNodes(recordHistory: false);
 			}
 		}
-		
+
 		public void RefreshTreeViewFilter()
 		{
 			// filterSettings is mutable; but the ILSpyTreeNode filtering assumes that filter settings are immutable.
@@ -812,11 +824,11 @@ namespace ICSharpCode.ILSpy
 			if (assemblyListTreeNode != null)
 				assemblyListTreeNode.FilterSettings = sessionSettings.FilterSettings.Clone();
 		}
-		
+
 		internal AssemblyListTreeNode AssemblyListTreeNode {
 			get { return assemblyListTreeNode; }
 		}
-		
+
 		#region Node Selection
 
 		public void SelectNode(SharpTreeNode obj)
@@ -842,7 +854,7 @@ namespace ICSharpCode.ILSpy
 				treeView.SetSelectedNodes(nodes);
 			}
 		}
-		
+
 		/// <summary>
 		/// Retrieves a node using the .ToString() representations of its ancestors.
 		/// </summary>
@@ -867,7 +879,7 @@ namespace ICSharpCode.ILSpy
 			else
 				return node;
 		}
-		
+
 		/// <summary>
 		/// Gets the .ToString() representation of the node's ancestors.
 		/// </summary>
@@ -883,7 +895,7 @@ namespace ICSharpCode.ILSpy
 			path.Reverse();
 			return path.ToArray();
 		}
-		
+
 		public ILSpyTreeNode FindTreeNode(object reference)
 		{
 			switch (reference) {
@@ -905,12 +917,12 @@ namespace ICSharpCode.ILSpy
 					return null;
 			}
 		}
-		
+
 		public void JumpToReference(object reference)
 		{
 			JumpToReferenceAsync(reference).HandleExceptions();
 		}
-		
+
 		/// <summary>
 		/// Jumps to the specified reference.
 		/// </summary>
@@ -1049,7 +1061,7 @@ namespace ICSharpCode.ILSpy
 		{
 			if (fileNames == null)
 				throw new ArgumentNullException(nameof(fileNames));
-			
+
 			if (focusNode)
 				treeView.UnselectAll();
 
@@ -1063,25 +1075,39 @@ namespace ICSharpCode.ILSpy
                 string file = Uri.UnescapeDataString(name);
 				switch (Path.GetExtension(file)) {
 					case ".nupkg":
-						LoadedNugetPackage package = new LoadedNugetPackage(file);
-						var selectionDialog = new NugetPackageBrowserDialog(package);
-                        if (await selectionDialog.ShowDialog<bool>(this) != true)
-                            break;
-						foreach (var entry in selectionDialog.SelectedItems) {
-							var nugetAsm = assemblyList.OpenAssembly("nupkg://" + file + ";" + entry.Name, entry.Stream, true);
-							if (nugetAsm != null) {
-								if (loadedAssemblies != null)
-									loadedAssemblies.Add(nugetAsm);
-								else {
-									var node = assemblyListTreeNode.FindAssemblyNode(nugetAsm);
-									if (node != null && focusNode) {
-										treeView.SelectedItems.Add(node);
-										lastNode = node;
-									}
-								}
-							}
-						}
-						break;
+                        this.handlingNugetPackageSelection = true;
+                        try
+                        {
+                            LoadedNugetPackage package = new LoadedNugetPackage(file);
+                            var selectionDialog = new NugetPackageBrowserDialog(package);
+                            selectionDialog.Owner = this;
+                            if (await selectionDialog.ShowDialog<bool>(this) != true)
+                                break;
+                            foreach (var entry in selectionDialog.SelectedItems)
+                            {
+                                var nugetAsm = assemblyList.OpenAssembly("nupkg://" + file + ";" + entry.Name, entry.Stream, true);
+                                if (nugetAsm != null)
+                                {
+                                    if (loadedAssemblies != null)
+                                        loadedAssemblies.Add(nugetAsm);
+                                    else
+                                    {
+                                        var node = assemblyListTreeNode.FindAssemblyNode(nugetAsm);
+                                        if (node != null && focusNode)
+                                        {
+                                            treeView.SelectedItems.Add(node);
+                                            lastNode = node;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        finally
+                        {
+                            this.handlingNugetPackageSelection = false;
+                        }
+
+                        break;
 					default:
 						var asm = assemblyList.OpenAssembly(file);
 						if (asm != null) {
@@ -1131,10 +1157,10 @@ namespace ICSharpCode.ILSpy
 			if (SelectionChanged != null)
 				SelectionChanged(sender, e);
 		}
-		
+
 		Task decompilationTask;
 		bool ignoreDecompilationRequests;
-		
+
 		void DecompileSelectedNodes(DecompilerTextViewState state = null, bool recordHistory = true)
 		{
 			if (ignoreDecompilationRequests)
@@ -1161,15 +1187,15 @@ namespace ICSharpCode.ILSpy
 			decompilationTask = decompilerTextView.DecompileAsync(this.CurrentLanguage, this.SelectedNodes, new DecompilationOptions() { TextViewState = state });
         }
 
-        async void SaveCommandExecuted(object sender, ExecutedRoutedEventArgs e)
+        void SaveCommandCanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
-			if (this.SelectedNodes.Count() == 1) {
-                if (await this.SelectedNodes.Single().Save(this.TextView))
-                    return;
-            }
-            this.TextView.SaveToDisk(this.CurrentLanguage,
-                this.SelectedNodes,
-                new DecompilationOptions() { FullDecompilation = true });
+            e.Handled = true;
+            e.CanExecute = SaveCodeContextMenuEntry.CanExecute(SelectedNodes.ToList());
+        }
+
+        void SaveCommandExecuted(object sender, ExecutedRoutedEventArgs e)
+        {
+            SaveCodeContextMenuEntry.Execute(SelectedNodes.ToList());
         }
 
         public void RefreshDecompiledView()
@@ -1206,7 +1232,7 @@ namespace ICSharpCode.ILSpy
 			e.Handled = true;
 			e.CanExecute = history.CanNavigateBack;
 		}
-		
+
 		void BackCommandExecuted(object sender, ExecutedRoutedEventArgs e)
 		{
 			if (history.CanNavigateBack) {
@@ -1214,13 +1240,13 @@ namespace ICSharpCode.ILSpy
 				NavigateHistory(false);
 			}
 		}
-		
+
 		void ForwardCommandCanExecute(object sender, CanExecuteRoutedEventArgs e)
 		{
 			e.Handled = true;
 			e.CanExecute = history.CanNavigateForward;
 		}
-		
+
 		void ForwardCommandExecuted(object sender, ExecutedRoutedEventArgs e)
 		{
 			if (history.CanNavigateForward) {
@@ -1228,18 +1254,17 @@ namespace ICSharpCode.ILSpy
 				NavigateHistory(true);
 			}
 		}
-		
+
 		void NavigateHistory(bool forward)
 		{
 			var dtState = decompilerTextView.GetState();
-			if(dtState != null)
+			if (dtState != null)
 				history.UpdateCurrent(new NavigationState(dtState));
 			var newState = forward ? history.GoForward() : history.GoBack();
-			
+
 			ignoreDecompilationRequests = true;
 			treeView.SelectedItems.Clear();
-			foreach (var node in newState.TreeNodes)
-			{
+			foreach (var node in newState.TreeNodes) {
 				treeView.SelectedItems.Add(node);
 			}
 			if (newState.TreeNodes.Any())
@@ -1289,7 +1314,7 @@ namespace ICSharpCode.ILSpy
 
 			return loadedAssy.FileName;
 		}
-		
+
 		#region Top/Bottom Pane management
 
 		/// <summary>
@@ -1303,14 +1328,12 @@ namespace ICSharpCode.ILSpy
 			var pane2Height = pane2Row.Height;
 
 			//only star height values are normalized.
-			if (!pane1Height.IsStar || !pane2Height.IsStar)
-			{
+			if (!pane1Height.IsStar || !pane2Height.IsStar) {
 				return;
 			}
 
 			var totalHeight = pane1Height.Value + pane2Height.Value;
-			if (totalHeight == 0)
-			{
+			if (totalHeight == 0) {
 				return;
 			}
 

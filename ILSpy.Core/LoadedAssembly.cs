@@ -149,20 +149,28 @@ namespace ICSharpCode.ILSpy
 
 		PEFile LoadAssembly(object state)
 		{
-			var stream = state as Stream;
-			PEFile module;
-
-			// runs on background thread
-			if (stream != null)
-			{
-                // Read the module from a precrafted stream
-                module = new PEFile(fileName, stream, metadataOptions: DecompilerSettingsPanel.CurrentDecompilerSettings.ApplyWindowsRuntimeProjections ? MetadataReaderOptions.ApplyWindowsRuntimeProjections : MetadataReaderOptions.None);
+            MetadataReaderOptions options;
+            if (DecompilerSettingsPanel.CurrentDecompilerSettings.ApplyWindowsRuntimeProjections)
+            {
+                options = MetadataReaderOptions.ApplyWindowsRuntimeProjections;
             }
             else
-			{
+            {
+                options = MetadataReaderOptions.None;
+            }
+
+            // runs on background thread
+            PEFile module;
+
+            if (state is Stream stream)
+            {
+                // Read the module from a precrafted stream
+                module = new PEFile(fileName, stream, metadataOptions: DecompilerSettingsPanel.CurrentDecompilerSettings.ApplyWindowsRuntimeProjections ? MetadataReaderOptions.ApplyWindowsRuntimeProjections : MetadataReaderOptions.None);
+            } else {
                 // Read the module from disk (by default)
-                module = new PEFile(fileName, new FileStream(fileName, FileMode.Open, FileAccess.Read), PEStreamOptions.PrefetchEntireImage,
-                    metadataOptions: DecompilerSettingsPanel.CurrentDecompilerSettings.ApplyWindowsRuntimeProjections ? MetadataReaderOptions.ApplyWindowsRuntimeProjections : MetadataReaderOptions.None);
+                stream = new FileStream(fileName, FileMode.Open, FileAccess.Read);
+                module = new PEFile(fileName, stream, PEStreamOptions.PrefetchEntireImage,
+                    metadataOptions: options);
             }
 
             if (DecompilerSettingsPanel.CurrentDecompilerSettings.UseDebugSymbols) {
@@ -179,7 +187,7 @@ namespace ICSharpCode.ILSpy
 			}
 			return module;
 		}
-		
+
 		void LoadSymbols(PEFile module)
 		{
 			try {
@@ -246,17 +254,17 @@ namespace ICSharpCode.ILSpy
 
 		[ThreadStatic]
 		static int assemblyLoadDisableCount;
-		
+
 		public static IDisposable DisableAssemblyLoad()
 		{
 			assemblyLoadDisableCount++;
 			return new DecrementAssemblyLoadDisableCount();
 		}
-		
+
 		sealed class DecrementAssemblyLoadDisableCount : IDisposable
 		{
 			bool disposed;
-			
+
 			public void Dispose()
 			{
 				if (!disposed) {
@@ -267,16 +275,16 @@ namespace ICSharpCode.ILSpy
 				}
 			}
 		}
-		
+
 		sealed class MyAssemblyResolver : IAssemblyResolver
 		{
 			readonly LoadedAssembly parent;
-			
+
 			public MyAssemblyResolver(LoadedAssembly parent)
 			{
 				this.parent = parent;
 			}
-			
+
 			public PEFile Resolve(Decompiler.Metadata.IAssemblyReference reference)
 			{
 				return parent.LookupReferencedAssembly(reference)?.GetPEFileOrNull();
@@ -287,7 +295,7 @@ namespace ICSharpCode.ILSpy
 				return parent.LookupReferencedModule(mainModule, moduleName)?.GetPEFileOrNull();
 			}
 		}
-		
+
 		public IAssemblyResolver GetAssemblyResolver()
 		{
 			return new MyAssemblyResolver(this);
@@ -302,7 +310,7 @@ namespace ICSharpCode.ILSpy
 				return null;
 			return debugInfoProvider;
 		}
-		
+
 		public LoadedAssembly LookupReferencedAssembly(Decompiler.Metadata.IAssemblyReference reference)
 		{
 			if (reference == null)
@@ -441,7 +449,7 @@ namespace ICSharpCode.ILSpy
 		{
 			return this.assemblyTask.ContinueWith(onAssemblyLoaded, default(CancellationToken), TaskContinuationOptions.RunContinuationsAsynchronously, taskScheduler);
 		}
-		
+
 		/// <summary>
 		/// Wait until the assembly is loaded.
 		/// Throws an AggregateException when loading the assembly fails.
