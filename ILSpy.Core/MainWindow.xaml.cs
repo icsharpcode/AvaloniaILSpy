@@ -220,6 +220,20 @@ namespace ICSharpCode.ILSpy
 
             TemplateApplied += MainWindow_Loaded;
             KeyDown += MainWindow_KeyDown;
+            mainMenu.AttachedToVisualTree += MenuAttached;
+        }
+
+        private void MenuAttached(object sender, VisualTreeAttachmentEventArgs e)
+        {
+            if (NativeMenu.GetIsNativeMenuExported(this) && sender is Menu mainMenu)
+            {
+                mainMenu.IsVisible = false;
+                InitNativeMenu();
+            }
+            else
+            {
+                InitMainMenu();
+            }
         }
 
         private void MainWindow_KeyDown(object sender, KeyEventArgs e)
@@ -400,11 +414,50 @@ namespace ICSharpCode.ILSpy
             mainMenu.Items = mainMenuItems;
         }
 
-		internal static string GetResourceString(string key)
+        void InitNativeMenu()
+        {
+            var mainMenuCommands = App.ExportProvider.GetExports<ICommand, IMainMenuCommandMetadata>("MainMenuCommand");
+            var mainMenuItems = NativeMenu.GetMenu(this).Items;
+            foreach (var topLevelMenu in mainMenuCommands.OrderBy(c => c.Metadata.MenuOrder).GroupBy(c => GetResourceString(c.Metadata.Menu)))
+            {
+                NativeMenuItem topLevelMenuItem = mainMenuItems.OfType<NativeMenuItem>().FirstOrDefault(m => (GetResourceString(m.Header as string)) == topLevelMenu.Key);
+                if (topLevelMenuItem == null)
+                {
+                    topLevelMenuItem = new NativeMenuItem();
+                    topLevelMenuItem.Header = GetResourceString(topLevelMenu.Key);
+                    topLevelMenuItem.Menu = new NativeMenu();
+                    mainMenuItems.Add(topLevelMenuItem);
+                }
+
+                var topLevelMenuItems = topLevelMenuItem.Menu.Items;
+                foreach (var category in topLevelMenu.GroupBy(c => GetResourceString(c.Metadata.MenuCategory)))
+                {
+                    if (topLevelMenuItems.Count > 0)
+                    {
+                        topLevelMenuItems.Add(new NativeMenuItemSeperator());
+                    }
+                    foreach (var entry in category)
+                    {
+                        NativeMenuItem menuItem = new NativeMenuItem();
+                        menuItem.Command = CommandWrapper.Unwrap(entry.Value);
+                        if (!string.IsNullOrEmpty(GetResourceString(entry.Metadata.Header)))
+                            menuItem.Header = GetResourceString(entry.Metadata.Header);
+
+                        // NOTE: add icon here if Avalonia add icon support for native menu
+
+                        menuItem.Enabled = entry.Metadata.IsEnabled;
+                        topLevelMenuItems.Add(menuItem);
+                    }
+                }
+            }
+            mainMenu.Items = mainMenuItems;
+        }
+
+        internal static string GetResourceString(string key)
 		{
 			var str = !string.IsNullOrEmpty(key)? Properties.Resources.ResourceManager.GetString(key):null;
-			return string.IsNullOrEmpty(key)||  string.IsNullOrEmpty(str) ? key :  str;
-		}
+            return string.IsNullOrEmpty(key) || string.IsNullOrEmpty(str) ? key : str.Replace("_", string.Empty); // avalonia menu doesn't support _ key gesture, thus remove _ 
+        }
 
         #endregion
 
@@ -620,7 +673,6 @@ namespace ICSharpCode.ILSpy
         {
             Application.Current.FocusManager.Focus(this);
 
-            InitMainMenu();
             InitToolbar();
 
             ILSpySettings spySettings = this.spySettingsForMainWindow_Loaded;
