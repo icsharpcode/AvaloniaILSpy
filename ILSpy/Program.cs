@@ -42,7 +42,12 @@ namespace ICSharpCode.ILSpy
             Logger.Sink = new ProxyLogSink(Logger.Sink);
 #endif
 
-            return result.UsePlatformDetect();
+            return result
+                .UsePlatformDetect()
+                .With(new X11PlatformOptions
+                 {
+                     UseDBusMenu = true
+                 });
         }
 
         class ProxyLogSink : ILogSink
