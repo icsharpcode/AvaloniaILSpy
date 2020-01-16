@@ -124,7 +124,7 @@ namespace ICSharpCode.ILSpy
 			}
 			Languages.Initialize(exportProvider);
 
-            VisualLineLinkText.OpenUriEvent.AddClassHandler<Window>(win => Window_RequestNavigate);
+            VisualLineLinkText.OpenUriEvent.AddClassHandler<Window>((win, e) => Window_RequestNavigate(e));
 
             ILSpyTraceListener.Install();
         }
