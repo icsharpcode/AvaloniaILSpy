@@ -6,6 +6,8 @@ using System.Reflection;
 using Avalonia.Logging;
 using System.Collections.Generic;
 using Avalonia.Controls;
+using Avalonia.Dialogs;
+using System.Runtime.InteropServices;
 
 namespace ICSharpCode.ILSpy
 {
@@ -42,12 +44,19 @@ namespace ICSharpCode.ILSpy
             Logger.Sink = new ProxyLogSink(Logger.Sink);
 #endif
 
-            return result
+            AppBuilder app = result
                 .UsePlatformDetect()
                 .With(new X11PlatformOptions
-                 {
-                     UseDBusMenu = true
-                 });
+                {
+                    UseDBusMenu = true
+                });
+
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux) || RuntimeInformation.IsOSPlatform(OSPlatform.FreeBSD))
+            {
+                app = app.UseManagedSystemDialogs();
+            }
+
+            return app;
         }
 
         class ProxyLogSink : ILogSink
