@@ -15,10 +15,10 @@ namespace ICSharpCode.TreeView
 	{
 		static SharpTreeViewItem()
 		{
-			DragDrop.DragEnterEvent.AddClassHandler<SharpTreeViewItem>(x => x.OnDragEnter);
-			DragDrop.DragLeaveEvent.AddClassHandler<SharpTreeViewItem>(x => x.OnDragLeave);
-			DragDrop.DragOverEvent.AddClassHandler<SharpTreeViewItem>(x => x.OnDragOver);
-			DragDrop.DropEvent.AddClassHandler<SharpTreeViewItem>(x => x.OnDrop);
+			DragDrop.DragEnterEvent.AddClassHandler<SharpTreeViewItem>((x, e) => x.OnDragEnter(e));
+			DragDrop.DragLeaveEvent.AddClassHandler<SharpTreeViewItem>((x, e) => x.OnDragLeave(e));
+			DragDrop.DragOverEvent.AddClassHandler<SharpTreeViewItem>((x, e) => x.OnDragOver(e));
+			DragDrop.DropEvent.AddClassHandler<SharpTreeViewItem>((x, e) => x.OnDrop(e));
 		}
 
 		public SharpTreeNode Node

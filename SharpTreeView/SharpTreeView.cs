@@ -32,9 +32,9 @@ namespace ICSharpCode.TreeView
 
 			//VirtualizationModeProperty.OverrideDefaultValue<SharpTreeView>(ItemVirtualizationMode.Recycling);
 
-			DragDrop.DragEnterEvent.AddClassHandler<SharpTreeView>(x => x.OnDragEnter);
-			DragDrop.DragOverEvent.AddClassHandler<SharpTreeView>(x => x.OnDragOver);
-			DragDrop.DropEvent.AddClassHandler<SharpTreeView>(x => x.OnDrop);
+			DragDrop.DragEnterEvent.AddClassHandler<SharpTreeView>((x, e) => x.OnDragEnter(e));
+			DragDrop.DragOverEvent.AddClassHandler<SharpTreeView>((x, e) => x.OnDragOver(e));
+			DragDrop.DropEvent.AddClassHandler<SharpTreeView>((x, e) => x.OnDrop(e));
 		}
 
 		public SharpTreeView()
