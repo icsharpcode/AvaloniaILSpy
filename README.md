@@ -29,3 +29,9 @@ https://github.com/icsharpcode/AvaloniaILSpy/releases
 How to run on Linux: 
 - grant it the rights to execute `chmod a+x ILSpy`
 - run  `./ILSpy`
+
+# Build from sources
+
+1. Clone repository with submodules: `git clone --recurse-submodules`.
+2. Run build script: `build.ps1` on Windows and `./build.sh` on Linux and Mac OS.
+3. Artifacts will be located in subdirectory `artifacts`.
