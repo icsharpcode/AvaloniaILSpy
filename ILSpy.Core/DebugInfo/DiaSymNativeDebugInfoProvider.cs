@@ -51,7 +51,9 @@ namespace ICSharpCode.ILSpy.DebugInfo
 
 		public string Description => $"Loaded from PDB file: {pdbFileName}";
 
-		public IList<Decompiler.DebugInfo.SequencePoint> GetSequencePoints(MethodDefinitionHandle handle)
+        public string SourceFileName => pdbFileName;
+
+        public IList<Decompiler.DebugInfo.SequencePoint> GetSequencePoints(MethodDefinitionHandle handle)
 		{
 			var method = reader.GetMethod(MetadataTokens.GetToken(handle));
 			if (method == null || method.GetSequencePointCount(out int count) != 0)

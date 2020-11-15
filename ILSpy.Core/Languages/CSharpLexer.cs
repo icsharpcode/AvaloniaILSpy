@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Text;
+using ICSharpCode.Decompiler.CSharp.Syntax;
 
 namespace ICSharpCode.ILSpy
 {
@@ -50,18 +51,6 @@ namespace ICSharpCode.ILSpy
 				reader.Dispose();
 			base.Dispose(disposing);
 		}
-	}
-
-	public enum LiteralFormat : byte
-	{
-		None,
-		DecimalNumber,
-		HexadecimalNumber,
-		OctalNumber,
-		StringLiteral,
-		VerbatimStringLiteral,
-		CharLiteral,
-		DateTimeLiteral
 	}
 
 	public class Literal
