@@ -483,7 +483,6 @@ namespace ICSharpCode.ILSpy
             : base (
                 options.DecompilerSettings, 
                 assembly.GetAssemblyResolver (),
-                null,
                 assembly.GetDebugInfoOrNull ()
             ) {
                 this.assembly = assembly;

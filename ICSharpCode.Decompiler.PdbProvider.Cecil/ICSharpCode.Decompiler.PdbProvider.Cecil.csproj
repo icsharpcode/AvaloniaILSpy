@@ -7,8 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="../../ILSpy/ICSharpCode.Decompiler/ICSharpCode.Decompiler.csproj" />
     <PackageReference Include="Mono.Cecil" Version="0.11.3" />
+    <PackageReference Include="ICSharpCode.Decompiler" Version="6.2.1.6137" />
     <PackageReference Include="System.IO.FileSystem.Primitives" Version="4.3.0" />
     <PackageReference Include="System.Runtime.Extensions" Version="4.3.0" />
     <PackageReference Include="System.Runtime.Handles" Version="4.3.0" />

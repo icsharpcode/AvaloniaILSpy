@@ -37,11 +37,11 @@ using ICSharpCode.ILSpy.Options;
 
 namespace ICSharpCode.ILSpy
 {
-    /// <summary>
-    /// Represents an assembly loaded into ILSpy.
-    /// </summary>
-    [DebuggerDisplay("[LoadedAssembly {shortName}]")]
-    public sealed class LoadedAssembly
+	/// <summary>
+	/// Represents an assembly loaded into ILSpy.
+	/// </summary>
+	[DebuggerDisplay("[LoadedAssembly {shortName}]")]
+	public sealed class LoadedAssembly
 	{
 		internal static readonly ConditionalWeakTable<PEFile, LoadedAssembly> loadedAssemblies = new ConditionalWeakTable<PEFile, LoadedAssembly>();
 
@@ -55,9 +55,9 @@ namespace ICSharpCode.ILSpy
 			this.assemblyList = assemblyList ?? throw new ArgumentNullException(nameof(assemblyList));
 			this.fileName = fileName ?? throw new ArgumentNullException(nameof(fileName));
 
-            this.assemblyTask = stream != null || File.Exists(fileName) ?
-                                Task.Factory.StartNew(LoadAssembly, stream) : // requires that this.fileName is set
-                                Task.FromException<PEFile>(new FileNotFoundException("Assembly file not found", fileName));
+			this.assemblyTask = stream != null || File.Exists(fileName) ?
+								Task.Factory.StartNew(LoadAssembly, stream) : // requires that this.fileName is set
+								Task.FromException<PEFile>(new FileNotFoundException("Assembly file not found", fileName));
 			this.shortName = Path.GetFileNameWithoutExtension(fileName);
 		}
 
@@ -90,7 +90,7 @@ namespace ICSharpCode.ILSpy
 		public PEFile GetPEFileOrNull()
 		{
 			try {
-                if (IsLoaded && HasLoadError) return null;
+				if (IsLoaded && HasLoadError) return null;
 				return GetPEFileAsync().Result;
 			} catch (Exception ex) {
 				System.Diagnostics.Trace.TraceError(ex.ToString());
@@ -149,31 +149,31 @@ namespace ICSharpCode.ILSpy
 
 		PEFile LoadAssembly(object state)
 		{
-            MetadataReaderOptions options;
-            if (DecompilerSettingsPanel.CurrentDecompilerSettings.ApplyWindowsRuntimeProjections)
-            {
-                options = MetadataReaderOptions.ApplyWindowsRuntimeProjections;
-            }
-            else
-            {
-                options = MetadataReaderOptions.None;
-            }
+			MetadataReaderOptions options;
+			if (DecompilerSettingsPanel.CurrentDecompilerSettings.ApplyWindowsRuntimeProjections)
+			{
+				options = MetadataReaderOptions.ApplyWindowsRuntimeProjections;
+			}
+			else
+			{
+				options = MetadataReaderOptions.None;
+			}
 
-            // runs on background thread
-            PEFile module;
+			// runs on background thread
+			PEFile module;
 
-            if (state is Stream stream)
-            {
-                // Read the module from a precrafted stream
-                module = new PEFile(fileName, stream, metadataOptions: DecompilerSettingsPanel.CurrentDecompilerSettings.ApplyWindowsRuntimeProjections ? MetadataReaderOptions.ApplyWindowsRuntimeProjections : MetadataReaderOptions.None);
-            } else {
-                // Read the module from disk (by default)
-                stream = new FileStream(fileName, FileMode.Open, FileAccess.Read);
-                module = new PEFile(fileName, stream, PEStreamOptions.PrefetchEntireImage,
-                    metadataOptions: options);
-            }
+			if (state is Stream stream)
+			{
+				// Read the module from a precrafted stream
+				module = new PEFile(fileName, stream, metadataOptions: DecompilerSettingsPanel.CurrentDecompilerSettings.ApplyWindowsRuntimeProjections ? MetadataReaderOptions.ApplyWindowsRuntimeProjections : MetadataReaderOptions.None);
+			} else {
+				// Read the module from disk (by default)
+				stream = new FileStream(fileName, FileMode.Open, FileAccess.Read);
+				module = new PEFile(fileName, stream, PEStreamOptions.PrefetchEntireImage,
+					metadataOptions: options);
+			}
 
-            if (DecompilerSettingsPanel.CurrentDecompilerSettings.UseDebugSymbols) {
+			if (DecompilerSettingsPanel.CurrentDecompilerSettings.UseDebugSymbols) {
 				try {
 					LoadSymbols(module);
 				} catch (IOException) {
@@ -285,6 +285,11 @@ namespace ICSharpCode.ILSpy
 				this.parent = parent;
 			}
 
+			public bool IsGacAssembly (IAssemblyReference reference)
+			{
+				return UniversalAssemblyResolver.GetAssemblyInGac(reference) != null;
+			}
+
 			public PEFile Resolve(Decompiler.Metadata.IAssemblyReference reference)
 			{
 				return parent.LookupReferencedAssembly(reference)?.GetPEFileOrNull();
@@ -334,9 +339,9 @@ namespace ICSharpCode.ILSpy
 		class MyUniversalResolver : UniversalAssemblyResolver
 		{
 			public MyUniversalResolver(LoadedAssembly assembly)
-                : base(assembly.FileName, false, assembly.GetTargetFrameworkIdAsync().Result, PEStreamOptions.PrefetchEntireImage, DecompilerSettingsPanel.CurrentDecompilerSettings.ApplyWindowsRuntimeProjections ? MetadataReaderOptions.ApplyWindowsRuntimeProjections : MetadataReaderOptions.None)
-            {
-            }
+				: base(assembly.FileName, false, assembly.GetTargetFrameworkIdAsync().Result, PEStreamOptions.PrefetchEntireImage, DecompilerSettingsPanel.CurrentDecompilerSettings.ApplyWindowsRuntimeProjections ? MetadataReaderOptions.ApplyWindowsRuntimeProjections : MetadataReaderOptions.None)
+			{
+			}
 		}
 
 		static Dictionary<string, LoadedAssembly> loadingAssemblies = new Dictionary<string, LoadedAssembly>();
@@ -434,7 +439,7 @@ namespace ICSharpCode.ILSpy
 				}
 				loadingAssemblies.Add(file, asm);
 			}
-            Dispatcher.UIThread.InvokeAsync((Action)delegate () {
+			Dispatcher.UIThread.InvokeAsync((Action)delegate () {
 				lock (assemblyList.assemblies) {
 					assemblyList.assemblies.Add(asm);
 				}
