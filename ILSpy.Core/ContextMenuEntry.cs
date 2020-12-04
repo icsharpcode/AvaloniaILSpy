@@ -122,8 +122,8 @@ namespace ICSharpCode.ILSpy
 		public string Header { get; set; }
 		public string Category { get; set; }
 		public double Order { get; set; }
-        public string InputGestureText { get; set; }
-    }
+		public string InputGestureText { get; set; }
+	}
 	
 	internal class ContextMenuProvider
 	{
@@ -133,24 +133,24 @@ namespace ICSharpCode.ILSpy
 		public static void Add(SharpTreeView treeView, DecompilerTextView textView = null)
 		{
 			var provider = new ContextMenuProvider(treeView, textView);
-            // Context menu is shown only when the ContextMenu property is not null before the
-            // ContextMenuOpening event handler is called.
-            treeView.ContextMenu = new ContextMenu();
-            treeView.ContextMenu.ContextMenuOpening += provider.treeView_ContextMenuOpening;
+			// Context menu is shown only when the ContextMenu property is not null before the
+			// ContextMenuOpening event handler is called.
+			treeView.ContextMenu = new ContextMenu();
+			treeView.ContextMenu.ContextMenuOpening += provider.treeView_ContextMenuOpening;
 
 			if (textView != null) {
 				// Context menu is shown only when the ContextMenu property is not null before the
 				// ContextMenuOpening event handler is called.
-                textView.ContextMenu = new ContextMenu();
-                textView.ContextMenu.ContextMenuOpening += provider.textView_ContextMenuOpening;
+				textView.ContextMenu = new ContextMenu();
+				textView.ContextMenu.ContextMenuOpening += provider.textView_ContextMenuOpening;
 			}
 		}
 		
 		public static void Add(DataGrid listBox)
 		{
 			var provider = new ContextMenuProvider(listBox);
-            listBox.ContextMenu = new ContextMenu();
-            listBox.ContextMenu.ContextMenuOpening += provider.listBox_ContextMenuOpening;
+			listBox.ContextMenu = new ContextMenu();
+			listBox.ContextMenu.ContextMenuOpening += provider.listBox_ContextMenuOpening;
 		}
 		
 		readonly SharpTreeView treeView;
@@ -174,44 +174,44 @@ namespace ICSharpCode.ILSpy
 			this.listBox = listBox;
 		}
 
-        void treeView_ContextMenuOpening(object sender, CancelEventArgs e)
+		void treeView_ContextMenuOpening(object sender, CancelEventArgs e)
 		{
 			TextViewContext context = TextViewContext.Create(treeView);
 			if (context.SelectedTreeNodes.Length == 0) {
-                e.Cancel = true; // don't show the menu
+				e.Cancel = true; // don't show the menu
 				return;
 			}
-            ContextMenu menu = (ContextMenu)sender;
-            if (ShowContextMenu(context, out IEnumerable<IControl> items))
-                menu.Items = items;
+			ContextMenu menu = (ContextMenu)sender;
+			if (ShowContextMenu(context, out IEnumerable<IControl> items))
+				menu.Items = items;
 			else
 				// hide the context menu.
-                e.Cancel = true;
+				e.Cancel = true;
 		}
 		
-        void textView_ContextMenuOpening(object sender, CancelEventArgs e)
+		void textView_ContextMenuOpening(object sender, CancelEventArgs e)
 		{
 			TextViewContext context = TextViewContext.Create(textView: textView);
-            ContextMenu menu = (ContextMenu)sender;
-            if (ShowContextMenu(context, out IEnumerable<IControl> items))
-                menu.Items = items;
+			ContextMenu menu = (ContextMenu)sender;
+			if (ShowContextMenu(context, out IEnumerable<IControl> items))
+				menu.Items = items;
 			else
 				// hide the context menu.
-                e.Cancel = true;
+				e.Cancel = true;
 		}
 
-        void listBox_ContextMenuOpening(object sender, CancelEventArgs e)
+		void listBox_ContextMenuOpening(object sender, CancelEventArgs e)
 		{
 			TextViewContext context = TextViewContext.Create(listBox: listBox);
-            ContextMenu menu = (ContextMenu)sender;
-            if (ShowContextMenu(context, out IEnumerable<IControl> items))
-                menu.Items = items;
+			ContextMenu menu = (ContextMenu)sender;
+			if (ShowContextMenu(context, out IEnumerable<IControl> items))
+				menu.Items = items;
 			else
 				// hide the context menu.
-                e.Cancel = true;
+				e.Cancel = true;
 		}
 		
-        bool ShowContextMenu(TextViewContext context, out IEnumerable<IControl> menuItems)
+		bool ShowContextMenu(TextViewContext context, out IEnumerable<IControl> menuItems)
 		{
 			List<IControl> items = new List<IControl>();
 			foreach (var category in entries.OrderBy(c => c.Metadata.Order).GroupBy(c => c.Metadata.Category)) {
@@ -224,8 +224,8 @@ namespace ICSharpCode.ILSpy
 							needSeparatorForCategory = false;
 						}
 						MenuItem menuItem = new MenuItem();
-                        menuItem.Header = MainWindow.GetResourceString(entryPair.Metadata.Header);
-                        if (!string.IsNullOrEmpty(entryPair.Metadata.Icon)) {
+						menuItem.Header = MainWindow.GetResourceString(entryPair.Metadata.Header);
+						if (!string.IsNullOrEmpty(entryPair.Metadata.Icon)) {
 							menuItem.Icon = new Image {
 								Width = 16,
 								Height = 16,
@@ -240,7 +240,7 @@ namespace ICSharpCode.ILSpy
 					}
 				}
 			}
-            menuItems = items;
+			menuItems = items;
 			return items.Count > 0;
 		}
 	}

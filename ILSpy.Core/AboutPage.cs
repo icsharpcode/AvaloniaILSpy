@@ -39,8 +39,8 @@ using ICSharpCode.ILSpy.Properties;
 
 namespace ICSharpCode.ILSpy
 {
-    [ExportMainMenuCommand(Menu = nameof(Resources._Help), Header = nameof(Resources._About), MenuOrder = 99999)]
-    sealed class AboutPage : SimpleCommand
+	[ExportMainMenuCommand(Menu = nameof(Resources._Help), Header = nameof(Resources._About), MenuOrder = 99999)]
+	sealed class AboutPage : SimpleCommand
 	{
 		[Import]
 		DecompilerTextView decompilerTextView = null;
@@ -51,7 +51,7 @@ namespace ICSharpCode.ILSpy
 			Display(decompilerTextView);
 		}
 		
-        static readonly Uri UpdateUrl = new Uri("https://github.com/icsharpcode/AvaloniaILSpy/raw/master/updates.xml");
+		static readonly Uri UpdateUrl = new Uri("https://github.com/icsharpcode/AvaloniaILSpy/raw/master/updates.xml");
 		const string band = "stable";
 		
 		static AvailableVersionInfo latestAvailableVersion;
@@ -59,8 +59,8 @@ namespace ICSharpCode.ILSpy
 		public static void Display(DecompilerTextView textView)
 		{
 			AvaloniaEditTextOutput output = new AvaloniaEditTextOutput();
-            output.WriteLine(Resources.ILSpyVersion + RevisionClass.FullVersion);
-            output.AddUIElement(
+			output.WriteLine(Resources.ILSpyVersion + RevisionClass.FullVersion);
+			output.AddUIElement(
 				delegate {
 					StackPanel stackPanel = new StackPanel();
 					stackPanel.HorizontalAlignment = HorizontalAlignment.Center;
@@ -73,7 +73,7 @@ namespace ICSharpCode.ILSpy
 					}
 					CheckBox checkBox = new CheckBox();
 					checkBox.Margin = new Thickness(4);
-                    checkBox.Content = Resources.AutomaticallyCheckUpdatesEveryWeek;
+					checkBox.Content = Resources.AutomaticallyCheckUpdatesEveryWeek;
 					UpdateSettings settings = new UpdateSettings(ILSpySettings.Load());
 					checkBox.Bind(CheckBox.IsCheckedProperty, new Binding("AutomaticUpdateCheckEnabled") { Source = settings });
 					return new StackPanel {
@@ -121,12 +121,12 @@ namespace ICSharpCode.ILSpy
 		static void AddUpdateCheckButton(StackPanel stackPanel, DecompilerTextView textView)
 		{
 			Button button = new Button();
-            button.Content = Resources.CheckUpdates;
+			button.Content = Resources.CheckUpdates;
 			button.Cursor = Cursor.Default;
 			stackPanel.Children.Add(button);
 			
 			button.Click += delegate {
-                button.Content = Resources.Checking;
+				button.Content = Resources.Checking;
 				button.IsEnabled = false;
 				GetLatestVersionAsync().ContinueWith(
 					delegate (Task<AvailableVersionInfo> task) {
@@ -155,19 +155,19 @@ namespace ICSharpCode.ILSpy
 					});
 				stackPanel.Children.Add(
 					new TextBlock {
-                        Text = Resources.UsingLatestRelease,
+						Text = Resources.UsingLatestRelease,
 						VerticalAlignment = VerticalAlignment.Bottom
 					});
 			} else if (currentVersion < availableVersion.Version) {
 				stackPanel.Children.Add(
 					new TextBlock {
-                        Text = string.Format(Resources.VersionAvailable, availableVersion.Version),
+						Text = string.Format(Resources.VersionAvailable, availableVersion.Version),
 						Margin = new Thickness(0,0,8,0),
 						VerticalAlignment = VerticalAlignment.Bottom
 					});
 				if (availableVersion.DownloadUrl != null) {
 					Button button = new Button();
-                    button.Content = Resources.Download;
+					button.Content = Resources.Download;
 					button.Cursor = Cursor.Default;
 					button.Click += delegate {
 						MainWindow.OpenLink(availableVersion.DownloadUrl);
@@ -175,47 +175,47 @@ namespace ICSharpCode.ILSpy
 					stackPanel.Children.Add(button);
 				}
 			} else {
-                stackPanel.Children.Add(new TextBlock { Text = Resources.UsingNightlyBuildNewerThanLatestRelease });
+				stackPanel.Children.Add(new TextBlock { Text = Resources.UsingNightlyBuildNewerThanLatestRelease });
 			}
 		}
 		
 		static Task<AvailableVersionInfo> GetLatestVersionAsync()
 		{
 			var tcs = new TaskCompletionSource<AvailableVersionInfo>();
-            Task.Run(() =>
-            {
-                WebClient wc = new WebClient();
-                IWebProxy systemWebProxy = WebRequest.GetSystemWebProxy();
-                systemWebProxy.Credentials = CredentialCache.DefaultCredentials;
-                wc.Proxy = systemWebProxy;
-                wc.DownloadDataCompleted += delegate (object sender, DownloadDataCompletedEventArgs e)
-                {
-                    if (e.Error != null)
-                    {
-                        tcs.SetException(e.Error);
-                    }
-                    else
-                    {
-                        try
-                        {
-                            XDocument doc = XDocument.Load(new MemoryStream(e.Result));
-                            var bands = doc.Root.Elements("band");
-                            var currentBand = bands.FirstOrDefault(b => (string)b.Attribute("id") == band) ?? bands.First();
-                            Version version = new Version((string)currentBand.Element("latestVersion"));
-                            string url = (string)currentBand.Element("downloadUrl");
-                            if (!(url.StartsWith("http://", StringComparison.Ordinal) || url.StartsWith("https://", StringComparison.Ordinal)))
-                                url = null; // don't accept non-urls
-                            latestAvailableVersion = new AvailableVersionInfo { Version = version, DownloadUrl = url };
-                            tcs.SetResult(latestAvailableVersion);
-                        }
-                        catch (Exception ex)
-                        {
-                            tcs.SetException(ex);
-                        }
-                    }
-                };
-                wc.DownloadDataAsync(UpdateUrl);
-            });
+			Task.Run(() =>
+			{
+				WebClient wc = new WebClient();
+				IWebProxy systemWebProxy = WebRequest.GetSystemWebProxy();
+				systemWebProxy.Credentials = CredentialCache.DefaultCredentials;
+				wc.Proxy = systemWebProxy;
+				wc.DownloadDataCompleted += delegate (object sender, DownloadDataCompletedEventArgs e)
+				{
+					if (e.Error != null)
+					{
+						tcs.SetException(e.Error);
+					}
+					else
+					{
+						try
+						{
+							XDocument doc = XDocument.Load(new MemoryStream(e.Result));
+							var bands = doc.Root.Elements("band");
+							var currentBand = bands.FirstOrDefault(b => (string)b.Attribute("id") == band) ?? bands.First();
+							Version version = new Version((string)currentBand.Element("latestVersion"));
+							string url = (string)currentBand.Element("downloadUrl");
+							if (!(url.StartsWith("http://", StringComparison.Ordinal) || url.StartsWith("https://", StringComparison.Ordinal)))
+								url = null; // don't accept non-urls
+							latestAvailableVersion = new AvailableVersionInfo { Version = version, DownloadUrl = url };
+							tcs.SetResult(latestAvailableVersion);
+						}
+						catch (Exception ex)
+						{
+							tcs.SetException(ex);
+						}
+					}
+				};
+				wc.DownloadDataAsync(UpdateUrl);
+			});
 			return tcs.Task;
 		}
 		
@@ -297,8 +297,8 @@ namespace ICSharpCode.ILSpy
 				// perform update check if we never did one before;
 				// or if the last check wasn't in the past 7 days
 				if (s.LastSuccessfulUpdateCheck == null
-				    || s.LastSuccessfulUpdateCheck < DateTime.UtcNow.AddDays(-7)
-				    || s.LastSuccessfulUpdateCheck > DateTime.UtcNow)
+					|| s.LastSuccessfulUpdateCheck < DateTime.UtcNow.AddDays(-7)
+					|| s.LastSuccessfulUpdateCheck > DateTime.UtcNow)
 				{
 					CheckForUpdateInternal(tcs, s);
 				} else {

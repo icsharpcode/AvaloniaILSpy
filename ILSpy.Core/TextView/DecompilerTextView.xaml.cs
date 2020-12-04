@@ -41,7 +41,7 @@ using AvaloniaEdit.Highlighting.Xshd;
 using AvaloniaEdit.Rendering;
 using AvaloniaEdit.Search;
 using ICSharpCode.Decompiler;
-using ICSharpCode.Decompiler.CSharp;
+using ICSharpCode.Decompiler.CSharp.ProjectDecompiler;
 using ICSharpCode.Decompiler.Documentation;
 using ICSharpCode.Decompiler.Metadata;
 using ICSharpCode.Decompiler.TypeSystem;

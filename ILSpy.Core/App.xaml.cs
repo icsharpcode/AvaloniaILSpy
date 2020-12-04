@@ -35,14 +35,14 @@ using AvaloniaEdit.Rendering;
 
 namespace ICSharpCode.ILSpy
 {
-    /// <summary>
-    /// Interaction logic for App.xaml
-    /// </summary>
-    public partial class App : Application
-    {
-        const bool alwaysShowErrorBox = true;
+	/// <summary>
+	/// Interaction logic for App.xaml
+	/// </summary>
+	public partial class App : Application
+	{
+		const bool alwaysShowErrorBox = true;
 
-        internal static CommandLineArguments CommandLineArguments;
+		internal static CommandLineArguments CommandLineArguments;
 
 		static ExportProvider exportProvider;
 		
@@ -74,19 +74,19 @@ namespace ICSharpCode.ILSpy
 					//Environment.Exit(0);
 				}
 			}
-            //InitializeComponent();
+			//InitializeComponent();
 
-            if (alwaysShowErrorBox || !Debugger.IsAttached)
-            {
-                AppDomain.CurrentDomain.UnhandledException += ShowErrorBox;
-                //TODO: dispatcher UnhandledException
-                //Dispatcher.CurrentDispatcher.UnhandledException += Dispatcher_UnhandledException;
-            }
-            TaskScheduler.UnobservedTaskException += DotNet40_UnobservedTaskException;
+			if (alwaysShowErrorBox || !Debugger.IsAttached)
+			{
+				AppDomain.CurrentDomain.UnhandledException += ShowErrorBox;
+				//TODO: dispatcher UnhandledException
+				//Dispatcher.CurrentDispatcher.UnhandledException += Dispatcher_UnhandledException;
+			}
+			TaskScheduler.UnobservedTaskException += DotNet40_UnobservedTaskException;
 
-            // Cannot show MessageBox here, because WPF would crash with a XamlParseException
-            // Remember and show exceptions in text output, once MainWindow is properly initialized
-            try {
+			// Cannot show MessageBox here, because WPF would crash with a XamlParseException
+			// Remember and show exceptions in text output, once MainWindow is properly initialized
+			try {
 				// Set up VS MEF. For now, only do MEF1 part discovery, since that was in use before.
 				// To support both MEF1 and MEF2 parts, just change this to:
 				// var discovery = PartDiscovery.Combine(new AttributedPartDiscoveryV1(Resolver.DefaultInstance),
@@ -124,15 +124,15 @@ namespace ICSharpCode.ILSpy
 			}
 			Languages.Initialize(exportProvider);
 
-            VisualLineLinkText.OpenUriEvent.AddClassHandler<Window>((win, e) => Window_RequestNavigate(e));
+			VisualLineLinkText.OpenUriEvent.AddClassHandler<Window>((win, e) => Window_RequestNavigate(e));
 
-            ILSpyTraceListener.Install();
-        }
+			ILSpyTraceListener.Install();
+		}
 
 		public override void OnFrameworkInitializationCompleted() =>
 			this.GetDesktopLifetime().MainWindow = new MainWindow();
 
-        string FullyQualifyPath(string argument)
+		string FullyQualifyPath(string argument)
 		{
 			// Fully qualify the paths before passing them to another process,
 			// because that process might use a different current directory.
@@ -182,44 +182,44 @@ namespace ICSharpCode.ILSpy
 			MessageBox.Show(exception.ToString(), "Sorry, we crashed");
 		}
 
-        //protected override void OnStartup(StartupEventArgs e)
-        //{
-        //    var output = new StringBuilder();
-        //    if (ILSpy.MainWindow.FormatExceptions(StartupExceptions.ToArray(), output))
-        //    {
-        //        MessageBox.Show(output.ToString(), "Sorry we crashed!");
-        //        Environment.Exit(1);
-        //    }
-        //    base.OnStartup(e);
-        //}
+		//protected override void OnStartup(StartupEventArgs e)
+		//{
+		//    var output = new StringBuilder();
+		//    if (ILSpy.MainWindow.FormatExceptions(StartupExceptions.ToArray(), output))
+		//    {
+		//        MessageBox.Show(output.ToString(), "Sorry we crashed!");
+		//        Environment.Exit(1);
+		//    }
+		//    base.OnStartup(e);
+		//}
 
-        #endregion
+		#endregion
 
 
-        void Window_RequestNavigate(OpenUriRoutedEventArgs e)
-        {
-            if (e.Uri.Scheme == "resource")
-            {
-                AvaloniaEditTextOutput output = new AvaloniaEditTextOutput();
-                using (Stream s = typeof(App).Assembly.GetManifestResourceStream(typeof(App), e.Uri.AbsolutePath))
-                {
-                    using (StreamReader r = new StreamReader(s))
-                    {
-                        string line;
-                        while ((line = r.ReadLine()) != null)
-                        {
-                            output.Write(line);
-                            output.WriteLine();
-                        }
-                    }
-                }
-                ILSpy.MainWindow.Instance.TextView.ShowText(output);
-            }
-            else
-            {
-                ILSpy.MainWindow.OpenLink(e.Uri.ToString());
-            }
-            e.Handled = true;
-        }
-    }
+		void Window_RequestNavigate(OpenUriRoutedEventArgs e)
+		{
+			if (e.Uri.Scheme == "resource")
+			{
+				AvaloniaEditTextOutput output = new AvaloniaEditTextOutput();
+				using (Stream s = typeof(App).Assembly.GetManifestResourceStream(typeof(App), e.Uri.AbsolutePath))
+				{
+					using (StreamReader r = new StreamReader(s))
+					{
+						string line;
+						while ((line = r.ReadLine()) != null)
+						{
+							output.Write(line);
+							output.WriteLine();
+						}
+					}
+				}
+				ILSpy.MainWindow.Instance.TextView.ShowText(output);
+			}
+			else
+			{
+				ILSpy.MainWindow.OpenLink(e.Uri.ToString());
+			}
+			e.Handled = true;
+		}
+	}
 }

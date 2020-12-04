@@ -232,7 +232,7 @@ namespace ICSharpCode.ILSpy.TextView
             references.Add(new ReferenceSegment { StartOffset = start, EndOffset = end, Reference = opCode });
 		}
 
-		public void WriteReference(PEFile module, EntityHandle handle, string text, bool isDefinition = false)
+		public void WriteReference(PEFile module, Handle handle, string text, string protocol = "decompile", bool isDefinition = false)
 		{
 			WriteIndent();
 			int start = this.TextLength;

@@ -40,10 +40,10 @@ namespace ICSharpCode.ILSpy
 	/// </summary>
 	public partial class NugetPackageBrowserDialog : DialogWindow, INotifyPropertyChanged
 	{
-        public LoadedNugetPackage Package { get; }
+		public LoadedNugetPackage Package { get; }
 
-        internal Button okButton;
-        internal Button cancelButton;
+		internal Button okButton;
+		internal Button cancelButton;
 
 		public NugetPackageBrowserDialog()
 		{
@@ -66,12 +66,12 @@ namespace ICSharpCode.ILSpy
 
 		private void InitializeComponent()
 		{
-            AvaloniaXamlLoader.Load(this);
-            okButton = this.FindControl<Button>("okButton");
-            cancelButton = this.FindControl<Button>("cancelButton");
+			AvaloniaXamlLoader.Load(this);
+			okButton = this.FindControl<Button>("okButton");
+			cancelButton = this.FindControl<Button>("cancelButton");
 
-            okButton.Click += OKButton_Click;
-            cancelButton.Click += CancelButton_Click;
+			okButton.Click += OKButton_Click;
+			cancelButton.Click += CancelButton_Click;
 		}
 
 		public new event PropertyChangedEventHandler PropertyChanged;
@@ -81,17 +81,17 @@ namespace ICSharpCode.ILSpy
 			if (e.PropertyName == nameof(Package.SelectedEntries)) {
 				OnPropertyChanged(new PropertyChangedEventArgs("HasSelection"));
 			}
-        }
+		}
 
-        void OKButton_Click(object sender, RoutedEventArgs e)
-        {
-            Close(true);
-        }
+		void OKButton_Click(object sender, RoutedEventArgs e)
+		{
+			Close(true);
+		}
 
-        void CancelButton_Click(object sender, RoutedEventArgs e)
-        {
-            Close(false);
-        }
+		void CancelButton_Click(object sender, RoutedEventArgs e)
+		{
+			Close(false);
+		}
 
 		protected virtual void OnPropertyChanged(PropertyChangedEventArgs e)
 		{

@@ -30,9 +30,9 @@ namespace ICSharpCode.ILSpy
 		public string Search;
 		public string Language;
 		public bool NoActivate;
-        public string ConfigFile;
+		public string ConfigFile;
 
-        public CommandLineArguments(IEnumerable<string> arguments)
+		public CommandLineArguments(IEnumerable<string> arguments)
 		{
 			foreach (string arg in arguments) {
 				if (arg.Length == 0)
@@ -50,10 +50,10 @@ namespace ICSharpCode.ILSpy
 						this.Language = arg.Substring("/language:".Length);
 					else if (arg.Equals("/noActivate", StringComparison.OrdinalIgnoreCase))
 						this.NoActivate = true;
-                    else if (arg.StartsWith("/config:", StringComparison.OrdinalIgnoreCase))
-                        this.ConfigFile = arg.Substring("/config:".Length);
-                }
-                else {
+					else if (arg.StartsWith("/config:", StringComparison.OrdinalIgnoreCase))
+						this.ConfigFile = arg.Substring("/config:".Length);
+				}
+				else {
 					this.AssembliesToLoad.Add(arg);
 				}
 			}

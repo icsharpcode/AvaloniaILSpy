@@ -378,7 +378,7 @@ namespace ICSharpCode.ILSpy
 			}
 		}
 
-		public override void WritePrimitiveValue(object value, string literalValue = null)
+		public override void WritePrimitiveValue(object value, LiteralFormat literalValue = LiteralFormat.None)
 		{
 			HighlightingColor color = null;
 			if (value is null) {

@@ -58,8 +58,8 @@ namespace ICSharpCode.ILSpy
 			this.TopPaneSplitterPosition = FromString((string)doc.Element("TopPaneSplitterPosition"), 0.3);
 			this.BottomPaneSplitterPosition = FromString((string)doc.Element("BottomPaneSplitterPosition"), 0.3);
 			this.SelectedSearchMode = FromString((string)doc.Element("SelectedSearchMode"), Search.SearchMode.TypeAndMember);
-            this.Theme = (string)doc.Element("Theme");
-        }
+			this.Theme = (string)doc.Element("Theme");
+		}
 		
 		public event PropertyChangedEventHandler PropertyChanged;
 		
@@ -85,7 +85,7 @@ namespace ICSharpCode.ILSpy
 		/// </summary>
 		public double SplitterPosition;
 		public double TopPaneSplitterPosition, BottomPaneSplitterPosition;
-        public string Theme;
+		public string Theme;
 		
 		public void Save()
 		{
@@ -107,9 +107,9 @@ namespace ICSharpCode.ILSpy
 			doc.Add(new XElement("BottomPaneSplitterPosition", ToString(this.BottomPaneSplitterPosition)));
 			doc.Add(new XElement("SelectedSearchMode", ToString(this.SelectedSearchMode)));
 
-            doc.Add(new XElement("Theme", this.Theme));
+			doc.Add(new XElement("Theme", this.Theme));
 
-            ILSpySettings.SaveSettings(doc);
+			ILSpySettings.SaveSettings(doc);
 		}
 		
 		static Regex regex = new Regex("\\\\x(?<num>[0-9A-f]{4})");
@@ -141,14 +141,14 @@ namespace ICSharpCode.ILSpy
 			} catch (FormatException) {
 				return defaultValue;
 			}
-        }
+		}
 
-        static Rect FromString(string s, Rect defaultValue)
-        {
-            if (s == null)
-                return defaultValue;
-            return Rect.Parse(s);
-        }
+		static Rect FromString(string s, Rect defaultValue)
+		{
+			if (s == null)
+				return defaultValue;
+			return Rect.Parse(s);
+		}
 		
 		static string ToString<T>(T obj)
 		{
