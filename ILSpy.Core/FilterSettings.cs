@@ -24,185 +24,185 @@ using System.Xml.Linq;
 
 namespace ICSharpCode.ILSpy
 {
-    /// <summary>
-    /// Represents the filters applied to the tree view.
-    /// </summary>
-    /// <remarks>
-    /// This class is mutable; but the ILSpyTreeNode filtering assumes that filter settings are immutable.
-    /// Thus, the main window will use one mutable instance (for data-binding), and will assign a new
-    /// clone to the ILSpyTreeNodes whenever the main mutable instance changes.
-    /// </remarks>
-    public class FilterSettings : INotifyPropertyChanged
-    {
-        public FilterSettings(XElement element)
-        {
-            this.ShowApiLevel = (ApiVisibility?)(int?)element.Element("ShowAPILevel") ?? ApiVisibility.PublicAndInternal;
-            this.Language = Languages.GetLanguage((string)element.Element("Language"));
-            this.LanguageVersion = Language.LanguageVersions.FirstOrDefault(v => v.Version == (string)element.Element("LanguageVersion"));
-            if (this.LanguageVersion == default(LanguageVersion))
-                this.LanguageVersion = language.LanguageVersions.LastOrDefault();
-        }
+	/// <summary>
+	/// Represents the filters applied to the tree view.
+	/// </summary>
+	/// <remarks>
+	/// This class is mutable; but the ILSpyTreeNode filtering assumes that filter settings are immutable.
+	/// Thus, the main window will use one mutable instance (for data-binding), and will assign a new
+	/// clone to the ILSpyTreeNodes whenever the main mutable instance changes.
+	/// </remarks>
+	public class FilterSettings : INotifyPropertyChanged
+	{
+		public FilterSettings(XElement element)
+		{
+			this.ShowApiLevel = (ApiVisibility?)(int?)element.Element("ShowAPILevel") ?? ApiVisibility.PublicAndInternal;
+			this.Language = Languages.GetLanguage((string)element.Element("Language"));
+			this.LanguageVersion = Language.LanguageVersions.FirstOrDefault(v => v.Version == (string)element.Element("LanguageVersion"));
+			if (this.LanguageVersion == default(LanguageVersion))
+				this.LanguageVersion = language.LanguageVersions.LastOrDefault();
+		}
 
-        public XElement SaveAsXml()
-        {
-            return new XElement(
-                "FilterSettings",
-                new XElement("ShowAPILevel", (int)this.ShowApiLevel),
-                new XElement("Language", this.Language.Name),
-                new XElement("LanguageVersion", this.LanguageVersion.Version)
-            );
-        }
+		public XElement SaveAsXml()
+		{
+			return new XElement(
+				"FilterSettings",
+				new XElement("ShowAPILevel", (int)this.ShowApiLevel),
+				new XElement("Language", this.Language.Name),
+				new XElement("LanguageVersion", this.LanguageVersion.Version)
+			);
+		}
 
-        string searchTerm;
+		string searchTerm;
 
-        /// <summary>
-        /// Gets/Sets the search term.
-        /// Only tree nodes containing the search term will be shown.
-        /// </summary>
-        public string SearchTerm
-        {
-            get { return searchTerm; }
-            set
-            {
-                if (searchTerm != value)
-                {
-                    searchTerm = value;
-                    OnPropertyChanged(nameof(SearchTerm));
-                }
-            }
-        }
+		/// <summary>
+		/// Gets/Sets the search term.
+		/// Only tree nodes containing the search term will be shown.
+		/// </summary>
+		public string SearchTerm
+		{
+			get { return searchTerm; }
+			set
+			{
+				if (searchTerm != value)
+				{
+					searchTerm = value;
+					OnPropertyChanged(nameof(SearchTerm));
+				}
+			}
+		}
 
-        /// <summary>
-        /// Gets whether a node with the specified text is matched by the current search term.
-        /// </summary>
-        public bool SearchTermMatches(string text)
-        {
-            if (string.IsNullOrEmpty(searchTerm))
-                return true;
-            return text.IndexOf(searchTerm, StringComparison.OrdinalIgnoreCase) >= 0;
-        }
+		/// <summary>
+		/// Gets whether a node with the specified text is matched by the current search term.
+		/// </summary>
+		public bool SearchTermMatches(string text)
+		{
+			if (string.IsNullOrEmpty(searchTerm))
+				return true;
+			return text.IndexOf(searchTerm, StringComparison.OrdinalIgnoreCase) >= 0;
+		}
 
-        ApiVisibility showApiLevel;
+		ApiVisibility showApiLevel;
 
-        /// <summary>
-        /// Gets/Sets whether public, internal or all API members should be shown.
-        /// </summary>
-        public ApiVisibility ShowApiLevel
-        {
-            get { return showApiLevel; }
-            set
-            {
-                if (showApiLevel != value)
-                {
-                    showApiLevel = value;
-                    OnPropertyChanged(nameof(ShowApiLevel));
-                }
-            }
-        }
+		/// <summary>
+		/// Gets/Sets whether public, internal or all API members should be shown.
+		/// </summary>
+		public ApiVisibility ShowApiLevel
+		{
+			get { return showApiLevel; }
+			set
+			{
+				if (showApiLevel != value)
+				{
+					showApiLevel = value;
+					OnPropertyChanged(nameof(ShowApiLevel));
+				}
+			}
+		}
 
-        public bool ShowInternalApi
-        {
-            get { return ShowApiLevel == ApiVisibility.PublicAndInternal; }
-            set
-            {
-                if (ShowApiLevel == ApiVisibility.PublicAndInternal)
-                {
-                    ShowApiLevel = ApiVisibility.PublicOnly;
-                }
-                else
-                {
-                    ShowApiLevel = ApiVisibility.PublicAndInternal;
-                }
-                OnPropertyChanged(nameof(ShowInternalApi));
-                OnPropertyChanged(nameof(ShowAllApi));
-            }
-        }
+		public bool ShowInternalApi
+		{
+			get { return ShowApiLevel == ApiVisibility.PublicAndInternal; }
+			set
+			{
+				if (ShowApiLevel == ApiVisibility.PublicAndInternal)
+				{
+					ShowApiLevel = ApiVisibility.PublicOnly;
+				}
+				else
+				{
+					ShowApiLevel = ApiVisibility.PublicAndInternal;
+				}
+				OnPropertyChanged(nameof(ShowInternalApi));
+				OnPropertyChanged(nameof(ShowAllApi));
+			}
+		}
 
-        public bool ShowAllApi
-        {
-            get { return ShowApiLevel == ApiVisibility.All; }
-            set
-            {
-                if (ShowApiLevel == ApiVisibility.All)
-                {
-                    ShowApiLevel = ApiVisibility.PublicOnly;
-                }
-                else
-                {
-                    ShowApiLevel = ApiVisibility.All;
-                }
-                OnPropertyChanged(nameof(ShowInternalApi));
-                OnPropertyChanged(nameof(ShowAllApi));
-            }
-        }
+		public bool ShowAllApi
+		{
+			get { return ShowApiLevel == ApiVisibility.All; }
+			set
+			{
+				if (ShowApiLevel == ApiVisibility.All)
+				{
+					ShowApiLevel = ApiVisibility.PublicOnly;
+				}
+				else
+				{
+					ShowApiLevel = ApiVisibility.All;
+				}
+				OnPropertyChanged(nameof(ShowInternalApi));
+				OnPropertyChanged(nameof(ShowAllApi));
+			}
+		}
 
-        Language language;
+		Language language;
 
-        /// <summary>
-        /// Gets/Sets the current language.
-        /// </summary>
-        /// <remarks>
-        /// While this isn't related to filtering, having it as part of the FilterSettings
-        /// makes it easy to pass it down into all tree nodes.
-        /// </remarks>
-        public Language Language
-        {
-            get { return language; }
-            set
-            {
-                if (language != value)
-                {
-                    language = value;
-                    LanguageVersion = language.LanguageVersions.LastOrDefault();
-                    OnPropertyChanged();
-                }
-            }
-        }
+		/// <summary>
+		/// Gets/Sets the current language.
+		/// </summary>
+		/// <remarks>
+		/// While this isn't related to filtering, having it as part of the FilterSettings
+		/// makes it easy to pass it down into all tree nodes.
+		/// </remarks>
+		public Language Language
+		{
+			get { return language; }
+			set
+			{
+				if (language != value)
+				{
+					language = value;
+					LanguageVersion = language.LanguageVersions.LastOrDefault();
+					OnPropertyChanged();
+				}
+			}
+		}
 
-        LanguageVersion languageVersion;
+		LanguageVersion languageVersion;
 
-        /// <summary>
-        /// Gets/Sets the current language version.
-        /// </summary>
-        /// <remarks>
-        /// While this isn't related to filtering, having it as part of the FilterSettings
-        /// makes it easy to pass it down into all tree nodes.
-        /// </remarks>
-        public LanguageVersion LanguageVersion
-        {
-            get { return languageVersion; }
-            set
-            {
-                if (languageVersion != value)
-                {
-                    languageVersion = value;
-                    OnPropertyChanged();
-                }
-            }
-        }
+		/// <summary>
+		/// Gets/Sets the current language version.
+		/// </summary>
+		/// <remarks>
+		/// While this isn't related to filtering, having it as part of the FilterSettings
+		/// makes it easy to pass it down into all tree nodes.
+		/// </remarks>
+		public LanguageVersion LanguageVersion
+		{
+			get { return languageVersion; }
+			set
+			{
+				if (languageVersion != value)
+				{
+					languageVersion = value;
+					OnPropertyChanged();
+				}
+			}
+		}
 
-        public event PropertyChangedEventHandler PropertyChanged;
+		public event PropertyChangedEventHandler PropertyChanged;
 
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            if (PropertyChanged != null)
-            {
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-            }
-        }
+		protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+		{
+			if (PropertyChanged != null)
+			{
+				PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
 
-        public FilterSettings Clone()
-        {
-            FilterSettings f = (FilterSettings)MemberwiseClone();
-            f.PropertyChanged = null;
-            return f;
-        }
-    }
+		public FilterSettings Clone()
+		{
+			FilterSettings f = (FilterSettings)MemberwiseClone();
+			f.PropertyChanged = null;
+			return f;
+		}
+	}
 
-    public enum ApiVisibility
-    {
-        PublicOnly,
-        PublicAndInternal,
-        All
-    }
+	public enum ApiVisibility
+	{
+		PublicOnly,
+		PublicAndInternal,
+		All
+	}
 }

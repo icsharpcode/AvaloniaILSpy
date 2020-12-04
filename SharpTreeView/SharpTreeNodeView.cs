@@ -35,7 +35,7 @@ namespace ICSharpCode.TreeView
 				return expanded.Value ? owner.Node?.ExpandedIcon : owner.Node?.Icon;
 		});
 
-        public object Icon
+		public object Icon
 		{
 			get { return GetValue(IconProperty); }
 		}

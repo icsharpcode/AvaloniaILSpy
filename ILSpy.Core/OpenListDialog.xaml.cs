@@ -39,15 +39,15 @@ namespace ICSharpCode.ILSpy
 		readonly AssemblyListManager manager;
 
 		internal ListBox listView;
-        internal Button okButton;
-        internal Button cancelButton;
-        internal Button deleteButton;
-        internal Button createButton;
-        internal Button resetButton;
+		internal Button okButton;
+		internal Button cancelButton;
+		internal Button deleteButton;
+		internal Button createButton;
+		internal Button resetButton;
 
 		public OpenListDialog()
-        {
-            manager = MainWindow.Instance.assemblyListManager;
+		{
+			manager = MainWindow.Instance.assemblyListManager;
 			InitializeComponent();
 #if DEBUG
 			this.AttachDevTools();
@@ -58,25 +58,25 @@ namespace ICSharpCode.ILSpy
 		{
 			AvaloniaXamlLoader.Load(this);
 			listView = this.FindControl<ListBox>("listView");
-            okButton = this.FindControl<Button>("okButton");
-            cancelButton = this.FindControl<Button>("cancelButton");
-            deleteButton = this.FindControl<Button>("deleteButton");
-            createButton = this.FindControl<Button>("createButton");
-            resetButton = this.FindControl<Button>("resetButton");
+			okButton = this.FindControl<Button>("okButton");
+			cancelButton = this.FindControl<Button>("cancelButton");
+			deleteButton = this.FindControl<Button>("deleteButton");
+			createButton = this.FindControl<Button>("createButton");
+			resetButton = this.FindControl<Button>("resetButton");
 
-            listView.SelectionChanged += ListView_SelectionChanged;
-            listView.DoubleTapped += listView_MouseDoubleClick;
-            okButton.Click += OKButton_Click;
-            cancelButton.Click += CancelButton_Click;
-            deleteButton.Click += DeleteButton_Click;
-            createButton.Click += CreateButton_Click;
-            resetButton.Click += ResetButton_Click;
+			listView.SelectionChanged += ListView_SelectionChanged;
+			listView.DoubleTapped += listView_MouseDoubleClick;
+			okButton.Click += OKButton_Click;
+			cancelButton.Click += CancelButton_Click;
+			deleteButton.Click += DeleteButton_Click;
+			createButton.Click += CreateButton_Click;
+			resetButton.Click += ResetButton_Click;
 
-            TemplateApplied += (sender, e) => Application.Current.FocusManager.Focus(listView);
-            listView.TemplateApplied += listView_Loaded;
+			TemplateApplied += (sender, e) => Application.Current.FocusManager.Focus(listView);
+			listView.TemplateApplied += listView_Loaded;
 		}
 
-        private void listView_Loaded(object sender, EventArgs e)
+		private void listView_Loaded(object sender, EventArgs e)
 		{
 			listView.Items = manager.AssemblyLists;
 			CreateDefaultAssemblyLists();
@@ -92,12 +92,12 @@ namespace ICSharpCode.ILSpy
 		{
 			//this.DialogResult = true;
 			Close(true);
-        }
+		}
 
-        void CancelButton_Click(object sender, RoutedEventArgs e)
-        {
-            Close(false);
-        }
+		void CancelButton_Click(object sender, RoutedEventArgs e)
+		{
+			Close(false);
+		}
 
 		public string SelectedListName
 		{
@@ -109,11 +109,11 @@ namespace ICSharpCode.ILSpy
 
 		private void CreateDefaultAssemblyLists()
 		{
-            if (!manager.AssemblyLists.Contains(DotNetCoreList))
+			if (!manager.AssemblyLists.Contains(DotNetCoreList))
 			{
-                AssemblyList netcore = new AssemblyList(DotNetCoreList);
-                //AddToList(netcore, "System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e");
-                AddToList(netcore, "netstandard.library");
+				AssemblyList netcore = new AssemblyList(DotNetCoreList);
+				//AddToList(netcore, "System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e");
+				AddToList(netcore, "netstandard.library");
 				if (netcore.assemblies.Count > 0)
 				{
 					manager.CreateList(netcore);
@@ -124,7 +124,7 @@ namespace ICSharpCode.ILSpy
 		private void AddToList(AssemblyList list, string name)
 		{
 			//AssemblyNameReference reference = AssemblyNameReference.Parse(FullName);
-            string file = typeof(string).Assembly.Location;
+			string file = typeof(string).Assembly.Location;
 			if (file != null)
 				list.OpenAssembly(file);
 		}
@@ -143,7 +143,7 @@ namespace ICSharpCode.ILSpy
 					}
 				}
 			};
-            if (await dlg.ShowDialog<bool>(this) == true)
+			if (await dlg.ShowDialog<bool>(this) == true)
 			{
 				manager.CreateList(new AssemblyList(dlg.NewListName));
 			}
@@ -168,7 +168,7 @@ namespace ICSharpCode.ILSpy
 			CreateDefaultAssemblyLists();
 		}
 
-        private void listView_MouseDoubleClick(object sender, RoutedEventArgs e)
+		private void listView_MouseDoubleClick(object sender, RoutedEventArgs e)
 		{
 			if (listView.SelectedItem != null)
 				//this.DialogResult = true;

@@ -114,9 +114,9 @@ namespace ICSharpCode.ILSpy
 		
 		static string GetConfigFile()
 		{
-            if (App.CommandLineArguments.ConfigFile != null)
-                return App.CommandLineArguments.ConfigFile;
-            string localPath = Path.Combine(Path.GetDirectoryName(typeof(MainWindow).Assembly.Location), "ILSpy.xml");
+			if (App.CommandLineArguments.ConfigFile != null)
+				return App.CommandLineArguments.ConfigFile;
+			string localPath = Path.Combine(Path.GetDirectoryName(typeof(MainWindow).Assembly.Location), "ILSpy.xml");
 			if (File.Exists(localPath))
 				return localPath;
 			return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "ILSpy.xml");

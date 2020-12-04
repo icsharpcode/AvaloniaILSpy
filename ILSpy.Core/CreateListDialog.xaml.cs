@@ -14,11 +14,11 @@ namespace ICSharpCode.ILSpy
 	/// </summary>
 	public partial class CreateListDialog : DialogWindow
 	{
-        public new bool DialogResult => base.DialogResult != null && (bool)base.DialogResult;
+		public new bool DialogResult => base.DialogResult != null && (bool)base.DialogResult;
 
-        internal Button okButton;
-        internal Button cancelButton;
-        internal TextBox ListName;
+		internal Button okButton;
+		internal Button cancelButton;
+		internal TextBox ListName;
 
 		public CreateListDialog()
 		{
@@ -31,15 +31,15 @@ namespace ICSharpCode.ILSpy
 		private void InitializeComponent()
 		{
 			AvaloniaXamlLoader.Load(this);
-            okButton = this.FindControl<Button>("okButton");
-            cancelButton = this.FindControl<Button>("cancelButton");
+			okButton = this.FindControl<Button>("okButton");
+			cancelButton = this.FindControl<Button>("cancelButton");
 			ListName = this.FindControl<TextBox>("ListName");
 
-            // Work around for TextChanged event
-            //ListName.TextInput += TextBox_TextChanged;
-            ListName.GetObservable(TextBox.TextProperty).Subscribe(text => TextBox_TextChanged(this, new TextInputEventArgs{Text = text}));
+			// Work around for TextChanged event
+			//ListName.TextInput += TextBox_TextChanged;
+			ListName.GetObservable(TextBox.TextProperty).Subscribe(text => TextBox_TextChanged(this, new TextInputEventArgs{Text = text}));
 
-            TemplateApplied += (sender, e) => Application.Current.FocusManager.Focus(ListName);
+			TemplateApplied += (sender, e) => Application.Current.FocusManager.Focus(ListName);
 		}
 
 		private void TextBox_TextChanged(object sender, TextInputEventArgs e)
@@ -53,12 +53,12 @@ namespace ICSharpCode.ILSpy
 			{
 				this.Close(true);
 			}
-        }
+		}
 
-        void CancelButton_Click(object sender, RoutedEventArgs e)
-        {
-            Close(false);
-        }
+		void CancelButton_Click(object sender, RoutedEventArgs e)
+		{
+			Close(false);
+		}
 
 		public string NewListName
 		{

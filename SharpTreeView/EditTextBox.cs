@@ -18,13 +18,13 @@ namespace ICSharpCode.TreeView
 			get { return Item.Node; }
 		}
 
-        protected override void OnTemplateApplied(TemplateAppliedEventArgs e)
-        {
-            base.OnTemplateApplied(e);
-            Init();
-        }
+		protected override void OnTemplateApplied(TemplateAppliedEventArgs e)
+		{
+			base.OnTemplateApplied(e);
+			Init();
+		}
 
-        void Init()
+		void Init()
 		{
 			Text = Node.LoadEditText();
 			Focus();

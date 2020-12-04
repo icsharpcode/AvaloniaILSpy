@@ -32,7 +32,7 @@ namespace ICSharpCode.TreeView
 				return;
 			}
 
-            var indent = NodeView.CalculateIndent();
+			var indent = NodeView.CalculateIndent();
 			var p = new Point(indent + 4.5, 0);
 
 			if (!NodeView.Node.IsRoot || NodeView.ParentTreeView.ShowRootExpander) {

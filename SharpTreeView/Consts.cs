@@ -9,7 +9,7 @@ using Avalonia.Media.Imaging;
 
 namespace Avalonia
 {
-    public static class SystemParameters
+	public static class SystemParameters
 	{
 		public const double MinimumHorizontalDragDistance = 2.0;
 		public const double MinimumVerticalDragDistance = 2.0;
@@ -19,9 +19,9 @@ namespace Avalonia
 	{
 		public static IBrush ControlTextBrush {get;} = new ImmutableSolidColorBrush(Color.FromUInt32(0xFF000000));
 		public static IBrush ControlDarkBrush {get;} = new ImmutableSolidColorBrush(Color.FromUInt32(0xFFA0A0A0));
-        public static IBrush ControlLightBrush { get; } = new ImmutableSolidColorBrush(Color.FromUInt32(0xFFE3E3E3));
-        public static IBrush ControlBrush { get; } = new ImmutableSolidColorBrush(Color.FromUInt32(0xFFF0F0F0));
-        public static IBrush HighlightBrush {get;} = new ImmutableSolidColorBrush(Color.FromUInt32(0xFFFFFFFF));
+		public static IBrush ControlLightBrush { get; } = new ImmutableSolidColorBrush(Color.FromUInt32(0xFFE3E3E3));
+		public static IBrush ControlBrush { get; } = new ImmutableSolidColorBrush(Color.FromUInt32(0xFFF0F0F0));
+		public static IBrush HighlightBrush {get;} = new ImmutableSolidColorBrush(Color.FromUInt32(0xFFFFFFFF));
 		public static IBrush HighlightTextBrush {get;} = new ImmutableSolidColorBrush(Color.FromUInt32(0xFFFFFFFF));
 		public static IBrush WindowTextBrush {get;} = new ImmutableSolidColorBrush(Color.FromUInt32(0xFF000000));
 		public static IBrush WindowBrush {get;} = new ImmutableSolidColorBrush(Color.FromUInt32(0xFFFFFFFF));
@@ -40,21 +40,21 @@ namespace Avalonia
 		// /// pull out values from system.drawing
 		// /// </summary>
 		// /// <returns></returns>
-        // public static string[] GetColors()
-        // {
-        //     string ToString(object obj)
-        //     {
-        //         if(obj is ISolidColorBrush b)
-        //         {
-        //             return $"new ImmutableSolidColorBrush(Color.FromUInt32(0x{b.Color.ToUint32().ToString("X")}));;
-        //         }
-        //         else if(obj is Color c)
-        //             return $"Color.FromUInt32(0x{c.ToUint32().ToString("X")});;
-        //         else
-        //             return obj.ToString();
-        //     }
-        //     return Array.ConvertAll(typeof(SystemColors).GetProperties(), p => string.Format("{0} \{get;\} = {1}", p.Name, ToString(p.GetValue(null))));
-        // }
+		// public static string[] GetColors()
+		// {
+		//     string ToString(object obj)
+		//     {
+		//         if(obj is ISolidColorBrush b)
+		//         {
+		//             return $"new ImmutableSolidColorBrush(Color.FromUInt32(0x{b.Color.ToUint32().ToString("X")}));;
+		//         }
+		//         else if(obj is Color c)
+		//             return $"Color.FromUInt32(0x{c.ToUint32().ToString("X")});;
+		//         else
+		//             return obj.ToString();
+		//     }
+		//     return Array.ConvertAll(typeof(SystemColors).GetProperties(), p => string.Format("{0} \{get;\} = {1}", p.Name, ToString(p.GetValue(null))));
+		// }
 
 		public static Color ToAvaloniaColor(this System.Drawing.Color color)
 		{

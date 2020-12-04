@@ -21,7 +21,7 @@ using AvaloniaEdit;
 namespace ICSharpCode.TreeView
 {
 	public class SharpTreeView : ListBox, IStyleable, IRoutedCommandBindable
-    {
+	{
 		static SharpTreeView()
 		{
 			(SelectionModeProperty as StyledProperty<SelectionMode>)?.OverrideDefaultValue<SharpTreeView>(SelectionMode.Multiple);
@@ -40,8 +40,8 @@ namespace ICSharpCode.TreeView
 		public SharpTreeView()
 		{
 			SelectionChanged += OnSelectionChanged;
-            RegisterCommands();
-        }
+			RegisterCommands();
+		}
 
 		public static readonly StyledProperty<SharpTreeNode> RootProperty =
 			AvaloniaProperty.Register<SharpTreeView, SharpTreeNode>(nameof(Root));
@@ -122,8 +122,8 @@ namespace ICSharpCode.TreeView
 		{
 			base.OnPropertyChanged(e);
 			if (e.Property == RootProperty ||
-			    e.Property == ShowRootProperty ||
-			    e.Property == ShowRootExpanderProperty) {
+				e.Property == ShowRootProperty ||
+				e.Property == ShowRootExpanderProperty) {
 				Reload();
 			}
 		}
@@ -297,10 +297,10 @@ namespace ICSharpCode.TreeView
 						if (!container.Node.IsExpanded && container.Node.ShowExpander) {
 							container.Node.IsExpanded = true;
 						} else if (container.Node.Children.Count > 0) {
-                            // jump to first child:
+							// jump to first child:
 							
-                            //container.MoveFocus(new TraversalRequest(FocusNavigationDirection.Down));
-                        }
+							//container.MoveFocus(new TraversalRequest(FocusNavigationDirection.Down));
+						}
 						e.Handled = true;
 					}
 					break;
@@ -340,17 +340,17 @@ namespace ICSharpCode.TreeView
 					break;
 			}
 
-            foreach (var commandBinding in CommandBindings)
-            {
-                if (commandBinding.Command.Gesture?.Matches(e) == true)
-                {
-                    commandBinding.Command.Execute(null, this);
-                    e.Handled = true;
-                    break;
-                }
-            }
+			foreach (var commandBinding in CommandBindings)
+			{
+				if (commandBinding.Command.Gesture?.Matches(e) == true)
+				{
+					commandBinding.Command.Execute(null, this);
+					e.Handled = true;
+					break;
+				}
+			}
 
-            if (!e.Handled)
+			if (!e.Handled)
 				base.OnKeyDown(e);
 		}
 
@@ -542,11 +542,11 @@ namespace ICSharpCode.TreeView
 
 			if (result.Count == 2) {
 				if (result[0].Place == DropPlace.Inside &&
-				    result[1].Place != DropPlace.Inside) {
+					result[1].Place != DropPlace.Inside) {
 					result[0].Y = y3;
 				}
 				else if (result[0].Place != DropPlace.Inside &&
-				         result[1].Place == DropPlace.Inside) {
+						 result[1].Place == DropPlace.Inside) {
 					result[0].Y = y1;
 				}
 				else {
@@ -678,21 +678,21 @@ namespace ICSharpCode.TreeView
 				previewNodeView = null;
 			}
 		}
-        #endregion
+		#endregion
 
-        #region Cut / Copy / Paste / Delete Commands
+		#region Cut / Copy / Paste / Delete Commands
 
-        public IList<RoutedCommandBinding> CommandBindings { get; } = new List<RoutedCommandBinding>();
+		public IList<RoutedCommandBinding> CommandBindings { get; } = new List<RoutedCommandBinding>();
 
-        void RegisterCommands()
-        {
-            CommandBindings.Add(new RoutedCommandBinding(ApplicationCommands.Cut, HandleExecuted_Cut, HandleCanExecute_Cut));
-            CommandBindings.Add(new RoutedCommandBinding(ApplicationCommands.Copy, HandleExecuted_Copy, HandleCanExecute_Copy));
-            CommandBindings.Add(new RoutedCommandBinding(ApplicationCommands.Paste, HandleExecuted_Paste, HandleCanExecute_Paste));
-            CommandBindings.Add(new RoutedCommandBinding(ApplicationCommands.Delete, HandleExecuted_Delete, HandleCanExecute_Delete));
-        }
+		void RegisterCommands()
+		{
+			CommandBindings.Add(new RoutedCommandBinding(ApplicationCommands.Cut, HandleExecuted_Cut, HandleCanExecute_Cut));
+			CommandBindings.Add(new RoutedCommandBinding(ApplicationCommands.Copy, HandleExecuted_Copy, HandleCanExecute_Copy));
+			CommandBindings.Add(new RoutedCommandBinding(ApplicationCommands.Paste, HandleExecuted_Paste, HandleCanExecute_Paste));
+			CommandBindings.Add(new RoutedCommandBinding(ApplicationCommands.Delete, HandleExecuted_Delete, HandleCanExecute_Delete));
+		}
 
-        static void HandleExecuted_Cut(object sender, ExecutedRoutedEventArgs e)
+		static void HandleExecuted_Cut(object sender, ExecutedRoutedEventArgs e)
 		{
 			
 		}
