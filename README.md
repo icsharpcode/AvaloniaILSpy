@@ -27,8 +27,13 @@ https://github.com/icsharpcode/AvaloniaILSpy/releases
 |**Linux**|[Download](https://ci.appveyor.com/api/projects/icsharpcode/avaloniailspy/artifacts/artifacts%2Fzips%2FILSpy-linux-x64-Release.zip?branch=master)|
 
 How to run on Linux: 
+- make sure you have installed `ttf-ms-fonts` package
 - grant it the rights to execute `chmod a+x ILSpy`
 - run  `./ILSpy`
+
+How to run on Mac:
+- just move the app into `/Applications` folder and open it
+- if you see the error `The application ILSpy can't be opened' error on launch`, you could `chmod +x "/Applications/ILSpy.app/Contents/MacOS/ILSpy"`
 
 # Build from sources
 
