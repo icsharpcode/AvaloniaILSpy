@@ -1,4 +1,4 @@
-# AvaloniaILSpy [![appveyor](https://ci.appveyor.com/api/projects/status/github/icsharpcode/AvaloniaILSpy?svg=true)](https://ci.appveyor.com/project/icsharpcode/avaloniailspy) 
+# AvaloniaILSpy ![Build AvaloniaILSpy](https://github.com/icsharpcode/AvaloniaILSpy/workflows/Build%20AvaloniaILSpy/badge.svg?branch=master)
 
 This is cross-platform version of [ILSpy](https://github.com/icsharpcode/ILSpy) built with [Avalonia](https://github.com/AvaloniaUI/Avalonia).
 
@@ -20,11 +20,8 @@ Supported Features
 https://github.com/icsharpcode/AvaloniaILSpy/releases
 
 ## Bleeding-edge Builds
-| Version | Installers (for x 64) |
-|---------|------------|
-|**Windows**|[Download](https://ci.appveyor.com/api/projects/icsharpcode/avaloniailspy/artifacts/artifacts%2Fzips%2FILSpy-win7-x64-Release.zip?branch=master)|
-|**macOS**|[Download](https://ci.appveyor.com/api/projects/icsharpcode/avaloniailspy/artifacts/artifacts%2Fzips%2FILSpy-osx-x64-Release.zip?branch=master)|
-|**Linux**|[Download](https://ci.appveyor.com/api/projects/icsharpcode/avaloniailspy/artifacts/artifacts%2Fzips%2FILSpy-linux-x64-Release.zip?branch=master)|
+Grab artifacts from the [latest master CI build[(https://github.com/icsharpcode/AvaloniaILSpy/actions?query=workflow%3A%22Build+AvaloniaILSpy%22+branch%3Amaster+is%3Asuccess).
+This includes Linux, Mac and Windows.
 
 How to run on Linux: 
 - make sure you have installed `ttf-ms-fonts` package
