@@ -1,0 +1,39 @@
+name: Build AvaloniaILSpy
+
+on:
+  push:
+    branches: '**'
+  pull_request:
+    branches: [ master ]
+    
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        submodules: true
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 5.0.x
+    - name: Run the Cake script
+      uses: cake-build/cake-action@v1
+      with:
+        script-path: build.cake
+    - name: Upload Linux artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: ILSpy-linux-x64-Release.zip
+        path: artifacts/zips/ILSpy-linux-x64-Release.zip
+    - name: Upload Mac artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: ILSpy-osx-x64-Release.zip
+        path: artifacts/zips/ILSpy-osx-x64-Release.zip
+    - name: Upload Windows artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: ILSpy-win-x64-Release.zip
+        path: artifacts/zips/ILSpy-win-x64-Release.zip
