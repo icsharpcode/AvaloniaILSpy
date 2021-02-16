@@ -20,7 +20,7 @@ Supported Features
 https://github.com/icsharpcode/AvaloniaILSpy/releases
 
 ## Bleeding-edge Builds
-Grab artifacts from the [latest master CI build[(https://github.com/icsharpcode/AvaloniaILSpy/actions?query=workflow%3A%22Build+AvaloniaILSpy%22+branch%3Amaster+is%3Asuccess).
+Grab artifacts from the [latest master CI build](https://github.com/icsharpcode/AvaloniaILSpy/actions?query=workflow%3A%22Build+AvaloniaILSpy%22+branch%3Amaster+is%3Asuccess).
 This includes Linux, Mac and Windows.
 
 How to run on Linux: 
