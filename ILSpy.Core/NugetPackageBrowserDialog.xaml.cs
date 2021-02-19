@@ -53,9 +53,10 @@ namespace ICSharpCode.ILSpy
 #endif
 		}
 
-		public NugetPackageBrowserDialog(LoadedNugetPackage package)
+		public NugetPackageBrowserDialog(LoadedNugetPackage package, WindowBase owner)
 		{
 			InitializeComponent();
+			Owner = owner;
 #if DEBUG
 			this.AttachDevTools();
 #endif

@@ -37,10 +37,10 @@ namespace ICSharpCode.ILSpy.TextView
 	{
         readonly Pen pen;
 
-        static readonly AvaloniaProperty<double> RectOpacityProperty = AvaloniaProperty.Register<CaretHighlightAdorner, double>(nameof(RectOpacity));
+        static readonly StyledProperty<double> RectOpacityProperty = AvaloniaProperty.Register<CaretHighlightAdorner, double>(nameof(RectOpacity));
         public double RectOpacity => GetValue(RectOpacityProperty);
 
-        static readonly AvaloniaProperty<Rect> RectProperty = AvaloniaProperty.Register<CaretHighlightAdorner, Rect>(nameof(Rect));
+        static readonly StyledProperty<Rect> RectProperty = AvaloniaProperty.Register<CaretHighlightAdorner, Rect>(nameof(Rect));
         public Rect Rect => GetValue(RectProperty);
 
         static CaretHighlightAdorner()

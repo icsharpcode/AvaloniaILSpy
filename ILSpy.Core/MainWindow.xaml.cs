@@ -181,7 +181,7 @@ namespace ICSharpCode.ILSpy
 			{
 				try
 				{
-					var theme = AvaloniaXamlLoader.Parse<Styles>(File.ReadAllText(file));
+					var theme = AvaloniaRuntimeXamlLoader.Parse<Styles>(File.ReadAllText(file));
 					themes.Add(theme);
 					themeNames.Add(Path.GetFileNameWithoutExtension(file));
 				}
@@ -193,7 +193,7 @@ namespace ICSharpCode.ILSpy
 
 			if (themes.Count == 0)
 			{
-				var light = AvaloniaXamlLoader.Parse<StyleInclude>(@"<StyleInclude xmlns='https://github.com/avaloniaui' Source='resm:Avalonia.Themes.Default.Accents.BaseLight.xaml?assembly=Avalonia.Themes.Default'/>");
+				var light = AvaloniaRuntimeXamlLoader.Parse<StyleInclude>(@"<StyleInclude xmlns='https://github.com/avaloniaui' Source='resm:Avalonia.Themes.Default.Accents.BaseLight.xaml?assembly=Avalonia.Themes.Default'/>");
 				themes.Add(light);
 				themeNames.Add("Light");
 			}
@@ -251,14 +251,14 @@ namespace ICSharpCode.ILSpy
 
 		private void ApplyTheme()
 		{
-			if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX) && Styles[0].TryGetResource("ThemeBackgroundBrush", out object backgroundColor) && backgroundColor is ISolidColorBrush brush)
+			if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX) && Styles.TryGetResource("ThemeBackgroundBrush", out object backgroundColor) && backgroundColor is ISolidColorBrush brush)
 			{
 				// HACK: SetTitleBarColor is a method in Avalonia.Native.WindowImpl
 				var setTitleBarColorMethod = PlatformImpl.GetType().GetMethod("SetTitleBarColor");
 				setTitleBarColorMethod?.Invoke(PlatformImpl, new object[] { brush.Color });
 			}
 
-			if (Styles[0].TryGetResource("ILAsm-Mode", out object ilasm) && ilasm is string ilmode)
+			if (Styles.TryGetResource("ILAsm-Mode", out object ilasm) && ilasm is string ilmode)
 			{
 				HighlightingManager.Instance.RegisterHighlighting(
 					"ILAsm", new string[] { ".il" },
@@ -289,7 +289,7 @@ namespace ICSharpCode.ILSpy
 					});
 			}
 
-			if (Styles[0].TryGetResource("CSharp-Mode", out object csharp) && csharp is string csmode)
+			if (Styles.TryGetResource("CSharp-Mode", out object csharp) && csharp is string csmode)
 			{
 				HighlightingManager.Instance.RegisterHighlighting(
 				"C#", new string[] { ".cs" },
@@ -327,7 +327,7 @@ namespace ICSharpCode.ILSpy
 		void SetWindowBounds(Rect bounds)
 		{
 			ClientSize = bounds.Size;
-			Position = PixelPoint.FromPoint(bounds.Position, PlatformImpl.Scaling);
+			Position = PixelPoint.FromPoint(bounds.Position, PlatformImpl.DesktopScaling);
 		}
 
 		#region Toolbar extensibility
@@ -445,7 +445,7 @@ namespace ICSharpCode.ILSpy
 
 						// NOTE: add icon here if Avalonia add icon support for native menu
 
-						menuItem.Enabled = entry.Metadata.IsEnabled;
+						menuItem.IsEnabled = entry.Metadata.IsEnabled;
 						topLevelMenuItems.Add(menuItem);
 					}
 				}
@@ -474,7 +474,7 @@ namespace ICSharpCode.ILSpy
 					bool boundsOK = false;
 					foreach (var screen in instance.Screens.All)
 					{
-						var intersection = boundsRect.Intersect(screen.WorkingArea.ToRect(instance.PlatformImpl.Scaling));
+						var intersection = boundsRect.Intersect(screen.WorkingArea.ToRect(instance.PlatformImpl.DesktopScaling));
 						if (intersection.Width > 10 && intersection.Height > 10)
 							boundsOK = true;
 					}
@@ -1130,8 +1130,7 @@ namespace ICSharpCode.ILSpy
 						try
 						{
 							LoadedNugetPackage package = new LoadedNugetPackage(file);
-							var selectionDialog = new NugetPackageBrowserDialog(package);
-							selectionDialog.Owner = this;
+							var selectionDialog = new NugetPackageBrowserDialog(package, this);
 							if (await selectionDialog.ShowDialog<bool>(this) != true)
 								break;
 							foreach (var entry in selectionDialog.SelectedItems)
@@ -1339,7 +1338,7 @@ namespace ICSharpCode.ILSpy
 			sessionSettings.ActiveAssemblyList = assemblyList.ListName;
 			sessionSettings.ActiveTreeViewPath = GetPathForNode(treeView.SelectedItem as SharpTreeNode);
 			sessionSettings.ActiveAutoLoadedAssembly = GetAutoLoadedAssemblyNode(treeView.SelectedItem as SharpTreeNode);
-			sessionSettings.WindowBounds = new Rect(Position.ToPoint(PlatformImpl.Scaling), ClientSize);
+			sessionSettings.WindowBounds = new Rect(Position.ToPoint(PlatformImpl.DesktopScaling), ClientSize);
 			sessionSettings.SplitterPosition = leftColumn.Width.Value / (leftColumn.Width.Value + rightColumn.Width.Value);
 			if (topPane.IsVisible == true)
 				sessionSettings.TopPaneSplitterPosition = topPaneRow.Height.Value / (topPaneRow.Height.Value + textViewRow.Height.Value);
