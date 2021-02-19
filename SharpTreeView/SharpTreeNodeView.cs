@@ -79,9 +79,9 @@ namespace ICSharpCode.TreeView
 			ParentItem.NodeView = this;
 		}
 
-		protected override void OnTemplateApplied(TemplateAppliedEventArgs e)
+		protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
 		{
-			base.OnTemplateApplied(e);
+			base.OnApplyTemplate(e);
 
 			LinesRenderer = e.NameScope.Find<LinesRenderer>("linesRenderer");
 			spacer = e.NameScope.Find<Control>("spacer");
@@ -97,11 +97,12 @@ namespace ICSharpCode.TreeView
 			UpdateTemplate();
 		}
 
-		protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs e)
+		protected override void OnPropertyChanged<T>(AvaloniaPropertyChangedEventArgs<T> e)
 		{
 			base.OnPropertyChanged(e);
-			if (e.Property == DataContextProperty) {
-				UpdateDataContext(e.OldValue as SharpTreeNode, e.NewValue as SharpTreeNode);
+			if (e.Property == DataContextProperty && typeof(T) == typeof(SharpTreeNode))
+			{
+				UpdateDataContext(e.OldValue.GetValueOrDefault<SharpTreeNode>(), e.NewValue.GetValueOrDefault<SharpTreeNode>());
 			}
 		}
 

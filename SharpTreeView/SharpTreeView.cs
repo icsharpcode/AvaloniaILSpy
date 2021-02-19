@@ -118,7 +118,7 @@ namespace ICSharpCode.TreeView
 
 		Type IStyleable.StyleKey => typeof(ListBox);
 		
-		protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs e)
+		protected override void OnPropertyChanged<T>(AvaloniaPropertyChangedEventArgs<T> e)
 		{
 			base.OnPropertyChanged(e);
 			if (e.Property == RootProperty ||
