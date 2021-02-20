@@ -14,8 +14,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SharpTreeView", "SharpTreeV
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ILSpy.Core", "ILSpy.Core\ILSpy.Core.csproj", "{7BB39313-8FC6-40A4-A06F-FD2A10817256}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AvaloniaEdit", "AvaloniaEdit\src\AvaloniaEdit\AvaloniaEdit.csproj", "{CC3151F6-C080-4E17-9F50-58C3FED64F28}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestPlugin", "TestPlugin\TestPlugin.csproj", "{5C561A81-4427-418A-B773-3840D2B32C4D}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ILSpy", "ILSpy\ILSpy.csproj", "{3AAA340D-7BED-4B26-BDD3-992D8B6D7779}"
