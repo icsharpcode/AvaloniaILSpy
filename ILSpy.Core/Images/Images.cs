@@ -323,7 +323,7 @@ namespace ICSharpCode.ILSpy
 
             private static IBitmap CreateOverlayImage(IBitmap baseImage, IBitmap overlay, bool isStatic)
 			{
-                var image = new WriteableBitmap(new PixelSize(16, 16), new Vector(96, 96), PixelFormat.Rgb565, AlphaFormat.Opaque);
+                var image = new WriteableBitmap(new PixelSize(16, 16), new Vector(96, 96), PixelFormat.Rgba8888, AlphaFormat.Unpremul);
 
                 using (var rt = AvaloniaLocator.Current.GetService<IPlatformRenderInterface>().CreateRenderTarget(new[] { new WbFb(image)})) {
 

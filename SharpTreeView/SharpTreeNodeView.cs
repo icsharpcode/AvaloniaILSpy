@@ -100,7 +100,7 @@ namespace ICSharpCode.TreeView
 		protected override void OnPropertyChanged<T>(AvaloniaPropertyChangedEventArgs<T> e)
 		{
 			base.OnPropertyChanged(e);
-			if (e.Property == DataContextProperty && typeof(T) == typeof(SharpTreeNode))
+			if (e.Property == DataContextProperty)
 			{
 				UpdateDataContext(e.OldValue.GetValueOrDefault<SharpTreeNode>(), e.NewValue.GetValueOrDefault<SharpTreeNode>());
 			}
