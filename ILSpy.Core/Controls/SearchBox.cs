@@ -20,18 +20,16 @@ using System;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Media;
-using Avalonia.Threading;
 using Avalonia.Interactivity;
 using Avalonia.Input;
-using Avalonia.Data;
 using Avalonia.Media.Imaging;
-using System.ComponentModel;
-using Avalonia.Markup.Xaml.Converters;
 using Avalonia.Controls.Primitives;
 using Avalonia.Data.Converters;
+using Avalonia.Controls.Metadata;
 
 namespace ICSharpCode.ILSpy.Controls
 {
+    [PseudoClasses(":hastext")]
 	public class SearchBox : TextBox
 	{
 		#region Dependency properties
@@ -51,7 +49,7 @@ namespace ICSharpCode.ILSpy.Controls
 
         public SearchBox()
         {
-            PseudoClass<SearchBox, string>(TextProperty, t=>!string.IsNullOrEmpty(t), ":hastext");
+            UpdatePseudoclasses();
         }
 		
 		#region Public Properties
@@ -91,17 +89,32 @@ namespace ICSharpCode.ILSpy.Controls
 
         #region Overrides
 
-        protected override void OnTemplateApplied(TemplateAppliedEventArgs e)
+        protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
         {
-            base.OnTemplateApplied(e);
+            base.OnApplyTemplate(e);
             Border iconBorder = e.NameScope.Find<Border>("PART_IconBorder");
             if (iconBorder != null)
             {
                 iconBorder.AddHandler(Border.PointerReleasedEvent, IconBorder_MouseLeftButtonUp, RoutingStrategies.Tunnel);
             }
         }
-		
-		protected override void OnKeyDown(KeyEventArgs e)
+
+        protected override void OnPropertyChanged<T>(AvaloniaPropertyChangedEventArgs<T> change)
+        {
+            base.OnPropertyChanged(change);
+
+            if (change.Property == TextProperty)
+            {
+                UpdatePseudoclasses();
+            }
+        }
+
+        private void UpdatePseudoclasses()
+        {
+            PseudoClasses.Set(":hastext", !string.IsNullOrWhiteSpace(Text));
+        }
+
+        protected override void OnKeyDown(KeyEventArgs e)
 		{
 			if (e.Key == Key.Escape && this.Text.Length > 0) {
 				this.Text = string.Empty;

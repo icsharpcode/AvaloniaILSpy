@@ -104,15 +104,15 @@ namespace ICSharpCode.ILSpy.Options
 		
 		static FontFamily[] FontLoader()
 		{
-            // TODO: filter SymbolFonts
-            return FontFamily.SystemFontFamilies.ToArray();
+			// TODO: filter SymbolFonts
+			return FontManager.Current.GetInstalledFontFamilyNames().Select(x => new FontFamily(x)).ToArray();
 		}
 
 		public static DisplaySettings LoadDisplaySettings(ILSpySettings settings)
 		{
 			XElement e = settings["DisplaySettings"];
 			var s = new DisplaySettings();
-			s.SelectedFont = new FontFamily((string)e.Attribute("Font") ?? "Consolas");
+			s.SelectedFont = new FontFamily((string)e.Attribute("Font") ?? FontManager.Current.DefaultFontFamilyName);
 			s.SelectedFontSize = (double?)e.Attribute("FontSize") ?? 10.0 * 4 / 3;
 			s.ShowLineNumbers = (bool?)e.Attribute("ShowLineNumbers") ?? false;
             s.ShowDebugInfo = (bool?)e.Attribute("ShowDebugInfo") ?? false;

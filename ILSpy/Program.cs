@@ -1,5 +1,4 @@
 ﻿using Avalonia;
-using Avalonia.Logging.Serilog;
 using System;
 using System.IO;
 using System.Reflection;
@@ -40,7 +39,7 @@ namespace ICSharpCode.ILSpy
 
 
 #if DEBUG
-			result.LogToDebug();
+			result.LogToTrace();
 			Logger.Sink = new ProxyLogSink(Logger.Sink);
 #endif
 
@@ -69,6 +68,8 @@ namespace ICSharpCode.ILSpy
 			}
 
 			public bool IsEnabled(LogEventLevel level) => true;
+
+            public bool IsEnabled(LogEventLevel level, string area) => true;
 
 			public void Log(LogEventLevel level, string area, object source, string messageTemplate) =>
 				Log(level, area, source, messageTemplate, Array.Empty<object>());
