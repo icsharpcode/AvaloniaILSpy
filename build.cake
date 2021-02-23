@@ -2,9 +2,6 @@ var target = Argument("target", "Default");
 var platform = Argument("platform", "AnyCPU");
 var configuration = Argument("configuration", "Release");
 
-var editbin86 = @"C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Tools\MSVC\14.14.26428\bin\HostX64\x86\editbin.exe";
-var editbin64 = @"C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Tools\MSVC\14.14.26428\bin\HostX64\x64\editbin.exe";
-
 var artifactsDir = (DirectoryPath)Directory("./artifacts");
 var zipRootDir = artifactsDir.Combine("zips");
 
