@@ -8,12 +8,12 @@ on:
     
 jobs:
   build:
-    runs-on: windows-latest
-
+    strategy:
+      matrix:
+        platform: [ubuntu-latest, macos-latest, windows-latest]
+    runs-on: ${{ matrix.platform }}
     steps:
     - uses: actions/checkout@v2
-      with:
-        submodules: true
     - name: Setup .NET
       uses: actions/setup-dotnet@v1
       with:
@@ -23,17 +23,23 @@ jobs:
       with:
         script-path: build.cake
     - name: Upload Linux artifacts
+      if: matrix.platform == 'ubuntu-latest'
       uses: actions/upload-artifact@v2
       with:
-        name: ILSpy-linux-x64-Release.zip
+        name: Linux x64 Release
         path: artifacts/zips/ILSpy-linux-x64-Release.zip
+        if-no-files-found: error
     - name: Upload Mac artifacts
+      if: matrix.platform == 'macos-latest'
       uses: actions/upload-artifact@v2
       with:
-        name: ILSpy-osx-x64-Release.zip
+        name: OSX x64 Release
         path: artifacts/zips/ILSpy-osx-x64-Release.zip
+        if-no-files-found: error
     - name: Upload Windows artifacts
+      if: matrix.platform == 'windows-latest'
       uses: actions/upload-artifact@v2
       with:
-        name: ILSpy-win-x64-Release.zip
+        name: Windows x64 Release
         path: artifacts/zips/ILSpy-win-x64-Release.zip
+        if-no-files-found: error
