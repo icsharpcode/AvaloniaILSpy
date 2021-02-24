@@ -24,9 +24,9 @@ Grab artifacts from the [latest master CI build](https://github.com/icsharpcode/
 This includes Linux, Mac and Windows.
 
 How to run on Linux: 
-- make sure you have installed `ttf-ms-fonts` package
-- grant it the rights to execute `chmod a+x ILSpy`
-- run  `./ILSpy`
+- just open it
+- if you have trouble, please try to grant it the rights to execute `chmod a+x ILSpy`
+- you could also run it in command line by `./ILSpy`
 
 How to run on Mac:
 - just move the app into `/Applications` folder and open it
