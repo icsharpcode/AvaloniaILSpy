@@ -22,24 +22,30 @@ jobs:
       uses: cake-build/cake-action@v1
       with:
         script-path: build.cake
+    - name: Zip Linux
+      run: 7z a -tzip artifacts\ILSpy-linux-x64-Release.zip artifacts\linux-x64\*
+    - name: Zip MacOS
+      run: 7z a -tzip artifacts\ILSpy-osx-x64-Release.zip artifacts\osx-x64\*
+    - name: Zip Windows
+      run: 7z a -tzip artifacts\ILSpy-win-x64-Release.zip artifacts\win-x64\*      
     - name: Upload Linux artifacts
       if: matrix.platform == 'ubuntu-latest'
       uses: actions/upload-artifact@v2
       with:
         name: Linux x64 Release
-        path: artifacts/zips/ILSpy-linux-x64-Release.zip
+        path: artifacts/ILSpy-linux-x64-Release.zip
         if-no-files-found: error
     - name: Upload Mac artifacts
       if: matrix.platform == 'macos-latest'
       uses: actions/upload-artifact@v2
       with:
         name: OSX x64 Release
-        path: artifacts/zips/ILSpy-osx-x64-Release.zip
+        path: artifacts/ILSpy-osx-x64-Release.zip
         if-no-files-found: error
     - name: Upload Windows artifacts
       if: matrix.platform == 'windows-latest'
       uses: actions/upload-artifact@v2
       with:
         name: Windows x64 Release
-        path: artifacts/zips/ILSpy-win-x64-Release.zip
+        path: artifacts/ILSpy-win-x64-Release.zip
         if-no-files-found: error
