@@ -23,10 +23,13 @@ jobs:
       with:
         script-path: build.cake
     - name: Zip Linux
-      run: 7z a -tzip artifacts\ILSpy-linux-x64-Release.zip artifacts\linux-x64\*
+      if: matrix.platform == 'ubuntu-latest'
+      run: 7z a -tzip artifacts/ILSpy-linux-x64-Release.zip artifacts/linux-x64/*
     - name: Zip MacOS
-      run: 7z a -tzip artifacts\ILSpy-osx-x64-Release.zip artifacts\osx-x64\*
+      if: matrix.platform == 'macos-latest'
+      run: 7z a -tzip artifacts/ILSpy-osx-x64-Release.zip artifacts/osx-x64/*
     - name: Zip Windows
+      if: matrix.platform == 'windows-latest'
       run: 7z a -tzip artifacts\ILSpy-win-x64-Release.zip artifacts\win-x64\*      
     - name: Upload Linux artifacts
       if: matrix.platform == 'ubuntu-latest'
