@@ -92,7 +92,7 @@ var netCoreProject = new {
     }
  });
 
- Task("Zip-NetCore")
+ /* Task("Zip-NetCore")
      .IsDependentOn("Publish-NetCore")
      .IsDependentOn("Package-Mac")
      .Does(() =>
@@ -104,11 +104,12 @@ var netCoreProject = new {
         Information("Zipping {0} artifacts to {1}", runtime, zipRootDir);
         Zip(workingDir.FullPath, zipRootDir.CombineWithFilePath(netCoreProject.Name + "-" + runtime + "-" + configuration + fileZipSuffix));
     }
- });
+ }); */
 
  Task("Default")
      .IsDependentOn("Restore-NetCore")
      .IsDependentOn("Publish-NetCore")
-     .IsDependentOn("Zip-NetCore");
+	 .IsDependentOn("Package-Mac")
+     /*.IsDependentOn("Zip-NetCore")*/;
 
  RunTarget(target);
