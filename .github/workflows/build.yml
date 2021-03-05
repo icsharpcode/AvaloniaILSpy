@@ -22,33 +22,54 @@ jobs:
       uses: cake-build/cake-action@v1
       with:
         script-path: build.cake
-    - name: Zip Linux
+    - name: Zip Linux x64
       if: matrix.platform == 'ubuntu-latest'
       run: 7z a -tzip artifacts/ILSpy-linux-x64-Release.zip artifacts/linux-x64/*
     - name: Zip MacOS
       if: matrix.platform == 'macos-latest'
-      run: 7z a -tzip artifacts/ILSpy-osx-x64-Release.zip artifacts/osx-x64/*
-    - name: Zip Windows
+      run: 7z a -tzip artifacts/ILSpy-macos-Release.zip artifacts/osx-x64/*
+    - name: Zip Windows x64
       if: matrix.platform == 'windows-latest'
-      run: 7z a -tzip artifacts\ILSpy-win-x64-Release.zip artifacts\win-x64\*      
-    - name: Upload Linux artifacts
+      run: 7z a -tzip artifacts\ILSpy-win-x64-Release.zip artifacts\win-x64\*   
+    - name: Zip Linux arm64
+      if: matrix.platform == 'ubuntu-latest'
+      run: 7z a -tzip artifacts/ILSpy-linux-arm64-Release.zip artifacts/linux-arm64/*
+    - name: Zip Windows arm64
+      if: matrix.platform == 'windows-latest'
+      run: 7z a -tzip artifacts\ILSpy-win-arm64-Release.zip artifacts\win-arm64\*    
+    - name: Upload Linux x64 artifacts
       if: matrix.platform == 'ubuntu-latest'
       uses: actions/upload-artifact@v2
       with:
         name: Linux x64 Release
         path: artifacts/ILSpy-linux-x64-Release.zip
+        if-no-files-found: error   
+    - name: Upload Linux arm64 artifacts
+      if: matrix.platform == 'ubuntu-latest'
+      uses: actions/upload-artifact@v2
+      with:
+        name: Linux arm64 Release
+        path: artifacts/ILSpy-linux-arm64-Release.zip
         if-no-files-found: error
-    - name: Upload Mac artifacts
+    - name: Upload macOS artifacts
       if: matrix.platform == 'macos-latest'
       uses: actions/upload-artifact@v2
       with:
-        name: OSX x64 Release
-        path: artifacts/ILSpy-osx-x64-Release.zip
+        name: macOS Release
+        path: artifacts/ILSpy-macos-Release.zip
         if-no-files-found: error
-    - name: Upload Windows artifacts
+    - name: Upload Windows x64 artifacts
       if: matrix.platform == 'windows-latest'
       uses: actions/upload-artifact@v2
       with:
         name: Windows x64 Release
         path: artifacts/ILSpy-win-x64-Release.zip
         if-no-files-found: error
+    - name: Upload Windows arm64 artifacts
+      if: matrix.platform == 'windows-latest'
+      uses: actions/upload-artifact@v2
+      with:
+        name: Windows arm64 Release
+        path: artifacts/ILSpy-win-arm64-Release.zip
+        if-no-files-found: error
+
