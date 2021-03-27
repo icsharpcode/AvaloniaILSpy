@@ -295,11 +295,21 @@ namespace ICSharpCode.ILSpy
 				return parent.LookupReferencedAssembly(reference)?.GetPEFileOrNull();
 			}
 
-			public PEFile ResolveModule(PEFile mainModule, string moduleName)
+            public Task<PEFile> ResolveAsync(IAssemblyReference reference)
+            {
+				return Task.Run(() => Resolve(reference));
+            }
+
+            public PEFile ResolveModule(PEFile mainModule, string moduleName)
 			{
 				return parent.LookupReferencedModule(mainModule, moduleName)?.GetPEFileOrNull();
 			}
-		}
+
+            public Task<PEFile> ResolveModuleAsync(PEFile mainModule, string moduleName)
+			{
+				return Task.Run(() => ResolveModule(mainModule, moduleName));
+			}
+        }
 
 		public IAssemblyResolver GetAssemblyResolver()
 		{
