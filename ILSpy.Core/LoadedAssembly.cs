@@ -349,7 +349,7 @@ namespace ICSharpCode.ILSpy
 		class MyUniversalResolver : UniversalAssemblyResolver
 		{
 			public MyUniversalResolver(LoadedAssembly assembly)
-				: base(assembly.FileName, false, assembly.GetTargetFrameworkIdAsync().Result, PEStreamOptions.PrefetchEntireImage, DecompilerSettingsPanel.CurrentDecompilerSettings.ApplyWindowsRuntimeProjections ? MetadataReaderOptions.ApplyWindowsRuntimeProjections : MetadataReaderOptions.None)
+				: base(assembly.FileName, false, assembly.GetTargetFrameworkIdAsync().Result, runtimePack: null, PEStreamOptions.PrefetchEntireImage, DecompilerSettingsPanel.CurrentDecompilerSettings.ApplyWindowsRuntimeProjections ? MetadataReaderOptions.ApplyWindowsRuntimeProjections : MetadataReaderOptions.None)
 			{
 			}
 		}
