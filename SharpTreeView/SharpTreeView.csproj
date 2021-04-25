@@ -47,6 +47,6 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Avalonia" Version="$(AvaloniaVersion)" />
-    <PackageReference Include="Avalonia.AvaloniaEdit" Version="$(AvaloniaVersion)" />
+    <PackageReference Include="Avalonia.AvaloniaEdit" Version="$(AvaloniaEditVersion)" />
   </ItemGroup>
 </Project>

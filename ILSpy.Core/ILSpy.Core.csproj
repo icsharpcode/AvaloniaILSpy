@@ -37,7 +37,7 @@
     <PackageReference Include="System.IO.Compression" Version="4.3.0" />
     <PackageReference Include="Avalonia.Markup.Xaml.Loader" Version="$(AvaloniaVersion)" />
     <PackageReference Include="Avalonia.Diagnostics" Version="$(AvaloniaVersion)" />
-    <PackageReference Include="Avalonia.AvaloniaEdit" Version="$(AvaloniaVersion)" />
+    <PackageReference Include="Avalonia.AvaloniaEdit" Version="$(AvaloniaEditVersion)" />
     <PackageReference Include="System.Text.Encoding.Extensions" Version="4.3.0" />
   </ItemGroup>
 
