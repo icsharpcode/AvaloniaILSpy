@@ -27,6 +27,7 @@ namespace ICSharpCode.ILSpy
 		public override async void Execute(object parameter)
 		{
 			OpenListDialog dlg = new OpenListDialog();
+			dlg.Title = "Open List";
             if (await dlg.ShowDialog<bool>(MainWindow.Instance) == true)
 				MainWindow.Instance.ShowAssemblyList(dlg.SelectedListName);
 		}

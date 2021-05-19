@@ -1094,6 +1094,7 @@ namespace ICSharpCode.ILSpy
 		{
 			e.Handled = true;
 			OpenFileDialog dlg = new OpenFileDialog();
+			dlg.Title = "Open file";
 			dlg.Filters = new List<FileDialogFilter>()
 			{
 				new FileDialogFilter() { Name = ".NET assemblies", Extensions = {"dll","exe", "winmd" }},

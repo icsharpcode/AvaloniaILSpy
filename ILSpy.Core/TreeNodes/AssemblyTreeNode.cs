@@ -317,6 +317,7 @@ namespace ICSharpCode.ILSpy.TreeNodes
 			if (string.IsNullOrEmpty(language.ProjectFileExtension))
 				return false;
 			SaveFileDialog dlg = new SaveFileDialog();
+			dlg.Title = "Save file";
             dlg.InitialFileName = DecompilerTextView.CleanUpName(LoadedAssembly.ShortName);
 			dlg.Filters = new List<FileDialogFilter>() 
 			{

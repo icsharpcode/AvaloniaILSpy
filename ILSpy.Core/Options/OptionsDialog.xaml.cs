@@ -124,6 +124,7 @@ namespace ICSharpCode.ILSpy.Options
 		public override async void Execute(object parameter)
 		{
 			OptionsDialog dlg = new OptionsDialog();
+			dlg.Title = "Options";
 			if (await dlg.ShowDialog<bool>(MainWindow.Instance) == true) {
 				new RefreshCommand().Execute(parameter);
 			}

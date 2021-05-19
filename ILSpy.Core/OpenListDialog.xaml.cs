@@ -132,6 +132,7 @@ namespace ICSharpCode.ILSpy
 		private async void CreateButton_Click(object sender, RoutedEventArgs e)
 		{
 			CreateListDialog dlg = new CreateListDialog();
+			dlg.Title = "Create List";
 			dlg.Closing += (s, args) =>
 			{
 				if (dlg.DialogResult == true)

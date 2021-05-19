@@ -117,6 +117,7 @@ namespace ICSharpCode.ILSpy.TreeNodes
 			Stream s = Resource.TryOpenStream();
 			if (s == null) return false;
             SaveFileDialog dlg = new SaveFileDialog();
+			dlg.Title = "Save file";
             dlg.InitialFileName = DecompilerTextView.CleanUpName(Resource.Name);
             dlg.Filters = new List<FileDialogFilter>()
             {
