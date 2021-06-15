@@ -83,6 +83,7 @@ namespace ICSharpCode.ILSpy.TreeNodes
 		public override async Task<bool> Save(DecompilerTextView textView)
 		{
 			SaveFileDialog dlg = new SaveFileDialog();
+			dlg.Title = "Save file";
 			dlg.InitialFileName = Path.GetFileName(DecompilerTextView.CleanUpName(key));
 			var filename = await dlg.ShowAsync(App.Current.GetMainWindow());
 			if (!string.IsNullOrEmpty(filename)) {

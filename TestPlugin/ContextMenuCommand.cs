@@ -29,6 +29,7 @@ namespace TestPlugin
 			var asm = node.LoadedAssembly.GetPEFileOrNull();
 			if (asm != null) {
 				/*SaveFileDialog dlg = new SaveFileDialog();
+				dlg.Title = "Save file";
 				dlg.FileName = node.LoadedAssembly.FileName;
 				dlg.Filter = "Assembly|*.dll;*.exe";
 				if (dlg.ShowDialog(MainWindow.Instance) == true) {

@@ -30,6 +30,7 @@ namespace ICSharpCode.ILSpy
 		public override async void Execute(object parameter)
 		{
             OpenFileDialog dlg = new OpenFileDialog();
+			dlg.Title = "Open file";
             dlg.Directory = NuGetEnvironment.GetFolderPath(NuGetFolderPath.NuGetHome);
             dlg.Filters = new List<FileDialogFilter>()
             {

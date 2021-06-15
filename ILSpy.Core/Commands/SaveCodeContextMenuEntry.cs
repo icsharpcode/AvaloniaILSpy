@@ -95,6 +95,7 @@ namespace ICSharpCode.ILSpy.TextView
         static async Task<string> SelectSolutionFile()
         {
             SaveFileDialog dlg = new SaveFileDialog();
+			dlg.Title = "Save file";
             dlg.InitialFileName = "Solution.sln";
             dlg.Filters = new List<FileDialogFilter>()
             {

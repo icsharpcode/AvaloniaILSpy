@@ -686,6 +686,7 @@ namespace ICSharpCode.ILSpy.TextView
                 return;
 
             SaveFileDialog dlg = new SaveFileDialog();
+			dlg.Title = "Save file";
             dlg.DefaultExtension = language.FileExtension;
             dlg.Filters = new List<FileDialogFilter>()
             {
