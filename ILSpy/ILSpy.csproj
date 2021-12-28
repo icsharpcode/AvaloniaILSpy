@@ -7,7 +7,7 @@
     <TieredCompilation>true</TieredCompilation>
     <TargetLatestRuntimePatch>true</TargetLatestRuntimePatch>
     <PreserveCompilationContext>true</PreserveCompilationContext>
-    <RuntimeIdentifiers>win-x64;win-arm64;linux-x64;linux-arm64;osx-x64</RuntimeIdentifiers>
+    <RuntimeIdentifiers>win-x64;win-arm64;linux-x64;linux-arm64;osx-x64;osx-arm64</RuntimeIdentifiers>
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
 
     <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
@@ -56,11 +56,21 @@
     </Content>
   </ItemGroup>
 
+    <ItemGroup Condition="'$(RuntimeIdentifier)' == 'osx-arm64'">
+    <Content Include="ILSpy.icns">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Info.plist">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
   <ItemGroup>
     <ProjectReference Include="..\ILSpy.Core\ILSpy.Core.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Avalonia.Desktop" Version="$(AvaloniaVersion)" />
+    <PackageReference Include="SkiaSharp" Version="2.88.0-preview.179" />
   </ItemGroup>
 </Project>
