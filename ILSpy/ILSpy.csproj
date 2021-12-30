@@ -71,6 +71,5 @@
 
   <ItemGroup>
     <PackageReference Include="Avalonia.Desktop" Version="$(AvaloniaVersion)" />
-    <PackageReference Include="SkiaSharp" Version="2.88.0-preview.179" />
   </ItemGroup>
 </Project>
