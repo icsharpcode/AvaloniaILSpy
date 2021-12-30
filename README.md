@@ -35,6 +35,7 @@ How to run on Mac:
 
 # Build from sources
 
-1. Clone repository with submodules: `git clone --recurse-submodules`.
-2. Run build script: `build.ps1` on Windows and `./build.sh` on Linux and Mac OS.
-3. Artifacts will be located in subdirectory `artifacts`.
+1. Install dotnet 6 or above from https://dotnet.microsoft.com/en-us/download/dotnet
+2. Clone repository : `git clone https://github.com/icsharpcode/AvaloniaILSpy.git`.
+3. Run build script: `build.ps1` on Windows and `./build.sh` on Linux and Mac OS.
+4. Artifacts will be located in subdirectory `artifacts`.
