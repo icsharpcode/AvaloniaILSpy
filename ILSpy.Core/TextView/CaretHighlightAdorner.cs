@@ -84,7 +84,7 @@ namespace ICSharpCode.ILSpy.TextView
                 }
             };
 
-            caretAnimation.RunAsync(this);
+            caretAnimation.RunAsync(this, null, default);
         }
 
         public static void DisplayCaretHighlightAnimation(TextArea textArea)
