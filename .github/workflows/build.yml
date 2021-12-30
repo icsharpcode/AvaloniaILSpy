@@ -58,14 +58,14 @@ jobs:
       if: matrix.platform == 'macos-latest'
       uses: actions/upload-artifact@v2
       with:
-        name: macOS Release
+        name: macOS x64 Release
         path: artifacts/ILSpy-macos-x64-Release.zip
         if-no-files-found: error
     - name: Upload macOS arm64 artifacts
       if: matrix.platform == 'macos-latest'
       uses: actions/upload-artifact@v2
       with:
-        name: macOS Release
+        name: macOS arm64 Release
         path: artifacts/ILSpy-macos-arm64-Release.zip
         if-no-files-found: error
     - name: Upload Windows x64 artifacts
