@@ -25,15 +25,18 @@ jobs:
     - name: Zip Linux x64
       if: matrix.platform == 'ubuntu-latest'
       run: 7z a -tzip artifacts/ILSpy-linux-x64-Release.zip artifacts/linux-x64/*
-    - name: Zip MacOS
-      if: matrix.platform == 'macos-latest'
-      run: 7z a -tzip artifacts/ILSpy-macos-Release.zip artifacts/osx-x64/*
-    - name: Zip Windows x64
-      if: matrix.platform == 'windows-latest'
-      run: 7z a -tzip artifacts\ILSpy-win-x64-Release.zip artifacts\win-x64\*   
     - name: Zip Linux arm64
       if: matrix.platform == 'ubuntu-latest'
       run: 7z a -tzip artifacts/ILSpy-linux-arm64-Release.zip artifacts/linux-arm64/*
+    - name: Zip MacOS x64
+      if: matrix.platform == 'macos-latest'
+      run: 7z a -tzip artifacts/ILSpy-macos-x64-Release.zip artifacts/osx-x64/*
+    - name: Zip MacOS arm64
+      if: matrix.platform == 'macos-latest'
+      run: 7z a -tzip artifacts/ILSpy-macos-arm64-Release.zip artifacts/osx-arm64/*
+    - name: Zip Windows x64
+      if: matrix.platform == 'windows-latest'
+      run: 7z a -tzip artifacts\ILSpy-win-x64-Release.zip artifacts\win-x64\*   
     - name: Zip Windows arm64
       if: matrix.platform == 'windows-latest'
       run: 7z a -tzip artifacts\ILSpy-win-arm64-Release.zip artifacts\win-arm64\*    
@@ -51,12 +54,19 @@ jobs:
         name: Linux arm64 Release
         path: artifacts/ILSpy-linux-arm64-Release.zip
         if-no-files-found: error
-    - name: Upload macOS artifacts
+    - name: Upload macOS x64 artifacts
       if: matrix.platform == 'macos-latest'
       uses: actions/upload-artifact@v2
       with:
         name: macOS Release
-        path: artifacts/ILSpy-macos-Release.zip
+        path: artifacts/ILSpy-macos-x64-Release.zip
+        if-no-files-found: error
+    - name: Upload macOS arm64 artifacts
+      if: matrix.platform == 'macos-latest'
+      uses: actions/upload-artifact@v2
+      with:
+        name: macOS Release
+        path: artifacts/ILSpy-macos-arm64-Release.zip
         if-no-files-found: error
     - name: Upload Windows x64 artifacts
       if: matrix.platform == 'windows-latest'
