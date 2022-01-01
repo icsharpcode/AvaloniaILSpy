@@ -53,6 +53,7 @@ using Avalonia.Markup.Xaml;
 using Avalonia;
 using Avalonia.Interactivity;
 using Avalonia.Controls.Shapes;
+using System.Runtime.InteropServices;
 
 namespace ICSharpCode.ILSpy.TextView
 {
@@ -751,7 +752,12 @@ namespace ICSharpCode.ILSpy.TextView
 						AvaloniaEditTextOutput output = new AvaloniaEditTextOutput();
 						output.WriteLine("Decompilation complete in " + stopwatch.Elapsed.TotalSeconds.ToString("F1") + " seconds.");
 						output.WriteLine();
-						output.AddButton(null, Properties.Resources.OpenExplorer, delegate { Process.Start("explorer", "/select,\"" + fileName + "\""); });
+						if(RuntimeInformation.IsOSPlatform(OSPlatform.Windows)) {
+							output.AddButton(null, Properties.Resources.OpenExplorer, delegate { Process.Start("explorer", "/select,\"" + fileName + "\""); });
+						} else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+						{
+							output.AddButton(null, Properties.Resources.OpenExplorer, delegate { Process.Start("open", "\"" + fileName + "\""); });
+						}
 						output.WriteLine();
 						tcs.SetResult(output);
 					} catch (OperationCanceledException) {
