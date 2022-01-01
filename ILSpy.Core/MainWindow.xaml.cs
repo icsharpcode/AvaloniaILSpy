@@ -1167,7 +1167,6 @@ namespace ICSharpCode.ILSpy
 							else {
 								var node = assemblyListTreeNode.FindAssemblyNode(asm);
 								if (node != null && focusNode) {
-									treeView.SelectedItems.Add(node);
 									lastNode = node;
 								}
 							}
@@ -1178,6 +1177,12 @@ namespace ICSharpCode.ILSpy
 				if (lastNode != null && focusNode)
 					treeView.FocusNode(lastNode);
 			}
+
+			
+			// Select only the last node to avoid multi selection
+			if(lastNode != null) {
+				treeView.SelectedItem = lastNode;
+            }
 		}
 		
 		void RefreshCommandExecuted(object sender, ExecutedRoutedEventArgs e)
