@@ -29,7 +29,7 @@
 			</ListBox.ItemsPanel>
 			<ListBox.ItemTemplate>
 				<DataTemplate>
-					<Button Name="dialogButton" MinWidth="100" Content="{Binding}"/>
+					<Button Name="dialogButton" MinWidth="100" Content="{Binding}" Click="ButtonClick"/>
 				</DataTemplate>
 			</ListBox.ItemTemplate>
 		</ListBox>

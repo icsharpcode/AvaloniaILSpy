@@ -57,15 +57,6 @@ namespace ICSharpCode.ILSpy.Controls
 			this.WindowStartupLocation = WindowStartupLocation.CenterOwner;
 			this.Width = buttonLabels.Length * (100+ 10);
 
-			buttons.ItemContainerGenerator.Materialized += (s, e) => {
-				for (int i = 0; i < e.Containers.Count; i++) {
-					var listItem = (ListBoxItem)e.Containers[i].ContainerControl;
-					listItem.TemplateApplied += (container, args) => {
-						var button = (Button)((ListBoxItem)container).Presenter.Child;
-						button.Click += ButtonClick;
-					};
-				}
-			};
 			buttons.Items = buttonLabels;
 
 			
