@@ -32,7 +32,7 @@ namespace ICSharpCode.TreeView
 			SelectAll();
 		}
 
-		void SelectAll()
+		new void SelectAll()
 		{
 			SelectionStart = 0;
 			SelectionEnd = Text.Length;

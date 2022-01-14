@@ -95,10 +95,10 @@ namespace ICSharpCode.TreeView
 			set { SetValue(IsTextSearchCaseSensitiveProperty, value); }
 		}
 
-		public static readonly StyledProperty<bool> IsTextSearchEnabledProperty =
+		new public static readonly StyledProperty<bool> IsTextSearchEnabledProperty =
 			AvaloniaProperty.Register<SharpTreeView, bool>(nameof(IsTextSearchEnabled), defaultValue: true);
 
-		public bool IsTextSearchEnabled {
+		new public bool IsTextSearchEnabled {
 			get { return (bool)GetValue(IsTextSearchEnabledProperty); }
 			set { SetValue(IsTextSearchEnabledProperty, value); }
 		}
@@ -765,7 +765,7 @@ namespace ICSharpCode.TreeView
 			}
 		}
 
-		public void UnselectAll()
+		new public void UnselectAll()
 		{
 			SelectedItems.Clear();
 		}
