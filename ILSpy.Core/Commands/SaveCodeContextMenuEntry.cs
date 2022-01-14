@@ -104,7 +104,7 @@ namespace ICSharpCode.ILSpy.TextView
             };
 
             string filename = await dlg.ShowAsync(MainWindow.Instance);
-            if (filename != null)
+            if (filename == null)
             {
                 return null;
             }
