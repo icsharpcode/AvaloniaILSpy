@@ -17,7 +17,8 @@ namespace ICSharpCode.TreeView
 		public SharpTreeNode Node {
 			get { return Item.Node; }
 		}
-
+		
+		[System.Obsolete]
 		protected override void OnTemplateApplied(TemplateAppliedEventArgs e)
 		{
 			base.OnTemplateApplied(e);

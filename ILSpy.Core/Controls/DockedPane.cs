@@ -34,7 +34,8 @@ namespace ICSharpCode.ILSpy.Controls
 			get { return (string)GetValue(TitleProperty); }
 			set { SetValue(TitleProperty, value); }
 		}
-
+		
+		[System.Obsolete]
         protected override void OnTemplateApplied(TemplateAppliedEventArgs e)
         {
             base.OnTemplateApplied(e);
