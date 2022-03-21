@@ -36,7 +36,7 @@ namespace ICSharpCode.ILSpy.TextView
     {
         public void Execute(TextViewContext context)
         {
-            Execute(context.SelectedTreeNodes);
+            _ = Execute(context.SelectedTreeNodes);
         }
 
         public bool IsEnabled(TextViewContext context) => true;

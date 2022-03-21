@@ -101,7 +101,7 @@ namespace ICSharpCode.ILSpy
 				}
 			}
 
-			protected override void WriteInstruction(ITextOutput output, MetadataReader metadata, MethodDefinitionHandle methodDefinition, ref BlobReader blob)
+			protected override void WriteInstruction(ITextOutput output, MetadataReader metadata, MethodDefinitionHandle methodDefinition, ref BlobReader blob, int methodRva)
 			{
 				int index = sequencePoints.BinarySearch(blob.Offset, seq => seq.Offset);
 				if (index >= 0) {
@@ -128,7 +128,7 @@ namespace ICSharpCode.ILSpy
 						highlightingOutput?.EndSpan();
 					}
 				}
-				base.WriteInstruction(output, metadata, methodDefinition, ref blob);
+				base.WriteInstruction(output, metadata, methodDefinition, ref blob, methodRva);
 			}
 
 			HighlightingColor gray = new HighlightingColor { Foreground = new SimpleHighlightingBrush(Colors.DarkGray) };

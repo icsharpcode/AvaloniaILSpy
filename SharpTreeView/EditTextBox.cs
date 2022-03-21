@@ -18,23 +18,17 @@ namespace ICSharpCode.TreeView
 			get { return Item.Node; }
 		}
 
-		protected override void OnTemplateApplied(TemplateAppliedEventArgs e)
-		{
-			base.OnTemplateApplied(e);
+        protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
+        {
+            base.OnApplyTemplate(e);
 			Init();
 		}
 
-		void Init()
+        void Init()
 		{
 			Text = Node.LoadEditText();
 			Focus();
 			SelectAll();
-		}
-
-		void SelectAll()
-		{
-			SelectionStart = 0;
-			SelectionEnd = Text.Length;
 		}
 
 		protected override void OnKeyDown(KeyEventArgs e)

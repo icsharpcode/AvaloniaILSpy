@@ -434,7 +434,7 @@ namespace ICSharpCode.ILSpy
 				{
 					if (topLevelMenuItems.Count > 0)
 					{
-						topLevelMenuItems.Add(new NativeMenuItemSeperator());
+						topLevelMenuItems.Add(new NativeMenuItemSeparator());
 					}
 					foreach (var entry in category)
 					{
