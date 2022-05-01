@@ -327,10 +327,13 @@ namespace ICSharpCode.ILSpy
             var loadedAssembly = MainWindow.Instance.CurrentAssemblyList.GetAssemblies().FirstOrDefault(la => la.GetPEFileOrNull() == module);
             if (loadedAssembly == null || !loadedAssembly.LoadedAssemblyReferencesInfo.HasErrors)
                 return;
+            var node = MainWindow.Instance.FindTreeNode(module).Children.OfType<ReferenceFolderTreeNode>().FirstOrDefault();
+            if (node == null)
+                return;
             string line1 = Properties.Resources.WarningSomeAssemblyReference;
             string line2 = Properties.Resources.PropertyManuallyMissingReferencesListLoadedAssemblies;
             AddWarningMessage(module, output, line1, line2, Properties.Resources.ShowAssemblyLoad, Images.ViewCode, delegate {
-                MainWindow.Instance.SelectNode(MainWindow.Instance.FindTreeNode(module).Children.OfType<ReferenceFolderTreeNode>().First());
+                MainWindow.Instance.SelectNode(node);
             });
         }
 
