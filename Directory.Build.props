@@ -5,8 +5,8 @@
     </PropertyGroup>
 
     <PropertyGroup>
-        <AvaloniaVersion>0.10.12</AvaloniaVersion>
-        <AvaloniaEditVersion>0.10.12.1</AvaloniaEditVersion>
+        <AvaloniaVersion>0.10.13</AvaloniaVersion>
+        <AvaloniaEditVersion>0.10.12.2</AvaloniaEditVersion>
     </PropertyGroup>
 
 </Project>

@@ -18,9 +18,9 @@ namespace ICSharpCode.TreeView
 			get { return Item.Node; }
 		}
 
-		protected override void OnTemplateApplied(TemplateAppliedEventArgs e)
+		protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
 		{
-			base.OnTemplateApplied(e);
+			base.OnApplyTemplate(e);
 			Init();
 		}
 
@@ -29,12 +29,6 @@ namespace ICSharpCode.TreeView
 			Text = Node.LoadEditText();
 			Focus();
 			SelectAll();
-		}
-
-		void SelectAll()
-		{
-			SelectionStart = 0;
-			SelectionEnd = Text.Length;
 		}
 
 		protected override void OnKeyDown(KeyEventArgs e)
