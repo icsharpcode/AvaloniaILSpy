@@ -19,7 +19,7 @@
 						<Grid x:Name="LayoutGrid">
 							<Grid.ColumnDefinitions>
 								<ColumnDefinition Width="*" />
-								<ColumnDefinition Width="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Bounds.Height, Converter={x:Static local:SearchBox.GridLengthConvert}}}" />
+								<ColumnDefinition Width="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Bounds.Height, Converter={x:Static local:SearchBox.GridLengthConvert}}" />
 							</Grid.ColumnDefinitions>
               
                           <ScrollViewer Grid.Column="0" HorizontalScrollBarVisibility="{TemplateBinding (ScrollViewer.HorizontalScrollBarVisibility)}"
