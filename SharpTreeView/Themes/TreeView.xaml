@@ -177,7 +177,7 @@
                     <Border Background="Transparent">
                         <Border Background="{DynamicResource ThemeBackgroundBrush}">
                             <local:SharpTreeNodeView Name="nodeView"
-                                                       Foreground="{DynamicResource ThemeForegroundBrush}}"
+                                                       Foreground="{DynamicResource ThemeForegroundBrush}"
                                                        HorizontalAlignment="Left" />
                         </Border>
                     </Border>

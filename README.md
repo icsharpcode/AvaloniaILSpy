@@ -30,6 +30,7 @@ How to run on Linux:
 
 How to run on Mac:
 - just move the app into `/Applications` folder and open it
+- run `xattr -rd com.apple.quarantine /Applications/ILSpy.app`
 - if you see `“ILSpy” cannot be opened because the developer cannot be verified.`, please open up `System Preferences` -> `Security & Privacy` -> `General` -> `Open Anyway` 
 - if you see the error `The application ILSpy can't be opened' error on launch`, you could `chmod +x "/Applications/ILSpy.app/Contents/MacOS/ILSpy"`
 
