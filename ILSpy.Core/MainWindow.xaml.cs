@@ -115,34 +115,42 @@ namespace ICSharpCode.ILSpy
 		}
 
 		public MainWindow()
-		{
-			instance = this;
-			var spySettings = ILSpySettings.Load();
-			this.spySettingsForMainWindow_Loaded = spySettings;
-			this.sessionSettings = new SessionSettings(spySettings);
-			this.assemblyListManager = new AssemblyListManager(spySettings);
+        {
+            instance = this;
+            var spySettings = ILSpySettings.Load();
+            this.spySettingsForMainWindow_Loaded = spySettings;
+            this.sessionSettings = new SessionSettings(spySettings);
+            this.assemblyListManager = new AssemblyListManager(spySettings);
 
-			InitializeComponent();
+            InitializeComponent();
+            
+			var q = Environment.GetEnvironmentVariable("ILSPY_TREEVIEW_FONTSIZE");
+			if (q != null)
+			{
+				var invariant = System.Globalization.CultureInfo.InvariantCulture;
+				if (double.TryParse(q, System.Globalization.NumberStyles.Any, invariant.NumberFormat, out var fontSize))
+					this.treeView.FontSize = fontSize;					
+			}            
 
-			this.DataContext = sessionSettings;
+            this.DataContext = sessionSettings;
 
 #if DEBUG
-			this.AttachDevTools();
+            this.AttachDevTools();
 #endif
 
-			decompilerTextView = App.ExportProvider.GetExportedValue<DecompilerTextView>();
-			mainPane.Content = decompilerTextView;
-			
-			if (sessionSettings.SplitterPosition > 0 && sessionSettings.SplitterPosition < 1) {
-				leftColumn.Width = new GridLength(sessionSettings.SplitterPosition, GridUnitType.Star);
-				rightColumn.Width = new GridLength(1 - sessionSettings.SplitterPosition, GridUnitType.Star);
-			}
-			sessionSettings.FilterSettings.PropertyChanged += filterSettings_PropertyChanged;
-			
-			ContextMenuProvider.Add(treeView, decompilerTextView);
+            decompilerTextView = App.ExportProvider.GetExportedValue<DecompilerTextView>();
+            mainPane.Content = decompilerTextView;
 
-		}
-		private void InitializeComponent()
+			if (sessionSettings.SplitterPosition > 0 && sessionSettings.SplitterPosition < 1) {
+                leftColumn.Width = new GridLength(sessionSettings.SplitterPosition, GridUnitType.Star);
+                rightColumn.Width = new GridLength(1 - sessionSettings.SplitterPosition, GridUnitType.Star);
+            }
+            sessionSettings.FilterSettings.PropertyChanged += filterSettings_PropertyChanged;
+
+            ContextMenuProvider.Add(treeView, decompilerTextView);
+
+        }
+        private void InitializeComponent()
 		{
 			AvaloniaXamlLoader.Load(this);
 			mainMenu = this.FindControl<Menu>("mainMenu");
