@@ -280,7 +280,7 @@ namespace ICSharpCode.ILSpy.TextView
             references.Add(new ReferenceSegment { StartOffset = start, EndOffset = end, Reference = reference, IsLocal = true, IsDefinition = isDefinition });
         }
 
-        public void MarkFoldStart(string collapsedText = "...", bool defaultCollapsed = false)
+        public void MarkFoldStart(string collapsedText = "...", bool defaultCollapsed = false, bool isDefintion = false)
 		{
 			WriteIndent();
 			openFoldings.Push(

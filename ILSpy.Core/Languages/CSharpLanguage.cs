@@ -115,6 +115,9 @@ namespace ICSharpCode.ILSpy
                         new LanguageVersion(Decompiler.CSharp.LanguageVersion.CSharp7_2.ToString(), "C# 7.2 / VS 2017.4"),
                         new LanguageVersion(Decompiler.CSharp.LanguageVersion.CSharp7_3.ToString(), "C# 7.3 / VS 2017.7"),
                         new LanguageVersion(Decompiler.CSharp.LanguageVersion.CSharp8_0.ToString(), "C# 8.0 / VS 2019"),
+                        new LanguageVersion(Decompiler.CSharp.LanguageVersion.CSharp9_0.ToString(), "C# 9.0 / VS 2019.8"),
+                        new LanguageVersion(Decompiler.CSharp.LanguageVersion.CSharp10_0.ToString(), "C# 10.0 / VS 2022"),
+                        new LanguageVersion(Decompiler.CSharp.LanguageVersion.CSharp11_0.ToString(), "C# 11.0 / VS 2022.4"),
                     };
                 }
                 return versions;
@@ -492,7 +495,7 @@ namespace ICSharpCode.ILSpy
                 this.options = options;
             }
 
-            protected override IEnumerable<(string itemType, string fileName)> WriteResourceToFile(string fileName, string resourceName, Stream entryStream)
+            protected override IEnumerable<(string itemType, string fileName, List<PartialTypeInfo> partialTypes)> WriteResourceToFile(string fileName, string resourceName, Stream entryStream)
             {
                 foreach (var handler in App.ExportProvider.GetExportedValues<IResourceFileHandler>())
                 {
@@ -500,7 +503,7 @@ namespace ICSharpCode.ILSpy
                     {
                         entryStream.Position = 0;
                         fileName = handler.WriteResourceToFile(assembly, fileName, entryStream, options);
-                        return new[] { (handler.EntryType, fileName) };
+                        return new[] { (handler.EntryType, fileName, (List<PartialTypeInfo>)null) };
                     }
                 }
                 return base.WriteResourceToFile(fileName, resourceName, entryStream);

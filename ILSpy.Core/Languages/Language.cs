@@ -507,7 +507,7 @@ namespace ICSharpCode.ILSpy
 				declaringType = (SRM.TypeDefinitionHandle)member;
 			}
 
-			return new CodeMappingInfo(module, declaringType);
+			return new CodeMappingInfo(module, (TypeDefinitionHandle)declaringType);
 		}
 
 		public static string GetPlatformDisplayName(PEFile module)

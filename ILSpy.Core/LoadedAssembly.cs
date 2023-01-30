@@ -68,7 +68,7 @@ namespace ICSharpCode.ILSpy
 		public async Task<string> GetTargetFrameworkIdAsync()
 		{
 			var assembly = await GetPEFileAsync().ConfigureAwait(false);
-			return assembly.Reader.DetectTargetFrameworkId() ?? string.Empty;
+			return assembly.DetectTargetFrameworkId() ?? string.Empty;
 		}
 
 		public ReferenceLoadInfo LoadedAssemblyReferencesInfo { get; } = new ReferenceLoadInfo();

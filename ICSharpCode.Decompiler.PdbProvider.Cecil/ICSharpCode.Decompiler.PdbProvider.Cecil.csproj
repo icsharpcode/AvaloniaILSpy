@@ -8,7 +8,7 @@
 
   <ItemGroup>
     <PackageReference Include="Mono.Cecil" Version="0.11.3" />
-    <PackageReference Include="ICSharpCode.Decompiler" Version="7.1.0.6543" />
+    <PackageReference Include="ICSharpCode.Decompiler" Version="8.0.0.7106-preview2" />
     <PackageReference Include="System.IO.FileSystem.Primitives" Version="4.3.0" />
     <PackageReference Include="System.Runtime.Extensions" Version="4.3.1" />
     <PackageReference Include="System.Runtime.Handles" Version="4.3.0" />
