@@ -617,10 +617,8 @@ namespace ICSharpCode.ILSpy.TextView
 						if (reference.Equals(r.Reference)) {
 							var mark = textMarkerService.Create(r.StartOffset, r.Length);
 							// TODO: Get color from FindResourceKey(...) and NOT hard-coded
-							// ISSUE: The text disappears, foreground color matches the background
 							// mark.BackgroundColor = (Color)(r.IsDefinition ? FindResource(ResourceKeys.TextMarkerDefinitionBackgroundColor) : FindResource(ResourceKeys.TextMarkerBackgroundColor));
-							mark.BackgroundColor = r.IsDefinition ? Colors.LightSeaGreen : Colors.MediumVioletRed;
-							mark.ForegroundColor = Colors.White;
+							mark.BackgroundColor = r.IsDefinition ? Color.FromUInt32(0x7720B2AA) : Color.FromUInt32(0x77C71585); // LightSeaGreen : MediumVioletRed;
 							localReferenceMarks.Add(mark);
 						}
 					}
