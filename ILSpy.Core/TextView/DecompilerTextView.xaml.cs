@@ -123,6 +123,9 @@ namespace ICSharpCode.ILSpy.TextView
 			// add marker service & margin
 			textEditor.TextArea.TextView.BackgroundRenderers.Add(textMarkerService);
 			textEditor.TextArea.TextView.LineTransformers.Add(textMarkerService);
+			textEditor.TextArea.SelectionBrush = new SolidColorBrush(0x333399FF);
+			//// textEditor.TextArea.SelectionForeground = new SolidColorBrush(0xFFFFFFFF);
+			textEditor.TextArea.SelectionBorder = new Pen(0xFF3399ff, 1, null, PenLineCap.Square);
 		}
 
         private void InitializeComponent()
