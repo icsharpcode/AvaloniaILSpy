@@ -14,7 +14,7 @@
             <SolidColorBrush x:Key="ThemeCodeForegroundBrush" Color="{DynamicResource ThemeCodeForegroundColor}"></SolidColorBrush>
             
             <sys:String x:Key="CSharp-Mode">CSharp-Mode-Dark.xshd</sys:String>
-            <sys:String x:Key="ILAsm-Mode">ILAsm-Mode.xshd</sys:String>
+            <sys:String x:Key="ILAsm-Mode">ILAsm-Mode-Dark.xshd</sys:String>
         
         </Style.Resources>
     </Style>
