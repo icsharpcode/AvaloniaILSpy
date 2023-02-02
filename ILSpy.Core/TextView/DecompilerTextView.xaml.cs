@@ -118,6 +118,7 @@ namespace ICSharpCode.ILSpy.TextView
             // TemplateApplied += (s,e) => 
 			
 			ShowLineMargin();
+			SetHighlightCurrentLine();
 			
 			// add marker service & margin
 			textEditor.TextArea.TextView.BackgroundRenderers.Add(textMarkerService);
@@ -150,8 +151,13 @@ namespace ICSharpCode.ILSpy.TextView
 
 		void CurrentDisplaySettings_PropertyChanged(object sender, PropertyChangedEventArgs e)
 		{
-			if (e.PropertyName == "ShowLineNumbers") {
+			if (e.PropertyName == nameof(DisplaySettings.ShowLineNumbers))
+			{
 				ShowLineMargin();
+			}
+			else if (e.PropertyName == nameof(DisplaySettings.HighlightCurrentLine))
+			{
+				SetHighlightCurrentLine();
 			}
 		}
 		
@@ -163,11 +169,16 @@ namespace ICSharpCode.ILSpy.TextView
 				}
 			}
 		}
-		
+
+		void SetHighlightCurrentLine()
+		{
+			textEditor.Options.HighlightCurrentLine = DisplaySettingsPanel.CurrentDisplaySettings.HighlightCurrentLine;
+		}
+
 		#endregion
-		
+
 		#region Tooltip support
-		
+
 		void TextViewMouseHoverStopped(object sender, PointerEventArgs e)
         {
             ToolTip.SetIsOpen(this, false);
