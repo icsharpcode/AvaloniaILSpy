@@ -132,6 +132,7 @@ namespace ICSharpCode.ILSpy.AvaloniaEdit
 					foregroundBrush = new SolidColorBrush(marker.ForegroundColor.Value);
 					//foregroundBrush.Freeze();
 				}
+
 				ChangeLinePart(
 					Math.Max(marker.StartOffset, lineStart),
 					Math.Min(marker.EndOffset, lineEnd),
@@ -139,14 +140,13 @@ namespace ICSharpCode.ILSpy.AvaloniaEdit
 						if (foregroundBrush != null) {
 							element.TextRunProperties.ForegroundBrush = foregroundBrush;
 						}
-						// TODO: change font style
-						//string tf = element.TextRunProperties.Typeface;
-						//element.TextRunProperties.SetTypeface(new Typeface(
-						//	tf.FontFamily,
-						//	marker.FontStyle ?? tf.Style,
-						//	marker.FontWeight ?? tf.Weight,
-						//	tf.Stretch
-						//));
+
+						var tf = element.TextRunProperties.Typeface;
+						element.TextRunProperties.Typeface = new Typeface(
+							tf.FontFamily,
+							marker.FontStyle ?? tf.Style,
+							marker.FontWeight ?? tf.Weight
+						);
 					}
 				);
 			}

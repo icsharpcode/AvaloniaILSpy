@@ -616,7 +616,11 @@ namespace ICSharpCode.ILSpy.TextView
 					foreach (var r in references) {
 						if (reference.Equals(r.Reference)) {
 							var mark = textMarkerService.Create(r.StartOffset, r.Length);
-							mark.BackgroundColor = r.IsDefinition ? Colors.LightSeaGreen : Colors.GreenYellow;
+							// TODO: Get color from FindResourceKey(...) and NOT hard-coded
+							// ISSUE: The text disappears, foreground color matches the background
+							// mark.BackgroundColor = (Color)(r.IsDefinition ? FindResource(ResourceKeys.TextMarkerDefinitionBackgroundColor) : FindResource(ResourceKeys.TextMarkerBackgroundColor));
+							mark.BackgroundColor = r.IsDefinition ? Colors.LightSeaGreen : Colors.MediumVioletRed;
+							mark.ForegroundColor = Colors.White;
 							localReferenceMarks.Add(mark);
 						}
 					}
@@ -755,7 +759,7 @@ namespace ICSharpCode.ILSpy.TextView
 								DecompileNodes(context, new PlainTextOutput(w));
 							} catch (OperationCanceledException) {
 								w.WriteLine();
-								w.WriteLine("Decompiled was cancelled.");
+								w.WriteLine("Decompiled was canceled.");
 								throw;
 							}
 						}
