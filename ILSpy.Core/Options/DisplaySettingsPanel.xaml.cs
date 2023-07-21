@@ -169,8 +169,7 @@ namespace ICSharpCode.ILSpy.Options
         }
     }
 
-
-    public class FontSizeConverter : IValueConverter
+	public class FontSizeConverter : IValueConverter
 	{
 		public static readonly FontSizeConverter Instance = new FontSizeConverter();
 

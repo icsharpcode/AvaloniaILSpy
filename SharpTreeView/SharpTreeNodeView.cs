@@ -97,14 +97,18 @@ namespace ICSharpCode.TreeView
 			UpdateTemplate();
 		}
 
-		protected override void OnPropertyChanged<T>(AvaloniaPropertyChangedEventArgs<T> e)
+		protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
 		{
-			base.OnPropertyChanged(e);
-			if (e.Property == DataContextProperty)
-			{
-				UpdateDataContext(e.OldValue.GetValueOrDefault<SharpTreeNode>(), e.NewValue.GetValueOrDefault<SharpTreeNode>());
-			}
-		}
+      base.OnPropertyChanged(change);
+      if (change.Property == DataContextProperty)
+      {
+				var e = (AvaloniaPropertyChangedEventArgs<SharpTreeNode>)change;
+				var oldTransitions = e.OldValue.GetValueOrDefault();
+				var newTransitions = e.NewValue.GetValueOrDefault();
+
+        UpdateDataContext(oldTransitions, newTransitions);
+      }
+    }
 
 		void UpdateDataContext(SharpTreeNode oldNode, SharpTreeNode newNode)
 		{

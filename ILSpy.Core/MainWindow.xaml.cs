@@ -251,14 +251,17 @@ namespace ICSharpCode.ILSpy
 
 		private void ApplyTheme()
 		{
-			if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX) && Styles.TryGetResource("ThemeBackgroundBrush", out object backgroundColor) && backgroundColor is ISolidColorBrush brush)
+			ThemeVariant defaultVariant = ThemeVariant.Default;
+
+			if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX) && Styles.TryGetResource("ThemeBackgroundBrush", defaultVariant, out object backgroundColor) && backgroundColor is ISolidColorBrush brush)
 			{
 				// HACK: SetTitleBarColor is a method in Avalonia.Native.WindowImpl
 				var setTitleBarColorMethod = PlatformImpl.GetType().GetMethod("SetTitleBarColor");
 				setTitleBarColorMethod?.Invoke(PlatformImpl, new object[] { brush.Color });
 			}
 
-			if (Styles.TryGetResource("ILAsm-Mode", out object ilasm) && ilasm is string ilmode)
+			// Styles.TryGetResource(objKey, ThemeVariant, out objValue)
+			if (Styles.TryGetResource("ILAsm-Mode", defaultVariant, out object ilasm) && ilasm is string ilmode)
 			{
 				HighlightingManager.Instance.RegisterHighlighting(
 					"ILAsm", new string[] { ".il" },
@@ -289,7 +292,7 @@ namespace ICSharpCode.ILSpy
 					});
 			}
 
-			if (Styles.TryGetResource("CSharp-Mode", out object csharp) && csharp is string csmode)
+			if (Styles.TryGetResource("CSharp-Mode", defaultVariant, out object csharp) && csharp is string csmode)
 			{
 				HighlightingManager.Instance.RegisterHighlighting(
 				"C#", new string[] { ".cs" },

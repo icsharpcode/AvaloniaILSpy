@@ -99,9 +99,9 @@ namespace ICSharpCode.ILSpy.Controls
             }
         }
 
-        protected override void OnPropertyChanged<T>(AvaloniaPropertyChangedEventArgs<T> change)
-        {
-            base.OnPropertyChanged(change);
+		protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
+		{
+			base.OnPropertyChanged(change);
 
             if (change.Property == TextProperty)
             {
