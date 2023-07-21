@@ -4,6 +4,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using Avalonia;
@@ -191,46 +192,89 @@ namespace ICSharpCode.TreeView
 			}
 		}
 
-		protected override IItemContainerGenerator CreateItemContainerGenerator()
-		{
-			return new ItemContainerGenerator<SharpTreeViewItem>(
-					this,
-					SharpTreeViewItem.ContentProperty,
-					SharpTreeViewItem.ContentTemplateProperty);
-		}
+		// Avalonia v11 - Removing, not being referenced.. Should we use, CreateContainerForItemOverride()?
+		////[Obsolete("Marked for removal in Avalonia v12")]
+		////protected override IItemContainerGenerator CreateItemContainerGenerator()
+		////{
+		////	return new ItemContainerGenerator<SharpTreeViewItem>(
+		////			this,
+		////			SharpTreeViewItem.ContentProperty,
+		////			SharpTreeViewItem.ContentTemplateProperty);
+		////}
 
-		protected override void OnContainersMaterialized(ItemContainerEventArgs e)
+		// NEW: Avalonia 11 (testing replacement for OnContainersMaterialized)
+		protected override void PrepareContainerForItemOverride(Control container, object item, int index)
 		{
-			base.OnContainersMaterialized(e);
-			foreach (var item in e.Containers) {
-				var container = item.ContainerControl as SharpTreeViewItem;
-				container.ParentTreeView = this;
-				// Make sure that the line renderer takes into account the new bound data
-				if (container.NodeView != null) {
-					container.NodeView.LinesRenderer.InvalidateVisual();
-				}
-			}
-		}
+			base.PrepareContainerForItemOverride(container, item, index);
 
-		protected override void OnContainersRecycled(ItemContainerEventArgs e)
-		{
-			base.OnContainersRecycled(e);
-
-			foreach (var item in e.Containers)
+			// TODO: See PR 9677
+			var tvi = container as SharpTreeViewItem;
+			tvi.ParentTreeView = this;
+			if (tvi.NodeView != null)
 			{
-				var container = item.ContainerControl as SharpTreeViewItem;
-				container.ParentTreeView = this;
-				// Make sure that the line renderer takes into account the new bound data
-				if (container.NodeView != null)
-				{
-					container.NodeView.LinesRenderer.InvalidateVisual();
-				}
+				tvi.NodeView.LinesRenderer.InvalidateVisual();
 			}
 		}
+
+		// Avalonia v0.10 (PR 9677 - https://github.com/AvaloniaUI/Avalonia/pull/9677)
+		////protected override void OnContainersMaterialized(ItemContainerEventArgs e)
+		////{
+		////	base.OnContainersMaterialized(e);
+		////	foreach (var item in e.Containers) {
+		////		var container = item.ContainerControl as SharpTreeViewItem;
+		////		container.ParentTreeView = this;
+		////		// Make sure that the line renderer takes into account the new bound data
+		////		if (container.NodeView != null) {
+		////			container.NodeView.LinesRenderer.InvalidateVisual();
+		////		}
+		////	}
+		////}
+
+		// NEW: Avalonia 11 (testing replacement for OnContainersRecycled)
+		protected override void ClearContainerForItemOverride(Control element)
+		{
+			base.ClearContainerForItemOverride(element);
+			var tvi = element as SharpTreeViewItem;
+			tvi.ParentTreeView = this;
+			if (tvi.NodeView != null)
+			{
+				tvi.NodeView.LinesRenderer.InvalidateVisual();
+			}
+		}
+
+		// NEW: Avalonia 11 (testing replacement for OnContainersRecycled)
+		protected override void ContainerIndexChangedOverride(Control container, int oldIndex, int newIndex)
+		{
+			base.ContainerIndexChangedOverride(container, oldIndex, newIndex);
+			////var tvi = container as SharpTreeViewItem;
+			////tvi.ParentTreeView = this;
+			////if (tvi.NodeView != null)
+			////{
+			////	tvi.NodeView.LinesRenderer.InvalidateVisual();
+			////}
+		}
+
+		// OLD: Avalonia v0.10
+		////protected override void OnContainersRecycled(ItemContainerEventArgs e)
+		////{
+		////	base.OnContainersRecycled(e);
+		////
+		////	foreach (var item in e.Containers)
+		////	{
+		////		var container = item.ContainerControl as SharpTreeViewItem;
+		////		container.ParentTreeView = this;
+		////		// Make sure that the line renderer takes into account the new bound data
+		////		if (container.NodeView != null)
+		////		{
+		////			container.NodeView.LinesRenderer.InvalidateVisual();
+		////		}
+		////	}
+		////}
 
 		internal Control ContainerFromItem(object item)
 		{
-			int index = IndexOf(Items, item);
+			int index = ItemsView.IndexOf(item); // Avalonia v11
+			//// int index = IndexOf(Items, item); // Avalonia v0.10
 			if (index != -1) {
 				return ItemContainerGenerator.ContainerFromIndex(index);
 			}

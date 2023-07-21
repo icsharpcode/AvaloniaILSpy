@@ -33,6 +33,9 @@ indent_size = 2
 [*.vsct]
 indent_style = space
 indent_size = 2
+[*.md]
+indent_style = space
+indent_size = 2
 
 [*.{cs,csx}]
 tab_width = 4

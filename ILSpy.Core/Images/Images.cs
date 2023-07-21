@@ -249,7 +249,10 @@ namespace ICSharpCode.ILSpy
             WriteableBitmap _bitmap;
             public ILockedFramebuffer Lock() => _bitmap.Lock();
 
-            public WbFb(WriteableBitmap bitmap)
+			// Avalonia v11 - https://github.com/AvaloniaUI/Avalonia/pull/11914
+			public IFramebufferRenderTarget CreateFramebufferRenderTarget() => new FuncFramebufferRenderTarget(Lock);
+
+			public WbFb(WriteableBitmap bitmap)
             {
                 _bitmap = bitmap;
             }
@@ -324,7 +327,8 @@ namespace ICSharpCode.ILSpy
 			{
                 var image = new WriteableBitmap(new PixelSize(16, 16), new Vector(96, 96), PixelFormat.Rgba8888, AlphaFormat.Unpremul);
 
-                using (var rt = AvaloniaLocator.Current.GetService<IPlatformRenderInterface>().CreateRenderTarget(new[] { new WbFb(image)})) {
+				// Avalonia 0.10 - https://github.com/AvaloniaUI/Avalonia/pull/11557
+				using (var rt = AvaloniaLocator.Current.GetService<IPlatformRenderInterface>().CreateRenderTarget(new[] { new WbFb(image)})) {
 
                     using (var ctx = rt.CreateDrawingContext(null)) {
 
