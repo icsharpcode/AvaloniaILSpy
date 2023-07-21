@@ -93,10 +93,11 @@ namespace ICSharpCode.ILSpy
 
 			object GetHierachy(object source)
 			{
-				if (source is IControl visual)
+				if (source is Control visual)
 				{
 					List<string> hierachy = new List<string>();
 					hierachy.Add(visual.ToString());
+					////while ((visual = visual.Parent) != null)
 					while ((visual = visual.Parent) != null)
 					{
 						hierachy.Insert(0, visual.ToString());

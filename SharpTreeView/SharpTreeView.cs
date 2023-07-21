@@ -155,7 +155,7 @@ namespace ICSharpCode.TreeView
 				}
 				flattener = new TreeFlattener(Root, ShowRoot);
 				flattener.CollectionChanged += flattener_CollectionChanged;
-				this.Items = flattener;
+				this.ItemsSource = flattener;
 			}
 		}
 
@@ -228,7 +228,7 @@ namespace ICSharpCode.TreeView
 			}
 		}
 
-		internal IControl ContainerFromItem(object item)
+		internal Control ContainerFromItem(object item)
 		{
 			int index = IndexOf(Items, item);
 			if (index != -1) {
@@ -274,7 +274,7 @@ namespace ICSharpCode.TreeView
 			SharpTreeViewItem container = e.Source as SharpTreeViewItem;
 			switch (e.Key) {
 				case Key.Left:
-					if (container != null && ItemContainerGenerator.IndexFromContainer(e.Source as IControl) != -1) {
+					if (container != null && ItemContainerGenerator.IndexFromContainer(e.Source as Control) != -1) {
 						if (container.Node.IsExpanded) {
 							container.Node.IsExpanded = false;
 						} else if (container.Node.Parent != null) {
@@ -285,7 +285,7 @@ namespace ICSharpCode.TreeView
 					break;
 				case Key.Right:
 					// TODO: focus on first child
-					if (container != null && ItemContainerGenerator.IndexFromContainer(e.Source as IControl) != -1) {
+					if (container != null && ItemContainerGenerator.IndexFromContainer(e.Source as Control) != -1) {
 						if (!container.Node.IsExpanded && container.Node.ShowExpander) {
 							container.Node.IsExpanded = true;
 						} else if (container.Node.Children.Count > 0) {
@@ -303,19 +303,19 @@ namespace ICSharpCode.TreeView
 					}
 					break;
 				case Key.Add:
-					if (container != null && ItemContainerGenerator.IndexFromContainer(e.Source as IControl) != -1) {
+					if (container != null && ItemContainerGenerator.IndexFromContainer(e.Source as Control) != -1) {
 						container.Node.IsExpanded = true;
 						e.Handled = true;
 					}
 					break;
 				case Key.Subtract:
-					if (container != null && ItemContainerGenerator.IndexFromContainer(e.Source as IControl) != -1) {
+					if (container != null && ItemContainerGenerator.IndexFromContainer(e.Source as Control) != -1) {
 						container.Node.IsExpanded = false;
 						e.Handled = true;
 					}
 					break;
 				case Key.Multiply:
-					if (container != null && ItemContainerGenerator.IndexFromContainer(e.Source as IControl) != -1) {
+					if (container != null && ItemContainerGenerator.IndexFromContainer(e.Source as Control) != -1) {
 						container.Node.IsExpanded = true;
 						ExpandRecursively(container.Node);
 						e.Handled = true;
@@ -348,7 +348,7 @@ namespace ICSharpCode.TreeView
 
 		protected override void OnTextInput(TextInputEventArgs e)
 		{
-			if (!string.IsNullOrEmpty(e.Text) && IsTextSearchEnabled && (e.Source == this || ItemContainerGenerator.IndexFromContainer(e.Source as IControl) != -1)) {
+			if (!string.IsNullOrEmpty(e.Text) && IsTextSearchEnabled && (e.Source == this || ItemContainerGenerator.IndexFromContainer(e.Source as Control) != -1)) {
 				var instance = SharpTreeViewTextSearch.GetInstance(this);
 				if (instance != null) {
 					instance.Search(e.Text);

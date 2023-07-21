@@ -32,6 +32,7 @@ namespace ICSharpCode.TreeView
 				if (!expanded.HasValue) {
 					return null;
 				}
+
 				return expanded.Value ? owner.Node?.ExpandedIcon : owner.Node?.Icon;
 		});
 
@@ -39,7 +40,6 @@ namespace ICSharpCode.TreeView
 		{
 			get { return GetValue(IconProperty); }
 		}
-
 
 		public SharpTreeNode Node
 		{

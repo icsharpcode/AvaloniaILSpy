@@ -66,7 +66,7 @@ namespace ICSharpCode.ILSpy.Search
 		public SearchPane()
 		{
 			InitializeComponent();
-			searchModeComboBox.Items = new []{
+			searchModeComboBox.ItemsSource = new []{
 			    new { Image = Images.Library, Name = "Types and Members" },
 			    new { Image = Images.Class, Name = "Type" },
 			    new { Image = Images.Property, Name = "Member" },
@@ -77,7 +77,6 @@ namespace ICSharpCode.ILSpy.Search
 			    new { Image = Images.Literal, Name = "Constant" },
 			    new { Image = Images.Library, Name = "Metadata Token" }
             };
-
 
 			ContextMenuProvider.Add(listBox);
 			MainWindow.Instance.CurrentAssemblyListChanged += MainWindow_Instance_CurrentAssemblyListChanged;

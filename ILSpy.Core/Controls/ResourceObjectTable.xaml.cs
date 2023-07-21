@@ -42,7 +42,7 @@ namespace ICSharpCode.ILSpy.Controls
         public ResourceObjectTable(IEnumerable resources, ContentPresenter contentPresenter)
         {
             InitializeComponent();
-            resourceListView.Items = resources;
+            resourceListView.ItemsSource = resources;
         }
 
 		private void InitializeComponent()

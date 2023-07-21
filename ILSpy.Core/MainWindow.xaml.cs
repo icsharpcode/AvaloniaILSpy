@@ -82,7 +82,7 @@ namespace ICSharpCode.ILSpy
 		internal ItemsControl toolBar;
 		internal ComboBox languageComboBox;
 		internal ComboBox languageVersionComboBox;
-		internal IControl statusBar;
+		internal Control statusBar;
 		internal TextBlock StatusLabel;
 		internal Grid mainGrid;
 		internal ColumnDefinition leftColumn;
@@ -199,7 +199,7 @@ namespace ICSharpCode.ILSpy
 			}
 
 			var themesDropDown = this.Find<ComboBox>("Themes");
-			themesDropDown.Items = themeNames;
+			themesDropDown.ItemsSource = themeNames;
 			themesDropDown.SelectionChanged += (sender, e) =>
 			{
 				Styles[0] = themes[themesDropDown.SelectedIndex];
@@ -355,7 +355,8 @@ namespace ICSharpCode.ILSpy
 					}
 				}
 			}
-			toolBar.Items = toolbarItems;
+
+			toolBar.ItemsSource = toolbarItems;
 		}
 
 		Button MakeToolbarItem(Lazy<ICommand, IToolbarCommandMetadata> command)
@@ -370,6 +371,7 @@ namespace ICSharpCode.ILSpy
 					Source = Images.LoadImage(command.Value, command.Metadata.ToolbarIcon)
 				}
 			};
+
 			ToolTip.SetTip(toolbarButton, Properties.Resources.ResourceManager.GetString(command.Metadata.ToolTip));
 			return toolbarButton;
 		}
@@ -392,6 +394,7 @@ namespace ICSharpCode.ILSpy
 					} else if (topLevelMenuItems.Count > 0) {
 						topLevelMenuItems.Add(new Separator());
 					}
+
 					foreach (var entry in category) {
 						MenuItem menuItem = new MenuItem();
 						menuItem.Command = CommandWrapper.Unwrap(entry.Value);
@@ -409,9 +412,11 @@ namespace ICSharpCode.ILSpy
 						topLevelMenuItems.Add(menuItem);
 					}
 				}
-				topLevelMenuItem.Items = topLevelMenuItems;
+
+				topLevelMenuItem.ItemsSource = topLevelMenuItems;
 			}
-			mainMenu.Items = mainMenuItems;
+
+			mainMenu.ItemsSource = mainMenuItems;
 		}
 
 		void InitNativeMenu()
@@ -450,7 +455,8 @@ namespace ICSharpCode.ILSpy
 					}
 				}
 			}
-			mainMenu.Items = mainMenuItems;
+
+			mainMenu.ItemsSource = mainMenuItems;
 		}
 
 		internal static string GetResourceString(string key)

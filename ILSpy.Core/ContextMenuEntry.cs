@@ -183,8 +183,8 @@ namespace ICSharpCode.ILSpy
 			}
 
 			ContextMenu menu = (ContextMenu)sender;
-			if (ShowContextMenu(context, out IEnumerable<IControl> items))
-				menu.Items = items;
+			if (ShowContextMenu(context, out IEnumerable<Control> items))
+				menu.ItemsSource = items;
 			else
 				// hide the context menu.
 				e.Cancel = true;
@@ -194,8 +194,8 @@ namespace ICSharpCode.ILSpy
 		{
 			TextViewContext context = TextViewContext.Create(textView: textView);
 			ContextMenu menu = (ContextMenu)sender;
-			if (ShowContextMenu(context, out IEnumerable<IControl> items))
-				menu.Items = items;
+			if (ShowContextMenu(context, out IEnumerable<Control> items))
+				menu.ItemsSource = items;
 			else
 				// hide the context menu.
 				e.Cancel = true;
@@ -205,16 +205,16 @@ namespace ICSharpCode.ILSpy
 		{
 			TextViewContext context = TextViewContext.Create(listBox: listBox);
 			ContextMenu menu = (ContextMenu)sender;
-			if (ShowContextMenu(context, out IEnumerable<IControl> items))
-				menu.Items = items;
+			if (ShowContextMenu(context, out IEnumerable<Control> items))
+				menu.ItemsSource = items;
 			else
 				// hide the context menu.
 				e.Cancel = true;
 		}
 		
-		bool ShowContextMenu(TextViewContext context, out IEnumerable<IControl> menuItems)
+		bool ShowContextMenu(TextViewContext context, out IEnumerable<Control> menuItems)
 		{
-			List<IControl> items = new List<IControl>();
+			List<Control> items = new List<Control>();
 			foreach (var category in entries.OrderBy(c => c.Metadata.Order).GroupBy(c => c.Metadata.Category)) {
 				bool needSeparatorForCategory = items.Count > 0;
 				foreach (var entryPair in category) {

@@ -12,10 +12,15 @@ indent_style = space
 indent_size = 4
 trim_trailing_whitespace = true
 
-[*.{cs,vb}]
+[*.{cs,csx}]
 tab_width = 4
 indent_size = 4
 end_of_line = crlf
 indent_style = tab
+charset = utf-8-bom
 trim_trailing_whitespace = true
 insert_final_newline = true
+
+## Suppressions for ILSpy coding style
+# dotnet_diagnostic.IDE2003.severity = error
+dotnet_style_allow_statement_immediately_after_block_experimental = false:warning

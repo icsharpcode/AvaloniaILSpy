@@ -78,7 +78,7 @@ namespace ICSharpCode.ILSpy
 
 		private void listView_Loaded(object sender, EventArgs e)
 		{
-			listView.Items = manager.AssemblyLists;
+			listView.ItemsSource = manager.AssemblyLists;
 			CreateDefaultAssemblyLists();
 		}
 

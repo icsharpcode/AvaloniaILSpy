@@ -24,7 +24,7 @@ using AvaloniaEdit.Rendering;
 
 namespace ICSharpCode.ILSpy.TextView
 {
-	using Pair = KeyValuePair<int, Lazy<IControl>>;
+	using Pair = KeyValuePair<int, Lazy<Control>>;
 	
 	/// <summary>
 	/// Embeds UIElements in the text output.

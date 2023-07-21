@@ -36,7 +36,7 @@ namespace ICSharpCode.ILSpy
 		/// <summary>
 		/// Inserts an interactive UI element at the current position in the text output.
 		/// </summary>
-		void AddUIElement(Func<IControl> element);
+		void AddUIElement(Func<Control> element);
 
 		void BeginSpan(HighlightingColor highlightingColor);
 		void EndSpan();
