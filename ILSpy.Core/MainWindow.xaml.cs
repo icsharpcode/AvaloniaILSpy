@@ -1202,7 +1202,6 @@ namespace ICSharpCode.ILSpy
 			} finally {
 				refreshInProgress = false;
 			}
-
 		}
 		
 		void SearchCommandExecuted(object sender, ExecutedRoutedEventArgs e)
