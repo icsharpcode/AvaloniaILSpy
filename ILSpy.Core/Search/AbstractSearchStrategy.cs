@@ -227,7 +227,7 @@ namespace ICSharpCode.ILSpy.Search
             }
         }
 
-        IBitmap GetIcon(IEntity member)
+        Bitmap GetIcon(IEntity member)
         {
             switch (member)
             {

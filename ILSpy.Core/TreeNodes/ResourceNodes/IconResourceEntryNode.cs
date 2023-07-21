@@ -86,7 +86,7 @@ namespace ICSharpCode.ILSpy.TreeNodes
 	//		}
 	//	}
 
-	//	private static void AddIcon(AvaloniaEditTextOutput output, IBitmap frame)
+	//	private static void AddIcon(AvaloniaEditTextOutput output, Bitmap frame)
 	//	{
 	//		output.AddUIElement(() => new Image { Source = frame });
 	//	}
