@@ -29,14 +29,12 @@ namespace ICSharpCode.ILSpy
 			}
 		}
 
-
 		/// <summary>
 		/// This method is needed for IDE previewer infrastructure
 		/// </summary>
 		public static AppBuilder BuildAvaloniaApp()
 		{
 			var result = AppBuilder.Configure<App>();
-
 
 #if DEBUG
 			result.LogToTrace();
@@ -89,6 +87,7 @@ namespace ICSharpCode.ILSpy
 				{
 					propertyValues[i] = GetHierachy(propertyValues[i]);
 				}
+
 				sink.Log(level, area, source, messageTemplate, propertyValues);
 			}
 
@@ -102,8 +101,10 @@ namespace ICSharpCode.ILSpy
 					{
 						hierachy.Insert(0, visual.ToString());
 					}
+
 					return string.Join("/", hierachy);
 				}
+
 				return source;
 			}
 		}

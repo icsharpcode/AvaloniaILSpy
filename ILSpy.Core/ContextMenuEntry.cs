@@ -181,6 +181,7 @@ namespace ICSharpCode.ILSpy
 				e.Cancel = true; // don't show the menu
 				return;
 			}
+
 			ContextMenu menu = (ContextMenu)sender;
 			if (ShowContextMenu(context, out IEnumerable<IControl> items))
 				menu.Items = items;
@@ -223,6 +224,7 @@ namespace ICSharpCode.ILSpy
 							items.Add(new Separator());
 							needSeparatorForCategory = false;
 						}
+
 						MenuItem menuItem = new MenuItem();
 						menuItem.Header = MainWindow.GetResourceString(entryPair.Metadata.Header);
 						if (!string.IsNullOrEmpty(entryPair.Metadata.Icon)) {
@@ -232,6 +234,7 @@ namespace ICSharpCode.ILSpy
 								Source = Images.LoadImage(entry, entryPair.Metadata.Icon)
 							};
 						}
+
 						if (entryPair.Value.IsEnabled(context)) {
 							menuItem.Click += delegate { entry.Execute(context); };
 						} else
@@ -240,6 +243,7 @@ namespace ICSharpCode.ILSpy
 					}
 				}
 			}
+
 			menuItems = items;
 			return items.Count > 0;
 		}
