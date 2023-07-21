@@ -40,6 +40,7 @@ using Avalonia.Markup.Xaml;
 using Avalonia.Markup.Xaml.Styling;
 using Avalonia.Media;
 using Avalonia.Media.Imaging;
+using Avalonia.Platform;
 using Avalonia.Styling;
 using Avalonia.Threading;
 using AvaloniaEdit;
@@ -330,7 +331,7 @@ namespace ICSharpCode.ILSpy
 		void SetWindowBounds(Rect bounds)
 		{
 			ClientSize = bounds.Size;
-			Position = PixelPoint.FromPoint(bounds.Position, PlatformImpl.DesktopScaling);
+			Position = PixelPoint.FromPoint(bounds.Position, DesktopScaling);
 		}
 
 		#region Toolbar extensibility
@@ -483,7 +484,8 @@ namespace ICSharpCode.ILSpy
 					bool boundsOK = false;
 					foreach (var screen in instance.Screens.All)
 					{
-						var intersection = boundsRect.Intersect(screen.WorkingArea.ToRect(instance.PlatformImpl.DesktopScaling));
+						// Avalonia v0.10 var intersection = boundsRect.Intersect(screen.WorkingArea.ToRect(instance.PlatformImpl.DesktopScaling));
+						var intersection = boundsRect.Intersect(screen.WorkingArea.ToRect(instance.DesktopScaling));
 						if (intersection.Width > 10 && intersection.Height > 10)
 							boundsOK = true;
 					}
@@ -680,7 +682,14 @@ namespace ICSharpCode.ILSpy
 
 		void MainWindow_Loaded(object sender, EventArgs e)
 		{
-			Application.Current.FocusManager.Focus(this);
+			// Avalonia v11
+			//// this.FocusManager.GetFocusedElement().Focus();
+
+			var focusManager = TopLevel.GetTopLevel(this).FocusManager;
+			focusManager.GetFocusedElement().Focus();
+
+			// Avalonia v0.10
+			//// Application.Current.FocusManager.Focus(this);
 
 			InitToolbar();
 
@@ -1339,20 +1348,35 @@ namespace ICSharpCode.ILSpy
 
 		#endregion
 
-		protected override void HandleWindowStateChanged(WindowState state)
+		// Avalonia v11
+		protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
 		{
-			base.HandleWindowStateChanged(state);
-			// store window state in settings only if it's not minimized
-			if (this.WindowState != WindowState.Minimized)
-				sessionSettings.WindowState = this.WindowState;
+			base.OnPropertyChanged(change);
+
+			if (change.Property == WindowStateProperty)
+			{
+				// store window state in settings only if it's not minimized
+				if (this.WindowState != WindowState.Minimized)
+					sessionSettings.WindowState = this.WindowState;
+			}
 		}
 
-		protected override bool HandleClosing()
+		// Avalonia v0.10
+		////protected override void HandleWindowStateChanged(WindowState state)
+		////{
+		////	base.HandleWindowStateChanged(state);
+		////	// store window state in settings only if it's not minimized
+		////	if (this.WindowState != WindowState.Minimized)
+		////		sessionSettings.WindowState = this.WindowState;
+		////}
+
+		protected override void OnClosing(WindowClosingEventArgs e)
 		{
 			sessionSettings.ActiveAssemblyList = assemblyList.ListName;
 			sessionSettings.ActiveTreeViewPath = GetPathForNode(treeView.SelectedItem as SharpTreeNode);
 			sessionSettings.ActiveAutoLoadedAssembly = GetAutoLoadedAssemblyNode(treeView.SelectedItem as SharpTreeNode);
-			sessionSettings.WindowBounds = new Rect(Position.ToPoint(PlatformImpl.DesktopScaling), ClientSize);
+			//// Avalonia v0.10: sessionSettings.WindowBounds = new Rect(Position.ToPoint(PlatformImpl.DesktopScaling), ClientSize);
+			sessionSettings.WindowBounds = new Rect(Position.ToPoint(DesktopScaling), ClientSize);
 			sessionSettings.SplitterPosition = leftColumn.Width.Value / (leftColumn.Width.Value + rightColumn.Width.Value);
 			if (topPane.IsVisible == true)
 				sessionSettings.TopPaneSplitterPosition = topPaneRow.Height.Value / (topPaneRow.Height.Value + textViewRow.Height.Value);
@@ -1360,8 +1384,25 @@ namespace ICSharpCode.ILSpy
 				sessionSettings.BottomPaneSplitterPosition = bottomPaneRow.Height.Value / (bottomPaneRow.Height.Value + textViewRow.Height.Value);
 			sessionSettings.Save();
 
-			return base.HandleClosing();
+			base.OnClosing(e);
 		}
+
+		// Avalonia v0.10
+		////protected override bool HandleClosing()
+		////{
+		////	sessionSettings.ActiveAssemblyList = assemblyList.ListName;
+		////	sessionSettings.ActiveTreeViewPath = GetPathForNode(treeView.SelectedItem as SharpTreeNode);
+		////	sessionSettings.ActiveAutoLoadedAssembly = GetAutoLoadedAssemblyNode(treeView.SelectedItem as SharpTreeNode);
+		////	sessionSettings.WindowBounds = new Rect(Position.ToPoint(PlatformImpl.DesktopScaling), ClientSize);
+		////	sessionSettings.SplitterPosition = leftColumn.Width.Value / (leftColumn.Width.Value + rightColumn.Width.Value);
+		////	if (topPane.IsVisible == true)
+		////		sessionSettings.TopPaneSplitterPosition = topPaneRow.Height.Value / (topPaneRow.Height.Value + textViewRow.Height.Value);
+		////	if (bottomPane.IsVisible == true)
+		////		sessionSettings.BottomPaneSplitterPosition = bottomPaneRow.Height.Value / (bottomPaneRow.Height.Value + textViewRow.Height.Value);
+		////	sessionSettings.Save();
+		////
+		////	return base.HandleClosing();
+		////}
 
 		private string GetAutoLoadedAssemblyNode(SharpTreeNode node)
 		{
