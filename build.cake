@@ -32,7 +32,7 @@ var netCoreProject = new {
      .IsDependentOn("Clean")
      .Does(() =>
  {
-    DotNetCoreRestore(netCoreProject.Path);
+    DotNetRestore(netCoreProject.Path);
  });
 
  Task("Build-NetCore")
@@ -40,7 +40,7 @@ var netCoreProject = new {
      .Does(() =>
  {
     Information("Building: {0}", netCoreProject.Name);
-    DotNetCoreBuild(netCoreProject.Path, new DotNetCoreBuildSettings {
+    DotNetBuild(netCoreProject.Path, new DotNetBuildSettings {
         Configuration = configuration
     });
  });
@@ -54,7 +54,7 @@ var netCoreProject = new {
         var outputDir = artifactsDir.Combine(runtime);
 
         Information("Publishing: {0}, runtime: {1}", netCoreProject.Name, runtime);
-        DotNetCorePublish(netCoreProject.Path, new DotNetCorePublishSettings {
+        DotNetPublish(netCoreProject.Path, new DotNetPublishSettings {
             Framework = netCoreProject.Framework,
             Configuration = configuration,
             Runtime = runtime,
