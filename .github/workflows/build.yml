@@ -28,7 +28,7 @@ jobs:
     - name: Zip Linux arm64
       if: matrix.platform == 'ubuntu-latest'
       run: 7z a -tzip artifacts/ILSpy-linux-arm64-Release.zip artifacts/linux-arm64/*
-    - name: Zip MacOS x64
+    - name: Create DMG for MacOS x64
       if: matrix.platform == 'macos-latest'
       run: |
         brew install create-dmg
@@ -43,7 +43,7 @@ jobs:
           --app-drop-link 600 185 \
           "ILSpy-macos-x64-Release.dmg" \
           "artifacts/osx-x64/"
-    - name: Zip MacOS arm64
+    - name: Create DMG for arm64
       if: matrix.platform == 'macos-latest'
       run: |
         brew install create-dmg
