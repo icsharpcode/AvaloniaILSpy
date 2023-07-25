@@ -332,7 +332,8 @@ namespace ICSharpCode.ILSpy
                 return;
             string line1 = Properties.Resources.WarningSomeAssemblyReference;
             string line2 = Properties.Resources.PropertyManuallyMissingReferencesListLoadedAssemblies;
-            AddWarningMessage(module, output, line1, line2, Properties.Resources.ShowAssemblyLoad, Images.ViewCode, delegate {
+            AddWarningMessage(module, output, line1, line2, Properties.Resources.ShowAssemblyLoad, Images.ViewCode, delegate
+            {
                 ILSpyTreeNode assemblyNode = MainWindow.Instance.FindTreeNode(module);
                 assemblyNode.EnsureLazyChildren();
                 MainWindow.Instance.SelectNode(assemblyNode.Children.OfType<ReferenceFolderTreeNode>().Single());
@@ -485,17 +486,18 @@ namespace ICSharpCode.ILSpy
             readonly DecompilationOptions options;
 
             public ILSpyWholeProjectDecompiler(LoadedAssembly assembly, DecompilationOptions options)
-            : base (
-                options.DecompilerSettings, 
-                assembly.GetAssemblyResolver (),
+            : base(
+                options.DecompilerSettings,
+                assembly.GetAssemblyResolver(),
                 null,
-                assembly.GetDebugInfoOrNull ()
-            ) {
+                assembly.GetDebugInfoOrNull()
+            )
+            {
                 this.assembly = assembly;
                 this.options = options;
             }
 
-            protected override IEnumerable<(string itemType, string fileName, List<PartialTypeInfo> partialTypes)> WriteResourceToFile(string fileName, string resourceName, Stream entryStream)
+            protected override IEnumerable<ProjectItemInfo> WriteResourceToFile(string fileName, string resourceName, Stream entryStream)
             {
                 foreach (var handler in App.ExportProvider.GetExportedValues<IResourceFileHandler>())
                 {
@@ -503,7 +505,7 @@ namespace ICSharpCode.ILSpy
                     {
                         entryStream.Position = 0;
                         fileName = handler.WriteResourceToFile(assembly, fileName, entryStream, options);
-                        return new[] { (handler.EntryType, fileName, (List<PartialTypeInfo>)null) };
+                        return new[] { new ProjectItemInfo(handler.EntryType, fileName) };
                     }
                 }
                 return base.WriteResourceToFile(fileName, resourceName, entryStream);
