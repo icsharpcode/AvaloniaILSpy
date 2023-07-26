@@ -18,6 +18,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 
 namespace ICSharpCode.ILSpy
 {
@@ -52,6 +53,8 @@ namespace ICSharpCode.ILSpy
 						this.NoActivate = true;
 					else if (arg.StartsWith("/config:", StringComparison.OrdinalIgnoreCase))
 						this.ConfigFile = arg.Substring("/config:".Length);
+					else if (Path.DirectorySeparatorChar == '/' && File.Exists(arg))
+					 	this.AssembliesToLoad.Add(arg);
 				}
 				else {
 					this.AssembliesToLoad.Add(arg);
