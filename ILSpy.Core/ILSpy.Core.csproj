@@ -29,7 +29,7 @@
   <ItemGroup>
     <PackageReference Include="Avalonia" Version="$(AvaloniaVersion)" />
     <PackageReference Include="Avalonia.Controls.DataGrid" Version="$(AvaloniaVersion)" />
-    <PackageReference Include="ICSharpCode.Decompiler" Version="8.0.0.7106-preview2" />
+    <PackageReference Include="ICSharpCode.Decompiler" Version="8.0.0.7345" />
     <PackageReference Include="Microsoft.DiaSymReader" Version="1.4.0" />
     <PackageReference Include="Microsoft.DiaSymReader.Converter.Xml" Version="1.1.0-beta2-22164-02" />
     <PackageReference Include="Microsoft.VisualStudio.Composition" Version="17.1.20" />
