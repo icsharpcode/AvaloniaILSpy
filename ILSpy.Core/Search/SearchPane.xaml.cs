@@ -137,6 +137,14 @@ namespace ICSharpCode.ILSpy.Search
         public static readonly StyledProperty<string> SearchTermProperty =
             AvaloniaProperty.Register<SearchPane, string>("SearchTerm", string.Empty, notifying: OnSearchTermChanged);
 
+		////public static readonly StyledProperty<string> FooProperty =
+		////	AvaloniaProperty.Register<object, string>("Foo", "default",
+        ////            inherits: true,
+        ////            //// defaultBindingMode: BindingMode.OneWay,
+        ////            validate: null,
+        ////            coerce: null,
+        ////            notifying: OnSearchTermChanged);
+
         public string SearchTerm {
 			get { return GetValue(SearchTermProperty) ?? string.Empty; }
 			set { SetValue(SearchTermProperty, value ?? string.Empty); }
