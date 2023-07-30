@@ -46,6 +46,7 @@ using Avalonia.Threading;
 using AvaloniaEdit;
 using AvaloniaEdit.Highlighting;
 using AvaloniaEdit.Highlighting.Xshd;
+using AvaloniaEdit.Utils;
 using ICSharpCode.Decompiler;
 using ICSharpCode.Decompiler.Documentation;
 using ICSharpCode.Decompiler.Metadata;
@@ -341,7 +342,7 @@ namespace ICSharpCode.ILSpy
 			int navigationPos = 0;
 			int openPos = 1;
 			var toolbarCommands = App.ExportProvider.GetExports<ICommand, IToolbarCommandMetadata>("ToolbarCommand");
-			var toolbarItems = toolBar.Items as IList<object> ?? new List<object>();
+			var toolbarItems = toolBar.ItemsSource as IList<object> ?? new List<object>();
 			foreach (var commandGroup in toolbarCommands.OrderBy(c => c.Metadata.ToolbarOrder).GroupBy(c => Properties.Resources.ResourceManager.GetString(c.Metadata.ToolbarCategory))) {
 				if (commandGroup.Key == Properties.Resources.ResourceManager.GetString("Navigation")) {
 					foreach (var command in commandGroup) {
@@ -386,7 +387,7 @@ namespace ICSharpCode.ILSpy
 		void InitMainMenu()
 		{
 			var mainMenuCommands = App.ExportProvider.GetExports<ICommand, IMainMenuCommandMetadata>("MainMenuCommand");
-			var mainMenuItems = mainMenu.Items as IList<object> ?? new List<object>();
+			var mainMenuItems = mainMenu.ItemsSource as IList<object> ?? new List<object>();
 			foreach (var topLevelMenu in mainMenuCommands.OrderBy(c => c.Metadata.MenuOrder).GroupBy(c => GetResourceString(c.Metadata.Menu))) {
 				MenuItem topLevelMenuItem = mainMenu.Items.OfType<MenuItem>().FirstOrDefault(m => (GetResourceString(m.Header as string)) == topLevelMenu.Key);
 				var topLevelMenuItems = topLevelMenuItem?.Items as IList<object> ?? new List<object>();
@@ -1200,7 +1201,7 @@ namespace ICSharpCode.ILSpy
 			// Select only the last node to avoid multi selection
 			if(lastNode != null) {
 				treeView.SelectedItem = lastNode;
-            }
+			}
 		}
 		
 		void RefreshCommandExecuted(object sender, ExecutedRoutedEventArgs e)
@@ -1528,12 +1529,12 @@ namespace ICSharpCode.ILSpy
 		
 		public IEnumerable GetMainMenuItems()
 		{
-			return mainMenu.Items;
+			return mainMenu.ItemsSource;
 		}
 		
 		public IEnumerable GetToolBarItems()
 		{
-			return toolBar.Items;
+			return toolBar.ItemsSource;
 		}
 	}
 }

@@ -44,7 +44,7 @@ namespace ICSharpCode.ILSpy.Controls
         public ResourceStringTable(IEnumerable strings, ContentPresenter contentPresenter)
 		{
             InitializeComponent();
-            resourceListView.Items = strings;
+            resourceListView.ItemsSource = strings;
         }
 
 		private void InitializeComponent()
