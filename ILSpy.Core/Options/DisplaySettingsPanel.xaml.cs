@@ -127,8 +127,9 @@ namespace ICSharpCode.ILSpy.Options
             s.IndentationSize = (int?)e.Attribute("IndentationSize") ?? 4;
             s.IndentationTabSize = (int?)e.Attribute("IndentationTabSize") ?? 4;
             s.HighlightMatchingBraces = (bool?)e.Attribute("HighlightMatchingBraces") ?? true;
+			s.HighlightCurrentLine = (bool?)e.Attribute("HighlightCurrentLine") ?? true;
 
-            return s;
+			return s;
 		}
 		
 		public void Save(XElement root)
@@ -151,8 +152,9 @@ namespace ICSharpCode.ILSpy.Options
             section.SetAttributeValue("IndentationSize", s.IndentationSize);
             section.SetAttributeValue("IndentationTabSize", s.IndentationTabSize);
             section.SetAttributeValue("HighlightMatchingBraces", s.HighlightMatchingBraces);
+			section.SetAttributeValue("HighlightCurrentLine", s.HighlightCurrentLine);
 
-            XElement existingElement = root.Element("DisplaySettings");
+			XElement existingElement = root.Element("DisplaySettings");
 			if (existingElement != null)
 				existingElement.ReplaceWith(section);
 			else

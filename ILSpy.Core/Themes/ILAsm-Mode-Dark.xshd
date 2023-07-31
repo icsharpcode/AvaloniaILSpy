@@ -1,10 +1,10 @@
 ﻿<SyntaxDefinition name="ILAsm" extensions=".il" xmlns="http://icsharpcode.net/sharpdevelop/syntaxdefinition/2008">
-	<Color name="Comment" foreground="Green" exampleText="// comment" />
-	<Color name="String" foreground="Magenta" exampleText="&quot;Hello, World!&quot;" />
-	<Color name="Instructions" foreground="Blue" exampleText="nop;" />
-	<Color name="Keywords" foreground="Blue" fontWeight="bold" exampleText="true" />
-	<Color name="Directives" foreground="Green" fontWeight="bold" exampleText=".class" />
-	<Color name="Security" foreground="Red" exampleText="request" />
+	<Color name="Comment" foreground="#FF57A64A" exampleText="// comment" />
+	<Color name="String" foreground="#FFD69D85" exampleText="&quot;Hello, World!&quot;" />
+	<Color name="Instructions" foreground="#FFD69D85" exampleText="nop;" />
+	<Color name="Keywords" foreground="#FFD69D85" fontWeight="bold" exampleText="true" />
+	<Color name="Directives" foreground="#FF57A64A" fontWeight="bold" exampleText=".class" />
+	<Color name="Security" foreground="#FF559CD6" exampleText="request" />
 
 	<RuleSet ignoreCase="false">
 		<Keywords color="Instructions">

@@ -729,4 +729,7 @@
   <data name="SearchMSDN" xml:space="preserve">
     <value>搜索MSDN...</value>
   </data>
+  <data name="HighlightCurrentLine" xml:space="preserve">
+    <value>高亮当前行</value>
+  </data>
 </root>

@@ -118,10 +118,15 @@ namespace ICSharpCode.ILSpy.TextView
             // TemplateApplied += (s,e) => 
 			
 			ShowLineMargin();
+			SetHighlightCurrentLine();
 			
 			// add marker service & margin
 			textEditor.TextArea.TextView.BackgroundRenderers.Add(textMarkerService);
 			textEditor.TextArea.TextView.LineTransformers.Add(textMarkerService);
+
+			// Selection highlight. TODO: Pull value from resource key, HighlightColorKey
+			textEditor.TextArea.SelectionBrush = new SolidColorBrush(0x333399FF);
+			textEditor.TextArea.SelectionBorder = new Pen(color: 0xFF3399ff, thickness: 1);
 		}
 
         private void InitializeComponent()
@@ -150,8 +155,13 @@ namespace ICSharpCode.ILSpy.TextView
 
 		void CurrentDisplaySettings_PropertyChanged(object sender, PropertyChangedEventArgs e)
 		{
-			if (e.PropertyName == "ShowLineNumbers") {
+			if (e.PropertyName == nameof(DisplaySettings.ShowLineNumbers))
+			{
 				ShowLineMargin();
+			}
+			else if (e.PropertyName == nameof(DisplaySettings.HighlightCurrentLine))
+			{
+				SetHighlightCurrentLine();
 			}
 		}
 		
@@ -163,11 +173,16 @@ namespace ICSharpCode.ILSpy.TextView
 				}
 			}
 		}
-		
+
+		void SetHighlightCurrentLine()
+		{
+			textEditor.Options.HighlightCurrentLine = DisplaySettingsPanel.CurrentDisplaySettings.HighlightCurrentLine;
+		}
+
 		#endregion
-		
+
 		#region Tooltip support
-		
+
 		void TextViewMouseHoverStopped(object sender, PointerEventArgs e)
         {
             ToolTip.SetIsOpen(this, false);
@@ -605,7 +620,9 @@ namespace ICSharpCode.ILSpy.TextView
 					foreach (var r in references) {
 						if (reference.Equals(r.Reference)) {
 							var mark = textMarkerService.Create(r.StartOffset, r.Length);
-							mark.BackgroundColor = r.IsDefinition ? Colors.LightSeaGreen : Colors.GreenYellow;
+							// TODO: Get color from FindResourceKey(...) and NOT hard-coded
+							// mark.BackgroundColor = (Color)(r.IsDefinition ? FindResource(ResourceKeys.TextMarkerDefinitionBackgroundColor) : FindResource(ResourceKeys.TextMarkerBackgroundColor));
+							mark.BackgroundColor = r.IsDefinition ? Color.FromUInt32(0x7720B2AA) : Color.FromUInt32(0x77C71585); // LightSeaGreen : MediumVioletRed;
 							localReferenceMarks.Add(mark);
 						}
 					}
@@ -744,7 +761,7 @@ namespace ICSharpCode.ILSpy.TextView
 								DecompileNodes(context, new PlainTextOutput(w));
 							} catch (OperationCanceledException) {
 								w.WriteLine();
-								w.WriteLine("Decompiled was cancelled.");
+								w.WriteLine("Decompiled was canceled.");
 								throw;
 							}
 						}

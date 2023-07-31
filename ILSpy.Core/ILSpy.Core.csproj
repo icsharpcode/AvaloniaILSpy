@@ -59,7 +59,7 @@
   <ItemGroup>
     <EmbeddedResource Include="README.txt" />
     <EmbeddedResource Include="..\doc\*.txt" />
-    <EmbeddedResource Include="Themes\ILAsm-Mode.xshd;Themes\CSharp-Mode.xshd" />
+    <EmbeddedResource Include="Themes\ILAsm-Mode.xshd;Themes\CSharp-Mode.xshd;Themes\ILAsm-Mode-Dark.xshd" />
     <EmbeddedResource Include="**\*.resx;Assets\*;**\*.paml" Exclude="bin\**;obj\**;**\*.xproj;packages\**;@(EmbeddedResource)" />
   </ItemGroup>
 

@@ -270,7 +270,22 @@ namespace ICSharpCode.ILSpy.Options
             }
         }
 
-        public void CopyValues(DisplaySettings s)
+		bool highlightCurrentLine = false;
+
+		public bool HighlightCurrentLine
+		{
+			get { return highlightCurrentLine; }
+			set
+			{
+				if (highlightCurrentLine != value)
+				{
+					highlightCurrentLine = value;
+					OnPropertyChanged();
+				}
+			}
+		}
+
+		public void CopyValues(DisplaySettings s)
         {
             this.SelectedFont = s.selectedFont;
             this.SelectedFontSize = s.selectedFontSize;
@@ -287,6 +302,7 @@ namespace ICSharpCode.ILSpy.Options
             this.IndentationTabSize = s.indentationTabSize;
             this.IndentationSize = s.indentationSize;
             this.HighlightMatchingBraces = s.highlightMatchingBraces;
-        }
+			this.HighlightCurrentLine = s.highlightCurrentLine;
+		}
     }
 }

@@ -1169,11 +1169,20 @@ namespace ICSharpCode.ILSpy.Properties {
                 return ResourceManager.GetString("GeneratePortable", resourceCulture);
             }
         }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Highlight matching braces.
-        /// </summary>
-        public static string HighlightMatchingBraces {
+
+		/// <summary>
+		///   Looks up a localized string similar to Highlight current line.
+		/// </summary>
+		public static string HighlightCurrentLine {
+			get {
+				return ResourceManager.GetString("HighlightCurrentLine", resourceCulture);
+			}
+		}
+
+		/// <summary>
+		///   Looks up a localized string similar to Highlight matching braces.
+		/// </summary>
+		public static string HighlightMatchingBraces {
             get {
                 return ResourceManager.GetString("HighlightMatchingBraces", resourceCulture);
             }
