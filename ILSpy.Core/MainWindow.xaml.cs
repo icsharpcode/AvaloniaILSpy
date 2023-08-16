@@ -683,14 +683,8 @@ namespace ICSharpCode.ILSpy
 
 		void MainWindow_Loaded(object sender, EventArgs e)
 		{
-			// Avalonia v11
-			//// this.FocusManager.GetFocusedElement().Focus();
-
 			var focusManager = TopLevel.GetTopLevel(this).FocusManager;
 			focusManager.GetFocusedElement().Focus();
-
-			// Avalonia v0.10
-			//// Application.Current.FocusManager.Focus(this);
 
 			InitToolbar();
 

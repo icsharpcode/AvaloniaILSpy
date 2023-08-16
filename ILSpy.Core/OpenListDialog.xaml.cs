@@ -72,14 +72,7 @@ namespace ICSharpCode.ILSpy
 			createButton.Click += CreateButton_Click;
 			resetButton.Click += ResetButton_Click;
 
-			// Avalonia v0.10
-			//// TemplateApplied += (sender, e) => Application.Current.FocusManager.Focus(listView);
-
-			TemplateApplied += (sender, e) => {
-				// Avalonia v11
-				var focusManager = TopLevel.GetTopLevel(listView).FocusManager;
-				focusManager.GetFocusedElement().Focus();
-			};
+			TemplateApplied += (sender, e) => listView.Focus();
 
 			listView.TemplateApplied += listView_Loaded;
 		}
