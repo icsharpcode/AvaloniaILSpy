@@ -140,7 +140,9 @@ csharp_space_between_square_brackets = false
 ## Suppressions for ILSpy coding style
 
 # IDE2002:Consecutive braces must not have blank line between them
-dotnet_diagnostic.IDE2002.severity = warning
+dotnet_diagnostic.IDE2002.severity = none
 
+# IDE2003: Blank line required between block and subsequent statement
 # dotnet_diagnostic.IDE2003.severity = error
-dotnet_style_allow_statement_immediately_after_block_experimental = false:warning
+dotnet_style_allow_statement_immediately_after_block_experimental = false:none
+dotnet_diagnostic.IDE2003.severity = none
