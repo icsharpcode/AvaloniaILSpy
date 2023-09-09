@@ -36,7 +36,7 @@ namespace ICSharpCode.ILSpy
 		/// <summary>
 		/// Inserts an interactive UI element at the current position in the text output.
 		/// </summary>
-		void AddUIElement(Func<IControl> element);
+		void AddUIElement(Func<Control> element);
 
 		void BeginSpan(HighlightingColor highlightingColor);
 		void EndSpan();
@@ -47,7 +47,7 @@ namespace ICSharpCode.ILSpy
 		/// <summary>
 		/// Creates a button.
 		/// </summary>
-		public static void AddButton(this ISmartTextOutput output, IBitmap icon, string text, EventHandler<RoutedEventArgs> click)
+		public static void AddButton(this ISmartTextOutput output, Bitmap icon, string text, EventHandler<RoutedEventArgs> click)
 		{
 			output.AddUIElement(
 				delegate {
@@ -67,6 +67,7 @@ namespace ICSharpCode.ILSpy
 					} else {
 						button.Content = text;
 					}
+
 					button.Click += click;
 					return button;
 				});

@@ -350,7 +350,7 @@ namespace ICSharpCode.ILSpy
         }
 
         void AddWarningMessage(PEFile module, ITextOutput output, string line1, string line2 = null,
-            string buttonText = null, IBitmap buttonImage = null, EventHandler<Avalonia.Interactivity.RoutedEventArgs> buttonClickHandler = null)
+            string buttonText = null, Bitmap buttonImage = null, EventHandler<Avalonia.Interactivity.RoutedEventArgs> buttonClickHandler = null)
         {
             if (output is ISmartTextOutput fancyOutput)
             {

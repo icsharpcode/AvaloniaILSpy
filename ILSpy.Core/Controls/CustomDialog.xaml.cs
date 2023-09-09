@@ -57,7 +57,7 @@ namespace ICSharpCode.ILSpy.Controls
 			this.WindowStartupLocation = WindowStartupLocation.CenterOwner;
 			this.Width = buttonLabels.Length * (100+ 10);
 
-			buttons.Items = buttonLabels;
+			buttons.ItemsSource = buttonLabels;
 
 			
 			label.Text = message;

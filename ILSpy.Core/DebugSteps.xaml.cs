@@ -68,7 +68,7 @@ namespace ICSharpCode.ILSpy
 		private void SelectionChanged(object sender, SelectionChangedEventArgs e)
 		{
 			Dispatcher.UIThread.InvokeAsync(() => {
-				tree.Items = null;
+				tree.ItemsSource = null;
 				lastSelectedStep = int.MaxValue;
 			});
 		}
@@ -94,7 +94,7 @@ namespace ICSharpCode.ILSpy
 #if DEBUG
 			if (language == null) return;
 			Dispatcher.UIThread.InvokeAsync(() => {
-				tree.Items = language.Stepper.Steps;
+				tree.ItemsSource = language.Stepper.Steps;
 				lastSelectedStep = int.MaxValue;
 			});
 #endif

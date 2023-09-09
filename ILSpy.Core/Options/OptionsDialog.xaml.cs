@@ -36,7 +36,7 @@ namespace ICSharpCode.ILSpy.Options
 	public partial class OptionsDialog : DialogWindow
 	{
 		
-		readonly Lazy<IControl, IOptionsMetadata>[] optionPages;
+		readonly Lazy<Control, IOptionsMetadata>[] optionPages;
 
 		internal TabControl tabControl;
 
@@ -50,7 +50,7 @@ namespace ICSharpCode.ILSpy.Options
 			// ExportProvider instance.
 			// FIXME: Ideally, the export provider should be disposed when it's no longer needed.
 			var ep = App.ExportProviderFactory.CreateExportProvider();
-			this.optionPages = ep.GetExports<IControl, IOptionsMetadata>("OptionPages").ToArray();
+			this.optionPages = ep.GetExports<Control, IOptionsMetadata>("OptionPages").ToArray();
 			ILSpySettings settings = ILSpySettings.Load();
 			var tabItems = new List<TabItem>();
 			foreach (var optionPage in optionPages.OrderBy(p => p.Metadata.Order)) {
@@ -63,7 +63,8 @@ namespace ICSharpCode.ILSpy.Options
 				if (page != null)
 					page.Load(settings);
 			}
-			tabControl.Items = tabItems;
+
+			tabControl.ItemsSource = tabItems;
 		}
 
 		private void InitializeComponent()
@@ -110,7 +111,7 @@ namespace ICSharpCode.ILSpy.Options
 	[AttributeUsage(AttributeTargets.Class, AllowMultiple=false)]
 	public class ExportOptionPageAttribute : ExportAttribute
 	{
-		public ExportOptionPageAttribute() : base("OptionPages", typeof(IControl))
+		public ExportOptionPageAttribute() : base("OptionPages", typeof(Control))
 		{ }
 		
 		public string Title { get; set; }

@@ -98,7 +98,7 @@ namespace ICSharpCode.ILSpy.TextView
         internal bool EnableHyperlinks { get; set; }
 
         /// <summary>Embedded UIElements, see <see cref="UIElementGenerator"/>.</summary>
-        internal readonly List<KeyValuePair<int, Lazy<IControl>>> UIElements = new List<KeyValuePair<int, Lazy<IControl>>>();
+        internal readonly List<KeyValuePair<int, Lazy<Control>>> UIElements = new List<KeyValuePair<int, Lazy<Control>>>();
 
 		public RichTextModel HighlightingModel { get; } = new RichTextModel();
 		
@@ -298,12 +298,12 @@ namespace ICSharpCode.ILSpy.TextView
 			this.Foldings.Add(f);
 		}
 		
-		public void AddUIElement(Func<IControl> element)
+		public void AddUIElement(Func<Control> element)
 		{
 			if (element != null) {
 				if (this.UIElements.Count > 0 && this.UIElements.Last().Key == this.TextLength)
 					throw new InvalidOperationException("Only one UIElement is allowed for each position in the document");
-				this.UIElements.Add(new KeyValuePair<int, Lazy<IControl>>(this.TextLength, new Lazy<IControl>(element)));
+				this.UIElements.Add(new KeyValuePair<int, Lazy<Control>>(this.TextLength, new Lazy<Control>(element)));
 			}
 		}
 

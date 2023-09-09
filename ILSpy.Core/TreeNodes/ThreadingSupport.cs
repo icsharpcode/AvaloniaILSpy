@@ -22,10 +22,8 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Windows;
 using Avalonia.Threading;
 using ICSharpCode.Decompiler;
-using ICSharpCode.ILSpy.Analyzers;
 using ICSharpCode.ILSpy.Properties;
 using ICSharpCode.TreeView;
 
@@ -79,8 +77,10 @@ namespace ICSharpCode.ILSpy.TreeNodes
 					}
 					return result;
 				}, ct);
+
 			loadChildrenTask = thisTask;
 			thisTask.Start();
+
 			thisTask.ContinueWith(
 				delegate (Task continuation) {
 					Dispatcher.UIThread.InvokeAsync(new Action(
@@ -97,7 +97,7 @@ namespace ICSharpCode.ILSpy.TreeNodes
 								}
 							}
 						}), DispatcherPriority.Normal);
-        });
+				});
 			
 			// Give the task a bit time to complete before we return to WPF - this keeps "Loading..."
 			// from showing up for very short waits.
@@ -180,7 +180,11 @@ namespace ICSharpCode.ILSpy.TreeNodes
 						builder.AppendLine(node.Text.ToString());
 					}
 				}
-				App.Current.Clipboard.SetTextAsync(builder.ToString());
+
+				//// App.Current.Clipboard.SetTextAsync(builder.ToString());
+				var clipboard = App.Current.GetMainWindow()?.Clipboard;
+				clipboard.SetTextAsync(builder.ToString());
+
 			}
 		}
 	}

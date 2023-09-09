@@ -4,6 +4,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using Avalonia;
@@ -110,7 +111,7 @@ namespace ICSharpCode.TreeView
 
 		Type IStyleable.StyleKey => typeof(ListBox);
 		
-		protected override void OnPropertyChanged<T>(AvaloniaPropertyChangedEventArgs<T> e)
+		protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs e)
 		{
 			base.OnPropertyChanged(e);
 			if (e.Property == RootProperty ||
@@ -155,7 +156,7 @@ namespace ICSharpCode.TreeView
 				}
 				flattener = new TreeFlattener(Root, ShowRoot);
 				flattener.CollectionChanged += flattener_CollectionChanged;
-				this.Items = flattener;
+				this.ItemsSource = flattener;
 			}
 		}
 
@@ -191,46 +192,89 @@ namespace ICSharpCode.TreeView
 			}
 		}
 
-		protected override IItemContainerGenerator CreateItemContainerGenerator()
-		{
-			return new ItemContainerGenerator<SharpTreeViewItem>(
-					this,
-					SharpTreeViewItem.ContentProperty,
-					SharpTreeViewItem.ContentTemplateProperty);
-		}
+		// Avalonia v11 - Removing, not being referenced.. Should we use, CreateContainerForItemOverride()?
+		////[Obsolete("Marked for removal in Avalonia v12")]
+		////protected override IItemContainerGenerator CreateItemContainerGenerator()
+		////{
+		////	return new ItemContainerGenerator<SharpTreeViewItem>(
+		////			this,
+		////			SharpTreeViewItem.ContentProperty,
+		////			SharpTreeViewItem.ContentTemplateProperty);
+		////}
 
-		protected override void OnContainersMaterialized(ItemContainerEventArgs e)
+		// NEW: Avalonia 11 (testing replacement for OnContainersMaterialized)
+		protected override void PrepareContainerForItemOverride(Control container, object item, int index)
 		{
-			base.OnContainersMaterialized(e);
-			foreach (var item in e.Containers) {
-				var container = item.ContainerControl as SharpTreeViewItem;
-				container.ParentTreeView = this;
-				// Make sure that the line renderer takes into account the new bound data
-				if (container.NodeView != null) {
-					container.NodeView.LinesRenderer.InvalidateVisual();
-				}
-			}
-		}
+			base.PrepareContainerForItemOverride(container, item, index);
 
-		protected override void OnContainersRecycled(ItemContainerEventArgs e)
-		{
-			base.OnContainersRecycled(e);
-
-			foreach (var item in e.Containers)
+			// TODO: See PR 9677
+			var tvi = container as SharpTreeViewItem;
+			tvi.ParentTreeView = this;
+			if (tvi.NodeView != null)
 			{
-				var container = item.ContainerControl as SharpTreeViewItem;
-				container.ParentTreeView = this;
-				// Make sure that the line renderer takes into account the new bound data
-				if (container.NodeView != null)
-				{
-					container.NodeView.LinesRenderer.InvalidateVisual();
-				}
+				tvi.NodeView.LinesRenderer.InvalidateVisual();
 			}
 		}
 
-		internal IControl ContainerFromItem(object item)
+		// Avalonia v0.10 (PR 9677 - https://github.com/AvaloniaUI/Avalonia/pull/9677)
+		////protected override void OnContainersMaterialized(ItemContainerEventArgs e)
+		////{
+		////	base.OnContainersMaterialized(e);
+		////	foreach (var item in e.Containers) {
+		////		var container = item.ContainerControl as SharpTreeViewItem;
+		////		container.ParentTreeView = this;
+		////		// Make sure that the line renderer takes into account the new bound data
+		////		if (container.NodeView != null) {
+		////			container.NodeView.LinesRenderer.InvalidateVisual();
+		////		}
+		////	}
+		////}
+
+		// NEW: Avalonia 11 (testing replacement for OnContainersRecycled)
+		protected override void ClearContainerForItemOverride(Control element)
 		{
-			int index = IndexOf(Items, item);
+			base.ClearContainerForItemOverride(element);
+			var tvi = element as SharpTreeViewItem;
+			tvi.ParentTreeView = this;
+			if (tvi.NodeView != null)
+			{
+				tvi.NodeView.LinesRenderer.InvalidateVisual();
+			}
+		}
+
+		// NEW: Avalonia 11 (testing replacement for OnContainersRecycled)
+		protected override void ContainerIndexChangedOverride(Control container, int oldIndex, int newIndex)
+		{
+			base.ContainerIndexChangedOverride(container, oldIndex, newIndex);
+			////var tvi = container as SharpTreeViewItem;
+			////tvi.ParentTreeView = this;
+			////if (tvi.NodeView != null)
+			////{
+			////	tvi.NodeView.LinesRenderer.InvalidateVisual();
+			////}
+		}
+
+		// OLD: Avalonia v0.10
+		////protected override void OnContainersRecycled(ItemContainerEventArgs e)
+		////{
+		////	base.OnContainersRecycled(e);
+		////
+		////	foreach (var item in e.Containers)
+		////	{
+		////		var container = item.ContainerControl as SharpTreeViewItem;
+		////		container.ParentTreeView = this;
+		////		// Make sure that the line renderer takes into account the new bound data
+		////		if (container.NodeView != null)
+		////		{
+		////			container.NodeView.LinesRenderer.InvalidateVisual();
+		////		}
+		////	}
+		////}
+
+		internal Control ContainerFromItem(object item)
+		{
+			int index = ItemsView.IndexOf(item); // Avalonia v11
+			//// int index = IndexOf(Items, item); // Avalonia v0.10
 			if (index != -1) {
 				return ItemContainerGenerator.ContainerFromIndex(index);
 			}
@@ -274,7 +318,7 @@ namespace ICSharpCode.TreeView
 			SharpTreeViewItem container = e.Source as SharpTreeViewItem;
 			switch (e.Key) {
 				case Key.Left:
-					if (container != null && ItemContainerGenerator.IndexFromContainer(e.Source as IControl) != -1) {
+					if (container != null && ItemContainerGenerator.IndexFromContainer(e.Source as Control) != -1) {
 						if (container.Node.IsExpanded) {
 							container.Node.IsExpanded = false;
 						} else if (container.Node.Parent != null) {
@@ -285,7 +329,7 @@ namespace ICSharpCode.TreeView
 					break;
 				case Key.Right:
 					// TODO: focus on first child
-					if (container != null && ItemContainerGenerator.IndexFromContainer(e.Source as IControl) != -1) {
+					if (container != null && ItemContainerGenerator.IndexFromContainer(e.Source as Control) != -1) {
 						if (!container.Node.IsExpanded && container.Node.ShowExpander) {
 							container.Node.IsExpanded = true;
 						} else if (container.Node.Children.Count > 0) {
@@ -303,19 +347,19 @@ namespace ICSharpCode.TreeView
 					}
 					break;
 				case Key.Add:
-					if (container != null && ItemContainerGenerator.IndexFromContainer(e.Source as IControl) != -1) {
+					if (container != null && ItemContainerGenerator.IndexFromContainer(e.Source as Control) != -1) {
 						container.Node.IsExpanded = true;
 						e.Handled = true;
 					}
 					break;
 				case Key.Subtract:
-					if (container != null && ItemContainerGenerator.IndexFromContainer(e.Source as IControl) != -1) {
+					if (container != null && ItemContainerGenerator.IndexFromContainer(e.Source as Control) != -1) {
 						container.Node.IsExpanded = false;
 						e.Handled = true;
 					}
 					break;
 				case Key.Multiply:
-					if (container != null && ItemContainerGenerator.IndexFromContainer(e.Source as IControl) != -1) {
+					if (container != null && ItemContainerGenerator.IndexFromContainer(e.Source as Control) != -1) {
 						container.Node.IsExpanded = true;
 						ExpandRecursively(container.Node);
 						e.Handled = true;
@@ -348,7 +392,7 @@ namespace ICSharpCode.TreeView
 
 		protected override void OnTextInput(TextInputEventArgs e)
 		{
-			if (!string.IsNullOrEmpty(e.Text) && IsTextSearchEnabled && (e.Source == this || ItemContainerGenerator.IndexFromContainer(e.Source as IControl) != -1)) {
+			if (!string.IsNullOrEmpty(e.Text) && IsTextSearchEnabled && (e.Source == this || ItemContainerGenerator.IndexFromContainer(e.Source as Control) != -1)) {
 				var instance = SharpTreeViewTextSearch.GetInstance(this);
 				if (instance != null) {
 					instance.Search(e.Text);
