@@ -9,7 +9,7 @@ using System.Diagnostics;
 
 namespace ICSharpCode.TreeView
 {
-	sealed class TreeFlattener : IList, INotifyCollectionChanged
+	sealed class TreeFlattener : IList, IList<object>, INotifyCollectionChanged
 	{
 		/// <summary>
 		/// The root node of the flat list tree.
@@ -88,7 +88,7 @@ namespace ICSharpCode.TreeView
 			}
 		}
 		
-		bool IList.IsReadOnly {
+		public bool IsReadOnly {
 			get { return true; }
 		}
 		
@@ -106,12 +106,12 @@ namespace ICSharpCode.TreeView
 			}
 		}
 		
-		void IList.Insert(int index, object item)
+		public void Insert(int index, object item)
 		{
 			throw new NotSupportedException();
 		}
 		
-		void IList.RemoveAt(int index)
+		public void RemoveAt(int index)
 		{
 			throw new NotSupportedException();
 		}
@@ -121,7 +121,12 @@ namespace ICSharpCode.TreeView
 			throw new NotSupportedException();
 		}
 		
-		void IList.Clear()
+		public void Add(object item)
+		{
+			throw new NotSupportedException();
+		}
+		
+		public void Clear()
 		{
 			throw new NotSupportedException();
 		}
@@ -137,12 +142,30 @@ namespace ICSharpCode.TreeView
 				array.SetValue(item, arrayIndex++);
 		}
 		
+		public void CopyTo(object[] array, int arrayIndex)
+		{
+			foreach (object item in this)
+				array.SetValue(item, arrayIndex++);
+		}
+		
 		void IList.Remove(object item)
 		{
 			throw new NotSupportedException();
 		}
 		
+		public bool Remove(object item)
+		{
+			throw new NotSupportedException();
+		}
+		
 		public IEnumerator GetEnumerator()
+		{
+			for (int i = 0; i < this.Count; i++) {
+				yield return this[i];
+			}
+		}
+		
+		IEnumerator<object> IEnumerable<object>.GetEnumerator()
 		{
 			for (int i = 0; i < this.Count; i++) {
 				yield return this[i];
