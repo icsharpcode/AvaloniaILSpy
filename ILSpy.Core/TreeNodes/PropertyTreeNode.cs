@@ -59,7 +59,7 @@ namespace ICSharpCode.ILSpy.TreeNodes
 
 		public override object Icon => GetIcon(PropertyDefinition);
 
-		public static IBitmap GetIcon(IProperty property)
+		public static Bitmap GetIcon(IProperty property)
 		{
 			return Images.GetIcon(property.IsIndexer ? MemberIcon.Indexer : MemberIcon.Property,
 				MethodTreeNode.GetOverlayIcon(property.Accessibility), property.IsStatic);

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Windows;
-using ICSharpCode.Decompiler;
-using ICSharpCode.Decompiler.Metadata;
-using ICSharpCode.Decompiler.TypeSystem;
+﻿using Avalonia.Controls;
 using ICSharpCode.ILSpy.Properties;
 
 namespace ICSharpCode.ILSpy.TreeNodes
@@ -20,8 +16,12 @@ namespace ICSharpCode.ILSpy.TreeNodes
 		public void Execute(TextViewContext context)
 		{
 			var member = GetMemberNodeFromContext(context)?.Member;
-			if (member == null) return;
-			App.Current.Clipboard.SetTextAsync(member.ReflectionName);
+			if (member == null)
+				return;
+
+			//// App.Current.Clipboard.SetTextAsync(member.ReflectionName);
+			var clipboard = App.Current.GetMainWindow()?.Clipboard;
+			clipboard.SetTextAsync(member.ReflectionName);
 		}
 
 		private IMemberTreeNode GetMemberNodeFromContext(TextViewContext context)

@@ -62,7 +62,7 @@ namespace ICSharpCode.TreeView
 
 		public bool Search(string nextChar)
 		{
-			IList items = (IList)treeView.Items;
+			IList items = (IList)treeView.ItemsSource;
 			int startIndex = isActive ? lastMatchIndex : Math.Max(0, treeView.SelectedIndex);
 			bool lookBackwards = inputStack.Count > 0 && string.Compare(inputStack.Peek(), nextChar, StringComparison.OrdinalIgnoreCase) == 0;
 			int nextMatchIndex = IndexOfMatch(matchPrefix + nextChar, startIndex, lookBackwards, out bool wasNewCharUsed);
@@ -86,7 +86,7 @@ namespace ICSharpCode.TreeView
 
 		int IndexOfMatch(string needle, int startIndex, bool tryBackward, out bool charWasUsed)
 		{
-			IList items = (IList)treeView.Items;
+			IList items = (IList)treeView.ItemsSource;
 			charWasUsed = false;
 			if (items.Count == 0 || string.IsNullOrEmpty(needle))
 				return -1;

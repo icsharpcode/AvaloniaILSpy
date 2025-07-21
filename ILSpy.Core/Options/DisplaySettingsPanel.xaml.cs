@@ -53,7 +53,7 @@ namespace ICSharpCode.ILSpy.Options
 					Dispatcher.UIThread.InvokeAsync(
 						(Action)(
 							async () => {
-								fontSelector.Items = task.Result;
+								fontSelector.ItemsSource = task.Result;
 								if (continuation.Exception != null) {
 									foreach (var ex in continuation.Exception.InnerExceptions) {
 										await MessageBox.Show(ex.ToString());
@@ -169,8 +169,7 @@ namespace ICSharpCode.ILSpy.Options
         }
     }
 
-
-    public class FontSizeConverter : IValueConverter
+	public class FontSizeConverter : IValueConverter
 	{
 		public static readonly FontSizeConverter Instance = new FontSizeConverter();
 

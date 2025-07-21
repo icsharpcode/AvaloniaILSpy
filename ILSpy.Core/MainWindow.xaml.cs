@@ -40,11 +40,13 @@ using Avalonia.Markup.Xaml;
 using Avalonia.Markup.Xaml.Styling;
 using Avalonia.Media;
 using Avalonia.Media.Imaging;
+using Avalonia.Platform;
 using Avalonia.Styling;
 using Avalonia.Threading;
 using AvaloniaEdit;
 using AvaloniaEdit.Highlighting;
 using AvaloniaEdit.Highlighting.Xshd;
+using AvaloniaEdit.Utils;
 using ICSharpCode.Decompiler;
 using ICSharpCode.Decompiler.Documentation;
 using ICSharpCode.Decompiler.Metadata;
@@ -82,7 +84,7 @@ namespace ICSharpCode.ILSpy
 		internal ItemsControl toolBar;
 		internal ComboBox languageComboBox;
 		internal ComboBox languageVersionComboBox;
-		internal IControl statusBar;
+		internal Control statusBar;
 		internal TextBlock StatusLabel;
 		internal Grid mainGrid;
 		internal ColumnDefinition leftColumn;
@@ -199,7 +201,7 @@ namespace ICSharpCode.ILSpy
 			}
 
 			var themesDropDown = this.Find<ComboBox>("Themes");
-			themesDropDown.Items = themeNames;
+			themesDropDown.ItemsSource = themeNames;
 			themesDropDown.SelectionChanged += (sender, e) =>
 			{
 				Styles[0] = themes[themesDropDown.SelectedIndex];
@@ -251,14 +253,17 @@ namespace ICSharpCode.ILSpy
 
 		private void ApplyTheme()
 		{
-			if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX) && Styles.TryGetResource("ThemeBackgroundBrush", out object backgroundColor) && backgroundColor is ISolidColorBrush brush)
+			ThemeVariant defaultVariant = ThemeVariant.Default;
+
+			if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX) && Styles.TryGetResource("ThemeBackgroundBrush", defaultVariant, out object backgroundColor) && backgroundColor is ISolidColorBrush brush)
 			{
 				// HACK: SetTitleBarColor is a method in Avalonia.Native.WindowImpl
 				var setTitleBarColorMethod = PlatformImpl.GetType().GetMethod("SetTitleBarColor");
 				setTitleBarColorMethod?.Invoke(PlatformImpl, new object[] { brush.Color });
 			}
 
-			if (Styles.TryGetResource("ILAsm-Mode", out object ilasm) && ilasm is string ilmode)
+			// Styles.TryGetResource(objKey, ThemeVariant, out objValue)
+			if (Styles.TryGetResource("ILAsm-Mode", defaultVariant, out object ilasm) && ilasm is string ilmode)
 			{
 				HighlightingManager.Instance.RegisterHighlighting(
 					"ILAsm", new string[] { ".il" },
@@ -289,7 +294,7 @@ namespace ICSharpCode.ILSpy
 					});
 			}
 
-			if (Styles.TryGetResource("CSharp-Mode", out object csharp) && csharp is string csmode)
+			if (Styles.TryGetResource("CSharp-Mode", defaultVariant, out object csharp) && csharp is string csmode)
 			{
 				HighlightingManager.Instance.RegisterHighlighting(
 				"C#", new string[] { ".cs" },
@@ -327,7 +332,7 @@ namespace ICSharpCode.ILSpy
 		void SetWindowBounds(Rect bounds)
 		{
 			ClientSize = bounds.Size;
-			Position = PixelPoint.FromPoint(bounds.Position, PlatformImpl.DesktopScaling);
+			Position = PixelPoint.FromPoint(bounds.Position, DesktopScaling);
 		}
 
 		#region Toolbar extensibility
@@ -337,7 +342,7 @@ namespace ICSharpCode.ILSpy
 			int navigationPos = 0;
 			int openPos = 1;
 			var toolbarCommands = App.ExportProvider.GetExports<ICommand, IToolbarCommandMetadata>("ToolbarCommand");
-			var toolbarItems = toolBar.Items as IList<object> ?? new List<object>();
+			var toolbarItems = toolBar.ItemsSource as IList<object> ?? new List<object>();
 			foreach (var commandGroup in toolbarCommands.OrderBy(c => c.Metadata.ToolbarOrder).GroupBy(c => Properties.Resources.ResourceManager.GetString(c.Metadata.ToolbarCategory))) {
 				if (commandGroup.Key == Properties.Resources.ResourceManager.GetString("Navigation")) {
 					foreach (var command in commandGroup) {
@@ -355,7 +360,8 @@ namespace ICSharpCode.ILSpy
 					}
 				}
 			}
-			toolBar.Items = toolbarItems;
+
+			toolBar.ItemsSource = toolbarItems;
 		}
 
 		Button MakeToolbarItem(Lazy<ICommand, IToolbarCommandMetadata> command)
@@ -370,6 +376,7 @@ namespace ICSharpCode.ILSpy
 					Source = Images.LoadImage(command.Value, command.Metadata.ToolbarIcon)
 				}
 			};
+
 			ToolTip.SetTip(toolbarButton, Properties.Resources.ResourceManager.GetString(command.Metadata.ToolTip));
 			return toolbarButton;
 		}
@@ -380,7 +387,7 @@ namespace ICSharpCode.ILSpy
 		void InitMainMenu()
 		{
 			var mainMenuCommands = App.ExportProvider.GetExports<ICommand, IMainMenuCommandMetadata>("MainMenuCommand");
-			var mainMenuItems = mainMenu.Items as IList<object> ?? new List<object>();
+			var mainMenuItems = mainMenu.ItemsSource as IList<object> ?? new List<object>();
 			foreach (var topLevelMenu in mainMenuCommands.OrderBy(c => c.Metadata.MenuOrder).GroupBy(c => GetResourceString(c.Metadata.Menu))) {
 				MenuItem topLevelMenuItem = mainMenu.Items.OfType<MenuItem>().FirstOrDefault(m => (GetResourceString(m.Header as string)) == topLevelMenu.Key);
 				var topLevelMenuItems = topLevelMenuItem?.Items as IList<object> ?? new List<object>();
@@ -392,6 +399,7 @@ namespace ICSharpCode.ILSpy
 					} else if (topLevelMenuItems.Count > 0) {
 						topLevelMenuItems.Add(new Separator());
 					}
+
 					foreach (var entry in category) {
 						MenuItem menuItem = new MenuItem();
 						menuItem.Command = CommandWrapper.Unwrap(entry.Value);
@@ -409,9 +417,11 @@ namespace ICSharpCode.ILSpy
 						topLevelMenuItems.Add(menuItem);
 					}
 				}
-				topLevelMenuItem.Items = topLevelMenuItems;
+
+				topLevelMenuItem.ItemsSource = topLevelMenuItems;
 			}
-			mainMenu.Items = mainMenuItems;
+
+			mainMenu.ItemsSource = mainMenuItems;
 		}
 
 		void InitNativeMenu()
@@ -450,7 +460,8 @@ namespace ICSharpCode.ILSpy
 					}
 				}
 			}
-			mainMenu.Items = mainMenuItems;
+
+			mainMenu.ItemsSource = mainMenuItems;
 		}
 
 		internal static string GetResourceString(string key)
@@ -474,7 +485,8 @@ namespace ICSharpCode.ILSpy
 					bool boundsOK = false;
 					foreach (var screen in instance.Screens.All)
 					{
-						var intersection = boundsRect.Intersect(screen.WorkingArea.ToRect(instance.PlatformImpl.DesktopScaling));
+						// Avalonia v0.10 var intersection = boundsRect.Intersect(screen.WorkingArea.ToRect(instance.PlatformImpl.DesktopScaling));
+						var intersection = boundsRect.Intersect(screen.WorkingArea.ToRect(instance.DesktopScaling));
 						if (intersection.Width > 10 && intersection.Height > 10)
 							boundsOK = true;
 					}
@@ -671,7 +683,8 @@ namespace ICSharpCode.ILSpy
 
 		void MainWindow_Loaded(object sender, EventArgs e)
 		{
-			Application.Current.FocusManager.Focus(this);
+			var focusManager = TopLevel.GetTopLevel(this).FocusManager;
+			focusManager.GetFocusedElement().Focus();
 
 			InitToolbar();
 
@@ -1182,7 +1195,7 @@ namespace ICSharpCode.ILSpy
 			// Select only the last node to avoid multi selection
 			if(lastNode != null) {
 				treeView.SelectedItem = lastNode;
-            }
+			}
 		}
 		
 		void RefreshCommandExecuted(object sender, ExecutedRoutedEventArgs e)
@@ -1196,7 +1209,6 @@ namespace ICSharpCode.ILSpy
 			} finally {
 				refreshInProgress = false;
 			}
-
 		}
 		
 		void SearchCommandExecuted(object sender, ExecutedRoutedEventArgs e)
@@ -1331,20 +1343,35 @@ namespace ICSharpCode.ILSpy
 
 		#endregion
 
-		protected override void HandleWindowStateChanged(WindowState state)
+		// Avalonia v11
+		protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
 		{
-			base.HandleWindowStateChanged(state);
-			// store window state in settings only if it's not minimized
-			if (this.WindowState != WindowState.Minimized)
-				sessionSettings.WindowState = this.WindowState;
+			base.OnPropertyChanged(change);
+
+			if (change.Property == WindowStateProperty)
+			{
+				// store window state in settings only if it's not minimized
+				if (this.WindowState != WindowState.Minimized)
+					sessionSettings.WindowState = this.WindowState;
+			}
 		}
 
-		protected override bool HandleClosing()
+		// Avalonia v0.10
+		////protected override void HandleWindowStateChanged(WindowState state)
+		////{
+		////	base.HandleWindowStateChanged(state);
+		////	// store window state in settings only if it's not minimized
+		////	if (this.WindowState != WindowState.Minimized)
+		////		sessionSettings.WindowState = this.WindowState;
+		////}
+
+		protected override void OnClosing(WindowClosingEventArgs e)
 		{
 			sessionSettings.ActiveAssemblyList = assemblyList.ListName;
 			sessionSettings.ActiveTreeViewPath = GetPathForNode(treeView.SelectedItem as SharpTreeNode);
 			sessionSettings.ActiveAutoLoadedAssembly = GetAutoLoadedAssemblyNode(treeView.SelectedItem as SharpTreeNode);
-			sessionSettings.WindowBounds = new Rect(Position.ToPoint(PlatformImpl.DesktopScaling), ClientSize);
+			//// Avalonia v0.10: sessionSettings.WindowBounds = new Rect(Position.ToPoint(PlatformImpl.DesktopScaling), ClientSize);
+			sessionSettings.WindowBounds = new Rect(Position.ToPoint(DesktopScaling), ClientSize);
 			sessionSettings.SplitterPosition = leftColumn.Width.Value / (leftColumn.Width.Value + rightColumn.Width.Value);
 			if (topPane.IsVisible == true)
 				sessionSettings.TopPaneSplitterPosition = topPaneRow.Height.Value / (topPaneRow.Height.Value + textViewRow.Height.Value);
@@ -1352,8 +1379,25 @@ namespace ICSharpCode.ILSpy
 				sessionSettings.BottomPaneSplitterPosition = bottomPaneRow.Height.Value / (bottomPaneRow.Height.Value + textViewRow.Height.Value);
 			sessionSettings.Save();
 
-			return base.HandleClosing();
+			base.OnClosing(e);
 		}
+
+		// Avalonia v0.10
+		////protected override bool HandleClosing()
+		////{
+		////	sessionSettings.ActiveAssemblyList = assemblyList.ListName;
+		////	sessionSettings.ActiveTreeViewPath = GetPathForNode(treeView.SelectedItem as SharpTreeNode);
+		////	sessionSettings.ActiveAutoLoadedAssembly = GetAutoLoadedAssemblyNode(treeView.SelectedItem as SharpTreeNode);
+		////	sessionSettings.WindowBounds = new Rect(Position.ToPoint(PlatformImpl.DesktopScaling), ClientSize);
+		////	sessionSettings.SplitterPosition = leftColumn.Width.Value / (leftColumn.Width.Value + rightColumn.Width.Value);
+		////	if (topPane.IsVisible == true)
+		////		sessionSettings.TopPaneSplitterPosition = topPaneRow.Height.Value / (topPaneRow.Height.Value + textViewRow.Height.Value);
+		////	if (bottomPane.IsVisible == true)
+		////		sessionSettings.BottomPaneSplitterPosition = bottomPaneRow.Height.Value / (bottomPaneRow.Height.Value + textViewRow.Height.Value);
+		////	sessionSettings.Save();
+		////
+		////	return base.HandleClosing();
+		////}
 
 		private string GetAutoLoadedAssemblyNode(SharpTreeNode node)
 		{
@@ -1479,12 +1523,12 @@ namespace ICSharpCode.ILSpy
 		
 		public IEnumerable GetMainMenuItems()
 		{
-			return mainMenu.Items;
+			return mainMenu.ItemsSource;
 		}
 		
 		public IEnumerable GetToolBarItems()
 		{
-			return toolBar.Items;
+			return toolBar.ItemsSource;
 		}
 	}
 }

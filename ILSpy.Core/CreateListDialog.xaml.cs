@@ -39,7 +39,7 @@ namespace ICSharpCode.ILSpy
 			//ListName.TextInput += TextBox_TextChanged;
 			ListName.GetObservable(TextBox.TextProperty).Subscribe(text => TextBox_TextChanged(this, new TextInputEventArgs{Text = text}));
 
-			TemplateApplied += (sender, e) => Application.Current.FocusManager.Focus(ListName);
+			TemplateApplied += (sender, e) => ListName.Focus();
 		}
 
 		private void TextBox_TextChanged(object sender, TextInputEventArgs e)

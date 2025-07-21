@@ -34,9 +34,9 @@ namespace ICSharpCode.ILSpy.Controls
 	{
 		#region Dependency properties
 
-        public static StyledProperty<IBitmap> SearchIconProperty = AvaloniaProperty.Register<SearchBox, IBitmap>(nameof(SearchIcon));
+        public static StyledProperty<Bitmap> SearchIconProperty = AvaloniaProperty.Register<SearchBox, Bitmap>(nameof(SearchIcon));
 
-        public static StyledProperty<IBitmap> ClearSearchIconProperty = AvaloniaProperty.Register<SearchBox, IBitmap>(nameof(ClearSearchIcon));
+        public static StyledProperty<Bitmap> ClearSearchIconProperty = AvaloniaProperty.Register<SearchBox, Bitmap>(nameof(ClearSearchIcon));
 
         public static StyledProperty<IBrush> WatermarkColorProperty = AvaloniaProperty.Register<SearchBox, IBrush>(nameof(WatermarkColor));
 
@@ -65,13 +65,13 @@ namespace ICSharpCode.ILSpy.Controls
             set { SetValue(UpdateDelayProperty, value); }
         }
         
-        public IBitmap SearchIcon
+        public Bitmap SearchIcon
         {
             get { return GetValue(SearchIconProperty); }
             set { SetValue(SearchIconProperty, value); }
         }
 
-        public IBitmap ClearSearchIcon
+        public Bitmap ClearSearchIcon
         {
             get { return GetValue(ClearSearchIconProperty); }
             set { SetValue(ClearSearchIconProperty, value); }
@@ -99,9 +99,9 @@ namespace ICSharpCode.ILSpy.Controls
             }
         }
 
-        protected override void OnPropertyChanged<T>(AvaloniaPropertyChangedEventArgs<T> change)
-        {
-            base.OnPropertyChanged(change);
+		protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
+		{
+			base.OnPropertyChanged(change);
 
             if (change.Property == TextProperty)
             {
