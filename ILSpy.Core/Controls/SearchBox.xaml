@@ -8,7 +8,9 @@
 		<Setter Property="Background" Value="{DynamicResource ThemeBackgroundBrush}" />
 		<Setter Property="BorderBrush" Value="{DynamicResource ThemeBorderMidBrush}" />
 		<Setter Property="Foreground" Value="{DynamicResource ThemeForegroundBrush}" />
-        <Setter Property="BorderThickness" Value="1" />
+		<Setter Property="BorderThickness" Value="1" />
+		<Setter Property="SelectionBrush" Value="{DynamicResource HighlightBrush}"/>
+		<Setter Property="SelectionForegroundBrush" Value="{DynamicResource HighlightForegroundBrush}"/>
 		<Setter Property="Template">
 			<Setter.Value>
 				<ControlTemplate>
@@ -39,7 +41,9 @@
                                              SelectionEnd="{TemplateBinding SelectionEnd}"
                                              TextAlignment="{TemplateBinding TextAlignment}"
                                              TextWrapping="{TemplateBinding TextWrapping}"
-                                             PasswordChar="{TemplateBinding PasswordChar}"/>
+                                             PasswordChar="{TemplateBinding PasswordChar}"
+                                             SelectionBrush="{TemplateBinding SelectionBrush}"
+                                             SelectionForegroundBrush="{TemplateBinding SelectionForegroundBrush}"/>
                             </Panel>
                           </ScrollViewer>
               
