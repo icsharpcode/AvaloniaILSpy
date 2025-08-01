@@ -2,7 +2,7 @@
              xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:avalonia="clr-namespace:Avalonia;assembly=SharpTreeView"
-             xmlns:properties="clr-namespace:ICSharpCode.ILSpy.Properties"   
+             xmlns:properties="clr-namespace:ICSharpCode.ILSpy.Properties"
              xmlns:ae="clr-namespace:AvaloniaEdit;assembly=AvaloniaEdit"
              x:Class="ICSharpCode.ILSpy.TextView.DecompilerTextView">
 	<Grid>
@@ -12,7 +12,7 @@
 				               Background="{DynamicResource ThemeCodeBackgroundBrush}"
 				               Foreground="{DynamicResource ThemeCodeForegroundBrush}">
 				</ae:TextEditor>
-        <Border Name="waitAdorner" Background="#C0FFFFFF" IsVisible="false">
+				<Border Name="waitAdorner" Background="#C0FFFFFF" IsVisible="false">
 					<StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
 						<TextBlock FontSize="14" Text="{x:Static properties:Resources.Decompiling}" />
 						<ProgressBar Name="progressBar" Height="16" Margin="0, 4" />

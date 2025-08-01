@@ -745,6 +745,9 @@ Are you sure you want to continue?</value>
   <data name="HighlightMatchingBraces" xml:space="preserve">
     <value>Highlight matching braces</value>
   </data>
+	<data name="HighlightCurrentLine" xml:space="preserve">
+    <value>Highlight current line</value>
+  </data>
   <data name="SelectLanguageDropdownTooltip" xml:space="preserve">
     <value>Select language to decompile to</value>
   </data>

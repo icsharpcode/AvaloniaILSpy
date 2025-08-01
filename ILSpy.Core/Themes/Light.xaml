@@ -7,11 +7,11 @@
     <Style>
         <Style.Resources>
             
-            <Color x:Key="ThemeCodeBackgroundColor">#FFFFFFE1</Color>
-            <Color x:Key="ThemeCodeForegroundColor">#FF000000</Color>
+            <Color x:Key="WindowColorKey">#FFFFFF</Color>
+            <Color x:Key="WindowTextColorKey">#1E1E1E</Color>
 
-            <SolidColorBrush x:Key="ThemeCodeBackgroundBrush" Color="{DynamicResource ThemeCodeBackgroundColor}"></SolidColorBrush>
-            <SolidColorBrush x:Key="ThemeCodeForegroundBrush" Color="{DynamicResource ThemeCodeForegroundColor}"></SolidColorBrush>
+            <SolidColorBrush x:Key="ThemeCodeBackgroundBrush" Color="{DynamicResource WindowColorKey}"></SolidColorBrush>
+            <SolidColorBrush x:Key="ThemeCodeForegroundBrush" Color="{DynamicResource WindowTextColorKey}"></SolidColorBrush>
             
             <sys:String x:Key="CSharp-Mode">CSharp-Mode.xshd</sys:String>
             <sys:String x:Key="ILAsm-Mode">ILAsm-Mode.xshd</sys:String>
